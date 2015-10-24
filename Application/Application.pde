@@ -7,7 +7,7 @@
  
 float xmag, ymag = 0;
 float newXmag, newYmag = 0; 
-float scale_val = 90;
+float scale_val = 180;
 float trans_x;
 float trans_y;
  
@@ -19,25 +19,28 @@ void setup()  {
   noStroke(); 
   colorMode(RGB, 1); 
   arcball = new Arcball(width/2, height/2, 600); 
-  surface_1 = new Surface();
+  surface_1 = new Surface(0.1, 0.2, 0.3);
   
   trans_x = width/2;
   trans_y = height/2;
 } 
 
 void mouseWheel(MouseEvent event) {
+  //mouse wheel changes zoom
   float e = event.getCount();
   scale_val += e*5.0;
   if(scale_val<5.0)scale_val = 5.0;
 }
 
 void mousePressed(){
+  //only left mouse runs rotation, right mouse runs dragging
   if(mouseButton == LEFT){
     arcball.mousePressed();
   }
 }
 
 void mouseDragged(){
+  //only left mouse runs rotation, right mouse runs dragging
   if(mouseButton == LEFT){
     arcball.mouseDragged();
   }else{
@@ -49,24 +52,32 @@ void mouseDragged(){
 void draw()  { 
   background(0.5);
   
+  pushMatrix();
+  //execute X-Y translation as 2D
+  translate(trans_x-width/2, trans_y-height/2);
+  
   pushMatrix(); 
-  
-  translate(width/2, height/2, -30); 
-  
+  //begin 3D in center of the window
+  translate(width/2, height/2, 0); 
+  //execute mouse interface for rotation
   arcball.run();
-  
-  translate(trans_x-width/2, trans_y-height/2, -30); 
-  
+  //scale view
   scale(scale_val);
   
+  //draw surface
   surface_1.draw();
   
   popMatrix(); 
+  popMatrix();
+  
+  //2D overlay
   hint(DISABLE_DEPTH_TEST);
   textSize(32);
   
   text(mouseX, 10, 30);
   text(mouseY, 10, 60); 
   text(scale_val, 10, 90); 
+  
+  
   hint(ENABLE_DEPTH_TEST);
 } 
