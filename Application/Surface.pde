@@ -17,8 +17,8 @@ class Surface{
     points = new ArrayList<SimulationPoint>();
   }
   
-  void addPoint(float xx, float yy, float zz, float vxx, float vyy, float vzz, float rr, float gg, float bb){
-    points.add(new SimulationPoint(xx, yy, zz, vxx, vyy, vzz, rr, gg, bb));
+  void addPoint(float x, float y, float z, float vx, float vy, float vz, float r, float g, float b){
+    points.add(new SimulationPoint(x, y, z, vx, vy, vz, r, g, b));
   }
   
   void drawBox(){
