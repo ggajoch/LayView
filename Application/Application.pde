@@ -20,14 +20,18 @@ void setup()  {
   colorMode(RGB, 1); 
   arcball = new Arcball(width/2, height/2, 600); 
   //surface_1 = new Surface(0.05, 0.05, 0.05);
-  surface_1 = new VectorSurface(0.03);
+  surface_1 = new VectorSurface(0.06);
   
   trans_x = width/2;
   trans_y = height/2;
   
   for(float x=-1.0; x<=1.0 ; x += 0.05*2){
-      for(float y=-1.0; y<=x; y += 0.05*2){
-        surface_1.addPoint(x,y,0,0,0,x,0,1,0);
+      for(float y=-1.0; y<=1.0; y += 0.05*2){
+        for(float z=-1.0; z<=0; z += 0.05*2){
+          if(sqrt(pow((x),2)+pow((y),2)+pow((z),2))<=1.0){
+            surface_1.addPoint(x,y,z,x,y,z,(x+1.0)/2.0,0,1.0-(x+1.0)/2.0);
+          }
+        }
       }
   }
 } 
@@ -35,7 +39,7 @@ void setup()  {
 void mouseWheel(MouseEvent event) {
   //mouse wheel changes zoom
   float e = event.getCount();
-  scale_val += e*5.0;
+  scale_val += e*scale_val*0.1;
   if(scale_val<5.0)scale_val = 5.0;
 }
 
