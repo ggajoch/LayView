@@ -79,11 +79,17 @@ class VectorSurface extends Surface{
   }
   
   void drawVector(float x1, float y1, float z1, float x2, float y2, float z2){
-    float len=sqrt(pow((x1-x2),2)+pow((y1-y2),2)+pow((z1-z2),2))*vector_scale;
+    float len = sqrt(pow((x2), 2) + pow((y2), 2) + pow((z2), 2)) * vector_scale;
     pushMatrix();
-    translate(x1,y1,z1);
-    this.drawCylinder(this.vector_size, 0, this.vector_size*1.5, len, 10);
-    this.drawCylinder(this.vector_size/2.0, this.vector_size/2.0, len, 0,10);
+    translate(x1, y1, z1);
+    
+    pushMatrix();
+    rotateZ(atan2(-x2, y2)); //  in plane angle
+    rotateX(atan2(z2, sqrt(pow((x2), 2) + pow((y2), 2)))); //  out of XY plane angle
+    this.drawCylinder(this.vector_size, 0, this.vector_size*1.5, len, 10); //  arrow
+    this.drawCylinder(this.vector_size/2.0, this.vector_size/2.0, len, 0,10); //  line
+    popMatrix();
+    
     popMatrix();
   }
   
