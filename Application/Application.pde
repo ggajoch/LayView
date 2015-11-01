@@ -13,6 +13,7 @@ float trans_y;
  
 Arcball arcball;
 VectorSurface surface_1;
+FileParser parser;
  
 void setup()  { 
   size(640, 360, P3D); 
@@ -21,15 +22,26 @@ void setup()  {
   arcball = new Arcball(width/2, height/2, 600); 
   //surface_1 = new Surface(0.05, 0.05, 0.05);
   surface_1 = new VectorSurface(0.06);
+  parser = new FileParser();
   
   trans_x = width/2;
   trans_y = height/2;
+  
+  parser.parseFile("../TestFiles/x.omf");
+  //print();
+  ArrayList<PointVector> pp = parser.segments.get(0).data.points;
+  for( PointVector p: pp ) {
+    
+    
+    surface_1.addPoint((float)p.position.x*200000000.0, (float)p.position.y*200000000.0, (float)p.position.z*200000000.0,
+    (float)p.vector.x/1000000.0, (float)p.vector.y/1000000.0, (float)p.vector.z/1000000.0, 1,1,0);
+  }
   
   for(float x=-1.0; x<=1.0 ; x += 0.05*2){
       for(float y=-1.0; y<=1.0; y += 0.05*2){
         for(float z=-1.0; z<=0; z += 0.05*2){
           if(sqrt(pow((x),2)+pow((y),2)+pow((z),2))<=1.0){
-            surface_1.addPoint(x,y,z,x,y,z,(x+1.0)/2.0,0,1.0-(x+1.0)/2.0);
+            //surface_1.addPoint(x,y,z,x,y,z,(x+1.0)/2.0,0,1.0-(x+1.0)/2.0);
           }
         }
       }
