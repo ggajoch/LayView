@@ -16,12 +16,12 @@ VectorSurface surface_1;
 FileParser parser;
  
 void setup()  { 
-  size(640, 360, P3D); 
+  size(1024, 768, P3D); 
   noStroke(); 
   colorMode(RGB, 1); 
   arcball = new Arcball(width/2, height/2, 600); 
   //surface_1 = new Surface(0.05, 0.05, 0.05);
-  surface_1 = new VectorSurface(0.06);
+  surface_1 = new VectorSurface(1,1,1,0.2);
   parser = new FileParser();
   
   trans_x = width/2;

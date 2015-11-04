@@ -26,35 +26,37 @@ class Surface{
     
     for(SimulationPoint point : points){
       fill(point.r, point.g, point.b);
-      vertex(point.x-pitch_x, point.y+pitch_y, point.z+pitch_z);
-      vertex(point.x+pitch_x, point.y+pitch_y, point.z+pitch_z);
-      vertex(point.x+pitch_x, point.y-pitch_y, point.z+pitch_z);
-      vertex(point.x-pitch_x, point.y-pitch_y, point.z+pitch_z);
-      
-      vertex(point.x+pitch_x, point.y+pitch_y, point.z+pitch_z);
-      vertex(point.x+pitch_x, point.y+pitch_y, point.z-pitch_z);
-      vertex(point.x+pitch_x, point.y-pitch_y, point.z-pitch_z);
-      vertex(point.x+pitch_x, point.y-pitch_y, point.z+pitch_z);
-      
-      vertex(point.x+pitch_x, point.y+pitch_y, point.z-pitch_z);
-      vertex(point.x-pitch_x, point.y+pitch_y, point.z-pitch_z);
-      vertex(point.x-pitch_x, point.y-pitch_y, point.z-pitch_z);
-      vertex(point.x+pitch_x, point.y-pitch_y, point.z-pitch_z);
-      
-      vertex(point.x-pitch_x, point.y+pitch_y, point.z-pitch_z);
-      vertex(point.x-pitch_x, point.y+pitch_y, point.z+pitch_z);
-      vertex(point.x-pitch_x, point.y-pitch_y, point.z+pitch_z);
-      vertex(point.x-pitch_x, point.y-pitch_y, point.z-pitch_z);
-      
-      vertex(point.x-pitch_x, point.y+pitch_y, point.z-pitch_z);
-      vertex(point.x+pitch_x, point.y+pitch_y, point.z-pitch_z);
-      vertex(point.x+pitch_x, point.y+pitch_y, point.z+pitch_z);
-      vertex(point.x-pitch_x, point.y+pitch_y, point.z+pitch_z);
-      
-      vertex(point.x-pitch_x, point.y-pitch_y, point.z-pitch_z);
-      vertex(point.x+pitch_x, point.y-pitch_y, point.z-pitch_z);
-      vertex(point.x+pitch_x, point.y-pitch_y, point.z+pitch_z);
-      vertex(point.x-pitch_x, point.y-pitch_y, point.z+pitch_z);
+      if(abs(point.vx) > 0.0 || abs(point.vy) > 0.0 || abs(point.vz) > 0.0){
+        vertex(point.x-pitch_x, point.y+pitch_y, point.z+pitch_z);
+        vertex(point.x+pitch_x, point.y+pitch_y, point.z+pitch_z);
+        vertex(point.x+pitch_x, point.y-pitch_y, point.z+pitch_z);
+        vertex(point.x-pitch_x, point.y-pitch_y, point.z+pitch_z);
+        
+        vertex(point.x+pitch_x, point.y+pitch_y, point.z+pitch_z);
+        vertex(point.x+pitch_x, point.y+pitch_y, point.z-pitch_z);
+        vertex(point.x+pitch_x, point.y-pitch_y, point.z-pitch_z);
+        vertex(point.x+pitch_x, point.y-pitch_y, point.z+pitch_z);
+        
+        vertex(point.x+pitch_x, point.y+pitch_y, point.z-pitch_z);
+        vertex(point.x-pitch_x, point.y+pitch_y, point.z-pitch_z);
+        vertex(point.x-pitch_x, point.y-pitch_y, point.z-pitch_z);
+        vertex(point.x+pitch_x, point.y-pitch_y, point.z-pitch_z);
+        
+        vertex(point.x-pitch_x, point.y+pitch_y, point.z-pitch_z);
+        vertex(point.x-pitch_x, point.y+pitch_y, point.z+pitch_z);
+        vertex(point.x-pitch_x, point.y-pitch_y, point.z+pitch_z);
+        vertex(point.x-pitch_x, point.y-pitch_y, point.z-pitch_z);
+        
+        vertex(point.x-pitch_x, point.y+pitch_y, point.z-pitch_z);
+        vertex(point.x+pitch_x, point.y+pitch_y, point.z-pitch_z);
+        vertex(point.x+pitch_x, point.y+pitch_y, point.z+pitch_z);
+        vertex(point.x-pitch_x, point.y+pitch_y, point.z+pitch_z);
+        
+        vertex(point.x-pitch_x, point.y-pitch_y, point.z-pitch_z);
+        vertex(point.x+pitch_x, point.y-pitch_y, point.z-pitch_z);
+        vertex(point.x+pitch_x, point.y-pitch_y, point.z+pitch_z);
+        vertex(point.x-pitch_x, point.y-pitch_y, point.z+pitch_z);
+      }
     }
   
     endShape(); 
