@@ -29,8 +29,8 @@ class Header {
   }
   void modify(String name, String value) {
     map.put(name, value);
-    println("Adding (" + name + ") -> " + value);
-    println(map);
+    //println("Adding (" + name + ") -> " + value);
+    //println(map);
   }
   String getStr(String name) {
     return map.get(name);
@@ -78,7 +78,7 @@ class FileParser {
   
   void startSegment() {
     actual = new Segment();
-    println("new segment!");
+    //println("new segment!");
   }
   
   void endSegment() {
@@ -98,11 +98,11 @@ class FileParser {
       s = s.replace("#", " ");
       s = s.trim();
       String [] lineSplitted = s.split(":");
-      println("Fail: " + line);
+      //println("Fail: " + line);
       String name = lineSplitted[0].trim();
       String value = lineSplitted[1].trim();
-      println("Name: |" + name + "|");
-      println("value: |" + value + "|");
+      //println("Name: |" + name + "|");
+      //println("value: |" + value + "|");
       actual.header.modify(name, value);
     } catch(Exception e) {
       //println("Problem with" + line);
@@ -117,10 +117,10 @@ class FileParser {
     for(String x : list) {
       x = x.trim();
     }
-    print("data ");
-    println("0:" + list[0]);
-    println("1:" + list[1]);
-    println("2:" + list[2]);
+    //print("data ");
+    //println("0:" + list[0]);
+    //println("1:" + list[1]);
+    //println("2:" + list[2]);
     double x = Double.parseDouble(list[0]);
     double y = Double.parseDouble(list[1]);
     double z = Double.parseDouble(list[2]);
@@ -153,28 +153,28 @@ class FileParser {
     } else if( state == ParserState.Segment) {
        if( line.contains("# Begin: Header")) {
           state = ParserState.Header;
-          println("Header!");
+          //println("Header!");
        } else if( line.contains("# Begin: Data Text")) {
           state = ParserState.Data;
           startData();
-          println("Data!");
+          //println("Data!");
        } else if( line.contains("# End: Segment")) {
           state = ParserState.NoState;
-          println("NoState!");
+          //println("NoState!");
           endSegment();
        } else {
        }
     } else if( state == ParserState.Header) {
       if( line.contains("# End: Header")) {
         state = ParserState.Segment;
-        println("Segment!");
+        //println("Segment!");
      } else {
        parseHeader(line);
      }
     } else if( state == ParserState.Data) {
       if( line.contains("# End: Data Text")) {
         state = ParserState.Segment;
-        println("Segment!");
+        //println("Segment!");
       } else {
         parseData(line);
       }
