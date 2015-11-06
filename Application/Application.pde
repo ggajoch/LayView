@@ -63,6 +63,12 @@ void draw()  {
   surface_2.drawVectorsVolume();
   surface_2.drawBox();
 
+
+  cam.beginHUD();
+  //2D Overlay
+  textSize(32);
+  text(mouseX, 10, 30);
+  cam.endHUD();
   
 
 } 
