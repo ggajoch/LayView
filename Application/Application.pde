@@ -23,12 +23,8 @@ void setup()  {
   cam.setMaximumDistance(10000);
   
   //surface_1 = new Surface(0.05, 0.05, 0.05);
-  surface_1 = new VectorSurface(0.05,0.05,0.05,0.2);
+  //surface_1 = new VectorSurface(0.05,0.05,0.05,0.2);
   parser = new FileParser();
-  
-  
-  
-  //size(450, 180);
   createGUI();
   gradientList = new GradientPointsList();
   
@@ -51,8 +47,20 @@ void showFile(String file) {
   for( PointVector p: pp ) {
     
     
-    surface_2.addPoint((float)p.position.x*200000000.0, (float)p.position.y*200000000.0, (float)p.position.z*200000000.0,
-    (float)p.vector.x/1000000.0, (float)p.vector.y/1000000.0, (float)p.vector.z/1000000.0, 1,1,0);
+    //surface_2.addPoint((float)p.position.x*200000000.0, (float)p.position.y*200000000.0, (float)p.position.z*200000000.0,
+    //(float)p.vector.x/1000000.0, (float)p.vector.y/1000000.0, (float)p.vector.z/1000000.0, 1,1,0);
+    p.position.x *= 200000000.0;
+    p.position.y *= 200000000.0;
+    p.position.z *= 200000000.0;
+    
+    p.vector.x /= 1000000.0;
+    p.vector.y /= 1000000.0;
+    p.vector.z /= 1000000.0;
+    
+    p.rgbcolor.x = 1;
+    p.rgbcolor.y = 0;
+    p.rgbcolor.z = 1;
+    surface_2.addPoint(p);
   }
   
   /*for(float x=-1.0; x<=1.0 ; x += 0.05*2){
