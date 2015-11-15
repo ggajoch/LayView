@@ -4,7 +4,8 @@
  * The three primary colors of the additive color model are red, green, and blue.
  * This RGB color cube displays smooth transitions between these colors. 
  */
- 
+
+import g4p_controls.*;
 import peasy.*;
 
 PeasyCam cam;
@@ -25,9 +26,22 @@ void setup()  {
   surface_1 = new VectorSurface(0.05,0.05,0.05,0.2);
   parser = new FileParser();
   
-  parser.parseFile("../TestFiles/x.omf");
   
-  println();
+  
+  //size(450, 180);
+  createGUI();
+  gradientList = new GradientPointsList();
+  
+} 
+
+void showFile(String file) {
+  
+  
+  //parser.parseFile("../TestFiles/x.omf");
+  parser.parseFile(file);
+  
+  print("Parsing file:");
+  println(file);
   surface_2 = new VectorSurface((float)parser.segments.get(0).header.getDouble("xstepsize")*200000000.0,
   (float)parser.segments.get(0).header.getDouble("ystepsize")*200000000.0,
   (float)parser.segments.get(0).header.getDouble("zstepsize")*200000000.0,0.2);
@@ -41,7 +55,7 @@ void setup()  {
     (float)p.vector.x/1000000.0, (float)p.vector.y/1000000.0, (float)p.vector.z/1000000.0, 1,1,0);
   }
   
-  for(float x=-1.0; x<=1.0 ; x += 0.05*2){
+  /*for(float x=-1.0; x<=1.0 ; x += 0.05*2){
       for(float y=-1.0; y<=1.0; y += 0.05*2){
         for(float z=-1.0; z<=0; z += 0.05*2){
           if(sqrt(pow((x),2)+pow((y),2)+pow((z),2))<=1.0){
@@ -49,9 +63,10 @@ void setup()  {
           }
         }
       }
-  }
-} 
- 
+  }*/
+}
+
+
 void draw()  { 
   background(0.5);
   
@@ -59,9 +74,11 @@ void draw()  {
  
   //draw surface
   //surface_1.drawBox();
-  surface_1.drawVectorsVolume();
-  surface_2.drawVectorsVolume();
-  surface_2.drawBox();
+  //surface_1.drawVectorsVolume();
+  
+  if( surface_2 != null ) 
+    surface_2.drawVectorsVolume();
+  //surface_2.drawBox();
 
 
   cam.beginHUD();
