@@ -95,7 +95,6 @@ class GradientPointsList extends GDropList {
     
     int sel_col = G4P.selectColor();
     //BtnColorChoose.setLocalColorScheme(sel_col, true);
-    //txfMdTitle.setLocalColorScheme(sel_col, true);
     println(sel_col);
     
     
@@ -133,38 +132,7 @@ public void handleToggleControlEvents(GToggleControl checkbox, GEvent event) {
 
 void setup() {
   size(1000, 1000);
-  BtnFileSelect = new GButton(this, 0, 0, 100, 100, "File");
-  BtnFolderSelect = new GButton(this, 0, 100, 100, 100, "Folder");
-  BtnColorChoose = new GButton(this, 200, 300, 50, 50, "Color");
-  String[] names;
-  names = new String[] {
-    "play.png"
-  };
-  BtnPlay = new GImageButton(this, 100, 0, 100, 100, names);
-  names = new String[] {
-    "pause.png"
-  };
-  BtnPause = new GImageButton(this, 200, 0, 100, 100, names);
-  
-  gradientList = new GradientPointsList(this, 200, 200, 100, 100);
- 
-  txfMdTitle = new GTextField(this, 300, 300, 190, 20);
-  txfMdTitle.setPromptText("Enter value");
-  
-  
-  String[] t = new String[] { 
-    "Boxes", "Vectors"
-  };
-  opgMmessType = new GToggleGroup();
-  optMmessType = new GOption[t.length];
-  
-  for (int i = 0; i < optMmessType.length; i++) {
-    optMmessType[i] = new GOption(this, 500, 500+i*18, 94, 18);
-    optMmessType[i].setText(t[i]);
-    optMmessType[i].tagNo = 9000 + i;
-    opgMmessType.addControl(optMmessType[i]);
-  }
-  optMmessType[0].setSelected(true);
+  createGUI();
 }
 
 
