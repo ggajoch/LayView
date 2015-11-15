@@ -2,26 +2,6 @@ public class Parameter {
   String name, value;
 };
 
-
-
-class DVector {
-  double x, y, z;
-  DVector(double x_, double y_, double z_) {
-    x = x_;
-    y = y_;
-    z = z_;
-  }
-};
-
-class PointVector {
-  DVector position;
-  DVector vector;
-  PointVector(DVector position_, DVector vector_) {
-    position = position_;
-    vector = vector_;
-  }
-};
-
 class Header {
   HashMap<String, String> map;
   Header() {
