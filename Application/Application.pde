@@ -74,6 +74,7 @@ void showFile(String file) {
   }*/
 }
 
+int vectors = 0;
 
 void draw()  { 
   background(0.5);
@@ -84,9 +85,15 @@ void draw()  {
   //surface_1.drawBox();
   //surface_1.drawVectorsVolume();
   
-  if( surface_2 != null ) 
-    surface_2.drawVectorsVolume();
-  //surface_2.drawBox();
+  if( surface_2 != null ) {
+    if( vectors == 1 ) {
+      surface_2.drawVectorsVolume();
+    } else {
+      surface_2.drawBox();
+    }
+  }
+    
+  //
 
 
   cam.beginHUD();

@@ -34,11 +34,13 @@ public void btnSelectFolder_handler(GButton source, GEvent event) { //_CODE_:btn
 public void Boxes_handler(GOption source, GEvent event) { //_CODE_:Boxes:297206:
   println("Boxes - GOption >> GEvent." + event + " @ " + millis());
   println(source.tagNo);
+  vectors = 0;
 } //_CODE_:Boxes:297206:
 
 public void Vectors_handler(GOption source, GEvent event) { //_CODE_:Vectors:644165:
   println("Vectors - GOption >> GEvent." + event + " @ " + millis());
   println(source.tagNo);
+  vectors = 1;
 } //_CODE_:Vectors:644165:
 
 public void btnPlay_handler(GImageButton source, GEvent event) { //_CODE_:btnPlay:434127:
