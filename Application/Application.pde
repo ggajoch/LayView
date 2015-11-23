@@ -12,12 +12,15 @@ PeasyCam cam;
  
 VectorSurface surface_1, surface_2;
 FileParser parser;
+VideoExport export;
  
 void setup()  { 
   size(1024, 768, P3D); 
   noStroke(); 
   colorMode(RGB, 1); 
   
+  export = new VideoExport();
+  export.cleanFolder();
   cam = new PeasyCam(this, 100);
   cam.setMinimumDistance(1);
   cam.setMaximumDistance(10000);
@@ -95,12 +98,16 @@ void draw()  {
     
   //
 
-
   cam.beginHUD();
   //2D Overlay
   textSize(32);
   text(mouseX, 10, 30);
   cam.endHUD();
   
+  if(frameCount<1024){
+    export.saveVideoFrame();
+  }else if(frameCount==1024){
+    export.closeVideo();
+  }
 
 } 
