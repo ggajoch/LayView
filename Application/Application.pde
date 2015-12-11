@@ -13,6 +13,9 @@ PeasyCam cam;
 VectorSurface surface_1, surface_2;
 FileParser parser;
 VideoExport export;
+
+float pitchScale = 200000000.0;
+float lengthScale = 1.0/1000000.0;
  
 void setup()  { 
   size(1024, 768, P3D); 
@@ -41,9 +44,9 @@ void showFile(String file) {
   
   print("Parsing file:");
   println(file);
-  surface_2 = new VectorSurface((float)parser.segments.get(0).header.getDouble("xstepsize")*200000000.0,
-  (float)parser.segments.get(0).header.getDouble("ystepsize")*200000000.0,
-  (float)parser.segments.get(0).header.getDouble("zstepsize")*200000000.0,0.2);
+  surface_2 = new VectorSurface((float)parser.segments.get(0).header.getDouble("xstepsize")*pitchScale,
+  (float)parser.segments.get(0).header.getDouble("ystepsize")*pitchScale,
+  (float)parser.segments.get(0).header.getDouble("zstepsize")*pitchScale,0.2);
   
   //print();
   ArrayList<PointVector> pp = parser.segments.get(0).data.points;
@@ -52,13 +55,13 @@ void showFile(String file) {
     
     //surface_2.addPoint((float)p.position.x*200000000.0, (float)p.position.y*200000000.0, (float)p.position.z*200000000.0,
     //(float)p.vector.x/1000000.0, (float)p.vector.y/1000000.0, (float)p.vector.z/1000000.0, 1,1,0);
-    p.position.x *= 200000000.0;
-    p.position.y *= 200000000.0;
-    p.position.z *= 200000000.0;
+    p.position.x *= pitchScale;
+    p.position.y *= pitchScale;
+    p.position.z *= pitchScale;
     
-    p.vector.x /= 1000000.0;
-    p.vector.y /= 1000000.0;
-    p.vector.z /= 1000000.0;
+    p.vector.x *= lengthScale;
+    p.vector.y *= lengthScale;
+    p.vector.z *= lengthScale;
     
     p.rgbcolor.x = 1;
     p.rgbcolor.y = 0;
