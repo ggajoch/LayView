@@ -5,4 +5,16 @@ class FVector {
     y = y_;
     z = z_;
   }
+  
+  float multiplyScalar(FVector second){
+    return(this.x*second.x + this.y*second.y + this.z*second.z);
+  }
+  
+  FVector multiplyNumber(float number){
+    return new FVector(this.x*number, this.y*number, this.z*number);
+  }
+  
+  float module(){
+    return(sqrt(pow((float)this.x, 2.0) + pow((float)this.y, 2.0) +pow((float)this.z, 2.0)));
+  }
 };
