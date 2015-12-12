@@ -10,9 +10,10 @@ import peasy.*;
 
 PeasyCam cam;
  
-VectorSurface surface_1, surface_2;
+ColourSurface surface_1, surface_2;
 FileParser parser;
 VideoExport export;
+Gradient gradientMaker;
 
 float pitchScale = 200000000.0;
 float lengthScale = 1.0/1000000.0;
@@ -33,7 +34,7 @@ void setup()  {
   parser = new FileParser();
   createGUI();
   gradientList = new GradientPointsList();
-  
+  gradientMaker = new Gradient();
 } 
 
 void showFile(String file) {
@@ -44,30 +45,30 @@ void showFile(String file) {
   
   print("Parsing file:");
   println(file);
-  surface_2 = new VectorSurface((float)parser.segments.get(0).header.getDouble("xstepsize")*pitchScale,
+  surface_2 = new ColourSurface((float)parser.segments.get(0).header.getDouble("xstepsize")*pitchScale,
   (float)parser.segments.get(0).header.getDouble("ystepsize")*pitchScale,
-  (float)parser.segments.get(0).header.getDouble("zstepsize")*pitchScale,0.2);
+  (float)parser.segments.get(0).header.getDouble("zstepsize")*pitchScale,0.2*lengthScale);
   
   //print();
   ArrayList<PointVector> pp = parser.segments.get(0).data.points;
   for( PointVector p: pp ) {
     
-    
-    //surface_2.addPoint((float)p.position.x*200000000.0, (float)p.position.y*200000000.0, (float)p.position.z*200000000.0,
-    //(float)p.vector.x/1000000.0, (float)p.vector.y/1000000.0, (float)p.vector.z/1000000.0, 1,1,0);
     p.position.x *= pitchScale;
     p.position.y *= pitchScale;
     p.position.z *= pitchScale;
-    
-    p.vector.x *= lengthScale;
-    p.vector.y *= lengthScale;
-    p.vector.z *= lengthScale;
     
     p.rgbcolor.x = 1;
     p.rgbcolor.y = 0;
     p.rgbcolor.z = 1;
     surface_2.addPoint(p);
   }
+  
+  gradientMaker.points = gradientList.DropListElements;
+  gradientMaker.reference = new DVector(1,0,0);
+  
+  surface_2.gradientMakers.add(gradientMaker);
+  surface_2.colourPrepare();
+  
   
   /*for(float x=-1.0; x<=1.0 ; x += 0.05*2){
       for(float y=-1.0; y<=1.0; y += 0.05*2){
