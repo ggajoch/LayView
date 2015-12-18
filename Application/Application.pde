@@ -60,11 +60,13 @@ void showFile(String file) {
     p.rgbcolor.x = 1;
     p.rgbcolor.y = 0;
     p.rgbcolor.z = 1;
-    surface_2.addPoint(p);
+    
+    
+    if(p.vector.module()>0.0) surface_2.addPoint(p);
   }
   
   gradientMaker.points = gradientList.DropListElements;
-  gradientMaker.reference = new DVector(1,0,0);
+  gradientMaker.reference = new DVector(0,0,1);
   
   surface_2.gradientMakers.add(gradientMaker);
   surface_2.colourPrepare();

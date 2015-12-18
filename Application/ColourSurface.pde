@@ -32,20 +32,28 @@ class ColourSurface extends VectorSurface{
   }
   
   void colourPrepare(){
-    float minlen=1000, maxlen=0;
-    
-    for(PointVector point : points){
-      point.rgbcolor = new FVector(0,0,0);
-      for(Gradient gradientMaker : gradientMakers){
-        float len = gradientMaker.reference.multiplyNumber(gradientMaker.reference.multiplyScalar(point.vector)/gradientMaker.reference.multiplyScalar(gradientMaker.reference)).module();
+    for(Gradient gradientMaker : gradientMakers){
+      float minlen = (float)(gradientMaker.reference.multiplyScalar(points.get(0).vector)/gradientMaker.reference.multiplyScalar(gradientMaker.reference));
+      float maxlen = minlen;
+      
+      for(PointVector point : points){
+        point.rgbcolor = new FVector(0,0,0);
+        
+        float len = (float)(gradientMaker.reference.multiplyScalar(point.vector)/gradientMaker.reference.multiplyScalar(gradientMaker.reference));
         
         if(len>maxlen)maxlen = len;
         if(len<minlen)minlen = len;
-        
-        point.rgbcolor = new FVector(len/515534.38,0,1.0-len/515534.38);//1187449.4;515534.38)
       }
+      
+      for(PointVector point : points){
+        point.rgbcolor = new FVector(0,0,0);
+        float len = (float)(gradientMaker.reference.multiplyScalar(point.vector)/gradientMaker.reference.multiplyScalar(gradientMaker.reference));
+        
+        point.rgbcolor = new FVector(map(len, minlen, maxlen, 0.0, 1.0) ,0,map(len, minlen, maxlen, 1.0, 0.0));
+      }
+      
+      print("MIN: "+minlen+" MAX: "+maxlen);
     }
-    print("MIN: "+minlen+" MAX: "+maxlen);
   }
   
 }

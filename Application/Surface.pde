@@ -30,37 +30,35 @@ class Surface{
     
     for(PointVector point : points){
       fill(point.rgbcolor.x, point.rgbcolor.y, point.rgbcolor.z);
-      if(abs((float)point.vector.x) > 0.0 || abs((float)point.vector.y) > 0.0 || abs((float)point.vector.z) > 0.0){
-        vertex((float)point.position.x-pitch_x, (float)point.position.y+pitch_y, (float)point.position.z+pitch_z);
-        vertex((float)point.position.x+pitch_x, (float)point.position.y+pitch_y, (float)point.position.z+pitch_z);
-        vertex((float)point.position.x+pitch_x, (float)point.position.y-pitch_y, (float)point.position.z+pitch_z);
-        vertex((float)point.position.x-pitch_x, (float)point.position.y-pitch_y, (float)point.position.z+pitch_z);
-        
-        vertex((float)point.position.x+pitch_x, (float)point.position.y+pitch_y, (float)point.position.z+pitch_z);
-        vertex((float)point.position.x+pitch_x, (float)point.position.y+pitch_y, (float)point.position.z-pitch_z);
-        vertex((float)point.position.x+pitch_x, (float)point.position.y-pitch_y, (float)point.position.z-pitch_z);
-        vertex((float)point.position.x+pitch_x, (float)point.position.y-pitch_y, (float)point.position.z+pitch_z);
-        
-        vertex((float)point.position.x+pitch_x, (float)point.position.y+pitch_y, (float)point.position.z-pitch_z);
-        vertex((float)point.position.x-pitch_x, (float)point.position.y+pitch_y, (float)point.position.z-pitch_z);
-        vertex((float)point.position.x-pitch_x, (float)point.position.y-pitch_y, (float)point.position.z-pitch_z);
-        vertex((float)point.position.x+pitch_x, (float)point.position.y-pitch_y, (float)point.position.z-pitch_z);
-        
-        vertex((float)point.position.x-pitch_x, (float)point.position.y+pitch_y, (float)point.position.z-pitch_z);
-        vertex((float)point.position.x-pitch_x, (float)point.position.y+pitch_y, (float)point.position.z+pitch_z);
-        vertex((float)point.position.x-pitch_x, (float)point.position.y-pitch_y, (float)point.position.z+pitch_z);
-        vertex((float)point.position.x-pitch_x, (float)point.position.y-pitch_y, (float)point.position.z-pitch_z);
-        
-        vertex((float)point.position.x-pitch_x, (float)point.position.y+pitch_y, (float)point.position.z-pitch_z);
-        vertex((float)point.position.x+pitch_x, (float)point.position.y+pitch_y, (float)point.position.z-pitch_z);
-        vertex((float)point.position.x+pitch_x, (float)point.position.y+pitch_y, (float)point.position.z+pitch_z);
-        vertex((float)point.position.x-pitch_x, (float)point.position.y+pitch_y, (float)point.position.z+pitch_z);
-        
-        vertex((float)point.position.x-pitch_x, (float)point.position.y-pitch_y, (float)point.position.z-pitch_z);
-        vertex((float)point.position.x+pitch_x, (float)point.position.y-pitch_y, (float)point.position.z-pitch_z);
-        vertex((float)point.position.x+pitch_x, (float)point.position.y-pitch_y, (float)point.position.z+pitch_z);
-        vertex((float)point.position.x-pitch_x, (float)point.position.y-pitch_y, (float)point.position.z+pitch_z);
-      }
+      vertex((float)point.position.x-pitch_x, (float)point.position.y+pitch_y, (float)point.position.z+pitch_z);
+      vertex((float)point.position.x+pitch_x, (float)point.position.y+pitch_y, (float)point.position.z+pitch_z);
+      vertex((float)point.position.x+pitch_x, (float)point.position.y-pitch_y, (float)point.position.z+pitch_z);
+      vertex((float)point.position.x-pitch_x, (float)point.position.y-pitch_y, (float)point.position.z+pitch_z);
+      
+      vertex((float)point.position.x+pitch_x, (float)point.position.y+pitch_y, (float)point.position.z+pitch_z);
+      vertex((float)point.position.x+pitch_x, (float)point.position.y+pitch_y, (float)point.position.z-pitch_z);
+      vertex((float)point.position.x+pitch_x, (float)point.position.y-pitch_y, (float)point.position.z-pitch_z);
+      vertex((float)point.position.x+pitch_x, (float)point.position.y-pitch_y, (float)point.position.z+pitch_z);
+      
+      vertex((float)point.position.x+pitch_x, (float)point.position.y+pitch_y, (float)point.position.z-pitch_z);
+      vertex((float)point.position.x-pitch_x, (float)point.position.y+pitch_y, (float)point.position.z-pitch_z);
+      vertex((float)point.position.x-pitch_x, (float)point.position.y-pitch_y, (float)point.position.z-pitch_z);
+      vertex((float)point.position.x+pitch_x, (float)point.position.y-pitch_y, (float)point.position.z-pitch_z);
+      
+      vertex((float)point.position.x-pitch_x, (float)point.position.y+pitch_y, (float)point.position.z-pitch_z);
+      vertex((float)point.position.x-pitch_x, (float)point.position.y+pitch_y, (float)point.position.z+pitch_z);
+      vertex((float)point.position.x-pitch_x, (float)point.position.y-pitch_y, (float)point.position.z+pitch_z);
+      vertex((float)point.position.x-pitch_x, (float)point.position.y-pitch_y, (float)point.position.z-pitch_z);
+      
+      vertex((float)point.position.x-pitch_x, (float)point.position.y+pitch_y, (float)point.position.z-pitch_z);
+      vertex((float)point.position.x+pitch_x, (float)point.position.y+pitch_y, (float)point.position.z-pitch_z);
+      vertex((float)point.position.x+pitch_x, (float)point.position.y+pitch_y, (float)point.position.z+pitch_z);
+      vertex((float)point.position.x-pitch_x, (float)point.position.y+pitch_y, (float)point.position.z+pitch_z);
+      
+      vertex((float)point.position.x-pitch_x, (float)point.position.y-pitch_y, (float)point.position.z-pitch_z);
+      vertex((float)point.position.x+pitch_x, (float)point.position.y-pitch_y, (float)point.position.z-pitch_z);
+      vertex((float)point.position.x+pitch_x, (float)point.position.y-pitch_y, (float)point.position.z+pitch_z);
+      vertex((float)point.position.x-pitch_x, (float)point.position.y-pitch_y, (float)point.position.z+pitch_z);
     }
   
     endShape(); 

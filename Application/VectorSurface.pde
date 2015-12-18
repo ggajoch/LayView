@@ -96,8 +96,7 @@ class VectorSurface extends Surface{
   void drawVectorsVolume(){
     for(PointVector point : points){
       fill(point.rgbcolor.x, point.rgbcolor.y, point.rgbcolor.z);
-      if(abs((float)point.vector.x) > 0.0 || abs((float)point.vector.y) > 0.0 || abs((float)point.vector.z) > 0.0)
-        this.drawVector((float)point.position.x, (float)point.position.y, (float)point.position.z, (float)point.vector.x, (float)point.vector.y, (float)point.vector.z);
+      this.drawVector((float)point.position.x, (float)point.position.y, (float)point.position.z, (float)point.vector.x, (float)point.vector.y, (float)point.vector.z);
         //println(point.x);
     }
   }
