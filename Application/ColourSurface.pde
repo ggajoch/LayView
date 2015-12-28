@@ -48,8 +48,17 @@ class ColourSurface extends VectorSurface{
       for(PointVector point : points){
         point.rgbcolor = new FVector(0,0,0);
         float len = (float)(gradientMaker.reference.multiplyScalar(point.vector)/gradientMaker.reference.multiplyScalar(gradientMaker.reference));
+        len = map(len, minlen, maxlen, 0.0, 1.0);
+        int greaterIndex = 1;
+        for(greaterIndex = 1 ; greaterIndex < gradientMaker.points.size()-1 ; greaterIndex++){
+          if(len<(float)gradientMaker.points.get(greaterIndex).val)break;
+        }
         
-        point.rgbcolor = new FVector(map(len, minlen, maxlen, 0.0, 1.0) ,0,map(len, minlen, maxlen, 1.0, 0.0));
+        GradientPoint greater, lower;
+        greater = gradientMaker.points.get(greaterIndex);
+        lower = gradientMaker.points.get(greaterIndex-1);
+        
+        point.rgbcolor = new FVector(map(len, (float)lower.val, (float)greater.val, lower.getRGB().x, greater.getRGB().x) ,0,1.0-len);
       }
       
       print("MIN: "+minlen+" MAX: "+maxlen);
