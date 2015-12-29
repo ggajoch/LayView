@@ -89,7 +89,6 @@ class Surface{
   
   void drawBox(){
     beginShape(QUADS);
-    
     for(PointVector point : points){
       fill(point.rgbcolor.x, point.rgbcolor.y, point.rgbcolor.z);
       vertex((float)point.position.x-pitch_x, (float)point.position.y+pitch_y, (float)point.position.z+pitch_z);
@@ -122,7 +121,6 @@ class Surface{
       vertex((float)point.position.x+pitch_x, (float)point.position.y-pitch_y, (float)point.position.z+pitch_z);
       vertex((float)point.position.x-pitch_x, (float)point.position.y-pitch_y, (float)point.position.z+pitch_z);
     }
-  
     endShape(); 
   }
 }
