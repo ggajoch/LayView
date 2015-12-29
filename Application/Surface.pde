@@ -87,7 +87,7 @@ class Surface{
     points.add(point);
   }
   
-  void translate(double x, double y, double z){
+  void translatePoints(double x, double y, double z){
     for(PointVector point : points){
       point.position.x += x;
       point.position.y += y;
@@ -95,7 +95,7 @@ class Surface{
     }
   }
   
-  void translate(DVector vector){
+  void translatePoints(DVector vector){
     for(PointVector point : points){
       point.position.x += vector.x;
       point.position.y += vector.y;
@@ -103,7 +103,7 @@ class Surface{
     }
   }
   
-  void translate(PointVector vector){
+  void translatePoints(PointVector vector){
     for(PointVector point : points){
       point.position.x += vector.position.x;
       point.position.y += vector.position.y;
