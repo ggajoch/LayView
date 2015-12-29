@@ -38,17 +38,12 @@ class ColourSurface extends VectorSurface{
       float maxlen = minlen;
       
       for(PointVector point : points){
-        point.rgbcolor = new FVector(0,0,0);
-        
         float len = (float)(gradientMaker.reference.multiplyScalar(point.vector)/gradientMaker.reference.multiplyScalar(gradientMaker.reference));
         
         if(len>maxlen)maxlen = len;
         if(len<minlen)minlen = len;
       }
-      //point.rgbcolor = new FVector(0,0,0);
-      
-      for(int j = 0 ; j < points.size() ; j++){//PointVector point : points
-        PointVector point = points.get(j);
+      for(PointVector point : points){
         float len = (float)(gradientMaker.reference.multiplyScalar(point.vector)/gradientMaker.reference.multiplyScalar(gradientMaker.reference));
         len = map(len, minlen, maxlen, 0.0, 1.0);
         int greaterIndex = 1;
@@ -65,13 +60,10 @@ class ColourSurface extends VectorSurface{
             map(len, (float)lower.val, (float)greater.val, lower.getRGB().z, greater.getRGB().z));
             
         }else{
-          println("PRV: "+point.rgbcolor.x+" "+point.rgbcolor.y+" "+point.rgbcolor.z+" ");
           point.rgbcolor = point.rgbcolor.add(new FVector(map(len, (float)lower.val, (float)greater.val, lower.getRGB().x, greater.getRGB().x),
             map(len, (float)lower.val, (float)greater.val, lower.getRGB().y, greater.getRGB().y), 
-            map(len, (float)lower.val, (float)greater.val, lower.getRGB().z, greater.getRGB().z)))/*.multiplyNumber(0.5)*/;
-          println("AFT: "+point.rgbcolor.x+" "+point.rgbcolor.y+" "+point.rgbcolor.z+" ");
+            map(len, (float)lower.val, (float)greater.val, lower.getRGB().z, greater.getRGB().z))).multiplyNumber(0.5);
         }
-        points.set(j,point);
       }
       
       //print("MIN: "+minlen+" MAX: "+maxlen);
