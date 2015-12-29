@@ -1,6 +1,6 @@
 class VectorSurface extends Surface{
-  float vector_scale;
-  float vector_size;
+  public float vector_scale;
+  public float vector_size;
   
   VectorSurface(){
     super();

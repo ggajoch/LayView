@@ -1,5 +1,5 @@
 class DVector {
-  double x, y, z;
+  public double x, y, z;
   DVector(double x_, double y_, double z_) {
     x = x_;
     y = y_;
@@ -8,6 +8,14 @@ class DVector {
   
   double multiplyScalar(DVector second){
     return(this.x*second.x + this.y*second.y + this.z*second.z);
+  }
+  
+  DVector multiplyEach(DVector second){
+    return(new DVector(this.x*second.x, this.y*second.y, this.z*second.z));
+  }
+  
+  DVector add(DVector second){
+    return(new DVector(this.x+second.x, this.y+second.y, this.z+second.z));
   }
   
   DVector multiplyNumber(double number){

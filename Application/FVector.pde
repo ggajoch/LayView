@@ -1,5 +1,5 @@
 class FVector {
-  float x, y, z;
+  public float x, y, z;
   FVector(float x_, float y_, float z_) {
     x = x_;
     y = y_;
@@ -10,8 +10,16 @@ class FVector {
     return(this.x*second.x + this.y*second.y + this.z*second.z);
   }
   
+  FVector multiplyEach(FVector second){
+    return(new FVector(this.x*second.x, this.y*second.y, this.z*second.z));
+  }
+  
+  FVector add(FVector second){
+    return(new FVector(this.x+second.x, this.y+second.y, this.z+second.z));
+  }
+  
   FVector multiplyNumber(float number){
-    return new FVector(this.x*number, this.y*number, this.z*number);
+    return(new FVector(this.x*number, this.y*number, this.z*number));
   }
   
   float module(){

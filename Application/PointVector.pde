@@ -1,7 +1,7 @@
 class PointVector {
-  DVector position;
-  DVector vector;
-  FVector rgbcolor;
+  public DVector position;
+  public DVector vector;
+  public FVector rgbcolor;
   
   PointVector(){
     position = new DVector(0,0,0);
@@ -19,5 +19,13 @@ class PointVector {
     position = position_;
     vector = vector_;
     rgbcolor = rgbcolor_;
+  }
+  
+  PointVector add(PointVector second){
+    return(new PointVector(this.position.add(second.position), this.vector.add(second.vector), this.rgbcolor.add(second.rgbcolor)));
+  }
+  
+  PointVector multiplyNumber(double scalar){
+    return(new PointVector(this.position.multiplyNumber(scalar), this.vector.multiplyNumber(scalar), this.rgbcolor.multiplyNumber((float)scalar)));
   }
 };
