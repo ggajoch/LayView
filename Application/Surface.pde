@@ -57,8 +57,8 @@ class Surface{
   
   void addPoint(PointVector point){
     if(this.points.size()==0){
-      this.max = point;
-      this.min = point;
+      this.max = new PointVector(point);
+      this.min = new PointVector(point);
     }else{     
       if(point.position.x>max.position.x)this.max.position.x = point.position.x;
       if(point.position.y>max.position.y)this.max.position.y = point.position.y;

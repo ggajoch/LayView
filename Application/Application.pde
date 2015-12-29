@@ -74,7 +74,10 @@ void showFile(String file) {
     
     
     if(p.vector.module()>0.0) Surfaces.get(Surfaces.size()-1).addPoint(p);
+    
     }
+    
+  
     
     gradientMaker.points = gradientList.DropListElements;
     gradientMaker.reference = new DVector(0,1,0);
@@ -91,12 +94,7 @@ void showFile(String file) {
     
     Surfaces.get(Surfaces.size()-1).colourPrepare();
     
-    //this is not working correctly = WHY? max and min here always 0.0, called inn transtale - seems to point last loaded vector, when debigging inside Surface class seems to work correctly...
-    
     Surfaces.get(Surfaces.size()-1).translatePoints(Surfaces.get(Surfaces.size()-1).max.add(Surfaces.get(Surfaces.size()-1).min).multiplyNumber(-0.5));
-    
-    //println(Surfaces.get(Surfaces.size()-1).max.position.x+" "+Surfaces.get(Surfaces.size()-1).max.position.y+" "+Surfaces.get(Surfaces.size()-1).max.position.z);
-    //println(Surfaces.get(Surfaces.size()-1).min.position.x+" "+Surfaces.get(Surfaces.size()-1).min.position.y+" "+Surfaces.get(Surfaces.size()-1).min.position.z);
   }
 }
 

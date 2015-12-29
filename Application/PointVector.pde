@@ -9,6 +9,12 @@ class PointVector {
     rgbcolor = new FVector(0,0,0);
   }
   
+  PointVector(PointVector full){
+    position = new DVector(full.position.x,full.position.y,full.position.z);
+    vector = new DVector(full.vector.x,full.vector.y,full.vector.z);
+    rgbcolor = new FVector(full.rgbcolor.x,full.rgbcolor.y,full.rgbcolor.z);
+  }
+  
   PointVector(DVector position_, DVector vector_) {
     position = position_;
     vector = vector_;
