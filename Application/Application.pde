@@ -1,8 +1,6 @@
 /**
- * RGB Cube.
+ * LayView - application to display OOMF 
  * 
- * The three primary colors of the additive color model are red, green, and blue.
- * This RGB color cube displays smooth transitions between these colors. 
  */
 
 import g4p_controls.*;
