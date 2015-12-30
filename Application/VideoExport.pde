@@ -4,6 +4,13 @@ class VideoExport{
   Process process;
   String outputFilePath;
   String inputFilePath;
+  String actualFile;
+  
+  long frameNumber;
+  
+  VideoExport(){
+    frameNumber = 0;
+  }
   
   private boolean deleteDirectory(File directory) {
     if(directory.exists()){
@@ -27,7 +34,7 @@ class VideoExport{
   }
   
   void saveVideoFrame(){
-    saveFrame("temp/anim_#####.png");
+    saveFrame(String.format("temp/anim_%05d.png", frameNumber++));
   }
   
   void closeVideo(){
