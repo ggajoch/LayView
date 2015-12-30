@@ -46,6 +46,7 @@ public void Vectors_handler(GOption source, GEvent event) { //_CODE_:Vectors:644
 public void btnPlay_handler(GImageButton source, GEvent event) { //_CODE_:btnPlay:434127:
   println("btnPlay - GImageButton >> GEvent." + event + " @ " + millis());
   println("play!");
+  record = 2;
 } //_CODE_:btnPlay:434127:
 
 public void btnPause_handler(GImageButton source, GEvent event) { //_CODE_:btnPause:773048:
