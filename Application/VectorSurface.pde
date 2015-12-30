@@ -97,7 +97,6 @@ class VectorSurface extends Surface{
     for(PointVector point : points){
       fill(point.rgbcolor.x, point.rgbcolor.y, point.rgbcolor.z);
       this.drawVector((float)point.position.x, (float)point.position.y, (float)point.position.z, (float)point.vector.x, (float)point.vector.y, (float)point.vector.z);
-        //println(point.x);
     }
   }
 }
