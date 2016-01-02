@@ -91,6 +91,11 @@ public void btnGradEdit_handler(GButton source, GEvent event) { //_CODE_:btnGrad
 gradients.editPoint();
 } //_CODE_:btnGradEdit:448885:
 
+public void btnGradMax_handler(GButton source, GEvent event) { //_CODE_:btnGradMax:524538:
+  println("btnGradMax - GButton >> GEvent." + event + " @ " + millis());
+        gradients.maxHintCopy();
+} //_CODE_:btnGradMax:524538:
+
 synchronized public void GradientPointEditWindowDraw(PApplet appc, GWinData data) { //_CODE_:GradientPointEditWindow:640294:
   appc.background(230);
 } //_CODE_:GradientPointEditWindow:640294:
@@ -222,7 +227,7 @@ public void createGUI(){
   valScaleXYZ = new GTextField(window1, 800, 260, 80, 30, G4P.SCROLLBARS_NONE);
   valScaleXYZ.setOpaque(true);
   valScaleXYZ.addEventHandler(this, "valScaleXYZ_handler");
-  GradientEditWindow = GWindow.getWindow(this, "Gradient Edit", 200, 200, 500, 200, JAVA2D);
+  GradientEditWindow = GWindow.getWindow(this, "Gradient Edit", 200, 200, 500, 300, JAVA2D);
   GradientEditWindow.setActionOnClose(G4P.CLOSE_WINDOW);
   GradientEditWindow.addDrawHandler(this, "GradientEditWindow_draw");
   padGradGradPrev = new GSketchPad(GradientEditWindow, 400, 10, 40, 180);
@@ -252,12 +257,12 @@ public void createGUI(){
   valGradZ.setText("Z");
   valGradZ.setPromptText("Z");
   valGradZ.setOpaque(true);
-  btnGradOK = new GButton(GradientEditWindow, 90, 160, 90, 30);
+  btnGradOK = new GButton(GradientEditWindow, 80, 210, 90, 30);
   btnGradOK.setText("OK");
   btnGradOK.setTextBold();
   btnGradOK.setLocalColorScheme(GCScheme.GREEN_SCHEME);
   btnGradOK.addEventHandler(this, "btnGradOK_handler");
-  btnGradCancel = new GButton(GradientEditWindow, 220, 160, 90, 30);
+  btnGradCancel = new GButton(GradientEditWindow, 220, 210, 90, 30);
   btnGradCancel.setText("Cancel");
   btnGradCancel.setTextBold();
   btnGradCancel.setLocalColorScheme(GCScheme.RED_SCHEME);
@@ -265,6 +270,13 @@ public void createGUI(){
   btnGradEdit = new GButton(GradientEditWindow, 160, 60, 90, 30);
   btnGradEdit.setText("Edit");
   btnGradEdit.addEventHandler(this, "btnGradEdit_handler");
+  valGradMax = new GTextField(GradientEditWindow, 280, 160, 90, 30, G4P.SCROLLBARS_NONE);
+  valGradMax.setOpaque(true);
+  labelGradMax = new GLabel(GradientEditWindow, 20, 160, 90, 30);
+  labelGradMax.setText("Max");
+  labelGradMax.setOpaque(false);
+  btnGradMax = new GButton(GradientEditWindow, 150, 160, 90, 30);
+  btnGradMax.addEventHandler(this, "btnGradMax_handler");
   GradientPointEditWindow = GWindow.getWindow(this, "Gradient Point Edit", 200, 200, 220, 120, JAVA2D);
   GradientPointEditWindow.addDrawHandler(this, "GradientPointEditWindowDraw");
   btnGradEditOK = new GButton(GradientPointEditWindow, 20, 70, 80, 30);
@@ -370,6 +382,9 @@ GTextField valGradZ;
 GButton btnGradOK; 
 GButton btnGradCancel; 
 GButton btnGradEdit; 
+GTextField valGradMax; 
+GLabel labelGradMax; 
+GButton btnGradMax; 
 GWindow GradientPointEditWindow;
 GButton btnGradEditOK; 
 GButton btnGradEditCancel; 

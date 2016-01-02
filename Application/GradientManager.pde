@@ -1,3 +1,5 @@
+import g4p_controls.GButton;
+import g4p_controls.GLabel;
 import g4p_controls.GSketchPad;
 import g4p_controls.GWindow;
 import processing.core.PGraphics;
@@ -61,8 +63,21 @@ public class GradientManager {
         valGradX.setText(Double.toString(actual_model.getReference().x));
         valGradY.setText(Double.toString(actual_model.getReference().y));
         valGradZ.setText(Double.toString(actual_model.getReference().z));
+        btnGradMax.setText(Float.toString(actual_model.getMaxHint()));
+        valGradMax.setText(Float.toString(actual_model.getMaxVector()));
         grad_window.setVisible(true);
         this.gradient_view.reEnumerate();
+        print("now: "  + actual_model.getMaxVector());
+    }
+
+    void setMaxHint(float value) {
+        actual_model.setMaxHint(value);
+    }
+
+    void maxHintCopy() {
+        print("now: "  + actual_model.getMaxVector());
+        valGradMax.setText(Float.toString(actual_model.getMaxHint()));
+        print("now: "  + actual_model.getMaxVector());
     }
 
     void editPoint() {
@@ -138,7 +153,13 @@ public class GradientManager {
         Double z = Double.valueOf(valGradZ.getText());
 
         actual_model.setReference(new DVector(x, y, z));
+
+        float maxi = Float.valueOf(valGradMax.getText());
+        actual_model.setMaxVector(maxi);
+
+        print("now: "  + actual_model.getMaxVector());
         gradient_list.set(actual_index, actual_model);
+        print("now: "  + gradient_list.get(actual_index).getMaxVector());
         grad_window.setVisible(false);
     }
 

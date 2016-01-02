@@ -5,12 +5,19 @@ import java.util.List;
 
 public class GradientModel extends ListModel<GradientPoint> implements Cloneable {
 
-    private DVector reference;
+    private volatile DVector reference;
+
+    private volatile float MaxVector;
+
+
+
+    private float MaxHint;
     private GradientManager gradient_manager;
     GradientModel(GradientManager gradient_manager) {
         super(new ArrayList<GradientPoint>());
         this.gradient_manager = gradient_manager;
         reference = new DVector(0, 0, 0);
+        MaxHint = 0;
     }
 
     public DVector getReference() {
@@ -21,11 +28,26 @@ public class GradientModel extends ListModel<GradientPoint> implements Cloneable
         this.reference = reference;
     }
 
+    public float getMaxVector() {
+        return MaxVector;
+    }
+
+    public void setMaxVector(float maxVector) {
+        MaxVector = maxVector;
+    }
+    public float getMaxHint() {
+        return MaxHint;
+    }
+
+    public void setMaxHint(float maxHint) {
+        MaxHint = maxHint;
+    }
     @Override
     public GradientModel clone() {
         GradientModel ret = new GradientModel(gradient_manager);
         ret.list = new ArrayList<GradientPoint>(this.list);
         ret.reference = new DVector(this.reference.x, this.reference.y, this.reference.z);
+        ret.MaxVector = this.MaxVector;
         return ret;
     }
 
