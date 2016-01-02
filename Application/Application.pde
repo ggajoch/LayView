@@ -88,7 +88,9 @@ void showFile(String file) {
     
     Surfaces.get(Surfaces.size()-1).gradientMakers.add(gradientMaker);
     
+    Surfaces.get(Surfaces.size()-1).gradientMaxFind();
     Surfaces.get(Surfaces.size()-1).colourPrepare();
+    
     
     Surfaces.get(Surfaces.size()-1).translatePoints(Surfaces.get(Surfaces.size()-1).max.add(Surfaces.get(Surfaces.size()-1).min).multiplyNumber(-0.5));
   }

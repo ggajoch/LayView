@@ -34,18 +34,10 @@ class ColourSurface extends VectorSurface{
   void colourPrepare(){
     for(int i = 0 ; i < gradientMakers.size() ; i++){/* Gradient gradientMaker : gradientMakers*/
       Gradient gradientMaker = gradientMakers.get(i);
-      float minlen = (float)(gradientMaker.reference.multiplyScalar(points.get(0).vector)/gradientMaker.reference.multiplyScalar(gradientMaker.reference));
-      float maxlen = minlen;
       
       for(PointVector point : points){
         float len = (float)(gradientMaker.reference.multiplyScalar(point.vector)/gradientMaker.reference.multiplyScalar(gradientMaker.reference));
-        
-        if(len>maxlen)maxlen = len;
-        if(len<minlen)minlen = len;
-      }
-      for(PointVector point : points){
-        float len = (float)(gradientMaker.reference.multiplyScalar(point.vector)/gradientMaker.reference.multiplyScalar(gradientMaker.reference));
-        len = map(len, minlen, maxlen, 0.0, 1.0);
+        len = map(len, gradientMaker.min, gradientMaker.max, 0.0, 1.0);
         int greaterIndex = 1;
         for(greaterIndex = 1 ; greaterIndex < gradientMaker.points.size()-1 ; greaterIndex++){
           if(len<(float)gradientMaker.points.get(greaterIndex).val)break;
@@ -67,6 +59,23 @@ class ColourSurface extends VectorSurface{
       }
       
       //print("MIN: "+minlen+" MAX: "+maxlen);
+    }
+  }
+  
+  void gradientMaxFind(){
+    for(int i = 0 ; i < gradientMakers.size() ; i++){/* Gradient gradientMaker : gradientMakers*/
+      Gradient gradientMaker = gradientMakers.get(i);
+      gradientMaker.min = (float)(gradientMaker.reference.multiplyScalar(points.get(0).vector)/gradientMaker.reference.multiplyScalar(gradientMaker.reference));
+      gradientMaker.max = new Float(gradientMaker.min);
+      
+      for(PointVector point : points){
+        float len = (float)(gradientMaker.reference.multiplyScalar(point.vector)/gradientMaker.reference.multiplyScalar(gradientMaker.reference));
+        
+        if(len>gradientMaker.max)gradientMaker.max = len;
+        if(len<gradientMaker.min)gradientMaker.min = len;
+      }
+      
+      //print("MIN: "+gradientMaker.max+" MAX: "+gradientMaker.min);
     }
   }
   
