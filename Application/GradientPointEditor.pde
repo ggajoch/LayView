@@ -7,6 +7,7 @@ public class GradientPointEditor {
     private GTextField value_field;
     private GWindow window;
     private int selected_color;
+    private boolean edit_mode;
 
     GradientPointEditor(GWindow window, GradientManager gradient_manager, GTextField value_field) {
         window.setVisible(false);
@@ -21,12 +22,22 @@ public class GradientPointEditor {
         window.setVisible(true);
     }
 
+    void edit(String value) {
+        edit_mode = true;
+        value_field.setText(value);
+        window.setVisible(true);
+    }
+
     void Color_handler() {
         selected_color = G4P.selectColor();
         gradient_manager.colorUpdate();
     }
 
     void OK_handler() {
+        if( edit_mode ) {
+            gradient_manager.gradient_view.remove();
+            edit_mode = false;
+        }
         Double val = Double.valueOf(value_field.getText());
         gradient_manager.gradient_view.add(new GradientPoint(val, selected_color));
         window.setVisible(false);

@@ -21,6 +21,7 @@ public class GradientManager {
 
     GWindow grad_window, pointAddWindow;
 
+
     GradientManager(GWindow grad_window, GSketchPad actual_color_pad, GSketchPad gradient_preview_pad, GWindow pointAddWindow) {
         this.grad_window = grad_window;
         this.pointAddWindow = pointAddWindow;
@@ -50,9 +51,12 @@ public class GradientManager {
         valGradX.setText(Double.toString(actual_model.getReference().x));
         valGradY.setText(Double.toString(actual_model.getReference().y));
         valGradZ.setText(Double.toString(actual_model.getReference().z));
-        println(actual_model.getReference().x + " " + actual_model.getReference().y + " " + actual_model.getReference().z);
         grad_window.setVisible(true);
         this.gradient_view.reEnumerate();
+    }
+
+    void editPoint() {
+        this.gradient_point_editor.edit(Double.toString(this.gradient_view.model.get(this.gradient_view.dropList.getSelectedIndex()).val));
     }
 
     void addPoint() {
@@ -78,9 +82,7 @@ public class GradientManager {
 
         actual_color_graphics.endDraw();
         actual_color_pad.setGraphic(actual_color_graphics);
-
-
-
+        // -------------------------------------------------------
         gradient_preview_graphics.beginDraw();
         if (this.gradient_view.model.size() == 0) {
             gradient_preview_graphics.background(grad_window.getGraphics().backgroundColor);
@@ -93,13 +95,11 @@ public class GradientManager {
             for (GradientPoint p : this.gradient_view.model.list) {
                 float val = map((float) p.val, minVal, maxVal, 0.0, gradient_preview_graphics.height);
                 color_list.add(new Pair<Float, Integer>(Float.valueOf(val), Integer.valueOf(p.colour)));
-                println("color list: " + val + " " + p.colour);
             }
 
             int left = 0, right = 1;
             Pair<Float, Integer> cLeft = color_list.get(left),
                     cRight = color_list.get(right);
-            println("left:" + cLeft.first + " right: " + cRight.first);
             for (int i = 0; i <= gradient_preview_graphics.height; i++) {
 
                 if (i > cRight.first) {
@@ -109,9 +109,7 @@ public class GradientManager {
                     cRight = color_list.get(right);
                 }
 
-                println("i = " + i);
                 float inter = map(i, cLeft.first, cRight.first, 0, 1);
-                println("inter: " + inter);
                 color c = lerpColor(cLeft.second, cRight.second, inter);
 
                 gradient_preview_graphics.stroke(c);
@@ -121,9 +119,6 @@ public class GradientManager {
 
         gradient_preview_graphics.endDraw();
         gradient_preview_pad.setGraphic(gradient_preview_graphics);
-
-
-
     }
 
     void OK_Handler() {
@@ -132,7 +127,6 @@ public class GradientManager {
         Double z = Double.valueOf(valGradZ.getText());
 
         actual_model.setReference(new DVector(x, y, z));
-        println(actual_model.getReference().x + " " + actual_model.getReference().y + " " + actual_model.getReference().z);
         gradient_list.set(actual_index, actual_model);
         grad_window.setVisible(false);
     }

@@ -159,6 +159,11 @@ public void btnGradCancel_handler(GButton source, GEvent event) { //_CODE_:btnGr
   gradients.Cancel_Handler();
 } //_CODE_:btnGradCancel:328569:
 
+public void btnGradEdit_handler(GButton source, GEvent event) { //_CODE_:btnGradEdit:448885:
+  println("btnGradEdit - GButton >> GEvent." + event + " @ " + millis());
+gradients.editPoint();
+} //_CODE_:btnGradEdit:448885:
+
 synchronized public void GradientPointEditWindowDraw(PApplet appc, GWinData data) { //_CODE_:GradientPointEditWindow:640294:
   appc.background(230);
 } //_CODE_:GradientPointEditWindow:640294:
@@ -298,8 +303,9 @@ public void createGUI(){
   btnGradRemove = new GButton(GradientEditWindow, 280, 20, 80, 30);
   btnGradRemove.setText("Remove point");
   btnGradRemove.addEventHandler(this, "btnGradRemove_handler");
-  btnGradClear = new GButton(GradientEditWindow, 220, 60, 90, 30);
+  btnGradClear = new GButton(GradientEditWindow, 280, 60, 80, 30);
   btnGradClear.setText("Clear");
+  btnGradClear.setLocalColorScheme(GCScheme.ORANGE_SCHEME);
   btnGradClear.addEventHandler(this, "btnGradClear_handler");
   padGradColorPrev = new GSketchPad(GradientEditWindow, 20, 50, 120, 40);
   valGradX = new GTextField(GradientEditWindow, 20, 110, 90, 30, G4P.SCROLLBARS_NONE);
@@ -324,6 +330,9 @@ public void createGUI(){
   btnGradCancel.setTextBold();
   btnGradCancel.setLocalColorScheme(GCScheme.RED_SCHEME);
   btnGradCancel.addEventHandler(this, "btnGradCancel_handler");
+  btnGradEdit = new GButton(GradientEditWindow, 160, 60, 90, 30);
+  btnGradEdit.setText("Edit");
+  btnGradEdit.addEventHandler(this, "btnGradEdit_handler");
   GradientPointEditWindow = GWindow.getWindow(this, "Gradient Point Edit", 200, 200, 220, 120, JAVA2D);
   GradientPointEditWindow.addDrawHandler(this, "GradientPointEditWindowDraw");
   btnGradEditOK = new GButton(GradientPointEditWindow, 20, 70, 80, 30);
@@ -388,6 +397,7 @@ GTextField valGradY;
 GTextField valGradZ; 
 GButton btnGradOK; 
 GButton btnGradCancel; 
+GButton btnGradEdit; 
 GWindow GradientPointEditWindow;
 GButton btnGradEditOK; 
 GButton btnGradEditCancel; 
