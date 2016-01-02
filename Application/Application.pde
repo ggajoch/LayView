@@ -4,14 +4,11 @@
  */
 
 import g4p_controls.*;
-import peasy.*;
+//import peasy.*;
 
-PeasyCam cam;
- 
-//volatile ColourSurface surface_1, surface_2;
+//PeasyCam cam;
 
 volatile ArrayList<ColourSurface> Surfaces;
-//FileParser parser;
 VideoExport export;
 
 float pitchScale = 200000000.0;
@@ -19,21 +16,27 @@ float lengthScale = 0.2/1000000.0;
 float minimumDisplay = 0.0;
 
 long frameDelayMs = 10;
- 
+FileView file_list;
+
+GradientManager gradients;
+
 void setup()  { 
-  size(1024, 768, P3D); 
-  noStroke(); 
-  colorMode(RGB, 1); 
+  //size(1024, 768, P3D); 
+  //noStroke(); 
+  //colorMode(RGB, 1); 
   
   /*export = new VideoExport();
   export.cleanFolder();*/
-  cam = new PeasyCam(this, 100);
-  cam.setMinimumDistance(1);
-  cam.setMaximumDistance(10000);
+  //cam = new PeasyCam(this, 100);
+  //cam.setMinimumDistance(1);
+  //cam.setMaximumDistance(10000);
   
   createGUI();
-  file_list = new FileList(listFiles);
-  gradientList = new GradientPointsList();
+  GradientEditWindow.setVisible(false);
+  file_list = new FileView(listFiles);
+  
+  gradients = new GradientManager(GradientEditWindow, window3);
+  
   Surfaces = new ArrayList<ColourSurface>();
 } 
 Object mutex = new Object();
@@ -137,13 +140,12 @@ void draw()  {
       }
     }
   }
-  //
   
-  cam.beginHUD();
+  //cam.beginHUD();
   //2D Overlay
   textSize(32);
   text(mouseX, 10, 30);
-  cam.endHUD();
+  //cam.endHUD();
   
   if(record == 1)export.saveVideoFrame();
   
