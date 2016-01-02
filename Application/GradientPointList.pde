@@ -9,8 +9,8 @@ class GradientPointsList {
   PGraphics pg;
   GradientPointsList() {
     DropListElements = new ArrayList<GradientPoint>();
-    DropListElements.add(new GradientPoint("0", 0, -1));
-    DropListElements.add(new GradientPoint("1", 1, -16777216));
+    DropListElements.add(new GradientPoint(0, -1));
+    DropListElements.add(new GradientPoint(1, -16777216));
     pg = createGraphics(100, 30, JAVA2D);
     reEnumerate();
     update_color();
@@ -24,7 +24,7 @@ class GradientPointsList {
     int len = DropListElements.size();
     String[] val = new String[len+1];
     for(int i = 0; i < len; ++i) {
-      val[i] = DropListElements.get(i).name;
+      val[i] = " ";
       if( selected == DropListElements.get(i) ) {
         index = i;
       }
@@ -35,7 +35,7 @@ class GradientPointsList {
   }
   void handler() {
     if( GradientList.getSelectedText() == "Add item" ) {
-      DropListElements.add(new GradientPoint("0", 0, 0));
+      DropListElements.add(new GradientPoint(0, 0));
       reEnumerate();
     } else {
       update_text();
@@ -71,7 +71,6 @@ class GradientPointsList {
     int index = GradientList.getSelectedIndex();
     GradientPoint now = DropListElements.get(index);
     now.val = value;
-    now.name = String.valueOf(now.val);
     DropListElements.set(index, now);
     reEnumerate();
   }

@@ -35,7 +35,7 @@ void setup()  {
   GradientEditWindow.setVisible(false);
   file_list = new FileView(listFiles);
   
-  gradients = new GradientManager(GradientEditWindow, window3);
+  gradients = new GradientManager(GradientEditWindow, padGradColorPrev, padGradGradPrev, GradientEditWindow);
   
   Surfaces = new ArrayList<ColourSurface>();
 } 
@@ -85,9 +85,9 @@ void showFile(String file) {
     Surfaces.get(Surfaces.size()-1).gradientMakers.add(gradientMaker);
     
     gradientMaker = new Gradient();
-    gradientMaker.points.add(new GradientPoint("", 0.0, color(1,0,0)));
-    gradientMaker.points.add(new GradientPoint("", 0.2, color(1,1,1)));
-    gradientMaker.points.add(new GradientPoint("", 1.0, color(0,0,1)));
+    gradientMaker.points.add(new GradientPoint(0.0, color(1,0,0)));
+    gradientMaker.points.add(new GradientPoint(0.2, color(1,1,1)));
+    gradientMaker.points.add(new GradientPoint(1.0, color(0,0,1)));
     gradientMaker.reference = new DVector(0,0,1);
     
     Surfaces.get(Surfaces.size()-1).gradientMakers.add(gradientMaker);

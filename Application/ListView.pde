@@ -9,19 +9,20 @@ public class ListView<T> {
     ListView(GDropList dropList, ListModel<T> model) {
         this.dropList = dropList;
         this.model = model;
-        reEnumerate();
     }
 
     void reEnumerate() {
+        model.preEnumerate();
         ArrayList<String> list = new ArrayList<String>();
         if (model.isEmpty()) {
-            list.add(" "); // nie lepiej zawołać dropList.clear
+            list.add(" ");
         } else {
             for (T element : model) {
                 list.add(model.labelFor(element) );
             }
         }
         dropList.setItems(list, 0);
+        model.postEnumerate();
     }
 
     void add(T element) {

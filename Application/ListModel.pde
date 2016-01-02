@@ -16,6 +16,10 @@ abstract class ListModel<T> implements List<T> {
 
     }
 
+    void postEnumerate() {
+
+    }
+
     String labelFor(T element){
         return element.toString();
     }

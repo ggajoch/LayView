@@ -129,17 +129,14 @@ synchronized public void win_draw1(PApplet appc, GWinData data) { //_CODE_:Gradi
   appc.background(230);
 } //_CODE_:GradientEditWindow:607983:
 
-Double valX = new Double(0.0);
-  int colX = 0;
-  
+public void listGradList_handler(GDropList source, GEvent event) { //_CODE_:listGradList:798901:
+  println("listGradList - GDropList >> GEvent." + event + " @ " + millis());
+  gradients.colorUpdate();
+} //_CODE_:listGradList:798901:
+
 public void btnGradAdd_handler(GButton source, GEvent event) { //_CODE_:btnGradAdd:714538:
   println("button1 - GButton >> GEvent." + event + " @ " + millis());
-  
-  
-  valX += 0.1;
-  colX += 100;
-  println(valX);
-  gradients.gradient_view.add(new GradientPoint("", valX, colX));
+  gradients.addPoint();
 } //_CODE_:btnGradAdd:714538:
 
 public void btnGradRemove_handler(GButton source, GEvent event) { //_CODE_:btnGradRemove:368151:
@@ -162,9 +159,24 @@ public void btnGradCancel_handler(GButton source, GEvent event) { //_CODE_:btnGr
   gradients.Cancel_Handler();
 } //_CODE_:btnGradCancel:328569:
 
-synchronized public void win_draw3(PApplet appc, GWinData data) { //_CODE_:window3:640294:
+synchronized public void GradientPointEditWindowDraw(PApplet appc, GWinData data) { //_CODE_:GradientPointEditWindow:640294:
   appc.background(230);
-} //_CODE_:window3:640294:
+} //_CODE_:GradientPointEditWindow:640294:
+
+public void btnGradEditOK_handler(GButton source, GEvent event) { //_CODE_:btnGradEditOK:586455:
+  println("button3 - GButton >> GEvent." + event + " @ " + millis());
+  gradients.gradient_point_editor.OK_handler();
+} //_CODE_:btnGradEditOK:586455:
+
+public void btnGradEditCancel_handler(GButton source, GEvent event) { //_CODE_:btnGradEditCancel:871784:
+  println("button4 - GButton >> GEvent." + event + " @ " + millis());
+  gradients.gradient_point_editor.Cancel_handler();
+} //_CODE_:btnGradEditCancel:871784:
+
+public void btnGradEditColor_handler(GButton source, GEvent event) { //_CODE_:btnGradEditColor:672090:
+  println("btnGradEditColor - GButton >> GEvent." + event + " @ " + millis());
+  gradients.gradient_point_editor.Color_handler();
+} //_CODE_:btnGradEditColor:672090:
 
 
 
@@ -175,7 +187,7 @@ public void createGUI(){
   G4P.setGlobalColorScheme(GCScheme.BLUE_SCHEME);
   G4P.setCursor(ARROW);
   surface.setTitle("Sketch Window");
-  window1 = GWindow.getWindow(this, "KEEP_OPEN", 100, 100, 1000, 1000, JAVA2D);
+  window1 = GWindow.getWindow(this, "KEEP_OPEN", 200, 200, 1000, 1000, JAVA2D);
   window1.setActionOnClose(G4P.EXIT_APP);
   window1.addDrawHandler(this, "win_draw2");
   btnAddFile = new GButton(window1, 190, 20, 80, 30);
@@ -279,6 +291,7 @@ public void createGUI(){
   padGradGradPrev = new GSketchPad(GradientEditWindow, 400, 10, 40, 180);
   listGradList = new GDropList(GradientEditWindow, 20, 20, 120, 80, 3);
   listGradList.setItems(loadStrings("list_798901"), 0);
+  listGradList.addEventHandler(this, "listGradList_handler");
   btnGradAdd = new GButton(GradientEditWindow, 160, 20, 90, 30);
   btnGradAdd.setText("Add point");
   btnGradAdd.addEventHandler(this, "btnGradAdd_handler");
@@ -311,8 +324,22 @@ public void createGUI(){
   btnGradCancel.setTextBold();
   btnGradCancel.setLocalColorScheme(GCScheme.RED_SCHEME);
   btnGradCancel.addEventHandler(this, "btnGradCancel_handler");
-  window3 = GWindow.getWindow(this, "Window title", 0, 0, 240, 120, JAVA2D);
-  window3.addDrawHandler(this, "win_draw3");
+  GradientPointEditWindow = GWindow.getWindow(this, "Gradient Point Edit", 200, 200, 220, 120, JAVA2D);
+  GradientPointEditWindow.addDrawHandler(this, "GradientPointEditWindowDraw");
+  btnGradEditOK = new GButton(GradientPointEditWindow, 20, 70, 80, 30);
+  btnGradEditOK.setText("OK");
+  btnGradEditOK.setLocalColorScheme(GCScheme.GREEN_SCHEME);
+  btnGradEditOK.addEventHandler(this, "btnGradEditOK_handler");
+  btnGradEditCancel = new GButton(GradientPointEditWindow, 120, 70, 80, 30);
+  btnGradEditCancel.setText("Cancel");
+  btnGradEditCancel.setLocalColorScheme(GCScheme.RED_SCHEME);
+  btnGradEditCancel.addEventHandler(this, "btnGradEditCancel_handler");
+  valGradEditValue = new GTextField(GradientPointEditWindow, 20, 20, 80, 30, G4P.SCROLLBARS_NONE);
+  valGradEditValue.setText("value");
+  valGradEditValue.setOpaque(true);
+  btnGradEditColor = new GButton(GradientPointEditWindow, 120, 20, 80, 30);
+  btnGradEditColor.setText("Select Color");
+  btnGradEditColor.addEventHandler(this, "btnGradEditColor_handler");
 }
 
 // Variable declarations 
@@ -361,4 +388,8 @@ GTextField valGradY;
 GTextField valGradZ; 
 GButton btnGradOK; 
 GButton btnGradCancel; 
-GWindow window3;
+GWindow GradientPointEditWindow;
+GButton btnGradEditOK; 
+GButton btnGradEditCancel; 
+GTextField valGradEditValue; 
+GButton btnGradEditColor; 
