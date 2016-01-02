@@ -32,18 +32,6 @@ public void btnPause_handler(GImageButton source, GEvent event) { //_CODE_:btnPa
   gradients.edit(1);
 } //_CODE_:btnPause:773048:
 
-public void valFPS_handler(GTextField source, GEvent event) { //_CODE_:valFPS:581728:
-  println("textfield1 - GTextField >> GEvent." + event + " @ " + millis());
-} //_CODE_:valFPS:581728:
-
-public void btnExport_handler(GButton source, GEvent event) { //_CODE_:btnExport:476853:
-  println("btnExport - GButton >> GEvent." + event + " @ " + millis());
-} //_CODE_:btnExport:476853:
-
-public void valThreshold_handler(GTextField source, GEvent event) { //_CODE_:valThreshold:972234:
-  println("textfield2 - GTextField >> GEvent." + event + " @ " + millis());
-} //_CODE_:valThreshold:972234:
-
 public void valArrowScale_handler(GTextField source, GEvent event) { //_CODE_:valArrowScale:222385:
   println("textfield2 - GTextField >> GEvent." + event + " @ " + millis());
 } //_CODE_:valArrowScale:222385:
@@ -165,6 +153,22 @@ public void optDisplayTypeVectors_handler(GOption source, GEvent event) { //_COD
   println("option1 - GOption >> GEvent." + event + " @ " + millis());
 } //_CODE_:optDisplayTypeVectors:890085:
 
+public void valDisplayThreshold_handler(GTextField source, GEvent event) { //_CODE_:valDisplayThreshold:229313:
+  println("valDisplayThreshold - GTextField >> GEvent." + event + " @ " + millis());
+} //_CODE_:valDisplayThreshold:229313:
+
+synchronized public void VideoControlWindow_draw(PApplet appc, GWinData data) { //_CODE_:VideoControlWindow:840922:
+  appc.background(230);
+} //_CODE_:VideoControlWindow:840922:
+
+public void valVideoFPS_handler(GTextField source, GEvent event) { //_CODE_:valVideoFPS:260387:
+  println("valVideoFPS - GTextField >> GEvent." + event + " @ " + millis());
+} //_CODE_:valVideoFPS:260387:
+
+public void valVideoThreshold_handler(GTextField source, GEvent event) { //_CODE_:valVideoThreshold:214656:
+  println("textfield1 - GTextField >> GEvent." + event + " @ " + millis());
+} //_CODE_:valVideoThreshold:214656:
+
 
 
 // Create all the GUI controls. 
@@ -182,22 +186,6 @@ public void createGUI(){
   btnPlay.addEventHandler(this, "btnPlay_handler");
   btnPause = new GImageButton(window1, 80, 250, 50, 50, new String[] { "pause.png", "pause.png", "pause.png" } );
   btnPause.addEventHandler(this, "btnPause_handler");
-  valFPS = new GTextField(window1, 10, 190, 70, 20, G4P.SCROLLBARS_NONE);
-  valFPS.setOpaque(true);
-  valFPS.addEventHandler(this, "valFPS_handler");
-  labelFPS = new GLabel(window1, 10, 170, 70, 20);
-  labelFPS.setText("FPS");
-  labelFPS.setOpaque(false);
-  btnExport = new GButton(window1, 90, 170, 80, 40);
-  btnExport.setText("Export");
-  btnExport.setTextBold();
-  btnExport.addEventHandler(this, "btnExport_handler");
-  valThreshold = new GTextField(window1, 250, 190, 70, 20, G4P.SCROLLBARS_NONE);
-  valThreshold.setOpaque(true);
-  valThreshold.addEventHandler(this, "valThreshold_handler");
-  labelThreshold = new GLabel(window1, 250, 170, 70, 20);
-  labelThreshold.setText("Threshold");
-  labelThreshold.setOpaque(false);
   lableArrowWidth = new GLabel(window1, 470, 240, 80, 20);
   lableArrowWidth.setText("Width");
   lableArrowWidth.setOpaque(false);
@@ -329,6 +317,26 @@ public void createGUI(){
   groupDisplayDisplayType.addControl(optDisplayTypeBox);
   optDisplayTypeBox.setSelected(true);
   groupDisplayDisplayType.addControl(optDisplayTypeVectors);
+  labelDisplayThreshold = new GLabel(DisplayOptionsWindow, 190, 100, 120, 20);
+  labelDisplayThreshold.setText("Display threshold");
+  labelDisplayThreshold.setOpaque(false);
+  valDisplayThreshold = new GTextField(DisplayOptionsWindow, 190, 120, 120, 30, G4P.SCROLLBARS_NONE);
+  valDisplayThreshold.setOpaque(true);
+  valDisplayThreshold.addEventHandler(this, "valDisplayThreshold_handler");
+  VideoControlWindow = GWindow.getWindow(this, "Video Control", 0, 0, 500, 500, JAVA2D);
+  VideoControlWindow.addDrawHandler(this, "VideoControlWindow_draw");
+  labelVideoFPS = new GLabel(VideoControlWindow, 20, 20, 80, 20);
+  labelVideoFPS.setText("FPS");
+  labelVideoFPS.setOpaque(false);
+  valVideoFPS = new GTextField(VideoControlWindow, 20, 40, 80, 20, G4P.SCROLLBARS_NONE);
+  valVideoFPS.setOpaque(true);
+  valVideoFPS.addEventHandler(this, "valVideoFPS_handler");
+  valVideoThreshold = new GTextField(VideoControlWindow, 120, 40, 80, 20, G4P.SCROLLBARS_NONE);
+  valVideoThreshold.setOpaque(true);
+  valVideoThreshold.addEventHandler(this, "valVideoThreshold_handler");
+  labelVideoThreshold = new GLabel(VideoControlWindow, 120, 20, 80, 20);
+  labelVideoThreshold.setText("Threshold");
+  labelVideoThreshold.setOpaque(false);
 }
 
 // Variable declarations 
@@ -337,11 +345,6 @@ GWindow window1;
 GToggleGroup togGroup1; 
 GImageButton btnPlay; 
 GImageButton btnPause; 
-GTextField valFPS; 
-GLabel labelFPS; 
-GButton btnExport; 
-GTextField valThreshold; 
-GLabel labelThreshold; 
 GLabel lableArrowWidth; 
 GLabel labelArrowScale; 
 GTextField valArrowScale; 
@@ -383,3 +386,10 @@ GWindow DisplayOptionsWindow;
 GToggleGroup groupDisplayDisplayType; 
 GOption optDisplayTypeBox; 
 GOption optDisplayTypeVectors; 
+GLabel labelDisplayThreshold; 
+GTextField valDisplayThreshold; 
+GWindow VideoControlWindow;
+GLabel labelVideoFPS; 
+GTextField valVideoFPS; 
+GTextField valVideoThreshold; 
+GLabel labelVideoThreshold; 
