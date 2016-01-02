@@ -34,17 +34,30 @@ public class GradientManager {
         gradient_list.add(new GradientModel(this));
         gradient_list.add(new GradientModel(this));
         gradient_point_editor = new GradientPointEditor(GradientPointEditWindow, this, valGradEditValue);
+
+        setActive(0);
+        gradient_view.add(new GradientPoint(-1.0, -16776961)); //blue
+        gradient_view.add(new GradientPoint(1.0, -65536)); //red
+        actual_model.setReference(new DVector(1, 0, 0));
+        gradient_list.set(actual_index, actual_model);
+        this.gradient_view.reEnumerate();
+
+        setActive(1);
+        gradient_view.add(new GradientPoint(-1.0, -1)); //white
+        gradient_view.add(new GradientPoint(1.0, -1)); //white
+        actual_model.setReference(new DVector(0, 0, 1));
+        gradient_list.set(actual_index, actual_model);
+        this.gradient_view.reEnumerate();
     }
 
     void setActive(int index) {
-        actual_model = gradient_list.get(index).clone();
+        actual_index = index;
+        actual_model = gradient_list.get(actual_index).clone();
         gradient_view = new GradientView(listGradList, actual_model);
     }
 
     void edit(int index) {
-        actual_index = index;
-        setActive(actual_index);
-        println(actual_model.getReference());
+        setActive(index);
         valGradX.setText(Double.toString(actual_model.getReference().x));
         valGradY.setText(Double.toString(actual_model.getReference().y));
         valGradZ.setText(Double.toString(actual_model.getReference().z));
@@ -54,6 +67,7 @@ public class GradientManager {
 
     void editPoint() {
         this.gradient_point_editor.edit(Double.toString(this.gradient_view.model.get(this.gradient_view.dropList.getSelectedIndex()).val));
+        println("color: " + this.gradient_view.model.get(this.gradient_view.dropList.getSelectedIndex()).colour);
     }
 
     void addPoint() {
