@@ -1,12 +1,8 @@
 import g4p_controls.*;
 import java.util.*;
 
-GButton BtnFileSelect, BtnFolderSelect, BtnColorChoose;
-GImageButton BtnPlay, BtnPause;
+
 GradientPointsList gradientList;
-GTextField txfMdTitle;
-GOption[] optMmessType;
-GToggleGroup opgMmessType;
 
 class GradientPointsList {
   ArrayList<GradientPoint> DropListElements;
@@ -18,7 +14,7 @@ class GradientPointsList {
     pg = createGraphics(100, 30, JAVA2D);
     reEnumerate();
     update_color();
-	update_text();
+  update_text();
   }
   void reEnumerate() {
     int index = GradientList.getSelectedIndex();
@@ -79,20 +75,4 @@ class GradientPointsList {
     DropListElements.set(index, now);
     reEnumerate();
   }
-};
-
-
-public void handleToggleControlEvents(GToggleControl checkbox, GEvent event) {
-  println(checkbox.tagNo);
 }
-
-/*void setup() {
-  size(450, 180);
-  createGUI();
-  gradientList = new GradientPointsList();
-}
-
-
-void draw() {
-  background(255);
-}*/

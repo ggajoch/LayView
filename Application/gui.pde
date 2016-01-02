@@ -18,17 +18,19 @@ synchronized public void win_draw2(PApplet appc, GWinData data) { //_CODE_:windo
   appc.background(230);
 } //_CODE_:window1:376141:
 
-public void btnSelectFile_handler(GButton source, GEvent event) { //_CODE_:btnSelectFile:373792:
+public void btnAddFile_handler(GButton source, GEvent event) { //_CODE_:btnAddFile:373792:
   println("btnSelectFile - GButton >> GEvent." + event + " @ " + millis());
   String name = G4P.selectInput("Input Dialog", "txt", "OMF file select");
   println(name);
-  showFile(name);
-} //_CODE_:btnSelectFile:373792:
+  //showFile(name);
+  file_list.add(new File(name));
+} //_CODE_:btnAddFile:373792:
 
 public void btnSelectFolder_handler(GButton source, GEvent event) { //_CODE_:btnSelectFolder:445216:
   println("btnSelectFolder - GButton >> GEvent." + event + " @ " + millis());
   String name = G4P.selectFolder("Folder Dialog");
   println(name);
+  file_list.addFolder(name);
 } //_CODE_:btnSelectFolder:445216:
 
 public void Boxes_handler(GOption source, GEvent event) { //_CODE_:Boxes:297206:
@@ -74,6 +76,52 @@ public void pointValue_handler(GTextField source, GEvent event) { //_CODE_:point
   }
 } //_CODE_:pointValue:437692:
 
+public void listFiles_handler(GDropList source, GEvent event) { //_CODE_:listFiles:728947:
+  println("dropList1 - GDropList >> GEvent." + event + " @ " + millis());
+} //_CODE_:listFiles:728947:
+
+public void btnClearAll_handler(GButton source, GEvent event) { //_CODE_:btnClearAll:658246:
+  println("btnClearAll - GButton >> GEvent." + event + " @ " + millis());
+  file_list.clear();
+} //_CODE_:btnClearAll:658246:
+
+public void btnRemoveSelected_handler(GButton source, GEvent event) { //_CODE_:btnRemoveSelected:830927:
+  println("btnRemoveSelected - GButton >> GEvent." + event + " @ " + millis());
+  file_list.remove();
+} //_CODE_:btnRemoveSelected:830927:
+
+public void valFPS_handler(GTextField source, GEvent event) { //_CODE_:valFPS:581728:
+  println("textfield1 - GTextField >> GEvent." + event + " @ " + millis());
+} //_CODE_:valFPS:581728:
+
+public void btnExport_handler(GButton source, GEvent event) { //_CODE_:btnExport:476853:
+  println("btnExport - GButton >> GEvent." + event + " @ " + millis());
+} //_CODE_:btnExport:476853:
+
+public void valThreshold_handler(GTextField source, GEvent event) { //_CODE_:valThreshold:972234:
+  println("textfield2 - GTextField >> GEvent." + event + " @ " + millis());
+} //_CODE_:valThreshold:972234:
+
+public void valArrowScale_handler(GTextField source, GEvent event) { //_CODE_:valArrowScale:222385:
+  println("textfield2 - GTextField >> GEvent." + event + " @ " + millis());
+} //_CODE_:valArrowScale:222385:
+
+public void valArrowWidth_handler(GTextField source, GEvent event) { //_CODE_:valArrowWidth:200671:
+  println("textfield3 - GTextField >> GEvent." + event + " @ " + millis());
+} //_CODE_:valArrowWidth:200671:
+
+public void valArrowTip_handler(GTextField source, GEvent event) { //_CODE_:valArrowTip:383864:
+  println("textfield4 - GTextField >> GEvent." + event + " @ " + millis());
+} //_CODE_:valArrowTip:383864:
+
+public void valScaleValues_handler(GTextField source, GEvent event) { //_CODE_:valScaleValues:324509:
+  println("valScaleValues - GTextField >> GEvent." + event + " @ " + millis());
+} //_CODE_:valScaleValues:324509:
+
+public void valScaleXYZ_handler(GTextField source, GEvent event) { //_CODE_:valScaleXYZ:424871:
+  println("valScaleXYZ - GTextField >> GEvent." + event + " @ " + millis());
+} //_CODE_:valScaleXYZ:424871:
+
 
 
 // Create all the GUI controls. 
@@ -83,21 +131,21 @@ public void createGUI(){
   G4P.setGlobalColorScheme(GCScheme.BLUE_SCHEME);
   G4P.setCursor(ARROW);
   surface.setTitle("Sketch Window");
-  window1 = GWindow.getWindow(this, "Window title", 0, 0, 500, 150, JAVA2D);
+  window1 = GWindow.getWindow(this, "Window title", 0, 0, 1000, 1000, JAVA2D);
   window1.addDrawHandler(this, "win_draw2");
-  btnSelectFile = new GButton(window1, 10, 10, 80, 30);
-  btnSelectFile.setText("Select file");
-  btnSelectFile.addEventHandler(this, "btnSelectFile_handler");
-  btnSelectFolder = new GButton(window1, 10, 50, 80, 30);
+  btnAddFile = new GButton(window1, 190, 20, 80, 30);
+  btnAddFile.setText("Add file");
+  btnAddFile.addEventHandler(this, "btnAddFile_handler");
+  btnSelectFolder = new GButton(window1, 190, 60, 80, 30);
   btnSelectFolder.setText("Select folder");
   btnSelectFolder.addEventHandler(this, "btnSelectFolder_handler");
   togGroup1 = new GToggleGroup();
-  Boxes = new GOption(window1, 110, 10, 120, 20);
+  Boxes = new GOption(window1, 370, 20, 120, 20);
   Boxes.setTextAlign(GAlign.LEFT, GAlign.MIDDLE);
   Boxes.setText("Boxes");
   Boxes.setOpaque(false);
   Boxes.addEventHandler(this, "Boxes_handler");
-  Vectors = new GOption(window1, 110, 30, 120, 20);
+  Vectors = new GOption(window1, 370, 50, 120, 20);
   Vectors.setTextAlign(GAlign.LEFT, GAlign.MIDDLE);
   Vectors.setText("Vectors");
   Vectors.setOpaque(false);
@@ -105,26 +153,87 @@ public void createGUI(){
   togGroup1.addControl(Boxes);
   Boxes.setSelected(true);
   togGroup1.addControl(Vectors);
-  btnPlay = new GImageButton(window1, 10, 90, 50, 50, new String[] { "play.png", "play.png", "play.png" } );
+  btnPlay = new GImageButton(window1, 20, 250, 50, 50, new String[] { "play.png", "play.png", "play.png" } );
   btnPlay.addEventHandler(this, "btnPlay_handler");
-  btnPause = new GImageButton(window1, 60, 90, 50, 50, new String[] { "pause.png", "pause.png", "pause.png" } );
+  btnPause = new GImageButton(window1, 80, 250, 50, 50, new String[] { "pause.png", "pause.png", "pause.png" } );
   btnPause.addEventHandler(this, "btnPause_handler");
-  GradientList = new GDropList(window1, 240, 10, 90, 120, 5);
+  GradientList = new GDropList(window1, 520, 20, 90, 120, 5);
   GradientList.setItems(loadStrings("list_414730"), 0);
   GradientList.addEventHandler(this, "GradientList_handler");
-  btnColor = new GButton(window1, 240, 40, 80, 30);
+  btnColor = new GButton(window1, 520, 60, 90, 30);
   btnColor.setText("Select color");
   btnColor.addEventHandler(this, "btnColor_handler");
-  pointValue = new GTextField(window1, 340, 10, 100, 20, G4P.SCROLLBARS_NONE);
+  pointValue = new GTextField(window1, 620, 20, 100, 20, G4P.SCROLLBARS_NONE);
   pointValue.setOpaque(true);
   pointValue.addEventHandler(this, "pointValue_handler");
-  colorPad = new GSketchPad(window1, 340, 40, 100, 30);
+  colorPad = new GSketchPad(window1, 620, 60, 100, 30);
+  listFiles = new GDropList(window1, 10, 20, 170, 330, 10);
+  listFiles.setItems(loadStrings("list_728947"), 0);
+  listFiles.addEventHandler(this, "listFiles_handler");
+  btnClearAll = new GButton(window1, 10, 60, 80, 30);
+  btnClearAll.setText("Clear all");
+  btnClearAll.addEventHandler(this, "btnClearAll_handler");
+  btnRemoveSelected = new GButton(window1, 100, 60, 80, 30);
+  btnRemoveSelected.setText("Remove selected");
+  btnRemoveSelected.addEventHandler(this, "btnRemoveSelected_handler");
+  valFPS = new GTextField(window1, 10, 190, 70, 20, G4P.SCROLLBARS_NONE);
+  valFPS.setOpaque(true);
+  valFPS.addEventHandler(this, "valFPS_handler");
+  labelFPS = new GLabel(window1, 10, 170, 70, 20);
+  labelFPS.setText("FPS");
+  labelFPS.setOpaque(false);
+  btnExport = new GButton(window1, 90, 170, 80, 40);
+  btnExport.setText("Export");
+  btnExport.setTextBold();
+  btnExport.addEventHandler(this, "btnExport_handler");
+  valThreshold = new GTextField(window1, 250, 190, 70, 20, G4P.SCROLLBARS_NONE);
+  valThreshold.setOpaque(true);
+  valThreshold.addEventHandler(this, "valThreshold_handler");
+  labelThreshold = new GLabel(window1, 250, 170, 70, 20);
+  labelThreshold.setText("Threshold");
+  labelThreshold.setOpaque(false);
+  lableArrowWidth = new GLabel(window1, 470, 240, 80, 20);
+  lableArrowWidth.setText("Width");
+  lableArrowWidth.setOpaque(false);
+  labelArrowScale = new GLabel(window1, 390, 240, 80, 20);
+  labelArrowScale.setText("Scale");
+  labelArrowScale.setOpaque(false);
+  valArrowScale = new GTextField(window1, 390, 260, 80, 30, G4P.SCROLLBARS_NONE);
+  valArrowScale.setOpaque(true);
+  valArrowScale.addEventHandler(this, "valArrowScale_handler");
+  valArrowWidth = new GTextField(window1, 470, 260, 80, 30, G4P.SCROLLBARS_NONE);
+  valArrowWidth.setOpaque(true);
+  valArrowWidth.addEventHandler(this, "valArrowWidth_handler");
+  labelArrowTip = new GLabel(window1, 550, 240, 80, 20);
+  labelArrowTip.setText("Tip");
+  labelArrowTip.setOpaque(false);
+  valArrowTip = new GTextField(window1, 550, 260, 80, 30, G4P.SCROLLBARS_NONE);
+  valArrowTip.setOpaque(true);
+  valArrowTip.addEventHandler(this, "valArrowTip_handler");
+  labelArrowControl = new GLabel(window1, 390, 220, 240, 20);
+  labelArrowControl.setText("Arrow control");
+  labelArrowControl.setOpaque(false);
+  labelXYZ = new GLabel(window1, 800, 240, 80, 20);
+  labelXYZ.setText("XYZ");
+  labelXYZ.setOpaque(false);
+  labelValues = new GLabel(window1, 720, 240, 80, 20);
+  labelValues.setText("Values");
+  labelValues.setOpaque(false);
+  labelDataScale = new GLabel(window1, 720, 220, 160, 20);
+  labelDataScale.setText("Data scale");
+  labelDataScale.setOpaque(false);
+  valScaleValues = new GTextField(window1, 720, 260, 80, 30, G4P.SCROLLBARS_NONE);
+  valScaleValues.setOpaque(true);
+  valScaleValues.addEventHandler(this, "valScaleValues_handler");
+  valScaleXYZ = new GTextField(window1, 800, 260, 80, 30, G4P.SCROLLBARS_NONE);
+  valScaleXYZ.setOpaque(true);
+  valScaleXYZ.addEventHandler(this, "valScaleXYZ_handler");
 }
 
 // Variable declarations 
 // autogenerated do not edit
 GWindow window1;
-GButton btnSelectFile; 
+GButton btnAddFile; 
 GButton btnSelectFolder; 
 GToggleGroup togGroup1; 
 GOption Boxes; 
@@ -135,3 +244,23 @@ GDropList GradientList;
 GButton btnColor; 
 GTextField pointValue; 
 GSketchPad colorPad; 
+GDropList listFiles; 
+GButton btnClearAll; 
+GButton btnRemoveSelected; 
+GTextField valFPS; 
+GLabel labelFPS; 
+GButton btnExport; 
+GTextField valThreshold; 
+GLabel labelThreshold; 
+GLabel lableArrowWidth; 
+GLabel labelArrowScale; 
+GTextField valArrowScale; 
+GTextField valArrowWidth; 
+GLabel labelArrowTip; 
+GTextField valArrowTip; 
+GLabel labelArrowControl; 
+GLabel labelXYZ; 
+GLabel labelValues; 
+GLabel labelDataScale; 
+GTextField valScaleValues; 
+GTextField valScaleXYZ; 

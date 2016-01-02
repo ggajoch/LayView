@@ -32,6 +32,7 @@ void setup()  {
   cam.setMaximumDistance(10000);
   
   createGUI();
+  file_list = new FileList(listFiles);
   gradientList = new GradientPointsList();
   Surfaces = new ArrayList<ColourSurface>();
 } 
