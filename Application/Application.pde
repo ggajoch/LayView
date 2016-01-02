@@ -79,7 +79,7 @@ void showFile(String file) {
     
   
     
-    gradientMaker.points = gradientList.DropListElements;
+    gradientMaker.points = new ArrayList<GradientPoint>();
     gradientMaker.reference = new DVector(0,1,0);
     
     Surfaces.get(Surfaces.size()-1).gradientMakers.add(gradientMaker);

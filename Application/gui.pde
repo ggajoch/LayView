@@ -18,33 +18,6 @@ synchronized public void win_draw2(PApplet appc, GWinData data) { //_CODE_:windo
   appc.background(230);
 } //_CODE_:window1:376141:
 
-public void btnAddFile_handler(GButton source, GEvent event) { //_CODE_:btnAddFile:373792:
-  println("btnSelectFile - GButton >> GEvent." + event + " @ " + millis());
-  String name = G4P.selectInput("Input Dialog", "txt", "OMF file select");
-  println(name);
-  //showFile(name);
-
-} //_CODE_:btnAddFile:373792:
-
-public void btnSelectFolder_handler(GButton source, GEvent event) { //_CODE_:btnSelectFolder:445216:
-  println("btnSelectFolder - GButton >> GEvent." + event + " @ " + millis());
-  String name = G4P.selectFolder("Folder Dialog");
-  println(name);
-  file_list.addFolder(name);
-} //_CODE_:btnSelectFolder:445216:
-
-public void Boxes_handler(GOption source, GEvent event) { //_CODE_:Boxes:297206:
-  println("Boxes - GOption >> GEvent." + event + " @ " + millis());
-  println(source.tagNo);
-  vectors = 0;
-} //_CODE_:Boxes:297206:
-
-public void Vectors_handler(GOption source, GEvent event) { //_CODE_:Vectors:644165:
-  println("Vectors - GOption >> GEvent." + event + " @ " + millis());
-  println(source.tagNo);
-  vectors = 1;
-} //_CODE_:Vectors:644165:
-
 public void btnPlay_handler(GImageButton source, GEvent event) { //_CODE_:btnPlay:434127:
   println("btnPlay - GImageButton >> GEvent." + event + " @ " + millis());
   println("play!");
@@ -58,40 +31,6 @@ public void btnPause_handler(GImageButton source, GEvent event) { //_CODE_:btnPa
   println("pause!");
   gradients.edit(1);
 } //_CODE_:btnPause:773048:
-
-public void GradientList_handler(GDropList source, GEvent event) { //_CODE_:GradientList:414730:
-  println("dropList1 - GDropList >> GEvent." + event + " @ " + millis());
-  println("GradientList - GDropList >> GEvent." + event + " @ " + millis());
-  gradientList.handler();
-} //_CODE_:GradientList:414730:
-
-public void btnColor_handler(GButton source, GEvent event) { //_CODE_:btnColor:569956:
-  println("btnColor - GButton >> GEvent." + event + " @ " + millis());
-  gradientList.select_color();
-} //_CODE_:btnColor:569956:
-
-public void pointValue_handler(GTextField source, GEvent event) { //_CODE_:pointValue:437692:
-  println("pointValue - GTextField >> GEvent." + event + " @ " + millis());
-  if( event == GEvent.ENTERED ) {
-    String now = source.getText();
-    println(now);
-    gradientList.set_value(Double.parseDouble(now));
-  }
-} //_CODE_:pointValue:437692:
-
-public void listFiles_handler(GDropList source, GEvent event) { //_CODE_:listFiles:728947:
-  println("dropList1 - GDropList >> GEvent." + event + " @ " + millis());
-} //_CODE_:listFiles:728947:
-
-public void btnClearAll_handler(GButton source, GEvent event) { //_CODE_:btnClearAll:658246:
-  println("btnClearAll - GButton >> GEvent." + event + " @ " + millis());
-  file_list.clear();
-} //_CODE_:btnClearAll:658246:
-
-public void btnRemoveSelected_handler(GButton source, GEvent event) { //_CODE_:btnRemoveSelected:830927:
-  println("btnRemoveSelected - GButton >> GEvent." + event + " @ " + millis());
-  file_list.remove();
-} //_CODE_:btnRemoveSelected:830927:
 
 public void valFPS_handler(GTextField source, GEvent event) { //_CODE_:valFPS:581728:
   println("textfield1 - GTextField >> GEvent." + event + " @ " + millis());
@@ -213,6 +152,19 @@ public void btnInputClose_handler(GButton source, GEvent event) { //_CODE_:btnIn
   println("button1 - GButton >> GEvent." + event + " @ " + millis());
 } //_CODE_:btnInputClose:675739:
 
+synchronized public void DisplayOptionsWindow_draw(PApplet appc, GWinData data) { //_CODE_:DisplayOptionsWindow:225623:
+  appc.background(230);
+} //_CODE_:DisplayOptionsWindow:225623:
+
+public void optDisplayTypeBox_handler(GOption source, GEvent event) { //_CODE_:optDisplayTypeBox:999994:
+  println("optDisplayTypeBox - GOption >> GEvent." + event + " @ " + millis());
+        vectors = 0;
+} //_CODE_:optDisplayTypeBox:999994:
+
+public void optDisplayTypeVectors_handler(GOption source, GEvent event) { //_CODE_:optDisplayTypeVectors:890085:
+  println("option1 - GOption >> GEvent." + event + " @ " + millis());
+} //_CODE_:optDisplayTypeVectors:890085:
+
 
 
 // Create all the GUI controls. 
@@ -225,49 +177,11 @@ public void createGUI(){
   window1 = GWindow.getWindow(this, "KEEP_OPEN", 200, 200, 1000, 1000, JAVA2D);
   window1.setActionOnClose(G4P.EXIT_APP);
   window1.addDrawHandler(this, "win_draw2");
-  btnAddFile = new GButton(window1, 190, 20, 80, 30);
-  btnAddFile.setText("Add file");
-  btnAddFile.addEventHandler(this, "btnAddFile_handler");
-  btnSelectFolder = new GButton(window1, 190, 60, 80, 30);
-  btnSelectFolder.setText("Select folder");
-  btnSelectFolder.addEventHandler(this, "btnSelectFolder_handler");
   togGroup1 = new GToggleGroup();
-  Boxes = new GOption(window1, 370, 20, 120, 20);
-  Boxes.setTextAlign(GAlign.LEFT, GAlign.MIDDLE);
-  Boxes.setText("Boxes");
-  Boxes.setOpaque(false);
-  Boxes.addEventHandler(this, "Boxes_handler");
-  Vectors = new GOption(window1, 370, 50, 120, 20);
-  Vectors.setTextAlign(GAlign.LEFT, GAlign.MIDDLE);
-  Vectors.setText("Vectors");
-  Vectors.setOpaque(false);
-  Vectors.addEventHandler(this, "Vectors_handler");
-  togGroup1.addControl(Boxes);
-  Boxes.setSelected(true);
-  togGroup1.addControl(Vectors);
   btnPlay = new GImageButton(window1, 20, 250, 50, 50, new String[] { "play.png", "play.png", "play.png" } );
   btnPlay.addEventHandler(this, "btnPlay_handler");
   btnPause = new GImageButton(window1, 80, 250, 50, 50, new String[] { "pause.png", "pause.png", "pause.png" } );
   btnPause.addEventHandler(this, "btnPause_handler");
-  GradientList = new GDropList(window1, 520, 20, 90, 120, 5);
-  GradientList.setItems(loadStrings("list_414730"), 0);
-  GradientList.addEventHandler(this, "GradientList_handler");
-  btnColor = new GButton(window1, 600, 60, 90, 30);
-  btnColor.setText("Select color");
-  btnColor.addEventHandler(this, "btnColor_handler");
-  pointValue = new GTextField(window1, 620, 20, 100, 20, G4P.SCROLLBARS_NONE);
-  pointValue.setOpaque(true);
-  pointValue.addEventHandler(this, "pointValue_handler");
-  colorPad = new GSketchPad(window1, 630, 60, 100, 30);
-  listFiles = new GDropList(window1, 10, 20, 170, 330, 10);
-  listFiles.setItems(loadStrings("list_728947"), 0);
-  listFiles.addEventHandler(this, "listFiles_handler");
-  btnClearAll = new GButton(window1, 10, 60, 80, 30);
-  btnClearAll.setText("Clear all");
-  btnClearAll.addEventHandler(this, "btnClearAll_handler");
-  btnRemoveSelected = new GButton(window1, 100, 60, 80, 30);
-  btnRemoveSelected.setText("Remove selected");
-  btnRemoveSelected.addEventHandler(this, "btnRemoveSelected_handler");
   valFPS = new GTextField(window1, 10, 190, 70, 20, G4P.SCROLLBARS_NONE);
   valFPS.setOpaque(true);
   valFPS.addEventHandler(this, "valFPS_handler");
@@ -399,25 +313,30 @@ public void createGUI(){
   btnInputClose.setText("Close");
   btnInputClose.setTextBold();
   btnInputClose.addEventHandler(this, "btnInputClose_handler");
+  DisplayOptionsWindow = GWindow.getWindow(this, "Display Options", 0, 0, 500, 500, JAVA2D);
+  DisplayOptionsWindow.addDrawHandler(this, "DisplayOptionsWindow_draw");
+  groupDisplayDisplayType = new GToggleGroup();
+  optDisplayTypeBox = new GOption(DisplayOptionsWindow, 190, 40, 120, 20);
+  optDisplayTypeBox.setTextAlign(GAlign.LEFT, GAlign.MIDDLE);
+  optDisplayTypeBox.setText("Box");
+  optDisplayTypeBox.setOpaque(false);
+  optDisplayTypeBox.addEventHandler(this, "optDisplayTypeBox_handler");
+  optDisplayTypeVectors = new GOption(DisplayOptionsWindow, 190, 60, 120, 20);
+  optDisplayTypeVectors.setTextAlign(GAlign.LEFT, GAlign.MIDDLE);
+  optDisplayTypeVectors.setText("Vectors");
+  optDisplayTypeVectors.setOpaque(false);
+  optDisplayTypeVectors.addEventHandler(this, "optDisplayTypeVectors_handler");
+  groupDisplayDisplayType.addControl(optDisplayTypeBox);
+  optDisplayTypeBox.setSelected(true);
+  groupDisplayDisplayType.addControl(optDisplayTypeVectors);
 }
 
 // Variable declarations 
 // autogenerated do not edit
 GWindow window1;
-GButton btnAddFile; 
-GButton btnSelectFolder; 
 GToggleGroup togGroup1; 
-GOption Boxes; 
-GOption Vectors; 
 GImageButton btnPlay; 
 GImageButton btnPause; 
-GDropList GradientList; 
-GButton btnColor; 
-GTextField pointValue; 
-GSketchPad colorPad; 
-GDropList listFiles; 
-GButton btnClearAll; 
-GButton btnRemoveSelected; 
 GTextField valFPS; 
 GLabel labelFPS; 
 GButton btnExport; 
@@ -460,3 +379,7 @@ GButton btnInputClearAll;
 GButton btnInputRemove; 
 GButton btnInputAddFolder; 
 GButton btnInputClose; 
+GWindow DisplayOptionsWindow;
+GToggleGroup groupDisplayDisplayType; 
+GOption optDisplayTypeBox; 
+GOption optDisplayTypeVectors; 
