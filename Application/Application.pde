@@ -33,7 +33,7 @@ void setup()  {
   
   createGUI();
   GradientEditWindow.setVisible(false);
-  file_list = new FileView(listFiles);
+  file_list = new FileView(listInputListFiles);
   
   gradients = new GradientManager(GradientEditWindow, padGradColorPrev, padGradGradPrev, GradientEditWindow);
   

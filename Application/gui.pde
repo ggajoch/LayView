@@ -23,7 +23,7 @@ public void btnAddFile_handler(GButton source, GEvent event) { //_CODE_:btnAddFi
   String name = G4P.selectInput("Input Dialog", "txt", "OMF file select");
   println(name);
   //showFile(name);
-  file_list.add(new File(name));
+
 } //_CODE_:btnAddFile:373792:
 
 public void btnSelectFolder_handler(GButton source, GEvent event) { //_CODE_:btnSelectFolder:445216:
@@ -125,7 +125,7 @@ public void valScaleXYZ_handler(GTextField source, GEvent event) { //_CODE_:valS
   println("valScaleXYZ - GTextField >> GEvent." + event + " @ " + millis());
 } //_CODE_:valScaleXYZ:424871:
 
-synchronized public void win_draw1(PApplet appc, GWinData data) { //_CODE_:GradientEditWindow:607983:
+synchronized public void GradientEditWindow_draw(PApplet appc, GWinData data) { //_CODE_:GradientEditWindow:607983:
   appc.background(230);
 } //_CODE_:GradientEditWindow:607983:
 
@@ -182,6 +182,36 @@ public void btnGradEditColor_handler(GButton source, GEvent event) { //_CODE_:bt
   println("btnGradEditColor - GButton >> GEvent." + event + " @ " + millis());
   gradients.gradient_point_editor.Color_handler();
 } //_CODE_:btnGradEditColor:672090:
+
+synchronized public void InputSelectorWindow_draw(PApplet appc, GWinData data) { //_CODE_:InputSelectorWindow:417565:
+  appc.background(230);
+} //_CODE_:InputSelectorWindow:417565:
+
+public void btnInputAddFile_handler(GButton source, GEvent event) { //_CODE_:btnInputAddFile:299318:
+  println("btnInputAddFile - GButton >> GEvent." + event + " @ " + millis());
+        String name = G4P.selectInput("Input Dialog", "txt", "OMF file select");
+        file_list.add(new File(name));
+} //_CODE_:btnInputAddFile:299318:
+
+public void btnInputClearAll_handler(GButton source, GEvent event) { //_CODE_:btnInputClearAll:840953:
+  println("btnInputClearAll - GButton >> GEvent." + event + " @ " + millis());
+        file_list.clear();
+} //_CODE_:btnInputClearAll:840953:
+
+public void btnInputRemove_handler(GButton source, GEvent event) { //_CODE_:btnInputRemove:495293:
+  println("btnInputRemove - GButton >> GEvent." + event + " @ " + millis());
+        file_list.remove();
+} //_CODE_:btnInputRemove:495293:
+
+public void btnInputAddFolder_handler(GButton source, GEvent event) { //_CODE_:btnInputAddFolder:844648:
+  println("btnInputAddFolder - GButton >> GEvent." + event + " @ " + millis());
+        String name = G4P.selectFolder("Select folder to load");
+        file_list.addFolder(name);
+} //_CODE_:btnInputAddFolder:844648:
+
+public void btnInputClose_handler(GButton source, GEvent event) { //_CODE_:btnInputClose:675739:
+  println("button1 - GButton >> GEvent." + event + " @ " + millis());
+} //_CODE_:btnInputClose:675739:
 
 
 
@@ -290,9 +320,9 @@ public void createGUI(){
   valScaleXYZ = new GTextField(window1, 800, 260, 80, 30, G4P.SCROLLBARS_NONE);
   valScaleXYZ.setOpaque(true);
   valScaleXYZ.addEventHandler(this, "valScaleXYZ_handler");
-  GradientEditWindow = GWindow.getWindow(this, "Window title", 200, 200, 500, 200, JAVA2D);
+  GradientEditWindow = GWindow.getWindow(this, "Gradient Edit", 200, 200, 500, 200, JAVA2D);
   GradientEditWindow.setActionOnClose(G4P.CLOSE_WINDOW);
-  GradientEditWindow.addDrawHandler(this, "win_draw1");
+  GradientEditWindow.addDrawHandler(this, "GradientEditWindow_draw");
   padGradGradPrev = new GSketchPad(GradientEditWindow, 400, 10, 40, 180);
   listGradList = new GDropList(GradientEditWindow, 20, 20, 120, 80, 3);
   listGradList.setItems(loadStrings("list_798901"), 0);
@@ -349,6 +379,26 @@ public void createGUI(){
   btnGradEditColor = new GButton(GradientPointEditWindow, 120, 20, 80, 30);
   btnGradEditColor.setText("Select Color");
   btnGradEditColor.addEventHandler(this, "btnGradEditColor_handler");
+  InputSelectorWindow = GWindow.getWindow(this, "Window title", 0, 0, 320, 170, JAVA2D);
+  InputSelectorWindow.addDrawHandler(this, "InputSelectorWindow_draw");
+  listInputListFiles = new GDropList(InputSelectorWindow, 20, 20, 180, 120, 3);
+  listInputListFiles.setItems(loadStrings("list_748167"), 0);
+  btnInputAddFile = new GButton(InputSelectorWindow, 220, 20, 80, 30);
+  btnInputAddFile.setText("Add File");
+  btnInputAddFile.addEventHandler(this, "btnInputAddFile_handler");
+  btnInputClearAll = new GButton(InputSelectorWindow, 20, 70, 80, 30);
+  btnInputClearAll.setText("Clear all");
+  btnInputClearAll.addEventHandler(this, "btnInputClearAll_handler");
+  btnInputRemove = new GButton(InputSelectorWindow, 120, 70, 80, 30);
+  btnInputRemove.setText("Remove selected");
+  btnInputRemove.addEventHandler(this, "btnInputRemove_handler");
+  btnInputAddFolder = new GButton(InputSelectorWindow, 220, 70, 80, 30);
+  btnInputAddFolder.setText("Add folder");
+  btnInputAddFolder.addEventHandler(this, "btnInputAddFolder_handler");
+  btnInputClose = new GButton(InputSelectorWindow, 20, 120, 280, 30);
+  btnInputClose.setText("Close");
+  btnInputClose.setTextBold();
+  btnInputClose.addEventHandler(this, "btnInputClose_handler");
 }
 
 // Variable declarations 
@@ -403,3 +453,10 @@ GButton btnGradEditOK;
 GButton btnGradEditCancel; 
 GTextField valGradEditValue; 
 GButton btnGradEditColor; 
+GWindow InputSelectorWindow;
+GDropList listInputListFiles; 
+GButton btnInputAddFile; 
+GButton btnInputClearAll; 
+GButton btnInputRemove; 
+GButton btnInputAddFolder; 
+GButton btnInputClose; 
