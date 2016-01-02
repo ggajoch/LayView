@@ -3,10 +3,7 @@ import g4p_controls.GWindow;
 import processing.core.PGraphics;
 
 import java.security.GeneralSecurityException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.ListIterator;
+import java.util.*;
 
 public class GradientManager {
     private ArrayList<GradientModel> gradient_list;
@@ -133,5 +130,13 @@ public class GradientManager {
 
     void Cancel_Handler() {
         grad_window.setVisible(false);
+    }
+
+    List<GradientPoint> getList(int gradientIndex) {
+        return this.gradient_list.get(gradientIndex).list;
+    }
+
+    DVector getReference(int gradientIndex) {
+        return this.gradient_list.get(gradientIndex).getReference();
     }
 }
