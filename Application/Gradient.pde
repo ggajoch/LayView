@@ -1,3 +1,4 @@
+import java.util.List;
 class Gradient{
   public List<GradientPoint> points;
   public DVector reference;
