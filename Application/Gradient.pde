@@ -21,7 +21,19 @@ class Gradient{
     Collections.sort(this.points, new GradientPointComparator());
     this.reference = reference_;
   }
-  
-  
-  
+}
+
+import java.util.Comparator;
+
+public class GradientPointComparator implements Comparator<GradientPoint> {
+  @Override
+  public int compare(GradientPoint o1, GradientPoint o2) {
+    if( o1.val < o2.val ) {
+      return -1;
+    } else if( o1.val == o2.val ) {
+      return 0;
+    } else {
+      return 1;
+    }
+  }
 }
