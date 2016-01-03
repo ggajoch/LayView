@@ -106,6 +106,7 @@ public void btnInputAddFolder_handler(GButton source, GEvent event) { //_CODE_:b
 public void btnInputClose_handler(GButton source, GEvent event) { //_CODE_:btnInputClose:675739:
   println("button1 - GButton >> GEvent." + event + " @ " + millis());
         InputSelectorWindow.setVisible(false);
+        showFiles(file_list.getListFile());
 } //_CODE_:btnInputClose:675739:
 
 synchronized public void DisplayOptionsWindow_draw(PApplet appc, GWinData data) { //_CODE_:DisplayOptionsWindow:225623:
