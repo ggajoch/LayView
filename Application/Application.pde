@@ -110,12 +110,14 @@ void showFiles(List<File> files) {
 
 int vectors = 0;
 int record = 0;
-
 int frame = 0;
+
+int play = 1;
 
 long lastMillis = 0;
 
 void draw()  { 
+  if(play == 0) return;
   
   background(0.5);
   
@@ -124,8 +126,8 @@ void draw()  {
     lastMillis=millis();
     frame=0;
     record = 1;
-    export = new VideoExport();
-    export.cleanFolder();
+    /*export = new VideoExport();
+    export.cleanFolder();*/
     println("record started");
   }
   if((millis()-lastMillis)>=frameDelayMs){
@@ -143,7 +145,7 @@ void draw()  {
  
   synchronized(mutex) {
     if( Surfaces.size() >0 ) {
-      if( vectors == 1 ) {
+      if(display_options_manager.isVectors()) {
         Surfaces.get(frame).drawVectorsVolume();
       } else {
         Surfaces.get(frame).drawBox();

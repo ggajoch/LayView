@@ -10,6 +10,14 @@ class VideoExport{
   
   VideoExport(){
     frameNumber = 0;
+    outputFilePath = new String(sketchPath("")+"test.mp4");
+    inputFilePath = new String(sketchPath("")+"temp/anim_%05d.png");
+  }
+  
+  VideoExport(String fileName){
+    frameNumber = 0;
+    outputFilePath = new String(fileName);
+    inputFilePath = new String(sketchPath("")+"temp/anim_%05d.png");
   }
   
   private boolean deleteDirectory(File directory) {
@@ -38,8 +46,6 @@ class VideoExport{
   }
   
   void closeVideo(){
-    outputFilePath = new String(sketchPath("")+"test.mp4");
-    inputFilePath = new String(sketchPath("")+"temp/anim_%05d.png");
     processBuilder = new ProcessBuilder(sketchPath("")+"ffmpeg/ffmpeg.exe", "-r", "60", "-i",
         inputFilePath, "-c:v", "libx264",
         "-r", "30", "-y", "-an", "-pix_fmt", "yuv420p", outputFilePath );

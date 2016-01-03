@@ -168,17 +168,23 @@ public void valVideoFPS_handler(GTextField source, GEvent event) { //_CODE_:valV
 
 public void btnVideoPlay_handler(GImageButton source, GEvent event) { //_CODE_:btnVideoPlay:558393:
   println("btnVideoPlay - GImageButton >> GEvent." + event + " @ " + millis());
+  play = 1;
 } //_CODE_:btnVideoPlay:558393:
 
 public void btnVideoPause_handler(GImageButton source, GEvent event) { //_CODE_:btnVideoPause:668308:
   println("btnVideoPause - GImageButton >> GEvent." + event + " @ " + millis());
+  play = 0;
 } //_CODE_:btnVideoPause:668308:
 
 public void btnVideoExport_handler(GButton source, GEvent event) { //_CODE_:btnVideoExport:760889:
   println("button1 - GButton >> GEvent." + event + " @ " + millis());
-  String file_name = G4P.selectInput("Input Dialog", "txt", "OMF file select");
-  File file_to_write = new File(file_name);
+  String file_name = G4P.selectInput("Input Dialog", "mp4", "OMF file select");
+  export = new VideoExport(file_name+".mp4");
+  export.cleanFolder();
+  record = 2;
   // coś tutaj?
+  //może policzyć całkę?
+  
 } //_CODE_:btnVideoExport:760889:
 
 synchronized public void MainWindow_draw(PApplet appc, GWinData data) { //_CODE_:MainWindow:899620:
