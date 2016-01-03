@@ -166,16 +166,6 @@ public void valVideoFPS_handler(GTextField source, GEvent event) { //_CODE_:valV
   println("valVideoFPS - GTextField >> GEvent." + event + " @ " + millis());
 } //_CODE_:valVideoFPS:260387:
 
-public void btnVideoPlay_handler(GImageButton source, GEvent event) { //_CODE_:btnVideoPlay:558393:
-  println("btnVideoPlay - GImageButton >> GEvent." + event + " @ " + millis());
-  play = 1;
-} //_CODE_:btnVideoPlay:558393:
-
-public void btnVideoPause_handler(GImageButton source, GEvent event) { //_CODE_:btnVideoPause:668308:
-  println("btnVideoPause - GImageButton >> GEvent." + event + " @ " + millis());
-  play = 0;
-} //_CODE_:btnVideoPause:668308:
-
 public void btnVideoExport_handler(GButton source, GEvent event) { //_CODE_:btnVideoExport:760889:
   println("button1 - GButton >> GEvent." + event + " @ " + millis());
   String file_name = G4P.selectInput("Input Dialog", "mp4", "OMF file select");
@@ -186,6 +176,23 @@ public void btnVideoExport_handler(GButton source, GEvent event) { //_CODE_:btnV
   //może policzyć całkę?
   
 } //_CODE_:btnVideoExport:760889:
+
+public void btnVideoLeft_handler(GImageButton source, GEvent event) { //_CODE_:btnVideoLeft:930974:
+  println("btnVideoLeft - GImageButton >> GEvent." + event + " @ " + millis());
+} //_CODE_:btnVideoLeft:930974:
+
+public void btnVideoPlayPause_handler(GImageButton source, GEvent event) { //_CODE_:btnVideoPlauPause:272221:
+  println("btnVideoPlauPause - GImageButton >> GEvent." + event + " @ " + millis());
+} //_CODE_:btnVideoPlauPause:272221:
+
+public void btnVideoRight_handler(GImageButton source, GEvent event) { //_CODE_:btnVideoRight:697452:
+  println("btnVideoRight - GImageButton >> GEvent." + event + " @ " + millis());
+} //_CODE_:btnVideoRight:697452:
+
+public void btnVideoClose_handler(GButton source, GEvent event) { //_CODE_:btnVideoClose:541193:
+  println("btnVideoClose - GButton >> GEvent." + event + " @ " + millis());
+   VideoControlWindow.setVisible(false);
+} //_CODE_:btnVideoClose:541193:
 
 synchronized public void MainWindow_draw(PApplet appc, GWinData data) { //_CODE_:MainWindow:899620:
   appc.background(230);
@@ -370,21 +377,26 @@ public void createGUI(){
   btnDisplayClose.setText("Close");
   btnDisplayClose.setLocalColorScheme(GCScheme.GREEN_SCHEME);
   btnDisplayClose.addEventHandler(this, "btnDisplayClose_handler");
-  VideoControlWindow = GWindow.getWindow(this, "Video Control", 200, 200, 500, 500, JAVA2D);
+  VideoControlWindow = GWindow.getWindow(this, "Video Control", 200, 200, 410, 250, JAVA2D);
   VideoControlWindow.addDrawHandler(this, "VideoControlWindow_draw");
-  labelVideoFPS = new GLabel(VideoControlWindow, 20, 20, 80, 20);
+  labelVideoFPS = new GLabel(VideoControlWindow, 110, 30, 80, 20);
   labelVideoFPS.setText("FPS");
   labelVideoFPS.setOpaque(false);
-  valVideoFPS = new GTextField(VideoControlWindow, 20, 40, 80, 20, G4P.SCROLLBARS_NONE);
+  valVideoFPS = new GTextField(VideoControlWindow, 110, 50, 80, 20, G4P.SCROLLBARS_NONE);
   valVideoFPS.setOpaque(true);
   valVideoFPS.addEventHandler(this, "valVideoFPS_handler");
-  btnVideoPlay = new GImageButton(VideoControlWindow, 22, 79, 70, 70, new String[] { "play.png", "play.png", "play.png" } );
-  btnVideoPlay.addEventHandler(this, "btnVideoPlay_handler");
-  btnVideoPause = new GImageButton(VideoControlWindow, 100, 80, 70, 70, new String[] { "pause.png", "pause.png", "pause.png" } );
-  btnVideoPause.addEventHandler(this, "btnVideoPause_handler");
-  btnVideoExport = new GButton(VideoControlWindow, 210, 20, 80, 60);
+  btnVideoExport = new GButton(VideoControlWindow, 310, 20, 80, 60);
   btnVideoExport.setText("Export");
   btnVideoExport.addEventHandler(this, "btnVideoExport_handler");
+  btnVideoLeft = new GImageButton(VideoControlWindow, 20, 110, 60, 60, new String[] { "left.png", "left.png", "left.png" } );
+  btnVideoLeft.addEventHandler(this, "btnVideoLeft_handler");
+  btnVideoPlauPause = new GImageButton(VideoControlWindow, 120, 80, 160, 110, new String[] { "playPause.png", "playPause.png", "playPause.png" } );
+  btnVideoPlauPause.addEventHandler(this, "btnVideoPlayPause_handler");
+  btnVideoRight = new GImageButton(VideoControlWindow, 330, 110, 60, 60, new String[] { "right.png", "right.png", "right.png" } );
+  btnVideoRight.addEventHandler(this, "btnVideoRight_handler");
+  btnVideoClose = new GButton(VideoControlWindow, 20, 200, 370, 30);
+  btnVideoClose.setText("Close");
+  btnVideoClose.addEventHandler(this, "btnVideoClose_handler");
   MainWindow = GWindow.getWindow(this, "OMF Viewer", 200, 200, 500, 120, JAVA2D);
   MainWindow.setActionOnClose(G4P.EXIT_APP);
   MainWindow.addDrawHandler(this, "MainWindow_draw");
@@ -455,9 +467,11 @@ GButton btnDisplayClose;
 GWindow VideoControlWindow;
 GLabel labelVideoFPS; 
 GTextField valVideoFPS; 
-GImageButton btnVideoPlay; 
-GImageButton btnVideoPause; 
 GButton btnVideoExport; 
+GImageButton btnVideoLeft; 
+GImageButton btnVideoPlauPause; 
+GImageButton btnVideoRight; 
+GButton btnVideoClose; 
 GWindow MainWindow;
 GButton btnMainFileInput; 
 GButton btnMainDisplayOption; 
