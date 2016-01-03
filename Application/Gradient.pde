@@ -1,5 +1,5 @@
 class Gradient{
-  public ArrayList<GradientPoint> points;
+  public List<GradientPoint> points;
   public DVector reference;
   
   public float min;
