@@ -18,40 +18,6 @@ synchronized public void win_draw2(PApplet appc, GWinData data) { //_CODE_:windo
   appc.background(230);
 } //_CODE_:window1:376141:
 
-public void btnPlay_handler(GImageButton source, GEvent event) { //_CODE_:btnPlay:434127:
-  println("btnPlay - GImageButton >> GEvent." + event + " @ " + millis());
-  println("play!");
-  record = 2;
-  gradients.edit(0);
-  
-} //_CODE_:btnPlay:434127:
-
-public void btnPause_handler(GImageButton source, GEvent event) { //_CODE_:btnPause:773048:
-  println("btnPause - GImageButton >> GEvent." + event + " @ " + millis());
-  println("pause!");
-  gradients.edit(1);
-} //_CODE_:btnPause:773048:
-
-public void valArrowScale_handler(GTextField source, GEvent event) { //_CODE_:valArrowScale:222385:
-  println("textfield2 - GTextField >> GEvent." + event + " @ " + millis());
-} //_CODE_:valArrowScale:222385:
-
-public void valArrowWidth_handler(GTextField source, GEvent event) { //_CODE_:valArrowWidth:200671:
-  println("textfield3 - GTextField >> GEvent." + event + " @ " + millis());
-} //_CODE_:valArrowWidth:200671:
-
-public void valArrowTip_handler(GTextField source, GEvent event) { //_CODE_:valArrowTip:383864:
-  println("textfield4 - GTextField >> GEvent." + event + " @ " + millis());
-} //_CODE_:valArrowTip:383864:
-
-public void valScaleValues_handler(GTextField source, GEvent event) { //_CODE_:valScaleValues:324509:
-  println("valScaleValues - GTextField >> GEvent." + event + " @ " + millis());
-} //_CODE_:valScaleValues:324509:
-
-public void valScaleXYZ_handler(GTextField source, GEvent event) { //_CODE_:valScaleXYZ:424871:
-  println("valScaleXYZ - GTextField >> GEvent." + event + " @ " + millis());
-} //_CODE_:valScaleXYZ:424871:
-
 synchronized public void GradientEditWindow_draw(PApplet appc, GWinData data) { //_CODE_:GradientEditWindow:607983:
   appc.background(230);
 } //_CODE_:GradientEditWindow:607983:
@@ -151,16 +117,43 @@ synchronized public void DisplayOptionsWindow_draw(PApplet appc, GWinData data) 
 
 public void optDisplayTypeBox_handler(GOption source, GEvent event) { //_CODE_:optDisplayTypeBox:999994:
   println("optDisplayTypeBox - GOption >> GEvent." + event + " @ " + millis());
-        vectors = 0;
+    display_options_manager.setVectors(false);
 } //_CODE_:optDisplayTypeBox:999994:
 
 public void optDisplayTypeVectors_handler(GOption source, GEvent event) { //_CODE_:optDisplayTypeVectors:890085:
   println("option1 - GOption >> GEvent." + event + " @ " + millis());
+        display_options_manager.setVectors(true);
 } //_CODE_:optDisplayTypeVectors:890085:
 
 public void valDisplayThreshold_handler(GTextField source, GEvent event) { //_CODE_:valDisplayThreshold:229313:
   println("valDisplayThreshold - GTextField >> GEvent." + event + " @ " + millis());
+  display_options_manager.setThreshold(Double.valueOf(source.getText()));
 } //_CODE_:valDisplayThreshold:229313:
+
+public void valDisplayScale_handler(GTextField source, GEvent event) { //_CODE_:valDisplayScale:563055:
+  println("textfield1 - GTextField >> GEvent." + event + " @ " + millis());
+  display_options_manager.setArrowScale(Double.valueOf(source.getText()));
+} //_CODE_:valDisplayScale:563055:
+
+public void valDisplayWidth_handler(GTextField source, GEvent event) { //_CODE_:valDisplayWidth:446561:
+  println("textfield2 - GTextField >> GEvent." + event + " @ " + millis());
+        display_options_manager.setArrowWidth(Double.valueOf(source.getText()));
+} //_CODE_:valDisplayWidth:446561:
+
+public void valDisplayTip_handler(GTextField source, GEvent event) { //_CODE_:valDisplayTip:725029:
+  println("textfield3 - GTextField >> GEvent." + event + " @ " + millis());
+        display_options_manager.setArrowTip(Double.valueOf(source.getText()));
+} //_CODE_:valDisplayTip:725029:
+
+public void valDisplayValues_handler(GTextField source, GEvent event) { //_CODE_:valDisplayValues:471739:
+  println("textfield4 - GTextField >> GEvent." + event + " @ " + millis());
+        display_options_manager.setScaleValues(Double.valueOf(source.getText()));
+} //_CODE_:valDisplayValues:471739:
+
+public void valDisplayXYZ_handler(GTextField source, GEvent event) { //_CODE_:valDisplayXYZ:506724:
+  println("textfield5 - GTextField >> GEvent." + event + " @ " + millis());
+        display_options_manager.setScaleXYZ(Double.valueOf(source.getText()));
+} //_CODE_:valDisplayXYZ:506724:
 
 synchronized public void VideoControlWindow_draw(PApplet appc, GWinData data) { //_CODE_:VideoControlWindow:840922:
   appc.background(230);
@@ -169,10 +162,6 @@ synchronized public void VideoControlWindow_draw(PApplet appc, GWinData data) { 
 public void valVideoFPS_handler(GTextField source, GEvent event) { //_CODE_:valVideoFPS:260387:
   println("valVideoFPS - GTextField >> GEvent." + event + " @ " + millis());
 } //_CODE_:valVideoFPS:260387:
-
-public void valVideoThreshold_handler(GTextField source, GEvent event) { //_CODE_:valVideoThreshold:214656:
-  println("textfield1 - GTextField >> GEvent." + event + " @ " + millis());
-} //_CODE_:valVideoThreshold:214656:
 
 
 
@@ -183,50 +172,10 @@ public void createGUI(){
   G4P.setGlobalColorScheme(GCScheme.BLUE_SCHEME);
   G4P.setCursor(ARROW);
   surface.setTitle("Sketch Window");
-  window1 = GWindow.getWindow(this, "KEEP_OPEN", 200, 200, 1000, 1000, JAVA2D);
+  window1 = GWindow.getWindow(this, "KEEP_OPEN", 200, 200, 300, 200, JAVA2D);
   window1.setActionOnClose(G4P.EXIT_APP);
   window1.addDrawHandler(this, "win_draw2");
   togGroup1 = new GToggleGroup();
-  btnPlay = new GImageButton(window1, 20, 250, 50, 50, new String[] { "play.png", "play.png", "play.png" } );
-  btnPlay.addEventHandler(this, "btnPlay_handler");
-  btnPause = new GImageButton(window1, 80, 250, 50, 50, new String[] { "pause.png", "pause.png", "pause.png" } );
-  btnPause.addEventHandler(this, "btnPause_handler");
-  lableArrowWidth = new GLabel(window1, 470, 240, 80, 20);
-  lableArrowWidth.setText("Width");
-  lableArrowWidth.setOpaque(false);
-  labelArrowScale = new GLabel(window1, 390, 240, 80, 20);
-  labelArrowScale.setText("Scale");
-  labelArrowScale.setOpaque(false);
-  valArrowScale = new GTextField(window1, 390, 260, 80, 30, G4P.SCROLLBARS_NONE);
-  valArrowScale.setOpaque(true);
-  valArrowScale.addEventHandler(this, "valArrowScale_handler");
-  valArrowWidth = new GTextField(window1, 470, 260, 80, 30, G4P.SCROLLBARS_NONE);
-  valArrowWidth.setOpaque(true);
-  valArrowWidth.addEventHandler(this, "valArrowWidth_handler");
-  labelArrowTip = new GLabel(window1, 550, 240, 80, 20);
-  labelArrowTip.setText("Tip");
-  labelArrowTip.setOpaque(false);
-  valArrowTip = new GTextField(window1, 550, 260, 80, 30, G4P.SCROLLBARS_NONE);
-  valArrowTip.setOpaque(true);
-  valArrowTip.addEventHandler(this, "valArrowTip_handler");
-  labelArrowControl = new GLabel(window1, 390, 220, 240, 20);
-  labelArrowControl.setText("Arrow control");
-  labelArrowControl.setOpaque(false);
-  labelXYZ = new GLabel(window1, 800, 240, 80, 20);
-  labelXYZ.setText("XYZ");
-  labelXYZ.setOpaque(false);
-  labelValues = new GLabel(window1, 720, 240, 80, 20);
-  labelValues.setText("Values");
-  labelValues.setOpaque(false);
-  labelDataScale = new GLabel(window1, 720, 220, 160, 20);
-  labelDataScale.setText("Data scale");
-  labelDataScale.setOpaque(false);
-  valScaleValues = new GTextField(window1, 720, 260, 80, 30, G4P.SCROLLBARS_NONE);
-  valScaleValues.setOpaque(true);
-  valScaleValues.addEventHandler(this, "valScaleValues_handler");
-  valScaleXYZ = new GTextField(window1, 800, 260, 80, 30, G4P.SCROLLBARS_NONE);
-  valScaleXYZ.setOpaque(true);
-  valScaleXYZ.addEventHandler(this, "valScaleXYZ_handler");
   GradientEditWindow = GWindow.getWindow(this, "Gradient Edit", 200, 200, 500, 300, JAVA2D);
   GradientEditWindow.setActionOnClose(G4P.CLOSE_WINDOW);
   GradientEditWindow.addDrawHandler(this, "GradientEditWindow_draw");
@@ -311,7 +260,7 @@ public void createGUI(){
   btnInputAddFolder = new GButton(InputSelectorWindow, 120, 70, 80, 30);
   btnInputAddFolder.setText("Add folder");
   btnInputAddFolder.addEventHandler(this, "btnInputAddFolder_handler");
-  btnInputClose = new GButton(InputSelectorWindow, 160, 120, 280, 30);
+  btnInputClose = new GButton(InputSelectorWindow, 210, 120, 280, 30);
   btnInputClose.setText("Close");
   btnInputClose.setTextBold();
   btnInputClose.setLocalColorScheme(GCScheme.GREEN_SCHEME);
@@ -319,12 +268,12 @@ public void createGUI(){
   DisplayOptionsWindow = GWindow.getWindow(this, "Display Options", 0, 0, 500, 500, JAVA2D);
   DisplayOptionsWindow.addDrawHandler(this, "DisplayOptionsWindow_draw");
   groupDisplayDisplayType = new GToggleGroup();
-  optDisplayTypeBox = new GOption(DisplayOptionsWindow, 190, 40, 120, 20);
+  optDisplayTypeBox = new GOption(DisplayOptionsWindow, 360, 20, 120, 20);
   optDisplayTypeBox.setTextAlign(GAlign.LEFT, GAlign.MIDDLE);
   optDisplayTypeBox.setText("Box");
   optDisplayTypeBox.setOpaque(false);
   optDisplayTypeBox.addEventHandler(this, "optDisplayTypeBox_handler");
-  optDisplayTypeVectors = new GOption(DisplayOptionsWindow, 190, 60, 120, 20);
+  optDisplayTypeVectors = new GOption(DisplayOptionsWindow, 360, 40, 120, 20);
   optDisplayTypeVectors.setTextAlign(GAlign.LEFT, GAlign.MIDDLE);
   optDisplayTypeVectors.setText("Vectors");
   optDisplayTypeVectors.setOpaque(false);
@@ -332,12 +281,42 @@ public void createGUI(){
   groupDisplayDisplayType.addControl(optDisplayTypeBox);
   optDisplayTypeBox.setSelected(true);
   groupDisplayDisplayType.addControl(optDisplayTypeVectors);
-  labelDisplayThreshold = new GLabel(DisplayOptionsWindow, 190, 100, 120, 20);
+  labelDisplayThreshold = new GLabel(DisplayOptionsWindow, 190, 20, 120, 20);
   labelDisplayThreshold.setText("Display threshold");
   labelDisplayThreshold.setOpaque(false);
-  valDisplayThreshold = new GTextField(DisplayOptionsWindow, 190, 120, 120, 30, G4P.SCROLLBARS_NONE);
+  valDisplayThreshold = new GTextField(DisplayOptionsWindow, 190, 40, 120, 30, G4P.SCROLLBARS_NONE);
   valDisplayThreshold.setOpaque(true);
   valDisplayThreshold.addEventHandler(this, "valDisplayThreshold_handler");
+  labelDisplayScale = new GLabel(DisplayOptionsWindow, 50, 220, 80, 20);
+  labelDisplayScale.setText("Scale");
+  labelDisplayScale.setOpaque(false);
+  valDisplayScale = new GTextField(DisplayOptionsWindow, 10, 250, 160, 30, G4P.SCROLLBARS_NONE);
+  valDisplayScale.setOpaque(true);
+  valDisplayScale.addEventHandler(this, "valDisplayScale_handler");
+  valDisplayWidth = new GTextField(DisplayOptionsWindow, 170, 250, 160, 30, G4P.SCROLLBARS_NONE);
+  valDisplayWidth.setOpaque(true);
+  valDisplayWidth.addEventHandler(this, "valDisplayWidth_handler");
+  labelDisplayWidth = new GLabel(DisplayOptionsWindow, 200, 220, 80, 20);
+  labelDisplayWidth.setText("Width");
+  labelDisplayWidth.setOpaque(false);
+  valDisplayTip = new GTextField(DisplayOptionsWindow, 330, 250, 160, 30, G4P.SCROLLBARS_NONE);
+  valDisplayTip.setOpaque(true);
+  valDisplayTip.addEventHandler(this, "valDisplayTip_handler");
+  labelDisplayTip = new GLabel(DisplayOptionsWindow, 370, 220, 80, 20);
+  labelDisplayTip.setText("Tip");
+  labelDisplayTip.setOpaque(false);
+  labelDisplayValues = new GLabel(DisplayOptionsWindow, 120, 330, 80, 20);
+  labelDisplayValues.setText("Values");
+  labelDisplayValues.setOpaque(false);
+  valDisplayValues = new GTextField(DisplayOptionsWindow, 90, 350, 160, 30, G4P.SCROLLBARS_NONE);
+  valDisplayValues.setOpaque(true);
+  valDisplayValues.addEventHandler(this, "valDisplayValues_handler");
+  valDisplayXYZ = new GTextField(DisplayOptionsWindow, 250, 350, 160, 30, G4P.SCROLLBARS_NONE);
+  valDisplayXYZ.setOpaque(true);
+  valDisplayXYZ.addEventHandler(this, "valDisplayXYZ_handler");
+  labelDisplayXYZ = new GLabel(DisplayOptionsWindow, 290, 330, 80, 20);
+  labelDisplayXYZ.setText("XYZ");
+  labelDisplayXYZ.setOpaque(false);
   VideoControlWindow = GWindow.getWindow(this, "Video Control", 0, 0, 500, 500, JAVA2D);
   VideoControlWindow.addDrawHandler(this, "VideoControlWindow_draw");
   labelVideoFPS = new GLabel(VideoControlWindow, 20, 20, 80, 20);
@@ -346,32 +325,12 @@ public void createGUI(){
   valVideoFPS = new GTextField(VideoControlWindow, 20, 40, 80, 20, G4P.SCROLLBARS_NONE);
   valVideoFPS.setOpaque(true);
   valVideoFPS.addEventHandler(this, "valVideoFPS_handler");
-  valVideoThreshold = new GTextField(VideoControlWindow, 120, 40, 80, 20, G4P.SCROLLBARS_NONE);
-  valVideoThreshold.setOpaque(true);
-  valVideoThreshold.addEventHandler(this, "valVideoThreshold_handler");
-  labelVideoThreshold = new GLabel(VideoControlWindow, 120, 20, 80, 20);
-  labelVideoThreshold.setText("Threshold");
-  labelVideoThreshold.setOpaque(false);
 }
 
 // Variable declarations 
 // autogenerated do not edit
 GWindow window1;
 GToggleGroup togGroup1; 
-GImageButton btnPlay; 
-GImageButton btnPause; 
-GLabel lableArrowWidth; 
-GLabel labelArrowScale; 
-GTextField valArrowScale; 
-GTextField valArrowWidth; 
-GLabel labelArrowTip; 
-GTextField valArrowTip; 
-GLabel labelArrowControl; 
-GLabel labelXYZ; 
-GLabel labelValues; 
-GLabel labelDataScale; 
-GTextField valScaleValues; 
-GTextField valScaleXYZ; 
 GWindow GradientEditWindow;
 GSketchPad padGradGradPrev; 
 GDropList listGradList; 
@@ -406,8 +365,16 @@ GOption optDisplayTypeBox;
 GOption optDisplayTypeVectors; 
 GLabel labelDisplayThreshold; 
 GTextField valDisplayThreshold; 
+GLabel labelDisplayScale; 
+GTextField valDisplayScale; 
+GTextField valDisplayWidth; 
+GLabel labelDisplayWidth; 
+GTextField valDisplayTip; 
+GLabel labelDisplayTip; 
+GLabel labelDisplayValues; 
+GTextField valDisplayValues; 
+GTextField valDisplayXYZ; 
+GLabel labelDisplayXYZ; 
 GWindow VideoControlWindow;
 GLabel labelVideoFPS; 
 GTextField valVideoFPS; 
-GTextField valVideoThreshold; 
-GLabel labelVideoThreshold; 
