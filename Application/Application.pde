@@ -76,9 +76,9 @@ void showFiles(List<File> files) {
       p.position.y *= pitchScale;
       p.position.z *= pitchScale;
       
-      p.rgbcolor.x = 1;
-      p.rgbcolor.y = 0;
-      p.rgbcolor.z = 1;
+      p.rgbcolor.x = 0;
+      p.rgbcolor.y = 1;
+      p.rgbcolor.z = 0;
       
       
       if(p.vector.module()>minimumDisplay) Surfaces.get(Surfaces.size()-1).addPoint(p);
@@ -93,11 +93,11 @@ void showFiles(List<File> files) {
       Surfaces.get(Surfaces.size()-1).gradientMakers.add(gradientMaker);
       
       
-      gradientMaker = new Gradient();
+      /*gradientMaker = new Gradient();
       gradientMaker.points = gradients.getList(1);
       gradientMaker.reference = gradients.getReference(1);  
       
-      Surfaces.get(Surfaces.size()-1).gradientMakers.add(gradientMaker);
+      Surfaces.get(Surfaces.size()-1).gradientMakers.add(gradientMaker);*/
       
       
       Surfaces.get(Surfaces.size()-1).gradientMaxFind();

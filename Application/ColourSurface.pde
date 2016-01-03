@@ -37,7 +37,7 @@ class ColourSurface extends VectorSurface{
       
       for(PointVector point : points){
         float len = (float)(gradientMaker.reference.multiplyScalar(point.vector)/gradientMaker.reference.multiplyScalar(gradientMaker.reference));
-        len = map(len, gradientMaker.min, gradientMaker.max, 0.0, 1.0);
+        len = map(len, gradientMaker.min, gradientMaker.max, -1.0, 1.0);
         int greaterIndex = 1;
         for(greaterIndex = 1 ; greaterIndex < gradientMaker.points.size()-1 ; greaterIndex++){
           if(len<(float)gradientMaker.points.get(greaterIndex).val)break;
