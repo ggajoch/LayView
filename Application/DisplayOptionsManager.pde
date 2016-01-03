@@ -106,5 +106,5 @@ public class DisplayOptionsManager {
 };
 
 
-DisplayOptionsManager display_options_manager;
+DisplayOptionsManager display_options_manager = new DisplayOptionsManager();
 
