@@ -1,6 +1,7 @@
 import g4p_controls.GDropList;
 
 import java.io.File;
+import java.util.List;
 
 public class FileView extends ListView<File> {
     FileView(GDropList dropList) {
@@ -21,4 +22,7 @@ public class FileView extends ListView<File> {
         return file.getName().substring(file.getName().lastIndexOf('.')).equals(".omf");
     }
 
+    public List<File> getListFile() {
+        return this.model.list;
+    }
 }
