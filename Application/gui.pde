@@ -14,10 +14,6 @@
  * =========================================================
  */
 
-synchronized public void win_draw2(PApplet appc, GWinData data) { //_CODE_:window1:376141:
-  appc.background(230);
-} //_CODE_:window1:376141:
-
 synchronized public void GradientEditWindow_draw(PApplet appc, GWinData data) { //_CODE_:GradientEditWindow:607983:
   appc.background(230);
 } //_CODE_:GradientEditWindow:607983:
@@ -109,6 +105,7 @@ public void btnInputAddFolder_handler(GButton source, GEvent event) { //_CODE_:b
 
 public void btnInputClose_handler(GButton source, GEvent event) { //_CODE_:btnInputClose:675739:
   println("button1 - GButton >> GEvent." + event + " @ " + millis());
+        InputSelectorWindow.setVisible(false);
 } //_CODE_:btnInputClose:675739:
 
 synchronized public void DisplayOptionsWindow_draw(PApplet appc, GWinData data) { //_CODE_:DisplayOptionsWindow:225623:
@@ -155,6 +152,11 @@ public void valDisplayXYZ_handler(GTextField source, GEvent event) { //_CODE_:va
         display_options_manager.setScaleXYZ(Double.valueOf(source.getText()));
 } //_CODE_:valDisplayXYZ:506724:
 
+public void btnDisplayClose_handler(GButton source, GEvent event) { //_CODE_:btnDisplayClose:715831:
+  println("btnDisplayClose - GButton >> GEvent." + event + " @ " + millis());
+        DisplayOptionsWindow.setVisible(false);
+} //_CODE_:btnDisplayClose:715831:
+
 synchronized public void VideoControlWindow_draw(PApplet appc, GWinData data) { //_CODE_:VideoControlWindow:840922:
   appc.background(230);
 } //_CODE_:VideoControlWindow:840922:
@@ -162,6 +164,35 @@ synchronized public void VideoControlWindow_draw(PApplet appc, GWinData data) { 
 public void valVideoFPS_handler(GTextField source, GEvent event) { //_CODE_:valVideoFPS:260387:
   println("valVideoFPS - GTextField >> GEvent." + event + " @ " + millis());
 } //_CODE_:valVideoFPS:260387:
+
+synchronized public void MainWindow_draw(PApplet appc, GWinData data) { //_CODE_:MainWindow:899620:
+  appc.background(230);
+} //_CODE_:MainWindow:899620:
+
+public void btnMainFileInput_handler(GButton source, GEvent event) { //_CODE_:btnMainFileInput:874382:
+  println("btnMainFileInput - GButton >> GEvent." + event + " @ " + millis());
+        InputSelectorWindow.setVisible(true);
+} //_CODE_:btnMainFileInput:874382:
+
+public void btnMainDisplayOption_handler(GButton source, GEvent event) { //_CODE_:btnMainDisplayOption:878656:
+  println("button1 - GButton >> GEvent." + event + " @ " + millis());
+        DisplayOptionsWindow.setVisible(true);
+} //_CODE_:btnMainDisplayOption:878656:
+
+public void btnMainVideo_handler(GButton source, GEvent event) { //_CODE_:btnMainVideo:347040:
+  println("btnMainVideo - GButton >> GEvent." + event + " @ " + millis());
+        VideoControlWindow.setVisible(true);
+} //_CODE_:btnMainVideo:347040:
+
+public void btnMainGradient1_handler(GButton source, GEvent event) { //_CODE_:btnMainGradient1:574437:
+  println("btnMainGradient1 - GButton >> GEvent." + event + " @ " + millis());
+        gradients.edit(0);
+} //_CODE_:btnMainGradient1:574437:
+
+public void btnMainGradient2_handler(GButton source, GEvent event) { //_CODE_:btnMainGradient2:361852:
+  println("btnMainGradient2 - GButton >> GEvent." + event + " @ " + millis());
+        gradients.edit(1);
+} //_CODE_:btnMainGradient2:361852:
 
 
 
@@ -172,10 +203,6 @@ public void createGUI(){
   G4P.setGlobalColorScheme(GCScheme.BLUE_SCHEME);
   G4P.setCursor(ARROW);
   surface.setTitle("Sketch Window");
-  window1 = GWindow.getWindow(this, "KEEP_OPEN", 200, 200, 300, 200, JAVA2D);
-  window1.setActionOnClose(G4P.EXIT_APP);
-  window1.addDrawHandler(this, "win_draw2");
-  togGroup1 = new GToggleGroup();
   GradientEditWindow = GWindow.getWindow(this, "Gradient Edit", 200, 200, 500, 300, JAVA2D);
   GradientEditWindow.setActionOnClose(G4P.CLOSE_WINDOW);
   GradientEditWindow.addDrawHandler(this, "GradientEditWindow_draw");
@@ -317,6 +344,10 @@ public void createGUI(){
   labelDisplayXYZ = new GLabel(DisplayOptionsWindow, 290, 330, 80, 20);
   labelDisplayXYZ.setText("XYZ");
   labelDisplayXYZ.setOpaque(false);
+  btnDisplayClose = new GButton(DisplayOptionsWindow, 90, 420, 320, 30);
+  btnDisplayClose.setText("Close");
+  btnDisplayClose.setLocalColorScheme(GCScheme.GREEN_SCHEME);
+  btnDisplayClose.addEventHandler(this, "btnDisplayClose_handler");
   VideoControlWindow = GWindow.getWindow(this, "Video Control", 0, 0, 500, 500, JAVA2D);
   VideoControlWindow.addDrawHandler(this, "VideoControlWindow_draw");
   labelVideoFPS = new GLabel(VideoControlWindow, 20, 20, 80, 20);
@@ -325,12 +356,28 @@ public void createGUI(){
   valVideoFPS = new GTextField(VideoControlWindow, 20, 40, 80, 20, G4P.SCROLLBARS_NONE);
   valVideoFPS.setOpaque(true);
   valVideoFPS.addEventHandler(this, "valVideoFPS_handler");
+  MainWindow = GWindow.getWindow(this, "OMF Viewer", 200, 200, 500, 120, JAVA2D);
+  MainWindow.setActionOnClose(G4P.EXIT_APP);
+  MainWindow.addDrawHandler(this, "MainWindow_draw");
+  btnMainFileInput = new GButton(MainWindow, 20, 20, 80, 30);
+  btnMainFileInput.setText("File input");
+  btnMainFileInput.addEventHandler(this, "btnMainFileInput_handler");
+  btnMainDisplayOption = new GButton(MainWindow, 120, 20, 80, 30);
+  btnMainDisplayOption.setText("Display options");
+  btnMainDisplayOption.addEventHandler(this, "btnMainDisplayOption_handler");
+  btnMainVideo = new GButton(MainWindow, 220, 20, 80, 30);
+  btnMainVideo.setText("Video");
+  btnMainVideo.addEventHandler(this, "btnMainVideo_handler");
+  btnMainGradient1 = new GButton(MainWindow, 390, 20, 80, 30);
+  btnMainGradient1.setText("Gradient 1");
+  btnMainGradient1.addEventHandler(this, "btnMainGradient1_handler");
+  btnMainGradient2 = new GButton(MainWindow, 390, 70, 80, 30);
+  btnMainGradient2.setText("Gradient 2");
+  btnMainGradient2.addEventHandler(this, "btnMainGradient2_handler");
 }
 
 // Variable declarations 
 // autogenerated do not edit
-GWindow window1;
-GToggleGroup togGroup1; 
 GWindow GradientEditWindow;
 GSketchPad padGradGradPrev; 
 GDropList listGradList; 
@@ -375,6 +422,13 @@ GLabel labelDisplayValues;
 GTextField valDisplayValues; 
 GTextField valDisplayXYZ; 
 GLabel labelDisplayXYZ; 
+GButton btnDisplayClose; 
 GWindow VideoControlWindow;
 GLabel labelVideoFPS; 
 GTextField valVideoFPS; 
+GWindow MainWindow;
+GButton btnMainFileInput; 
+GButton btnMainDisplayOption; 
+GButton btnMainVideo; 
+GButton btnMainGradient1; 
+GButton btnMainGradient2; 

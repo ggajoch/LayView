@@ -1,4 +1,5 @@
 import g4p_controls.GTextField;
+import g4p_controls.GWindow;
 
 public class DisplayOptionsManager {
     private double threshold, ArrowScale, ArrowWidth, ArrowTip,
@@ -18,6 +19,7 @@ public class DisplayOptionsManager {
     private void updateField(GTextField field, double value) {
         field.setText(Double.toString(value));
     }
+
     private double getField(GTextField field) {
         return Double.valueOf(field.getText());
     }
@@ -104,7 +106,3 @@ public class DisplayOptionsManager {
         this.vectors = vectors;
     }
 };
-
-
-DisplayOptionsManager display_options_manager = new DisplayOptionsManager();
-

@@ -19,6 +19,7 @@ long frameDelayMs = 10;
 FileView file_list;
 
 GradientManager gradients;
+DisplayOptionsManager display_options_manager = new DisplayOptionsManager();
 
 void setup()  { 
   //size(1024, 768, P3D); 
@@ -33,9 +34,13 @@ void setup()  {
   
   createGUI();
   GradientEditWindow.setVisible(false);
+  GradientPointEditWindow.setVisible(false);
+  InputSelectorWindow.setVisible(false);
+  DisplayOptionsWindow.setVisible(false);
+  VideoControlWindow.setVisible(false);
   file_list = new FileView(listInputListFiles);
-  
   gradients = new GradientManager(GradientEditWindow, padGradColorPrev, padGradGradPrev, GradientEditWindow);
+  display_options_manager.updateDisplays();
   
   Surfaces = new ArrayList<ColourSurface>();
 } 
