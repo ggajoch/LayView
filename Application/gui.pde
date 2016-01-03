@@ -164,6 +164,7 @@ synchronized public void VideoControlWindow_draw(PApplet appc, GWinData data) { 
 
 public void valVideoFPS_handler(GTextField source, GEvent event) { //_CODE_:valVideoFPS:260387:
   println("valVideoFPS - GTextField >> GEvent." + event + " @ " + millis());
+  FPS = Integer.valueOf(source.getText());
 } //_CODE_:valVideoFPS:260387:
 
 public void btnVideoExport_handler(GButton source, GEvent event) { //_CODE_:btnVideoExport:760889:
@@ -171,6 +172,7 @@ public void btnVideoExport_handler(GButton source, GEvent event) { //_CODE_:btnV
   String file_name = G4P.selectInput("Input Dialog", "mp4", "OMF file select");
   export = new VideoExport(file_name+".mp4");
   export.cleanFolder();
+  export.setFPS(FPS);
   record = 2;
   // coś tutaj?
   //może policzyć całkę?

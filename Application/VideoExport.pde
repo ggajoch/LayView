@@ -8,16 +8,22 @@ class VideoExport{
   
   long frameNumber;
   
+  int FPS;
+  
+  
+  
   VideoExport(){
     frameNumber = 0;
     outputFilePath = new String(sketchPath("")+"test.mp4");
     inputFilePath = new String(sketchPath("")+"temp/anim_%05d.png");
+    FPS = new Integer(30);
   }
   
   VideoExport(String fileName){
     frameNumber = 0;
     outputFilePath = new String(fileName);
     inputFilePath = new String(sketchPath("")+"temp/anim_%05d.png");
+    FPS = new Integer(30);
   }
   
   private boolean deleteDirectory(File directory) {
@@ -35,10 +41,15 @@ class VideoExport{
         }
     }
     return(directory.delete());
-}
+  }
+  
   boolean cleanFolder(){
     folder = new File(sketchPath("")+"temp");
     return deleteDirectory(folder);
+  }
+  
+  void setFPS(int FPS_){
+    FPS = new Integer(FPS_);
   }
   
   void saveVideoFrame(){
@@ -46,9 +57,9 @@ class VideoExport{
   }
   
   void closeVideo(){
-    processBuilder = new ProcessBuilder(sketchPath("")+"ffmpeg/ffmpeg.exe", "-r", "60", "-i",
+    processBuilder = new ProcessBuilder(sketchPath("")+"ffmpeg/ffmpeg.exe", "-i",
         inputFilePath, "-c:v", "libx264",
-        "-r", "30", "-y", "-an", "-pix_fmt", "yuv420p", outputFilePath );
+        "-r", String.format("%d",FPS), "-y", "-an", "-pix_fmt", "yuv420p", outputFilePath );
     try {
       process = processBuilder.start();
     } catch (Exception e) {

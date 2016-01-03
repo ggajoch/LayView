@@ -15,7 +15,7 @@ float pitchScale = 200000000.0;
 float lengthScale = 0.2/1000000.0;
 float minimumDisplay = 0.0;
 
-long frameDelayMs = 10;
+int FPS = 50;
 FileView file_list;
 
 GradientManager gradients;
@@ -129,7 +129,7 @@ void draw()  {
     export.cleanFolder();*/
     println("record started");
   }
-  if((millis()-lastMillis)>=frameDelayMs){
+  if((millis()-lastMillis)>=1000/FPS){
     lastMillis=millis();
     if(play != 0) frame++;
     if(frame>=Surfaces.size()){
