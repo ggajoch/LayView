@@ -166,6 +166,14 @@ public void valVideoFPS_handler(GTextField source, GEvent event) { //_CODE_:valV
   println("valVideoFPS - GTextField >> GEvent." + event + " @ " + millis());
 } //_CODE_:valVideoFPS:260387:
 
+public void btnVideoPlay_handler(GImageButton source, GEvent event) { //_CODE_:btnVideoPlay:558393:
+  println("btnVideoPlay - GImageButton >> GEvent." + event + " @ " + millis());
+} //_CODE_:btnVideoPlay:558393:
+
+public void btnVideoPause_handler(GImageButton source, GEvent event) { //_CODE_:btnVideoPause:668308:
+  println("btnVideoPause - GImageButton >> GEvent." + event + " @ " + millis());
+} //_CODE_:btnVideoPause:668308:
+
 synchronized public void MainWindow_draw(PApplet appc, GWinData data) { //_CODE_:MainWindow:899620:
   appc.background(230);
 } //_CODE_:MainWindow:899620:
@@ -270,7 +278,7 @@ public void createGUI(){
   btnGradEditColor = new GButton(GradientPointEditWindow, 120, 20, 80, 30);
   btnGradEditColor.setText("Select Color");
   btnGradEditColor.addEventHandler(this, "btnGradEditColor_handler");
-  InputSelectorWindow = GWindow.getWindow(this, "Window title", 0, 0, 700, 170, JAVA2D);
+  InputSelectorWindow = GWindow.getWindow(this, "Window title", 200, 200, 700, 170, JAVA2D);
   InputSelectorWindow.addDrawHandler(this, "InputSelectorWindow_draw");
   listInputListFiles = new GDropList(InputSelectorWindow, 20, 20, 660, 120, 3);
   listInputListFiles.setItems(loadStrings("list_748167"), 0);
@@ -293,7 +301,7 @@ public void createGUI(){
   btnInputClose.setTextBold();
   btnInputClose.setLocalColorScheme(GCScheme.GREEN_SCHEME);
   btnInputClose.addEventHandler(this, "btnInputClose_handler");
-  DisplayOptionsWindow = GWindow.getWindow(this, "Display Options", 0, 0, 500, 500, JAVA2D);
+  DisplayOptionsWindow = GWindow.getWindow(this, "Display Options", 200, 200, 500, 500, JAVA2D);
   DisplayOptionsWindow.addDrawHandler(this, "DisplayOptionsWindow_draw");
   groupDisplayDisplayType = new GToggleGroup();
   optDisplayTypeBox = new GOption(DisplayOptionsWindow, 360, 20, 120, 20);
@@ -349,7 +357,7 @@ public void createGUI(){
   btnDisplayClose.setText("Close");
   btnDisplayClose.setLocalColorScheme(GCScheme.GREEN_SCHEME);
   btnDisplayClose.addEventHandler(this, "btnDisplayClose_handler");
-  VideoControlWindow = GWindow.getWindow(this, "Video Control", 0, 0, 500, 500, JAVA2D);
+  VideoControlWindow = GWindow.getWindow(this, "Video Control", 200, 200, 500, 500, JAVA2D);
   VideoControlWindow.addDrawHandler(this, "VideoControlWindow_draw");
   labelVideoFPS = new GLabel(VideoControlWindow, 20, 20, 80, 20);
   labelVideoFPS.setText("FPS");
@@ -357,6 +365,10 @@ public void createGUI(){
   valVideoFPS = new GTextField(VideoControlWindow, 20, 40, 80, 20, G4P.SCROLLBARS_NONE);
   valVideoFPS.setOpaque(true);
   valVideoFPS.addEventHandler(this, "valVideoFPS_handler");
+  btnVideoPlay = new GImageButton(VideoControlWindow, 20, 80, 70, 60, new String[] { "play.png", "play.png", "play.png" } );
+  btnVideoPlay.addEventHandler(this, "btnVideoPlay_handler");
+  btnVideoPause = new GImageButton(VideoControlWindow, 100, 80, 70, 60, new String[] { "pause.png", "pause.png", "pause.png" } );
+  btnVideoPause.addEventHandler(this, "btnVideoPause_handler");
   MainWindow = GWindow.getWindow(this, "OMF Viewer", 200, 200, 500, 120, JAVA2D);
   MainWindow.setActionOnClose(G4P.EXIT_APP);
   MainWindow.addDrawHandler(this, "MainWindow_draw");
@@ -427,6 +439,8 @@ GButton btnDisplayClose;
 GWindow VideoControlWindow;
 GLabel labelVideoFPS; 
 GTextField valVideoFPS; 
+GImageButton btnVideoPlay; 
+GImageButton btnVideoPause; 
 GWindow MainWindow;
 GButton btnMainFileInput; 
 GButton btnMainDisplayOption; 
