@@ -174,6 +174,13 @@ public void btnVideoPause_handler(GImageButton source, GEvent event) { //_CODE_:
   println("btnVideoPause - GImageButton >> GEvent." + event + " @ " + millis());
 } //_CODE_:btnVideoPause:668308:
 
+public void btnVideoExport_handler(GButton source, GEvent event) { //_CODE_:btnVideoExport:760889:
+  println("button1 - GButton >> GEvent." + event + " @ " + millis());
+  String file_name = G4P.selectInput("Input Dialog", "txt", "OMF file select");
+  File file_to_write = new File(file_name);
+  // coś tutaj?
+} //_CODE_:btnVideoExport:760889:
+
 synchronized public void MainWindow_draw(PApplet appc, GWinData data) { //_CODE_:MainWindow:899620:
   appc.background(230);
 } //_CODE_:MainWindow:899620:
@@ -365,10 +372,13 @@ public void createGUI(){
   valVideoFPS = new GTextField(VideoControlWindow, 20, 40, 80, 20, G4P.SCROLLBARS_NONE);
   valVideoFPS.setOpaque(true);
   valVideoFPS.addEventHandler(this, "valVideoFPS_handler");
-  btnVideoPlay = new GImageButton(VideoControlWindow, 20, 80, 70, 60, new String[] { "play.png", "play.png", "play.png" } );
+  btnVideoPlay = new GImageButton(VideoControlWindow, 22, 79, 70, 70, new String[] { "play.png", "play.png", "play.png" } );
   btnVideoPlay.addEventHandler(this, "btnVideoPlay_handler");
-  btnVideoPause = new GImageButton(VideoControlWindow, 100, 80, 70, 60, new String[] { "pause.png", "pause.png", "pause.png" } );
+  btnVideoPause = new GImageButton(VideoControlWindow, 100, 80, 70, 70, new String[] { "pause.png", "pause.png", "pause.png" } );
   btnVideoPause.addEventHandler(this, "btnVideoPause_handler");
+  btnVideoExport = new GButton(VideoControlWindow, 210, 20, 80, 60);
+  btnVideoExport.setText("Export");
+  btnVideoExport.addEventHandler(this, "btnVideoExport_handler");
   MainWindow = GWindow.getWindow(this, "OMF Viewer", 200, 200, 500, 120, JAVA2D);
   MainWindow.setActionOnClose(G4P.EXIT_APP);
   MainWindow.addDrawHandler(this, "MainWindow_draw");
@@ -441,6 +451,7 @@ GLabel labelVideoFPS;
 GTextField valVideoFPS; 
 GImageButton btnVideoPlay; 
 GImageButton btnVideoPause; 
+GButton btnVideoExport; 
 GWindow MainWindow;
 GButton btnMainFileInput; 
 GButton btnMainDisplayOption; 
