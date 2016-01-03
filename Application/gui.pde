@@ -179,14 +179,27 @@ public void btnVideoExport_handler(GButton source, GEvent event) { //_CODE_:btnV
 
 public void btnVideoLeft_handler(GImageButton source, GEvent event) { //_CODE_:btnVideoLeft:930974:
   println("btnVideoLeft - GImageButton >> GEvent." + event + " @ " + millis());
+  frame--;
+  if(frame < 0) frame = Surfaces.size()-1;
+  println("Frame: "+frame);
 } //_CODE_:btnVideoLeft:930974:
 
 public void btnVideoPlayPause_handler(GImageButton source, GEvent event) { //_CODE_:btnVideoPlauPause:272221:
   println("btnVideoPlauPause - GImageButton >> GEvent." + event + " @ " + millis());
+  if(play == 1){
+    play = 0; 
+    println("STOP");
+  }else{
+    play = 1;
+    println("PLAY");
+  }
 } //_CODE_:btnVideoPlauPause:272221:
 
 public void btnVideoRight_handler(GImageButton source, GEvent event) { //_CODE_:btnVideoRight:697452:
   println("btnVideoRight - GImageButton >> GEvent." + event + " @ " + millis());
+  frame++;
+  if(frame>=Surfaces.size()) frame = 0;
+  println("Frame: "+frame);
 } //_CODE_:btnVideoRight:697452:
 
 public void btnVideoClose_handler(GButton source, GEvent event) { //_CODE_:btnVideoClose:541193:

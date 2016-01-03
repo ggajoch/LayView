@@ -117,8 +117,7 @@ int play = 1;
 long lastMillis = 0;
 
 void draw()  { 
-  if(play == 0) return;
-  
+    
   background(0.5);
   
   scale(200);
@@ -132,7 +131,7 @@ void draw()  {
   }
   if((millis()-lastMillis)>=frameDelayMs){
     lastMillis=millis();
-    frame++;
+    if(play != 0) frame++;
     if(frame>=Surfaces.size()){
       frame = 0;
       if(record == 1){
