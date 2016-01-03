@@ -93,11 +93,11 @@ void showFiles(List<File> files) {
       Surfaces.get(Surfaces.size()-1).gradientMakers.add(gradientMaker);
       
       
-      /*gradientMaker = new Gradient();
+      gradientMaker = new Gradient();
       gradientMaker.points = gradients.getList(1);
       gradientMaker.reference = gradients.getReference(1);  
       
-      Surfaces.get(Surfaces.size()-1).gradientMakers.add(gradientMaker);*/
+      Surfaces.get(Surfaces.size()-1).gradientMakers.add(gradientMaker);
       
       
       Surfaces.get(Surfaces.size()-1).gradientMaxFind();
