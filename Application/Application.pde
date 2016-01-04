@@ -60,10 +60,6 @@ void showFiles(List<File> files) {
       print("Parsing file:");
       println(file);
       
-      if(Surfaces.size()>0){
-        //Surfaces.remove(0);
-      }
-      
       Surfaces.add(new ColourSurface((float)parser.segments.get(0).header.getDouble("xstepsize")*pitchScale,
       (float)parser.segments.get(0).header.getDouble("ystepsize")*pitchScale,
       (float)parser.segments.get(0).header.getDouble("zstepsize")*pitchScale,lengthScale));
