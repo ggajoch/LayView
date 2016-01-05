@@ -60,24 +60,19 @@ void showFiles(List<File> files) {
       print("Parsing file:");
       println(file);
       
-      Surfaces.add(new ColourSurface((float)parser.segments.get(0).header.getDouble("xstepsize")*pitchScale,
-      (float)parser.segments.get(0).header.getDouble("ystepsize")*pitchScale,
-      (float)parser.segments.get(0).header.getDouble("zstepsize")*pitchScale,lengthScale));
+      Surfaces.add(new ColourSurface((float)parser.segments.get(0).header.getDouble("xstepsize"),
+      (float)parser.segments.get(0).header.getDouble("ystepsize"),
+      (float)parser.segments.get(0).header.getDouble("zstepsize"),lengthScale));
       
-      //print();
       ArrayList<PointVector> pp = parser.segments.get(0).data.points;
       for( PointVector p: pp ) {
       
-      p.position.x *= pitchScale;
-      p.position.y *= pitchScale;
-      p.position.z *= pitchScale;
-      
-      p.rgbcolor.x = 0;
-      p.rgbcolor.y = 1;
-      p.rgbcolor.z = 0;
-      
-      
-      if(p.vector.module()>minimumDisplay) Surfaces.get(Surfaces.size()-1).addPoint(p);
+        p.rgbcolor.x = 0;
+        p.rgbcolor.y = 1;
+        p.rgbcolor.z = 0;
+        
+        
+        if(p.vector.module()>minimumDisplay) Surfaces.get(Surfaces.size()-1).addPoint(p);
       
       }
       
@@ -98,6 +93,8 @@ void showFiles(List<File> files) {
       
       Surfaces.get(Surfaces.size()-1).gradientMaxFind();
       Surfaces.get(Surfaces.size()-1).colourPrepare();
+      
+      Surfaces.get(Surfaces.size()-1).setPitchScale((float)display_options_manager.getScaleValues());
       
       Surfaces.get(Surfaces.size()-1).translatePoints(Surfaces.get(Surfaces.size()-1).max.add(Surfaces.get(Surfaces.size()-1).min).multiplyNumber(-0.5));
     }
@@ -140,7 +137,9 @@ void draw()  {
  
   synchronized(mutex) {
     if( Surfaces.size() >0 ) {
+      Surfaces.get(frame).setPitchScale((float)display_options_manager.getScaleValues());
       if(display_options_manager.isVectors()) {
+        Surfaces.get(frame).setVectorScale((float)display_options_manager.getArrowScale());
         Surfaces.get(frame).drawVectorsVolume();
       } else {
         Surfaces.get(frame).drawBox();

@@ -1,5 +1,6 @@
 class Surface{
   public float pitch_x, pitch_y, pitch_z;
+  public float pitchScale;
   
   public ArrayList<PointVector> points;
   
@@ -12,6 +13,7 @@ class Surface{
     points = new ArrayList<PointVector>();
     min = new PointVector();
     max = new PointVector();
+    pitchScale = 1.0;
   }
   
   Surface(){
@@ -21,6 +23,11 @@ class Surface{
     points = new ArrayList<PointVector>();
     min = new PointVector();
     max = new PointVector();
+    pitchScale = 1.0;
+  }
+  
+  void setPitchScale(float scale){
+    this.pitchScale = scale;
   }
   
   void addPoint(DVector position, DVector vector, FVector rgbcolor){
@@ -115,35 +122,35 @@ class Surface{
     beginShape(QUADS);
     for(PointVector point : points){
       fill(point.rgbcolor.x, point.rgbcolor.y, point.rgbcolor.z);
-      vertex((float)point.position.x-pitch_x, (float)point.position.y+pitch_y, (float)point.position.z+pitch_z);
-      vertex((float)point.position.x+pitch_x, (float)point.position.y+pitch_y, (float)point.position.z+pitch_z);
-      vertex((float)point.position.x+pitch_x, (float)point.position.y-pitch_y, (float)point.position.z+pitch_z);
-      vertex((float)point.position.x-pitch_x, (float)point.position.y-pitch_y, (float)point.position.z+pitch_z);
+      vertex(((float)point.position.x-pitch_x)*this.pitchScale, ((float)point.position.y+pitch_y)*this.pitchScale, ((float)point.position.z+pitch_z)*this.pitchScale);
+      vertex(((float)point.position.x+pitch_x)*this.pitchScale, ((float)point.position.y+pitch_y)*this.pitchScale, ((float)point.position.z+pitch_z)*this.pitchScale);
+      vertex(((float)point.position.x+pitch_x)*this.pitchScale, ((float)point.position.y-pitch_y)*this.pitchScale, ((float)point.position.z+pitch_z)*this.pitchScale);
+      vertex(((float)point.position.x-pitch_x)*this.pitchScale, ((float)point.position.y-pitch_y)*this.pitchScale, ((float)point.position.z+pitch_z)*this.pitchScale);
       
-      vertex((float)point.position.x+pitch_x, (float)point.position.y+pitch_y, (float)point.position.z+pitch_z);
-      vertex((float)point.position.x+pitch_x, (float)point.position.y+pitch_y, (float)point.position.z-pitch_z);
-      vertex((float)point.position.x+pitch_x, (float)point.position.y-pitch_y, (float)point.position.z-pitch_z);
-      vertex((float)point.position.x+pitch_x, (float)point.position.y-pitch_y, (float)point.position.z+pitch_z);
+      vertex(((float)point.position.x+pitch_x)*this.pitchScale, ((float)point.position.y+pitch_y)*this.pitchScale, ((float)point.position.z+pitch_z)*this.pitchScale);
+      vertex(((float)point.position.x+pitch_x)*this.pitchScale, ((float)point.position.y+pitch_y)*this.pitchScale, ((float)point.position.z-pitch_z)*this.pitchScale);
+      vertex(((float)point.position.x+pitch_x)*this.pitchScale, ((float)point.position.y-pitch_y)*this.pitchScale, ((float)point.position.z-pitch_z)*this.pitchScale);
+      vertex(((float)point.position.x+pitch_x)*this.pitchScale, ((float)point.position.y-pitch_y)*this.pitchScale, ((float)point.position.z+pitch_z)*this.pitchScale);
       
-      vertex((float)point.position.x+pitch_x, (float)point.position.y+pitch_y, (float)point.position.z-pitch_z);
-      vertex((float)point.position.x-pitch_x, (float)point.position.y+pitch_y, (float)point.position.z-pitch_z);
-      vertex((float)point.position.x-pitch_x, (float)point.position.y-pitch_y, (float)point.position.z-pitch_z);
-      vertex((float)point.position.x+pitch_x, (float)point.position.y-pitch_y, (float)point.position.z-pitch_z);
+      vertex(((float)point.position.x+pitch_x)*this.pitchScale, ((float)point.position.y+pitch_y)*this.pitchScale, ((float)point.position.z-pitch_z)*this.pitchScale);
+      vertex(((float)point.position.x-pitch_x)*this.pitchScale, ((float)point.position.y+pitch_y)*this.pitchScale, ((float)point.position.z-pitch_z)*this.pitchScale);
+      vertex(((float)point.position.x-pitch_x)*this.pitchScale, ((float)point.position.y-pitch_y)*this.pitchScale, ((float)point.position.z-pitch_z)*this.pitchScale);
+      vertex(((float)point.position.x+pitch_x)*this.pitchScale, ((float)point.position.y-pitch_y)*this.pitchScale, ((float)point.position.z-pitch_z)*this.pitchScale);
       
-      vertex((float)point.position.x-pitch_x, (float)point.position.y+pitch_y, (float)point.position.z-pitch_z);
-      vertex((float)point.position.x-pitch_x, (float)point.position.y+pitch_y, (float)point.position.z+pitch_z);
-      vertex((float)point.position.x-pitch_x, (float)point.position.y-pitch_y, (float)point.position.z+pitch_z);
-      vertex((float)point.position.x-pitch_x, (float)point.position.y-pitch_y, (float)point.position.z-pitch_z);
+      vertex(((float)point.position.x-pitch_x)*this.pitchScale, ((float)point.position.y+pitch_y)*this.pitchScale, ((float)point.position.z-pitch_z)*this.pitchScale);
+      vertex(((float)point.position.x-pitch_x)*this.pitchScale, ((float)point.position.y+pitch_y)*this.pitchScale, ((float)point.position.z+pitch_z)*this.pitchScale);
+      vertex(((float)point.position.x-pitch_x)*this.pitchScale, ((float)point.position.y-pitch_y)*this.pitchScale, ((float)point.position.z+pitch_z)*this.pitchScale);
+      vertex(((float)point.position.x-pitch_x)*this.pitchScale, ((float)point.position.y-pitch_y)*this.pitchScale, ((float)point.position.z-pitch_z)*this.pitchScale);
       
-      vertex((float)point.position.x-pitch_x, (float)point.position.y+pitch_y, (float)point.position.z-pitch_z);
-      vertex((float)point.position.x+pitch_x, (float)point.position.y+pitch_y, (float)point.position.z-pitch_z);
-      vertex((float)point.position.x+pitch_x, (float)point.position.y+pitch_y, (float)point.position.z+pitch_z);
-      vertex((float)point.position.x-pitch_x, (float)point.position.y+pitch_y, (float)point.position.z+pitch_z);
+      vertex(((float)point.position.x-pitch_x)*this.pitchScale, ((float)point.position.y+pitch_y)*this.pitchScale, ((float)point.position.z-pitch_z)*this.pitchScale);
+      vertex(((float)point.position.x+pitch_x)*this.pitchScale, ((float)point.position.y+pitch_y)*this.pitchScale, ((float)point.position.z-pitch_z)*this.pitchScale);
+      vertex(((float)point.position.x+pitch_x)*this.pitchScale, ((float)point.position.y+pitch_y)*this.pitchScale, ((float)point.position.z+pitch_z)*this.pitchScale);
+      vertex(((float)point.position.x-pitch_x)*this.pitchScale, ((float)point.position.y+pitch_y)*this.pitchScale, ((float)point.position.z+pitch_z)*this.pitchScale);
       
-      vertex((float)point.position.x-pitch_x, (float)point.position.y-pitch_y, (float)point.position.z-pitch_z);
-      vertex((float)point.position.x+pitch_x, (float)point.position.y-pitch_y, (float)point.position.z-pitch_z);
-      vertex((float)point.position.x+pitch_x, (float)point.position.y-pitch_y, (float)point.position.z+pitch_z);
-      vertex((float)point.position.x-pitch_x, (float)point.position.y-pitch_y, (float)point.position.z+pitch_z);
+      vertex(((float)point.position.x-pitch_x)*this.pitchScale, ((float)point.position.y-pitch_y)*this.pitchScale, ((float)point.position.z-pitch_z)*this.pitchScale);
+      vertex(((float)point.position.x+pitch_x)*this.pitchScale, ((float)point.position.y-pitch_y)*this.pitchScale, ((float)point.position.z-pitch_z)*this.pitchScale);
+      vertex(((float)point.position.x+pitch_x)*this.pitchScale, ((float)point.position.y-pitch_y)*this.pitchScale, ((float)point.position.z+pitch_z)*this.pitchScale);
+      vertex(((float)point.position.x-pitch_x)*this.pitchScale, ((float)point.position.y-pitch_y)*this.pitchScale, ((float)point.position.z+pitch_z)*this.pitchScale);
     }
     endShape(); 
   }

@@ -38,6 +38,10 @@ class VectorSurface extends Surface{
     vector_size = size;
   }
   
+  void setVectorScale(float scale){
+    vector_scale = scale;
+  }
+  
   void drawCylinder(float topRadius, float bottomRadius, float tall, float offset, int sides) {
     float angle = 0;
     float angleIncrement = TWO_PI / sides;
@@ -79,7 +83,7 @@ class VectorSurface extends Surface{
   }
   
   void drawVector(float x1, float y1, float z1, float x2, float y2, float z2){
-    float len = sqrt(pow((x2), 2) + pow((y2), 2) + pow((z2), 2)) * vector_scale;
+    float len = sqrt(pow((x2), 2) + pow((y2), 2) + pow((z2), 2)) * this.vector_scale;
     pushMatrix();
     translate(x1, y1, z1);
     
@@ -96,7 +100,7 @@ class VectorSurface extends Surface{
   void drawVectorsVolume(){
     for(PointVector point : points){
       fill(point.rgbcolor.x, point.rgbcolor.y, point.rgbcolor.z);
-      this.drawVector((float)point.position.x, (float)point.position.y, (float)point.position.z, (float)point.vector.x, (float)point.vector.y, (float)point.vector.z);
+      this.drawVector((float)point.position.x*this.pitchScale, (float)point.position.y*this.pitchScale, (float)point.position.z*this.pitchScale, (float)point.vector.x, (float)point.vector.y, (float)point.vector.z);
     }
   }
 }
