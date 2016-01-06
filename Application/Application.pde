@@ -1,5 +1,8 @@
 /**
- * LayView - application to display OOMF 
+ * LayView - application to display OOMF files as 3D visualisation
+ * Authors:
+ * Grzegorz Gajoch
+ * Piotr Rzeszut
  * 
  */
 
@@ -120,8 +123,7 @@ void draw()  {
     lastMillis=millis();
     frame=0;
     record = 1;
-    /*export = new VideoExport();
-    export.cleanFolder();*/
+    //export object initialised in gui
     println("record started");
   }
   if((millis()-lastMillis)>=1000/FPS){
@@ -166,12 +168,5 @@ void draw()  {
   cam.endHUD();
   
   if(record == 1)export.saveVideoFrame();
-  
-  
-  /*if(frameCount<1024){
-    export.saveVideoFrame();
-  }else if(frameCount==1024){
-    export.closeVideo();
-  }*/
 
 } 
