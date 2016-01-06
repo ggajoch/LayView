@@ -7,7 +7,8 @@ public class DisplayOptionsManager {
                    ScaleValues;
     private int    FPS;
 
-    private boolean vectors;
+    private boolean vectors,
+                    gradient2_enable;
 
     public DisplayOptionsManager() {
         this.threshold = 0;
@@ -17,6 +18,7 @@ public class DisplayOptionsManager {
         this.ArrowTipRadius = 0.025;
         this.ScaleValues = 200000000.0;
         this.FPS = 50;
+        this.gradient2_enable = true;
     }
 
     private void updateField(GTextField field, double value) {
@@ -37,6 +39,7 @@ public class DisplayOptionsManager {
         updateField(valDisplayValues, ScaleValues);
         updateField(valDisplayTipRadius, ArrowTipRadius);
         valVideoFPS.setText(Integer.toString(FPS));
+        boxMainEnableGradient2.setSelected(gradient2_enable);
     }
 
     public void getFromDisplays() {
@@ -47,6 +50,7 @@ public class DisplayOptionsManager {
         ArrowTipRadius = getField(valDisplayTipRadius);
         ScaleValues = getField(valDisplayValues);
         FPS = Integer.valueOf(valVideoFPS.getText());
+        gradient2_enable = boxMainEnableGradient2.isSelected();
     }
 
     public void open() {
@@ -111,6 +115,14 @@ public class DisplayOptionsManager {
 
     public void setFPS(int fps) {
         FPS = fps;
+    }
+    
+    public boolean getGradient2_enable() {
+        return gradient2_enable;
+    }
+
+    public void setGradient2_enable(boolean Gradient2_enable) {
+        gradient2_enable = Gradient2_enable;
     }
     
     public boolean isVectors() {

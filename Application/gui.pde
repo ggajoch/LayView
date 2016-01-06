@@ -247,6 +247,11 @@ public void btnMainGradient2_handler(GButton source, GEvent event) { //_CODE_:bt
         gradients.edit(1);
 } //_CODE_:btnMainGradient2:361852:
 
+public void boxMainEnableGradient2_handler(GCheckbox source, GEvent event) { //_CODE_:boxMainEnableGradient2:636707:
+  println("boxMainEnableGradient2 - GCheckbox >> GEvent." + event + " @ " + millis());
+  display_options_manager.setGradient2_enable(source.isSelected());
+} //_CODE_:boxMainEnableGradient2:636707:
+
 
 
 // Create all the GUI controls. 
@@ -443,6 +448,12 @@ public void createGUI(){
   btnMainGradient2 = new GButton(MainWindow, 390, 70, 80, 30);
   btnMainGradient2.setText("Gradient 2");
   btnMainGradient2.addEventHandler(this, "btnMainGradient2_handler");
+  boxMainEnableGradient2 = new GCheckbox(MainWindow, 370, 70, 30, 30);
+  boxMainEnableGradient2.setTextAlign(GAlign.LEFT, GAlign.MIDDLE);
+  boxMainEnableGradient2.setText(". ");
+  boxMainEnableGradient2.setOpaque(false);
+  boxMainEnableGradient2.addEventHandler(this, "boxMainEnableGradient2_handler");
+  boxMainEnableGradient2.setSelected(true);
 }
 
 // Variable declarations 
@@ -507,3 +518,4 @@ GButton btnMainDisplayOption;
 GButton btnMainVideo; 
 GButton btnMainGradient1; 
 GButton btnMainGradient2; 
+GCheckbox boxMainEnableGradient2; 
