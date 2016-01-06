@@ -1,3 +1,4 @@
+import java.text.*;
 import g4p_controls.GTextField;
 import g4p_controls.GWindow;
 
@@ -17,7 +18,9 @@ public class DisplayOptionsManager {
     }
 
     private void updateField(GTextField field, double value) {
-        field.setText(Double.toString(value));
+        NumberFormat formatter = new DecimalFormat("0.######E0");
+        
+        field.setText(formatter.format(value));
     }
 
     private double getField(GTextField field) {
