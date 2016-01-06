@@ -164,7 +164,7 @@ synchronized public void VideoControlWindow_draw(PApplet appc, GWinData data) { 
 
 public void valVideoFPS_handler(GTextField source, GEvent event) { //_CODE_:valVideoFPS:260387:
   println("valVideoFPS - GTextField >> GEvent." + event + " @ " + millis());
-  FPS = Integer.valueOf(source.getText());
+  display_options_manager.setFPS(Integer.valueOf(source.getText()));
 } //_CODE_:valVideoFPS:260387:
 
 public void btnVideoExport_handler(GButton source, GEvent event) { //_CODE_:btnVideoExport:760889:
