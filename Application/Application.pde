@@ -17,6 +17,7 @@ float minimumDisplay = 0.0;
 
 int FPS = 50;
 FileView file_list;
+List<FrameText> frameTextList;
 
 GradientManager gradients;
 DisplayOptionsManager display_options_manager = new DisplayOptionsManager();
@@ -43,6 +44,7 @@ void setup()  {
   display_options_manager.updateDisplays();
   
   Surfaces = new ArrayList<ColourSurface>();
+  frameTextList = new ArrayList<FrameText>();
 } 
 Object mutex = new Object();
 
@@ -152,8 +154,15 @@ void draw()  {
   
   cam.beginHUD();
   //2D Overlay
-  textSize(32);
-  text(mouseX, 10, 30);
+  if( frameTextList.size() > 0){
+    for(FrameText text : frameTextList){
+      if(text.frame == frame){
+        textSize(text.size);
+        fill(text.r,text.g,text.b);
+        text(text.text, text.x, text.y);
+      }
+    }
+  }
   cam.endHUD();
   
   if(record == 1)export.saveVideoFrame();
