@@ -214,7 +214,7 @@ public void btnVideoCSV_handler(GButton source, GEvent event) { //_CODE_:btnVide
   FrameTextParser parser = new FrameTextParser();
   List<FrameText> list = parser.getFromCSV();
   for(FrameText row : list) {
-    println(row.r + " " + row.g + " " + row.b + " " + row.size + " " + row.x + " " + row.y + " " + row.text);
+    println(row.r + " " + row.g + " " + row.b + " " + row.size + " " + row.x + " " + row.y + " " + row.text + " " + row.frame);
   }
 } //_CODE_:btnVideoCSV:805648:
 

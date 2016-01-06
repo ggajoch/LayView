@@ -1,4 +1,6 @@
 public class FrameText {
     public String text;
-    public Double x, y, size, r, g, b;
+    public Float x, y, size;
+    public Float  r, g, b;
+    public Integer frame;
 }

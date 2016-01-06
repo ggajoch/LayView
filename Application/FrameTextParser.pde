@@ -10,15 +10,16 @@ public class FrameTextParser {
     }
     private FrameText parseRow(TableRow row) {
         FrameText rowFrame = new FrameText();
-        rowFrame.r = row.getDouble("r");
-        rowFrame.g = row.getDouble("g");
-        rowFrame.b = row.getDouble("b");
+        rowFrame.r = row.getFloat("r");
+        rowFrame.g = row.getFloat("g");
+        rowFrame.b = row.getFloat("b");
 
         rowFrame.text = row.getString("text");
 
-        rowFrame.size = row.getDouble("frame");
-        rowFrame.x = row.getDouble("x");
-        rowFrame.y = row.getDouble("y");
+        rowFrame.frame = row.getInt("frame");
+        rowFrame.size = row.getFloat("size");
+        rowFrame.x = row.getFloat("x");
+        rowFrame.y = row.getFloat("y");
         return rowFrame;
     }
     public List<FrameText> getFromCSV() {
