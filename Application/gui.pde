@@ -256,7 +256,7 @@ public void createGUI(){
   G4P.setGlobalColorScheme(GCScheme.BLUE_SCHEME);
   G4P.setCursor(ARROW);
   surface.setTitle("Sketch Window");
-  GradientEditWindow = GWindow.getWindow(this, "Gradient Edit", 200, 200, 500, 300, JAVA2D);
+  GradientEditWindow = GWindow.getWindow(this, "Gradient Edit", 200, 200, 460, 260, JAVA2D);
   GradientEditWindow.setActionOnClose(G4P.CLOSE_WINDOW);
   GradientEditWindow.addDrawHandler(this, "GradientEditWindow_draw");
   padGradGradPrev = new GSketchPad(GradientEditWindow, 400, 10, 40, 180);
