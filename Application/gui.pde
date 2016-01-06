@@ -209,6 +209,15 @@ public void btnVideoClose_handler(GButton source, GEvent event) { //_CODE_:btnVi
    VideoControlWindow.setVisible(false);
 } //_CODE_:btnVideoClose:541193:
 
+public void btnVideoCSV_handler(GButton source, GEvent event) { //_CODE_:btnVideoCSV:805648:
+  println("btnVideoCSV - GButton >> GEvent." + event + " @ " + millis());
+  FrameTextParser parser = new FrameTextParser();
+  List<FrameText> list = parser.getFromCSV();
+  for(FrameText row : list) {
+    println(row.r + " " + row.g + " " + row.b + " " + row.size + " " + row.x + " " + row.y + " " + row.text);
+  }
+} //_CODE_:btnVideoCSV:805648:
+
 synchronized public void MainWindow_draw(PApplet appc, GWinData data) { //_CODE_:MainWindow:899620:
   appc.background(230);
 } //_CODE_:MainWindow:899620:
@@ -247,7 +256,7 @@ public void createGUI(){
   G4P.setGlobalColorScheme(GCScheme.BLUE_SCHEME);
   G4P.setCursor(ARROW);
   surface.setTitle("Sketch Window");
-  GradientEditWindow = GWindow.getWindow(this, "Gradient Edit", 200, 200, 500, 300, JAVA2D);
+  GradientEditWindow = GWindow.getWindow(this, "Gradient Edit", 200, 200, 460, 260, JAVA2D);
   GradientEditWindow.setActionOnClose(G4P.CLOSE_WINDOW);
   GradientEditWindow.addDrawHandler(this, "GradientEditWindow_draw");
   padGradGradPrev = new GSketchPad(GradientEditWindow, 400, 10, 40, 180);
@@ -394,10 +403,10 @@ public void createGUI(){
   btnDisplayClose.addEventHandler(this, "btnDisplayClose_handler");
   VideoControlWindow = GWindow.getWindow(this, "Video Control", 200, 200, 410, 250, JAVA2D);
   VideoControlWindow.addDrawHandler(this, "VideoControlWindow_draw");
-  labelVideoFPS = new GLabel(VideoControlWindow, 110, 30, 80, 20);
+  labelVideoFPS = new GLabel(VideoControlWindow, 20, 20, 80, 20);
   labelVideoFPS.setText("FPS");
   labelVideoFPS.setOpaque(false);
-  valVideoFPS = new GTextField(VideoControlWindow, 110, 50, 80, 20, G4P.SCROLLBARS_NONE);
+  valVideoFPS = new GTextField(VideoControlWindow, 20, 40, 80, 20, G4P.SCROLLBARS_NONE);
   valVideoFPS.setOpaque(true);
   valVideoFPS.addEventHandler(this, "valVideoFPS_handler");
   btnVideoExport = new GButton(VideoControlWindow, 310, 20, 80, 60);
@@ -411,7 +420,11 @@ public void createGUI(){
   btnVideoRight.addEventHandler(this, "btnVideoRight_handler");
   btnVideoClose = new GButton(VideoControlWindow, 20, 200, 370, 30);
   btnVideoClose.setText("Close");
+  btnVideoClose.setLocalColorScheme(GCScheme.GREEN_SCHEME);
   btnVideoClose.addEventHandler(this, "btnVideoClose_handler");
+  btnVideoCSV = new GButton(VideoControlWindow, 210, 20, 80, 60);
+  btnVideoCSV.setText("Load CSV");
+  btnVideoCSV.addEventHandler(this, "btnVideoCSV_handler");
   MainWindow = GWindow.getWindow(this, "OMF Viewer", 200, 200, 500, 120, JAVA2D);
   MainWindow.setActionOnClose(G4P.EXIT_APP);
   MainWindow.addDrawHandler(this, "MainWindow_draw");
@@ -487,6 +500,7 @@ GImageButton btnVideoLeft;
 GImageButton btnVideoPlauPause; 
 GImageButton btnVideoRight; 
 GButton btnVideoClose; 
+GButton btnVideoCSV; 
 GWindow MainWindow;
 GButton btnMainFileInput; 
 GButton btnMainDisplayOption; 
