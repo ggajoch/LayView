@@ -140,6 +140,9 @@ void draw()  {
       Surfaces.get(frame).setPitchScale((float)display_options_manager.getScaleValues());
       if(display_options_manager.isVectors()) {
         Surfaces.get(frame).setVectorScale((float)display_options_manager.getArrowScale());
+        Surfaces.get(frame).setVectorWidth((float)display_options_manager.getArrowWidth()*0.01);//correct in gui default values need to be applied
+        Surfaces.get(frame).setTip((float)display_options_manager.getArrowTip());
+        Surfaces.get(frame).setTipRadius((float)display_options_manager.getArrowTipRadius());
         Surfaces.get(frame).drawVectorsVolume();
       } else {
         Surfaces.get(frame).drawBox();

@@ -54,6 +54,18 @@ class VectorSurface extends Surface{
     vector_scale = scale;
   }
   
+  void setVectorWidth(float scale){
+    vectorWidth = scale;
+  }
+  
+  void setTip(float scale){
+    tip = scale;
+  }
+  
+  void setTipRadius(float scale){
+    tipRadius = scale;
+  }
+  
   void drawCylinder(float topRadius, float bottomRadius, float tall, float offset, int sides) {
     float angle = 0;
     float angleIncrement = TWO_PI / sides;
