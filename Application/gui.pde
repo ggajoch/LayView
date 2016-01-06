@@ -148,10 +148,10 @@ public void valDisplayValues_handler(GTextField source, GEvent event) { //_CODE_
         display_options_manager.setScaleValues(Double.valueOf(source.getText()));
 } //_CODE_:valDisplayValues:471739:
 
-public void valDisplayXYZ_handler(GTextField source, GEvent event) { //_CODE_:valDisplayXYZ:506724:
+public void valDisplayTipRadius_handler(GTextField source, GEvent event) { //_CODE_:valDisplayTipRadius:506724:
   println("textfield5 - GTextField >> GEvent." + event + " @ " + millis());
-        display_options_manager.setScaleXYZ(Double.valueOf(source.getText()));
-} //_CODE_:valDisplayXYZ:506724:
+        display_options_manager.setArrowTipRadius((Double.valueOf(source.getText())));
+} //_CODE_:valDisplayTipRadius:506724:
 
 public void btnDisplayClose_handler(GButton source, GEvent event) { //_CODE_:btnDisplayClose:715831:
   println("btnDisplayClose - GButton >> GEvent." + event + " @ " + millis());
@@ -336,15 +336,15 @@ public void createGUI(){
   btnInputClose.setTextBold();
   btnInputClose.setLocalColorScheme(GCScheme.GREEN_SCHEME);
   btnInputClose.addEventHandler(this, "btnInputClose_handler");
-  DisplayOptionsWindow = GWindow.getWindow(this, "Display Options", 200, 200, 500, 500, JAVA2D);
+  DisplayOptionsWindow = GWindow.getWindow(this, "Display Options", 200, 200, 460, 290, JAVA2D);
   DisplayOptionsWindow.addDrawHandler(this, "DisplayOptionsWindow_draw");
   groupDisplayDisplayType = new GToggleGroup();
-  optDisplayTypeBox = new GOption(DisplayOptionsWindow, 360, 20, 120, 20);
+  optDisplayTypeBox = new GOption(DisplayOptionsWindow, 320, 20, 120, 20);
   optDisplayTypeBox.setTextAlign(GAlign.LEFT, GAlign.MIDDLE);
   optDisplayTypeBox.setText("Box");
   optDisplayTypeBox.setOpaque(false);
   optDisplayTypeBox.addEventHandler(this, "optDisplayTypeBox_handler");
-  optDisplayTypeVectors = new GOption(DisplayOptionsWindow, 360, 40, 120, 20);
+  optDisplayTypeVectors = new GOption(DisplayOptionsWindow, 320, 40, 120, 20);
   optDisplayTypeVectors.setTextAlign(GAlign.LEFT, GAlign.MIDDLE);
   optDisplayTypeVectors.setText("Vectors");
   optDisplayTypeVectors.setOpaque(false);
@@ -352,43 +352,43 @@ public void createGUI(){
   groupDisplayDisplayType.addControl(optDisplayTypeBox);
   optDisplayTypeBox.setSelected(true);
   groupDisplayDisplayType.addControl(optDisplayTypeVectors);
-  labelDisplayThreshold = new GLabel(DisplayOptionsWindow, 190, 20, 120, 20);
+  labelDisplayThreshold = new GLabel(DisplayOptionsWindow, 20, 20, 120, 20);
   labelDisplayThreshold.setText("Display threshold");
   labelDisplayThreshold.setOpaque(false);
-  valDisplayThreshold = new GTextField(DisplayOptionsWindow, 190, 40, 120, 30, G4P.SCROLLBARS_NONE);
+  valDisplayThreshold = new GTextField(DisplayOptionsWindow, 20, 40, 120, 30, G4P.SCROLLBARS_NONE);
   valDisplayThreshold.setOpaque(true);
   valDisplayThreshold.addEventHandler(this, "valDisplayThreshold_handler");
-  labelDisplayScale = new GLabel(DisplayOptionsWindow, 50, 220, 80, 20);
-  labelDisplayScale.setText("Scale");
+  labelDisplayScale = new GLabel(DisplayOptionsWindow, 20, 100, 120, 30);
+  labelDisplayScale.setText("Length scale");
   labelDisplayScale.setOpaque(false);
-  valDisplayScale = new GTextField(DisplayOptionsWindow, 10, 250, 160, 30, G4P.SCROLLBARS_NONE);
+  valDisplayScale = new GTextField(DisplayOptionsWindow, 140, 100, 160, 30, G4P.SCROLLBARS_NONE);
   valDisplayScale.setOpaque(true);
   valDisplayScale.addEventHandler(this, "valDisplayScale_handler");
-  valDisplayWidth = new GTextField(DisplayOptionsWindow, 170, 250, 160, 30, G4P.SCROLLBARS_NONE);
+  valDisplayWidth = new GTextField(DisplayOptionsWindow, 140, 130, 160, 30, G4P.SCROLLBARS_NONE);
   valDisplayWidth.setOpaque(true);
   valDisplayWidth.addEventHandler(this, "valDisplayWidth_handler");
-  labelDisplayWidth = new GLabel(DisplayOptionsWindow, 200, 220, 80, 20);
+  labelDisplayWidth = new GLabel(DisplayOptionsWindow, 20, 130, 120, 30);
   labelDisplayWidth.setText("Width");
   labelDisplayWidth.setOpaque(false);
-  valDisplayTip = new GTextField(DisplayOptionsWindow, 330, 250, 160, 30, G4P.SCROLLBARS_NONE);
+  valDisplayTip = new GTextField(DisplayOptionsWindow, 140, 160, 160, 30, G4P.SCROLLBARS_NONE);
   valDisplayTip.setOpaque(true);
   valDisplayTip.addEventHandler(this, "valDisplayTip_handler");
-  labelDisplayTip = new GLabel(DisplayOptionsWindow, 370, 220, 80, 20);
+  labelDisplayTip = new GLabel(DisplayOptionsWindow, 20, 160, 120, 30);
   labelDisplayTip.setText("Tip");
   labelDisplayTip.setOpaque(false);
-  labelDisplayValues = new GLabel(DisplayOptionsWindow, 120, 330, 80, 20);
-  labelDisplayValues.setText("Values");
+  labelDisplayValues = new GLabel(DisplayOptionsWindow, 140, 20, 160, 20);
+  labelDisplayValues.setText("Scale");
   labelDisplayValues.setOpaque(false);
-  valDisplayValues = new GTextField(DisplayOptionsWindow, 90, 350, 160, 30, G4P.SCROLLBARS_NONE);
+  valDisplayValues = new GTextField(DisplayOptionsWindow, 140, 40, 160, 30, G4P.SCROLLBARS_NONE);
   valDisplayValues.setOpaque(true);
   valDisplayValues.addEventHandler(this, "valDisplayValues_handler");
-  valDisplayXYZ = new GTextField(DisplayOptionsWindow, 250, 350, 160, 30, G4P.SCROLLBARS_NONE);
-  valDisplayXYZ.setOpaque(true);
-  valDisplayXYZ.addEventHandler(this, "valDisplayXYZ_handler");
-  labelDisplayXYZ = new GLabel(DisplayOptionsWindow, 290, 330, 80, 20);
-  labelDisplayXYZ.setText("XYZ");
+  valDisplayTipRadius = new GTextField(DisplayOptionsWindow, 140, 190, 160, 30, G4P.SCROLLBARS_NONE);
+  valDisplayTipRadius.setOpaque(true);
+  valDisplayTipRadius.addEventHandler(this, "valDisplayTipRadius_handler");
+  labelDisplayXYZ = new GLabel(DisplayOptionsWindow, 20, 190, 120, 30);
+  labelDisplayXYZ.setText("TipRadius");
   labelDisplayXYZ.setOpaque(false);
-  btnDisplayClose = new GButton(DisplayOptionsWindow, 90, 420, 320, 30);
+  btnDisplayClose = new GButton(DisplayOptionsWindow, 80, 240, 320, 30);
   btnDisplayClose.setText("Close");
   btnDisplayClose.setLocalColorScheme(GCScheme.GREEN_SCHEME);
   btnDisplayClose.addEventHandler(this, "btnDisplayClose_handler");
@@ -476,7 +476,7 @@ GTextField valDisplayTip;
 GLabel labelDisplayTip; 
 GLabel labelDisplayValues; 
 GTextField valDisplayValues; 
-GTextField valDisplayXYZ; 
+GTextField valDisplayTipRadius; 
 GLabel labelDisplayXYZ; 
 GButton btnDisplayClose; 
 GWindow VideoControlWindow;

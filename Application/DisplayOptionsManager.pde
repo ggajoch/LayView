@@ -2,8 +2,8 @@ import g4p_controls.GTextField;
 import g4p_controls.GWindow;
 
 public class DisplayOptionsManager {
-    private double threshold, ArrowScale, ArrowWidth, ArrowTip,
-                   ScaleValues, ScaleXYZ;
+    private double threshold, ArrowScale, ArrowWidth, ArrowTip, ArrowTipRadius,
+                   ScaleValues;
 
     private boolean vectors;
 
@@ -11,9 +11,9 @@ public class DisplayOptionsManager {
         this.threshold = 0;
         this.ArrowScale = 0.2/1000000.0;
         this.ArrowWidth = 1;
-        this.ArrowTip = 1;
+        this.ArrowTip = 0.0375;
+        this.ArrowTipRadius = 0.025;
         this.ScaleValues = 200000000.0;
-        this.ScaleXYZ = 1;
     }
 
     private void updateField(GTextField field, double value) {
@@ -30,7 +30,7 @@ public class DisplayOptionsManager {
         updateField(valDisplayWidth, ArrowWidth);
         updateField(valDisplayTip, ArrowTip);
         updateField(valDisplayValues, ScaleValues);
-        updateField(valDisplayXYZ, ScaleXYZ);
+        updateField(valDisplayTipRadius, ArrowTipRadius);
     }
 
     public void getFromDisplays() {
@@ -38,8 +38,8 @@ public class DisplayOptionsManager {
         ArrowScale = getField(valDisplayScale);
         ArrowWidth = getField(valDisplayWidth);
         ArrowTip = getField(valDisplayTip);
+        ArrowTipRadius = getField(valDisplayTipRadius);
         ScaleValues = getField(valDisplayValues);
-        ScaleXYZ = getField(valDisplayXYZ);
     }
 
     public void open() {
@@ -90,12 +90,12 @@ public class DisplayOptionsManager {
         ScaleValues = scaleValues;
     }
 
-    public double getScaleXYZ() {
-        return ScaleXYZ;
+    public double getArrowTipRadius() {
+        return ArrowTipRadius;
     }
 
-    public void setScaleXYZ(double scaleXYZ) {
-        ScaleXYZ = scaleXYZ;
+    public void setArrowTipRadius(double arrowTipRadius) {
+        ArrowTipRadius = arrowTipRadius;
     }
 
     public boolean isVectors() {
