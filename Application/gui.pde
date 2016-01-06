@@ -164,7 +164,7 @@ synchronized public void VideoControlWindow_draw(PApplet appc, GWinData data) { 
 
 public void valVideoFPS_handler(GTextField source, GEvent event) { //_CODE_:valVideoFPS:260387:
   println("valVideoFPS - GTextField >> GEvent." + event + " @ " + millis());
-  FPS = Integer.valueOf(source.getText());
+  display_options_manager.setFPS(Integer.valueOf(source.getText()));
 } //_CODE_:valVideoFPS:260387:
 
 public void btnVideoExport_handler(GButton source, GEvent event) { //_CODE_:btnVideoExport:760889:
@@ -246,6 +246,11 @@ public void btnMainGradient2_handler(GButton source, GEvent event) { //_CODE_:bt
   println("btnMainGradient2 - GButton >> GEvent." + event + " @ " + millis());
         gradients.edit(1);
 } //_CODE_:btnMainGradient2:361852:
+
+public void boxMainEnableGradient2_handler(GCheckbox source, GEvent event) { //_CODE_:boxMainEnableGradient2:636707:
+  println("boxMainEnableGradient2 - GCheckbox >> GEvent." + event + " @ " + millis());
+  display_options_manager.setGradient2_enable(source.isSelected());
+} //_CODE_:boxMainEnableGradient2:636707:
 
 
 
@@ -443,6 +448,12 @@ public void createGUI(){
   btnMainGradient2 = new GButton(MainWindow, 390, 70, 80, 30);
   btnMainGradient2.setText("Gradient 2");
   btnMainGradient2.addEventHandler(this, "btnMainGradient2_handler");
+  boxMainEnableGradient2 = new GCheckbox(MainWindow, 370, 70, 30, 30);
+  boxMainEnableGradient2.setTextAlign(GAlign.LEFT, GAlign.MIDDLE);
+  boxMainEnableGradient2.setText(". ");
+  boxMainEnableGradient2.setOpaque(false);
+  boxMainEnableGradient2.addEventHandler(this, "boxMainEnableGradient2_handler");
+  boxMainEnableGradient2.setSelected(true);
 }
 
 // Variable declarations 
@@ -507,3 +518,4 @@ GButton btnMainDisplayOption;
 GButton btnMainVideo; 
 GButton btnMainGradient1; 
 GButton btnMainGradient2; 
+GCheckbox boxMainEnableGradient2; 
