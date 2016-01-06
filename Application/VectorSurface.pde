@@ -1,41 +1,53 @@
 class VectorSurface extends Surface{
   public float vector_scale;
-  public float vector_size;
+  public float vectorWidth;
+  public float tipRadius;
+  public float tip;
   
   VectorSurface(){
     super();
     vector_scale = 1.0;
-    vector_size = 0.025;
+    vectorWidth = 0.025;
   }
   
   VectorSurface(float scale){
     super();
     vector_scale = scale;
-    vector_size = 0.025;
+    vectorWidth = 0.0125;
+    tipRadius = 0.025;
+    tip = 0.0375;
   }
   
   VectorSurface(float scale, float size){
     super();
     vector_scale = scale;
-    vector_size = size;
+    vectorWidth = size;
+    tipRadius = 0.025;
+    tip = 0.0375;
   }
   
   VectorSurface(float px, float py, float pz){
     super(px, py, pz);
     vector_scale = 1.0;
-    vector_size = 0.025;
+    vectorWidth = 0.0125;
+    tipRadius = 0.025;
+    tip = 0.0375;
   }
   
   VectorSurface(float px, float py, float pz, float scale){
     super(px, py, pz);
     vector_scale = scale;
-    vector_size = 0.025;
+    vectorWidth = 0.0125;
+    tipRadius = 0.025;
+    tip = 0.0375;
   }
   
   VectorSurface(float px, float py, float pz, float scale, float size){
     super(px, py, pz);
     vector_scale = scale;
-    vector_size = size;
+    vectorWidth = size;
+    tipRadius = 0.025;
+    tip = 0.0375;
   }
   
   void setVectorScale(float scale){
@@ -90,8 +102,8 @@ class VectorSurface extends Surface{
     pushMatrix();
     rotateZ(atan2(-x2, y2)); //  in plane angle
     rotateX(atan2(z2, sqrt(pow((x2), 2) + pow((y2), 2)))); //  out of XY plane angle
-    this.drawCylinder(this.vector_size, 0, this.vector_size*1.5, len, 10); //  arrow
-    this.drawCylinder(this.vector_size/2.0, this.vector_size/2.0, len, 0,10); //  line
+    this.drawCylinder(this.tipRadius,                          0, this.tip, len, 10); //  arrow
+    this.drawCylinder(this.vectorWidth,  this.vectorWidth, len,                     0,  10); //  line
     popMatrix();
     
     popMatrix();
