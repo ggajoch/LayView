@@ -172,7 +172,7 @@ public void btnVideoExport_handler(GButton source, GEvent event) { //_CODE_:btnV
   String file_name = G4P.selectInput("Input Dialog", "mp4", "OMF file select");
   export = new VideoExport(file_name+".mp4");
   export.cleanFolder();
-  export.setFPS(FPS);
+  export.setFPS(display_options_manager.getFPS());
   record = 2;
   // coś tutaj?
   //może policzyć całkę?

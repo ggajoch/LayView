@@ -14,11 +14,6 @@ PeasyCam cam;
 volatile ArrayList<ColourSurface> Surfaces;
 VideoExport export;
 
-float pitchScale = 200000000.0;
-float lengthScale = 0.2/1000000.0;
-float minimumDisplay = 0.0;
-
-int FPS = 50;
 FileView file_list;
 List<FrameText> frameTextList;
 
@@ -49,6 +44,7 @@ void setup()  {
   Surfaces = new ArrayList<ColourSurface>();
   frameTextList = new ArrayList<FrameText>();
 } 
+
 Object mutex = new Object();
 
 
@@ -67,7 +63,7 @@ void showFiles(List<File> files) {
       
       Surfaces.add(new ColourSurface((float)parser.segments.get(0).header.getDouble("xstepsize"),
       (float)parser.segments.get(0).header.getDouble("ystepsize"),
-      (float)parser.segments.get(0).header.getDouble("zstepsize"),lengthScale));
+      (float)parser.segments.get(0).header.getDouble("zstepsize"),(float)display_options_manager.getArrowScale()));
       
       ArrayList<PointVector> pp = parser.segments.get(0).data.points;
       for( PointVector p: pp ) {
@@ -77,7 +73,7 @@ void showFiles(List<File> files) {
         p.rgbcolor.z = 0;
         
         
-        if(p.vector.module()>minimumDisplay) Surfaces.get(Surfaces.size()-1).addPoint(p);
+        if(p.vector.module()>((float)display_options_manager.getThreshold())) Surfaces.get(Surfaces.size()-1).addPoint(p);
       
       }
       
@@ -88,13 +84,13 @@ void showFiles(List<File> files) {
       
       Surfaces.get(Surfaces.size()-1).gradientMakers.add(gradientMaker);
       
-      
-      gradientMaker = new Gradient();
-      gradientMaker.points = gradients.getList(1);
-      gradientMaker.reference = gradients.getReference(1);  
-      
-      Surfaces.get(Surfaces.size()-1).gradientMakers.add(gradientMaker);
-      
+      if(display_options_manager.getGradient2_enable()){
+        gradientMaker = new Gradient();
+        gradientMaker.points = gradients.getList(1);
+        gradientMaker.reference = gradients.getReference(1);  
+        
+        Surfaces.get(Surfaces.size()-1).gradientMakers.add(gradientMaker);
+      }
       
       Surfaces.get(Surfaces.size()-1).gradientMaxFind();
       Surfaces.get(Surfaces.size()-1).colourPrepare();
@@ -106,7 +102,6 @@ void showFiles(List<File> files) {
   }
 }
 
-int vectors = 0;
 int record = 0;
 int frame = 0;
 
@@ -126,7 +121,7 @@ void draw()  {
     //export object initialised in gui
     println("record started");
   }
-  if((millis()-lastMillis)>=1000/FPS){
+  if((millis()-lastMillis)>=1000/display_options_manager.getFPS()){
     lastMillis=millis();
     if(play != 0) frame++;
     if(frame>=Surfaces.size()){
@@ -144,7 +139,7 @@ void draw()  {
       Surfaces.get(frame).setPitchScale((float)display_options_manager.getScaleValues());
       if(display_options_manager.isVectors()) {
         Surfaces.get(frame).setVectorScale((float)display_options_manager.getArrowScale());
-        Surfaces.get(frame).setVectorWidth((float)display_options_manager.getArrowWidth()*0.01);//correct in gui default values need to be applied
+        Surfaces.get(frame).setVectorWidth((float)display_options_manager.getArrowWidth());//correct in gui default values need to be applied
         Surfaces.get(frame).setTip((float)display_options_manager.getArrowTip());
         Surfaces.get(frame).setTipRadius((float)display_options_manager.getArrowTipRadius());
         Surfaces.get(frame).drawVectorsVolume();
