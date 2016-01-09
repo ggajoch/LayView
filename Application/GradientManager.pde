@@ -21,6 +21,7 @@ public class GradientManager {
     GWindow grad_window, pointAddWindow;
 
 
+
     GradientManager(GWindow grad_window, GSketchPad actual_color_pad, GSketchPad gradient_preview_pad, GWindow pointAddWindow) {
         this.grad_window = grad_window;
         this.pointAddWindow = pointAddWindow;
@@ -51,6 +52,14 @@ public class GradientManager {
         gradient_list.set(actual_index, actual_model);
         this.gradient_view.reEnumerate();
     }
+    
+    GradientModel getGradientModel(int gradientIndex) {
+        return this.gradient_list.get(gradientIndex);
+    }
+    
+    int getActualIndex(){
+      return actual_index;
+    }
 
     void setActive(int index) {
         actual_index = index;
@@ -74,10 +83,12 @@ public class GradientManager {
 
     void setMaxHint(float value) {
         actual_model.setMaxHint(value);
+        btnGradMax.setText(Float.toString(actual_model.getMaxHint()));
     }
     
     void setMinHint(float value) {
         actual_model.setMinHint(value);
+        btnGradMin.setText(Float.toString(actual_model.getMinHint()));
     }
 
     void maxHintCopy() {

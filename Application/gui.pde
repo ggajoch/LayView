@@ -41,6 +41,27 @@ public void btnGradClear_handler(GButton source, GEvent event) { //_CODE_:btnGra
 public void btnGradOK_handler(GButton source, GEvent event) { //_CODE_:btnGradOK:994464:
   println("button4 - GButton >> GEvent." + event + " @ " + millis());
   gradients.OK_Handler();
+  synchronized(mutex) {
+    for(ColourSurface Surface : Surfaces){
+      Surface.gradientMakers.clear();//remove all gradient makers
+      Gradient gradientMaker = new Gradient();
+      gradientMaker.points = gradients.getList(0);
+      gradientMaker.reference = gradients.getReference(0);
+      
+      Surface.gradientMakers.add(gradientMaker);
+      
+      if(display_options_manager.getGradient2_enable()){
+        gradientMaker = new Gradient();
+        gradientMaker.points = gradients.getList(1);
+        gradientMaker.reference = gradients.getReference(1);  
+        
+        Surface.gradientMakers.add(gradientMaker);
+      }
+      
+      Surface.gradientMaxFind();//to wywalić
+      Surface.colourPrepare();
+    }
+  }
 } //_CODE_:btnGradOK:994464:
 
 public void btnGradCancel_handler(GButton source, GEvent event) { //_CODE_:btnGradCancel:328569:
@@ -65,6 +86,57 @@ public void btnGradMin_handler(GButton source, GEvent event) { //_CODE_:btnGradM
 
 public void btnGradRecalculate_handler(GButton source, GEvent event) { //_CODE_:btnGradRecalculate:860732:
   println("btnGradRecalculate - GButton >> GEvent." + event + " @ " + millis());
+  float max1=0,min1=0,max0=0,min0=0;
+  synchronized(mutex) {
+    for(int i=0 ; i<Surfaces.size() ; i++){
+      ColourSurface Surface = Surfaces.get(i);
+      Surface.gradientMakers.clear();//remove all gradient makers
+      Gradient gradientMaker = new Gradient();
+      gradientMaker.points = gradients.getList(0);
+      gradientMaker.reference = gradients.getReference(0);
+      
+      Surface.gradientMakers.add(gradientMaker);
+      
+      if(display_options_manager.getGradient2_enable()){
+        gradientMaker = new Gradient();
+        gradientMaker.points = gradients.getList(1);
+        gradientMaker.reference = gradients.getReference(1);  
+        
+        Surface.gradientMakers.add(gradientMaker);
+      }
+      
+      Surface.gradientMaxFind();
+      
+      if(i==0){
+        max0 = new Float(Surface.gradientMakers.get(0).max);
+        min0 = new Float(Surface.gradientMakers.get(0).min);
+      }else{
+        if(Surface.gradientMakers.get(0).max>max0) max0 = new Float(Surface.gradientMakers.get(0).max);
+        if(Surface.gradientMakers.get(0).min<min0) min0 = new Float(Surface.gradientMakers.get(0).min);
+      }
+      
+      if(display_options_manager.getGradient2_enable()){
+        if(i==0){
+          max1 = new Float(Surface.gradientMakers.get(1).max);
+          min1 = new Float(Surface.gradientMakers.get(1).min);
+        }else{
+          if(Surface.gradientMakers.get(1).max>max1) max1 = new Float(Surface.gradientMakers.get(1).max);
+          if(Surface.gradientMakers.get(1).min<min1) min1 = new Float(Surface.gradientMakers.get(1).min);
+        }
+      }
+      //Surface.colourPrepare();
+    }
+  }
+  println(max0);
+  println(min0);
+  if(gradients.getActualIndex() == 0){
+    gradients.setMaxHint(max0);
+    gradients.setMinHint(min0);
+  }else{
+    gradients.setMaxHint(max1);
+    gradients.setMinHint(min1);
+  }
+  
 } //_CODE_:btnGradRecalculate:860732:
 
 synchronized public void GradientPointEditWindowDraw(PApplet appc, GWinData data) { //_CODE_:GradientPointEditWindow:640294:
