@@ -85,6 +85,7 @@ public void btnGradMin_handler(GButton source, GEvent event) { //_CODE_:btnGradM
 } //_CODE_:btnGradMin:256196:
 
 public void btnGradRecalculate_handler(GButton source, GEvent event) { //_CODE_:btnGradRecalculate:860732:
+  gradients.Apply_Handler();
   println("btnGradRecalculate - GButton >> GEvent." + event + " @ " + millis());
   float max1=0,min1=0,max0=0,min0=0;
   synchronized(mutex) {
@@ -398,8 +399,8 @@ public void createGUI(){
   btnGradMin.addEventHandler(this, "btnGradMin_handler");
   valGradMin = new GTextField(GradientEditWindow, 280, 210, 90, 30, G4P.SCROLLBARS_NONE);
   valGradMin.setOpaque(true);
-  btnGradRecalculate = new GButton(GradientEditWindow, 20, 280, 90, 30);
-  btnGradRecalculate.setText("Recalculate");
+  btnGradRecalculate = new GButton(GradientEditWindow, 20, 281, 90, 30);
+  btnGradRecalculate.setText("Apply");
   btnGradRecalculate.setLocalColorScheme(GCScheme.YELLOW_SCHEME);
   btnGradRecalculate.addEventHandler(this, "btnGradRecalculate_handler");
   GradientPointEditWindow = GWindow.getWindow(this, "Gradient Point Edit", 200, 200, 220, 120, JAVA2D);

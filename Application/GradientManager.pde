@@ -168,7 +168,7 @@ public class GradientManager {
         gradient_preview_pad.setGraphic(gradient_preview_graphics);
     }
 
-    void OK_Handler() {
+    void Apply_Handler() {
         Double x = Double.valueOf(valGradX.getText());
         Double y = Double.valueOf(valGradY.getText());
         Double z = Double.valueOf(valGradZ.getText());
@@ -185,6 +185,10 @@ public class GradientManager {
         print("now: "  + actual_model.getMaxVector());
         gradient_list.set(actual_index, actual_model);
         print("now: "  + gradient_list.get(actual_index).getMaxVector());
+    }
+    
+    void OK_Handler() {
+        Apply_Handler();
         grad_window.setVisible(false);
     }
 
