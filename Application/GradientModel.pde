@@ -11,7 +11,7 @@ public class GradientModel extends ListModel<GradientPoint> implements Cloneable
 
 
 
-    private float MaxHint, MinHint;
+    private volatile float MaxHint, MinHint;
     
     private GradientManager gradient_manager;
     GradientModel(GradientManager gradient_manager) {
@@ -64,6 +64,9 @@ public class GradientModel extends ListModel<GradientPoint> implements Cloneable
         ret.list = new ArrayList<GradientPoint>(this.list);
         ret.reference = new DVector(this.reference.x, this.reference.y, this.reference.z);
         ret.MaxVector = this.MaxVector;
+        ret.MinVector = this.MinVector;
+        ret.MaxHint = this.MaxHint;
+        ret.MinHint = this.MinHint;
         return ret;
     }
 
