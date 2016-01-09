@@ -107,6 +107,8 @@ int frame = 0;
 
 int play = 1;
 
+boolean to_save = false;
+
 long lastMillis = 0;
 
 void draw()  { 
@@ -123,6 +125,7 @@ void draw()  {
   }
   if((millis()-lastMillis)>=1000/display_options_manager.getFPS()){
     lastMillis=millis();
+    to_save = true;
     if(play != 0) frame++;
     if(frame>=Surfaces.size()){
       frame = 0;
@@ -162,6 +165,7 @@ void draw()  {
   }
   cam.endHUD();
   
-  if(record == 1)export.saveVideoFrame();
+  if(record == 1 && to_save)export.saveVideoFrame();
+  to_save = false;
 
 } 
