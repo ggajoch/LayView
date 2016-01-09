@@ -18,8 +18,10 @@ public class GradientModel extends ListModel<GradientPoint> implements Cloneable
         super(new ArrayList<GradientPoint>());
         this.gradient_manager = gradient_manager;
         reference = new DVector(0, 0, 0);
-        MaxHint = 0;
+        MaxHint = 1;
         MinHint = 0;
+        MaxVector = 1;
+        MinVector = 0;
     }
 
     public DVector getReference() {

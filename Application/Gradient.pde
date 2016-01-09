@@ -3,8 +3,8 @@ class Gradient{
   public List<GradientPoint> points;
   public DVector reference;
   
-  public float min;
-  public float max;
+  volatile public float min;
+  volatile public float max;
   
   Gradient(){
     this.points = new ArrayList<GradientPoint>();
