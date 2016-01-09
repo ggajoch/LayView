@@ -118,6 +118,10 @@ public void btnInputClose_handler(GButton source, GEvent event) { //_CODE_:btnIn
         showFiles(file_list.getListFile());
 } //_CODE_:btnInputClose:675739:
 
+public void valDisplayThreshold_handler(GTextField source, GEvent event) { //_CODE_:valDisplayThreshold:389430:
+  println("valDisplayThreshold - GTextField >> GEvent." + event + " @ " + millis());
+} //_CODE_:valDisplayThreshold:389430:
+
 synchronized public void DisplayOptionsWindow_draw(PApplet appc, GWinData data) { //_CODE_:DisplayOptionsWindow:225623:
   appc.background(230);
 } //_CODE_:DisplayOptionsWindow:225623:
@@ -131,11 +135,6 @@ public void optDisplayTypeVectors_handler(GOption source, GEvent event) { //_COD
   println("option1 - GOption >> GEvent." + event + " @ " + millis());
         display_options_manager.setVectors(true);
 } //_CODE_:optDisplayTypeVectors:890085:
-
-public void valDisplayThreshold_handler(GTextField source, GEvent event) { //_CODE_:valDisplayThreshold:229313:
-  println("valDisplayThreshold - GTextField >> GEvent." + event + " @ " + millis());
-  display_options_manager.setThreshold(Double.valueOf(source.getText()));
-} //_CODE_:valDisplayThreshold:229313:
 
 public void valDisplayScale_handler(GTextField source, GEvent event) { //_CODE_:valDisplayScale:563055:
   println("textfield1 - GTextField >> GEvent." + event + " @ " + millis());
@@ -365,11 +364,17 @@ public void createGUI(){
   btnInputAddFolder = new GButton(InputSelectorWindow, 120, 70, 80, 30);
   btnInputAddFolder.setText("Add folder");
   btnInputAddFolder.addEventHandler(this, "btnInputAddFolder_handler");
-  btnInputClose = new GButton(InputSelectorWindow, 210, 120, 280, 30);
+  btnInputClose = new GButton(InputSelectorWindow, 300, 120, 280, 30);
   btnInputClose.setText("Close");
   btnInputClose.setTextBold();
   btnInputClose.setLocalColorScheme(GCScheme.GREEN_SCHEME);
   btnInputClose.addEventHandler(this, "btnInputClose_handler");
+  labelDisplayThreshold = new GLabel(InputSelectorWindow, 20, 120, 80, 30);
+  labelDisplayThreshold.setText("Threshold:");
+  labelDisplayThreshold.setOpaque(false);
+  valDisplayThreshold = new GTextField(InputSelectorWindow, 120, 120, 80, 30, G4P.SCROLLBARS_NONE);
+  valDisplayThreshold.setOpaque(true);
+  valDisplayThreshold.addEventHandler(this, "valDisplayThreshold_handler");
   DisplayOptionsWindow = GWindow.getWindow(this, "Display Options", 200, 200, 460, 290, JAVA2D);
   DisplayOptionsWindow.addDrawHandler(this, "DisplayOptionsWindow_draw");
   groupDisplayDisplayType = new GToggleGroup();
@@ -386,12 +391,6 @@ public void createGUI(){
   groupDisplayDisplayType.addControl(optDisplayTypeBox);
   optDisplayTypeBox.setSelected(true);
   groupDisplayDisplayType.addControl(optDisplayTypeVectors);
-  labelDisplayThreshold = new GLabel(DisplayOptionsWindow, 20, 20, 120, 20);
-  labelDisplayThreshold.setText("Display threshold");
-  labelDisplayThreshold.setOpaque(false);
-  valDisplayThreshold = new GTextField(DisplayOptionsWindow, 20, 40, 120, 30, G4P.SCROLLBARS_NONE);
-  valDisplayThreshold.setOpaque(true);
-  valDisplayThreshold.addEventHandler(this, "valDisplayThreshold_handler");
   labelDisplayScale = new GLabel(DisplayOptionsWindow, 20, 100, 120, 30);
   labelDisplayScale.setText("Length scale");
   labelDisplayScale.setOpaque(false);
@@ -510,12 +509,12 @@ GButton btnInputClearAll;
 GButton btnInputRemove; 
 GButton btnInputAddFolder; 
 GButton btnInputClose; 
+GLabel labelDisplayThreshold; 
+GTextField valDisplayThreshold; 
 GWindow DisplayOptionsWindow;
 GToggleGroup groupDisplayDisplayType; 
 GOption optDisplayTypeBox; 
 GOption optDisplayTypeVectors; 
-GLabel labelDisplayThreshold; 
-GTextField valDisplayThreshold; 
 GLabel labelDisplayScale; 
 GTextField valDisplayScale; 
 GTextField valDisplayWidth; 
