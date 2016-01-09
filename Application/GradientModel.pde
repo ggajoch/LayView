@@ -7,17 +7,19 @@ public class GradientModel extends ListModel<GradientPoint> implements Cloneable
 
     private volatile DVector reference;
 
-    private volatile float MaxVector;
+    private volatile float MaxVector, MinVector;
 
 
 
-    private float MaxHint;
+    private float MaxHint, MinHint;
+    
     private GradientManager gradient_manager;
     GradientModel(GradientManager gradient_manager) {
         super(new ArrayList<GradientPoint>());
         this.gradient_manager = gradient_manager;
         reference = new DVector(0, 0, 0);
         MaxHint = 0;
+        MinHint = 0;
     }
 
     public DVector getReference() {
@@ -31,17 +33,31 @@ public class GradientModel extends ListModel<GradientPoint> implements Cloneable
     public float getMaxVector() {
         return MaxVector;
     }
+    public float getMinVector() {
+        return MinVector;
+    }
 
     public void setMaxVector(float maxVector) {
         MaxVector = maxVector;
     }
+    public void setMinVector(float minVector) {
+        MinVector = minVector;
+    }
+    
     public float getMaxHint() {
         return MaxHint;
+    }
+    public float getMinHint() {
+        return MinHint;
     }
 
     public void setMaxHint(float maxHint) {
         MaxHint = maxHint;
     }
+    public void setMinHint(float minHint) {
+        MinHint = minHint;
+    }
+    
     @Override
     public GradientModel clone() {
         GradientModel ret = new GradientModel(gradient_manager);

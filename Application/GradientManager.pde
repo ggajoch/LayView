@@ -26,8 +26,8 @@ public class GradientManager {
         this.pointAddWindow = pointAddWindow;
         this.actual_color_pad = actual_color_pad;
         this.gradient_preview_pad = gradient_preview_pad;
-        this.actual_color_graphics = createGraphics(120, 40, JAVA2D);
-        this.gradient_preview_graphics = createGraphics(40, 180, JAVA2D);
+        this.actual_color_graphics = createGraphics(110, 40, JAVA2D);
+        this.gradient_preview_graphics = createGraphics(40, 290, JAVA2D);
 
         grad_window.setVisible(false);
         pointAddWindow.setVisible(false);
@@ -64,7 +64,9 @@ public class GradientManager {
         valGradY.setText(Double.toString(actual_model.getReference().y));
         valGradZ.setText(Double.toString(actual_model.getReference().z));
         btnGradMax.setText(Float.toString(actual_model.getMaxHint()));
+        btnGradMin.setText(Float.toString(actual_model.getMinHint()));
         valGradMax.setText(Float.toString(actual_model.getMaxVector()));
+        valGradMin.setText(Float.toString(actual_model.getMinVector()));
         grad_window.setVisible(true);
         this.gradient_view.reEnumerate();
         print("now: "  + actual_model.getMaxVector());
@@ -73,11 +75,19 @@ public class GradientManager {
     void setMaxHint(float value) {
         actual_model.setMaxHint(value);
     }
+    
+    void setMinHint(float value) {
+        actual_model.setMinHint(value);
+    }
 
     void maxHintCopy() {
         print("now: "  + actual_model.getMaxVector());
         valGradMax.setText(Float.toString(actual_model.getMaxHint()));
         print("now: "  + actual_model.getMaxVector());
+    }
+    
+    void minHintCopy() {
+        valGradMin.setText(Float.toString(actual_model.getMinHint()));
     }
 
     void editPoint() {
@@ -156,6 +166,10 @@ public class GradientManager {
 
         float maxi = Float.valueOf(valGradMax.getText());
         actual_model.setMaxVector(maxi);
+        
+        float mini = Float.valueOf(valGradMin.getText());
+        actual_model.setMinVector(mini);
+        
 
         print("now: "  + actual_model.getMaxVector());
         gradient_list.set(actual_index, actual_model);
