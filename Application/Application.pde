@@ -123,7 +123,7 @@ void draw()  {
     //export object initialised in gui
     println("record started");
   }
-  if((millis()-lastMillis)>=1000/display_options_manager.getFPS()){
+  if((millis()-lastMillis)*display_options_manager.getFPS() >= 1000){
     lastMillis=millis();
     to_save = true;
     if(play != 0) frame++;
