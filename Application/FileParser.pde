@@ -1,64 +1,61 @@
-public class Parameter {
-  String name, value;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+
+private enum ParserState {
+  Segment, Header, Data, NoState
 };
+  
+public class FileParser {
+  private class Header {
+    HashMap<String, String> map;
+    Header() {
+      map = new HashMap<String, String>();
+    }
+    void modify(String name, String value) {
+      map.put(name, value);
+    }
+    String getStr(String name) {
+      return map.get(name);
+    }
+    int getInt(String name) {
+      return Integer.valueOf(getStr(name));
+    }
+    double getDouble(String name) {
+      return Double.parseDouble(getStr(name));
+    }
+  }
 
-class Header {
-  HashMap<String, String> map;
-  Header() {
-    map = new HashMap<String, String>();
+  private class DataText {
+    ArrayList<PointVector> points;
+    DataText() {
+      points = new ArrayList<PointVector>();
+    }
   }
-  void modify(String name, String value) {
-    map.put(name, value);
-    //println("Adding (" + name + ") -> " + value);
-    //println(map);
-  }
-  String getStr(String name) {
-    return map.get(name);
-  }
-  int getInt(String name) {
-    return int(getStr(name));
-  }
-  double getDouble(String name) {
-    return Double.parseDouble(getStr(name));
-  }
-};
 
-class DataText {
-  ArrayList<PointVector> points;
-  DataText() {
-    points = new ArrayList<PointVector>();
+  private class Segment {
+    Header header;
+    DataText data;
+    Segment() {
+      header = new Header();
+      data = new DataText();
+    }
   }
-};
 
-class Segment {
-  Header header;
-  DataText data;
-  Segment() {
-    header = new Header();
-    data = new DataText();
-  }
-};
-
-
-public enum ParserState {
-    Segment, Header, Data, NoState 
-}
-
-class FileParser {
   ParserState state;
+  ArrayList<Segment> segments;
+  Segment actual;
+  int x_nodes, y_nodes, z_nodes;
+  int actual_x_pts = 0, actual_y_pts = 0, actual_z_pts = 0;
+
   FileParser() {
     state = ParserState.NoState;
     segments = new ArrayList<Segment>(); 
   }
-  ArrayList<Segment> segments;
-  
-  Segment actual;
-  int x_nodes, y_nodes, z_nodes;
-  int actual_x_pts = 0, actual_y_pts = 0, actual_z_pts = 0;
-  
+
   void startSegment() {
     actual = new Segment();
-    //println("new segment!");
   }
   
   void endSegment() {
@@ -78,11 +75,8 @@ class FileParser {
       s = s.replace("#", " ");
       s = s.trim();
       String [] lineSplitted = s.split(":");
-      //println("Fail: " + line);
       String name = lineSplitted[0].trim();
       String value = lineSplitted[1].trim();
-      //println("Name: |" + name + "|");
-      //println("value: |" + value + "|");
       actual.header.modify(name, value);
     } catch(Exception e) {
       //println("Problem with" + line);
@@ -92,18 +86,11 @@ class FileParser {
   
   void parseData(String line) {
     line = line.trim();
-    String[] list = split(line, ' ');
-    
-    for(String x : list) {
-      x = x.trim();
-    }
-    //print("data ");
-    //println("0:" + list[0]);
-    //println("1:" + list[1]);
-    //println("2:" + list[2]);
-    double x = Double.parseDouble(list[0]);
-    double y = Double.parseDouble(list[1]);
-    double z = Double.parseDouble(list[2]);
+    List<String> list = new ArrayList<String>(Arrays.asList(line.split(" ")));
+
+    double x = Double.parseDouble(list.get(0));
+    double y = Double.parseDouble(list.get(1));
+    double z = Double.parseDouble(list.get(2));
     
     DVector actual_position = new DVector(actual.header.getDouble("xbase") + actual_x_pts * actual.header.getDouble("xstepsize"),
                                           actual.header.getDouble("ybase") + actual_y_pts * actual.header.getDouble("ystepsize"),
@@ -133,28 +120,24 @@ class FileParser {
     } else if( state == ParserState.Segment) {
        if( line.contains("# Begin: Header")) {
           state = ParserState.Header;
-          //println("Header!");
        } else if( line.contains("# Begin: Data Text")) {
           state = ParserState.Data;
           startData();
-          //println("Data!");
        } else if( line.contains("# End: Segment")) {
           state = ParserState.NoState;
-          //println("NoState!");
           endSegment();
        } else {
+         //error ?
        }
     } else if( state == ParserState.Header) {
       if( line.contains("# End: Header")) {
         state = ParserState.Segment;
-        //println("Segment!");
      } else {
        parseHeader(line);
      }
     } else if( state == ParserState.Data) {
       if( line.contains("# End: Data Text")) {
         state = ParserState.Segment;
-        //println("Segment!");
       } else {
         parseData(line);
       }
