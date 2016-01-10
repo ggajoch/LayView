@@ -43,4 +43,8 @@ public class ListView<T> {
         model.clear();
         reEnumerate();
     }
+
+    public T getActual() {
+        return this.model.get(dropList.getSelectedIndex());
+    }
 }
