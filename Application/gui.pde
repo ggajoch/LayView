@@ -312,9 +312,6 @@ public void btnVideoCSV_handler(GButton source, GEvent event) { //_CODE_:btnVide
   println("btnVideoCSV - GButton >> GEvent." + event + " @ " + millis());
   FrameTextParser parser = new FrameTextParser();
   frameTextList = parser.getFromCSV();
-  for(FrameText row : frameTextList) {
-    println(row.r + " " + row.g + " " + row.b + " " + row.size + " " + row.x + " " + row.y + " " + row.text + " " + row.frame);
-  }
 } //_CODE_:btnVideoCSV:805648:
 
 synchronized public void MainWindow_draw(PApplet appc, GWinData data) { //_CODE_:MainWindow:899620:

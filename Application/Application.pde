@@ -15,7 +15,7 @@ volatile ArrayList<ColourSurface> Surfaces;
 VideoExport export;
 
 FileView file_list;
-List<FrameText> frameTextList;
+Map<Integer, FrameText> frameTextList;
 
 GradientManager gradients;
 DisplayOptionsManager display_options_manager = new DisplayOptionsManager();
@@ -42,7 +42,7 @@ void setup()  {
   display_options_manager.updateDisplays();
   
   Surfaces = new ArrayList<ColourSurface>();
-  frameTextList = new ArrayList<FrameText>();
+  frameTextList = new HashMap<Integer, FrameText>();
 } 
 
 Object mutex = new Object();
@@ -154,14 +154,11 @@ void draw()  {
   
   cam.beginHUD();
   //2D Overlay
-  if( frameTextList.size() > 0){
-    for(FrameText text : frameTextList){
-      if(text.frame == frame){
-        textSize(text.size);
-        fill(text.r,text.g,text.b);
-        text(text.text, text.x, text.y);
-      }
-    }
+  if (frameTextList.containsKey(frame)) {
+    FrameText text = frameTextList.get(frame);
+    textSize(text.font.size);
+    fill(red(text.col), green(text.col), blue(text.col));
+    text(text.text, text.font.x, text.font.y);
   }
   cam.endHUD();
   

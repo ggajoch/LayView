@@ -1,6 +1,13 @@
 public class FrameText {
-    public String text;
-    public Float x, y, size;
-    public Float  r, g, b;
-    public Integer frame;
+    public final String text;
+    public final FontDescriptor font;
+    public final color col;
+    public final int frame;
+
+    public FrameText(String text, FontDescriptor font, color col, int frame) {
+        this.text = text;
+        this.font = font;
+        this.col = col;
+        this.frame = frame;
+    }
 }
