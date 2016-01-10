@@ -12,7 +12,7 @@ public class GradientModel extends ListModel<GradientPoint> implements Cloneable
     GradientModel(GradientManager gradient_manager) {
         super(new ArrayList<GradientPoint>());
         this.gradient_manager = gradient_manager;
-        reference = new DVector(0, 0, 0);
+        reference = new DVector();
         MaxHint = 1;
         MinHint = 0;
         MaxVector = 1;

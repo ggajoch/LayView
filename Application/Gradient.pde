@@ -7,13 +7,13 @@ public class Gradient {
   
   Gradient(){
     this.points = new ArrayList<GradientPoint>();
-    this.reference = new DVector(1,0,0);
+    this.reference = new DVector();
   }
   
   Gradient(ArrayList<GradientPoint> points_){
     this.points = points_;
     Collections.sort(this.points);
-    this.reference = new DVector(1,0,0);
+    this.reference = new DVector();
   }
   
   Gradient(ArrayList<GradientPoint> points_, DVector reference_){

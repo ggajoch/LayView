@@ -5,6 +5,9 @@ class FVector {
     y = y_;
     z = z_;
   }
+  FVector() {
+    x = y = z = 0;
+  }
   
   float multiplyScalar(FVector second){
     return(this.x*second.x + this.y*second.y + this.z*second.z);

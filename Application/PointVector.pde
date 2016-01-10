@@ -4,9 +4,9 @@ class PointVector {
   public FVector rgbcolor;
   
   PointVector(){
-    position = new DVector(0,0,0);
-    vector = new DVector(0,0,0);
-    rgbcolor = new FVector(0,0,0);
+    position = new DVector();
+    vector = new DVector();
+    rgbcolor = new FVector();
   }
   
   PointVector(PointVector full){
@@ -18,7 +18,7 @@ class PointVector {
   PointVector(DVector position_, DVector vector_) {
     position = position_;
     vector = vector_;
-    rgbcolor = new FVector(0,0,0);
+    rgbcolor = new FVector();
   }
   
   PointVector(DVector position_, DVector vector_, FVector rgbcolor_) {

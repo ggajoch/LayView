@@ -1,5 +1,8 @@
 class DVector {
   public double x, y, z;
+  DVector() {
+    x = y = z = 0;
+  }
   DVector(double x_, double y_, double z_) {
     x = x_;
     y = y_;
