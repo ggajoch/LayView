@@ -60,13 +60,6 @@ public class GradientManager {
         gradient_view = new GradientView(listGradList, actual_model);
     }
 
-    private void setText(GTextBase field, double value) {
-        field.setText(Double.toString(value));
-    }
-    private void setText(GTextBase field, float value) {
-        field.setText(Float.toString(value));
-    }
-
     public void edit(int index) {
         setActive(index);
         updateDisplays();
@@ -173,22 +166,19 @@ public class GradientManager {
     }
 
     void Apply_Handler() {
-        Double x = Double.valueOf(valGradX.getText());
-        Double y = Double.valueOf(valGradY.getText());
-        Double z = Double.valueOf(valGradZ.getText());
+        Double x = getTextDouble(valGradX);
+        Double y = getTextDouble(valGradY);
+        Double z = getTextDouble(valGradZ);
 
         actual_model.setReference(new DVector(x, y, z));
 
-        float maxi = Float.valueOf(valGradMax.getText());
+        float maxi = getTextFloat(valGradMax);
         actual_model.setMaxVector(maxi);
         
-        float mini = Float.valueOf(valGradMin.getText());
+        float mini = getTextFloat(valGradMin);
         actual_model.setMinVector(mini);
         
-
-        print("now: "  + actual_model.getMaxVector());
         gradient_list.set(actual_index, actual_model);
-        print("now: "  + gradient_list.get(actual_index).getMaxVector());
     }
     
     void OK_Handler() {
@@ -206,5 +196,21 @@ public class GradientManager {
 
     DVector getReference(int gradientIndex) {
         return this.gradient_list.get(gradientIndex).getReference();
+    }
+
+    private void setText(GTextBase field, double value) {
+        field.setText(Double.toString(value));
+    }
+
+    private void setText(GTextBase field, float value) {
+        field.setText(Float.toString(value));
+    }
+
+    private double getTextDouble(GTextBase field) {
+        return Double.valueOf(field.getText());
+    }
+
+    private float getTextFloat(GTextBase field) {
+        return Float.valueOf(field.getText());
     }
 }
