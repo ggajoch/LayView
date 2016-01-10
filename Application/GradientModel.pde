@@ -74,7 +74,7 @@ public class GradientModel extends ListModel<GradientPoint> implements Cloneable
 
     @Override
     void preEnumerate() {
-        this.list.sort(new GradientPointComparator());
+        Collections.sort(this.list);
     }
 
     @Override
