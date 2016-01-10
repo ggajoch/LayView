@@ -15,6 +15,7 @@ public class GradientPointEditor {
         this.gradient_manager = gradient_manager;
         this.value_field = value_field;
         this.selected_color = 0;
+        this.edit_mode = false;
     }
 
     void open() {
