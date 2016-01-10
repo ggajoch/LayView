@@ -26,30 +26,22 @@ class VideoExport{
     FPS = new Integer(30);
   }
   
-  private boolean deleteDirectory(File directory) {
-    if(directory.exists()){
-        File[] files = directory.listFiles();
-        if(null!=files){
-            for(int i=0; i<files.length; i++) {
-                if(files[i].isDirectory()) {
-                    deleteDirectory(files[i]);
-                }
-                else {
-                    files[i].delete();
-                }
-            }
-        }
+  private boolean deleteAllFiles(File file) {
+    if( file.isDirectory() ) {
+      for(File next : file.listFiles()) {
+        deleteAllFiles(next);
+      }
     }
-    return(directory.delete());
+    return file.delete();
   }
   
   boolean cleanFolder(){
-    folder = new File(sketchPath("")+"temp");
-    return deleteDirectory(folder);
+    folder = new File(sketchPath("") + "temp");
+    return deleteAllFiles(folder);
   }
   
   void setFPS(int FPS_){
-    FPS = new Integer(FPS_);
+    FPS = FPS_;
   }
   
   void saveVideoFrame(){
