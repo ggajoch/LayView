@@ -22,9 +22,10 @@ public class GradientPointEditor {
         window.setVisible(true);
     }
 
-    void edit(String value) {
+    void edit(GradientPoint now) {
         edit_mode = true;
-        value_field.setText(value);
+        value_field.setText(Double.toString(now.val));
+        this.selected_color = now.colour;
         window.setVisible(true);
     }
 

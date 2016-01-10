@@ -1,7 +1,4 @@
-import g4p_controls.GButton;
-import g4p_controls.GLabel;
-import g4p_controls.GSketchPad;
-import g4p_controls.GWindow;
+import g4p_controls.*;
 
 public class GradientManager {
     private ArrayList<GradientModel> gradient_list;
@@ -10,11 +7,11 @@ public class GradientManager {
     private volatile int actual_index;
     private PGraphics actual_color_graphics, gradient_preview_graphics;
     private GSketchPad actual_color_pad, gradient_preview_pad;
-    public GradientPointEditor gradient_point_editor;
+    private GradientPointEditor gradient_point_editor;
 
-    volatile GradientView gradient_view;
+    private volatile GradientView gradient_view;
 
-    GWindow grad_window, pointAddWindow;
+    private GWindow grad_window, pointAddWindow;
 
 
 
@@ -23,8 +20,8 @@ public class GradientManager {
         this.pointAddWindow = pointAddWindow;
         this.actual_color_pad = actual_color_pad;
         this.gradient_preview_pad = gradient_preview_pad;
-        this.actual_color_graphics = createGraphics(actual_color_pad.getWidth(), actual_color_pad.getHeight(), JAVA2D);
-        this.gradient_preview_graphics = createGraphics(gradient_preview_pad.getWidth(), gradient_preview_pad.getHeight(), JAVA2D);
+        this.actual_color_graphics = createGraphics(Math.round(actual_color_pad.getWidth()), Math.round(actual_color_pad.getHeight()), JAVA2D);
+        this.gradient_preview_graphics = createGraphics(Math.round(gradient_preview_pad.getWidth()), Math.round(gradient_preview_pad.getHeight()), JAVA2D);
 
         grad_window.setVisible(false);
         pointAddWindow.setVisible(false);
@@ -49,57 +46,66 @@ public class GradientManager {
         this.gradient_view.reEnumerate();
     }
     
-    GradientModel getGradientModel(int gradientIndex) {
+    public GradientModel getGradientModel(int gradientIndex) {
         return this.gradient_list.get(gradientIndex);
     }
     
-    int getActualIndex(){
+    public int getActualIndex(){
       return actual_index;
     }
 
-    void setActive(int index) {
+    private void setActive(int index) {
         actual_index = index;
         actual_model = gradient_list.get(actual_index).clone();
         gradient_view = new GradientView(listGradList, actual_model);
     }
 
-    void edit(int index) {
+    private void setText(GTextBase field, double value) {
+        field.setText(Double.toString(value));
+    }
+    private void setText(GTextBase field, float value) {
+        field.setText(Float.toString(value));
+    }
+
+    public void edit(int index) {
         setActive(index);
-        valGradX.setText(Double.toString(actual_model.getReference().x));
-        valGradY.setText(Double.toString(actual_model.getReference().y));
-        valGradZ.setText(Double.toString(actual_model.getReference().z));
-        btnGradMax.setText(Float.toString(actual_model.getMaxHint()));
-        btnGradMin.setText(Float.toString(actual_model.getMinHint()));
-        valGradMax.setText(Float.toString(actual_model.getMaxVector()));
-        valGradMin.setText(Float.toString(actual_model.getMinVector()));
-        grad_window.setVisible(true);
+        updateDisplays();
         this.gradient_view.reEnumerate();
-        print("now: "  + actual_model.getMaxVector());
+    }
+
+    private void updateDisplays() {
+        setText(valGradX, actual_model.getReference().x);
+        setText(valGradY, actual_model.getReference().y);
+        setText(valGradZ, actual_model.getReference().z);
+
+        setText(btnGradMax, actual_model.getMaxHint());
+        setText(btnGradMin, actual_model.getMinHint());
+        setText(valGradMax, actual_model.getMaxVector());
+        setText(valGradMin, actual_model.getMinVector());
+
+        grad_window.setVisible(true);
     }
 
     void setMaxHint(float value) {
         actual_model.setMaxHint(value);
-        btnGradMax.setText(Float.toString(actual_model.getMaxHint()));
+        updateDisplays();
     }
     
     void setMinHint(float value) {
         actual_model.setMinHint(value);
-        btnGradMin.setText(Float.toString(actual_model.getMinHint()));
+        updateDisplays();
     }
 
     void maxHintCopy() {
-        print("now: "  + actual_model.getMaxVector());
-        valGradMax.setText(Float.toString(actual_model.getMaxHint()));
-        print("now: "  + actual_model.getMaxVector());
+        setText(valGradMax, actual_model.getMaxHint());
     }
     
     void minHintCopy() {
-        valGradMin.setText(Float.toString(actual_model.getMinHint()));
+        setText(valGradMin, actual_model.getMinHint());
     }
 
     void editPoint() {
-        this.gradient_point_editor.edit(Double.toString(this.gradient_view.model.get(this.gradient_view.dropList.getSelectedIndex()).val));
-        println("color: " + this.gradient_view.model.get(this.gradient_view.dropList.getSelectedIndex()).colour);
+        this.gradient_point_editor.edit(gradient_view.getActual());
     }
 
     void addPoint() {
@@ -108,11 +114,11 @@ public class GradientManager {
     }
 
     private GradientPoint minValue() {
-        return this.gradient_view.model.get(0);
+        return actual_model.get(0);
     }
 
     private GradientPoint maxValue() {
-        return this.gradient_view.model.get(this.gradient_view.model.size()-1);
+        return actual_model.get(actual_model.size()-1);
     }
 
     void colorUpdate() {
