@@ -79,8 +79,9 @@ public class FileParser {
       String value = lineSplitted[1].trim();
       actual.header.modify(name, value);
     } catch(Exception e) {
-      println("Problem with" + line);
-      e.printStackTrace();
+      //not a problem, just blank lines
+      //println("Problem with" + line);
+      //e.printStackTrace();
     }
   }
 
