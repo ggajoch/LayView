@@ -14,16 +14,16 @@ class VideoExport{
   
   VideoExport(){
     frameNumber = 0;
-    outputFilePath = new String(sketchPath("")+"test.mp4");
-    inputFilePath = new String(sketchPath("")+"temp/anim_%05d.png");
+    outputFilePath = sketchPath("")+"test.mp4";
+    inputFilePath = sketchPath("")+"temp/anim_%05d.png";
     FPS = new Integer(30);
   }
   
   VideoExport(String fileName){
     frameNumber = 0;
-    outputFilePath = new String(fileName);
-    inputFilePath = new String(sketchPath("")+"temp/anim_%05d.png");
-    FPS = new Integer(30);
+    outputFilePath = fileName;
+    inputFilePath = sketchPath("")+"temp/anim_%05d.png";
+    FPS = 30;
   }
   
   private boolean deleteAllFiles(File file) {
