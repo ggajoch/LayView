@@ -23,8 +23,8 @@ public class GradientManager {
         this.pointAddWindow = pointAddWindow;
         this.actual_color_pad = actual_color_pad;
         this.gradient_preview_pad = gradient_preview_pad;
-        this.actual_color_graphics = createGraphics(110, 40, JAVA2D);
-        this.gradient_preview_graphics = createGraphics(40, 290, JAVA2D);
+        this.actual_color_graphics = createGraphics(actual_color_pad.getWidth(), actual_color_pad.getHeight(), JAVA2D);
+        this.gradient_preview_graphics = createGraphics(gradient_preview_pad.getWidth(), gradient_preview_pad.getHeight(), JAVA2D);
 
         grad_window.setVisible(false);
         pointAddWindow.setVisible(false);
