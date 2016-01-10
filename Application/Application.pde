@@ -78,16 +78,12 @@ void showFiles(List<File> files) {
       }
       
     
-      Gradient gradientMaker = new Gradient();
-      gradientMaker.points = gradients.getList(0);
-      gradientMaker.reference = gradients.getReference(0);
+      Gradient gradientMaker = new Gradient(gradients.getList(0), gradients.getReference(0));
       
       Surfaces.get(Surfaces.size()-1).gradientMakers.add(gradientMaker);
       
       if(display_options_manager.getGradient2_enable()){
-        gradientMaker = new Gradient();
-        gradientMaker.points = gradients.getList(1);
-        gradientMaker.reference = gradients.getReference(1);  
+        gradientMaker = new Gradient(gradients.getList(1), gradients.getReference(1));
         
         Surfaces.get(Surfaces.size()-1).gradientMakers.add(gradientMaker);
       }

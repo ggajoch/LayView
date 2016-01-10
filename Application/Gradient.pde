@@ -1,22 +1,25 @@
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 public class Gradient {
-  public List<GradientPoint> points;
-  public DVector reference;
-  
-  volatile public float min;
-  volatile public float max;
-  
-  Gradient(){
+  private final List<GradientPoint> points;
+  private final DVector reference;
+
+  private float min, max;
+
+  Gradient() {
     this.points = new ArrayList<GradientPoint>();
     this.reference = new DVector();
   }
   
-  Gradient(ArrayList<GradientPoint> points_){
+  Gradient(List<GradientPoint> points_) {
     this.points = points_;
     Collections.sort(this.points);
     this.reference = new DVector();
   }
   
-  Gradient(ArrayList<GradientPoint> points_, DVector reference_){
+  Gradient(List<GradientPoint> points_, DVector reference_) {
     this.points = points_;
     Collections.sort(this.points);
     this.reference = reference_;

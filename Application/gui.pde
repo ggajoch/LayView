@@ -44,9 +44,7 @@ public void btnGradOK_handler(GButton source, GEvent event) { //_CODE_:btnGradOK
   synchronized(mutex) {
     for(ColourSurface Surface : Surfaces){
       Surface.gradientMakers.clear();//remove all gradient makers
-      Gradient gradientMaker = new Gradient();
-      gradientMaker.points = gradients.getList(0);
-      gradientMaker.reference = gradients.getReference(0);
+      Gradient gradientMaker = new Gradient(gradients.getList(0), gradients.getReference(0));
       
       gradientMaker.max = gradients.getGradientModel(0).getMaxVector();
       gradientMaker.min = gradients.getGradientModel(0).getMinVector();
@@ -55,9 +53,7 @@ public void btnGradOK_handler(GButton source, GEvent event) { //_CODE_:btnGradOK
       
       
       if(display_options_manager.getGradient2_enable()){
-        gradientMaker = new Gradient();
-        gradientMaker.points = gradients.getList(1);
-        gradientMaker.reference = gradients.getReference(1);  
+        gradientMaker = new Gradient(gradients.getList(1), gradients.getReference(1));  
         gradientMaker.max = gradients.getGradientModel(1).getMaxVector();
         gradientMaker.min = gradients.getGradientModel(1).getMinVector();
       
@@ -98,16 +94,12 @@ public void btnGradRecalculate_handler(GButton source, GEvent event) { //_CODE_:
     for(int i=0 ; i<Surfaces.size() ; i++){
       ColourSurface Surface = Surfaces.get(i);
       Surface.gradientMakers.clear();//remove all gradient makers
-      Gradient gradientMaker = new Gradient();
-      gradientMaker.points = gradients.getList(0);
-      gradientMaker.reference = gradients.getReference(0);
+      Gradient gradientMaker = new Gradient(gradients.getList(0), gradients.getReference(0));
       
       Surface.gradientMakers.add(gradientMaker);
       
       if(display_options_manager.getGradient2_enable()){
-        gradientMaker = new Gradient();
-        gradientMaker.points = gradients.getList(1);
-        gradientMaker.reference = gradients.getReference(1);  
+        gradientMaker = new Gradient(gradients.getList(1), gradients.getReference(1));  
         
         Surface.gradientMakers.add(gradientMaker);
       }
@@ -349,9 +341,7 @@ public void boxMainEnableGradient2_handler(GCheckbox source, GEvent event) { //_
   synchronized(mutex) {
     for(ColourSurface Surface : Surfaces){
       Surface.gradientMakers.clear();//remove all gradient makers
-      Gradient gradientMaker = new Gradient();
-      gradientMaker.points = gradients.getList(0);
-      gradientMaker.reference = gradients.getReference(0);
+      Gradient gradientMaker = new Gradient(gradients.getList(0), gradients.getReference(0));
       
       gradientMaker.max = gradients.getGradientModel(0).getMaxVector();
       gradientMaker.min = gradients.getGradientModel(0).getMinVector();
@@ -359,10 +349,8 @@ public void boxMainEnableGradient2_handler(GCheckbox source, GEvent event) { //_
       Surface.gradientMakers.add(gradientMaker);
       
       
-      if(display_options_manager.getGradient2_enable()){
-        gradientMaker = new Gradient();
-        gradientMaker.points = gradients.getList(1);
-        gradientMaker.reference = gradients.getReference(1);  
+      if(display_options_manager.getGradient2_enable()) {
+        gradientMaker = new Gradient(gradients.getList(1), gradients.getReference(1));
         gradientMaker.max = gradients.getGradientModel(1).getMaxVector();
         gradientMaker.min = gradients.getGradientModel(1).getMinVector();
       

@@ -33,8 +33,6 @@ public class FrameTextParser {
             FrameText now = parseRow(row);
             map.put(now.frame, now);
         }
-
-
         return map;
     }
 }

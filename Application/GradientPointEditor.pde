@@ -3,9 +3,9 @@ import g4p_controls.GTextField;
 import g4p_controls.GWindow;
 
 public class GradientPointEditor {
-    private GradientManager gradient_manager;
-    private GTextField value_field;
-    private GWindow window;
+    private final GradientManager gradient_manager;
+    private final GTextField value_field;
+    private final GWindow window;
     private int selected_color;
     private boolean edit_mode;
 
@@ -18,24 +18,23 @@ public class GradientPointEditor {
         this.edit_mode = false;
     }
 
-    void open() {
-        value_field.setText("value");
+    public void open(GradientPoint now) {
+        if( now != null ) {
+            edit_mode = true;
+            value_field.setText(Double.toString(now.val));
+            this.selected_color = now.colour;
+        } else {
+            value_field.setText("value");
+        }
         window.setVisible(true);
     }
 
-    void edit(GradientPoint now) {
-        edit_mode = true;
-        value_field.setText(Double.toString(now.val));
-        this.selected_color = now.colour;
-        window.setVisible(true);
-    }
-
-    void Color_handler() {
+    public void Color_handler() {
         selected_color = G4P.selectColor();
         gradient_manager.colorUpdate();
     }
 
-    void OK_handler() {
+    public void OK_handler() {
         if( edit_mode ) {
             gradient_manager.gradient_view.remove();
             edit_mode = false;
@@ -46,7 +45,7 @@ public class GradientPointEditor {
         gradient_manager.colorUpdate();
     }
 
-    void Cancel_handler() {
+    public void Cancel_handler() {
         window.setVisible(false);
     }
 }

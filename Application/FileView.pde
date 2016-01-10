@@ -5,7 +5,7 @@ public class FileView extends ListView<File> {
         super(dropList, new FileModel());
     }
 
-    void addFolder(String path) {
+    public void addFolder(String path) {
         File folder = new File(path);
         for (File file : folder.listFiles()) {
             if (!file.isDirectory() && isOMF(file)) {

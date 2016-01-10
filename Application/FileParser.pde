@@ -43,33 +43,33 @@ public class FileParser {
     }
   }
 
-  ParserState state;
-  ArrayList<Segment> segments;
-  Segment actual;
-  int x_nodes, y_nodes, z_nodes;
-  int actual_x_pts = 0, actual_y_pts = 0, actual_z_pts = 0;
+  private ParserState state;
+  private ArrayList<Segment> segments;
+  private Segment actual;
+  private int x_nodes, y_nodes, z_nodes;
+  private int actual_x_pts = 0, actual_y_pts = 0, actual_z_pts = 0;
 
   FileParser() {
     state = ParserState.NoState;
     segments = new ArrayList<Segment>(); 
   }
 
-  void startSegment() {
+  private void startSegment() {
     actual = new Segment();
   }
-  
-  void endSegment() {
+
+  private void endSegment() {
     segments.add(actual);
   }
-  
-  void startData() {
+
+  private void startData() {
     x_nodes = actual.header.getInt("xnodes");
     y_nodes = actual.header.getInt("ynodes");
     z_nodes = actual.header.getInt("znodes");
     actual_x_pts = actual_y_pts = actual_z_pts = 0;
   }
-  
-  void parseHeader(String line) {
+
+  private void parseHeader(String line) {
     String s = line;
     try {
       s = s.replace("#", " ");
@@ -79,12 +79,12 @@ public class FileParser {
       String value = lineSplitted[1].trim();
       actual.header.modify(name, value);
     } catch(Exception e) {
-      //println("Problem with" + line);
-      //e.printStackTrace();
+      println("Problem with" + line);
+      e.printStackTrace();
     }
   }
-  
-  void parseData(String line) {
+
+  private void parseData(String line) {
     line = line.trim();
     List<String> list = new ArrayList<String>(Arrays.asList(line.split(" ")));
 
@@ -95,8 +95,7 @@ public class FileParser {
     DVector actual_position = new DVector(actual.header.getDouble("xbase") + actual_x_pts * actual.header.getDouble("xstepsize"),
                                           actual.header.getDouble("ybase") + actual_y_pts * actual.header.getDouble("ystepsize"),
                                           actual.header.getDouble("zbase") + actual_z_pts * actual.header.getDouble("zstepsize"));
-                                  
-                                  
+
     actual.data.points.add(new PointVector(actual_position, new DVector(x, y, z)));
     
     actual_x_pts++;
@@ -110,8 +109,8 @@ public class FileParser {
       }
     }
   }
-  
-  void parseLine(String line) {
+
+  private void parseLine(String line) {
     if( state == ParserState.NoState) {
       if( line.contains("# Begin: Segment")) {
           state = ParserState.Segment;
@@ -144,7 +143,7 @@ public class FileParser {
     }
   }
   
-  void parseFile(String name) {
+  public void parseFile(String name) {
     BufferedReader reader;
     String line;
     reader = createReader(name);
@@ -157,6 +156,7 @@ public class FileParser {
         }
         parseLine(line);
       } catch(IOException e) {
+        println("Problem with" + name);
         e.printStackTrace();
         line = null;
         break;

@@ -37,7 +37,7 @@ public class DisplayOptionsManager {
         return Integer.valueOf(field.getText());
     }
 
-    public void updateDisplays() {
+    private void updateDisplays() {
         updateField(valDisplayThreshold, threshold);
         updateField(valDisplayScale, ArrowScale);
         updateField(valDisplayWidth, ArrowWidth);
@@ -48,7 +48,7 @@ public class DisplayOptionsManager {
         boxMainEnableGradient2.setSelected(gradient2_enable);
     }
 
-    public void getFromDisplays() {
+    private void getFromDisplays() {
         threshold = getFieldDouble(valDisplayThreshold);
         ArrowScale = getFieldDouble(valDisplayScale);
         ArrowWidth = getFieldDouble(valDisplayWidth);

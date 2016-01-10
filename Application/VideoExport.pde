@@ -1,25 +1,18 @@
 class VideoExport{
-  ProcessBuilder processBuilder;
-  File folder;
-  Process process;
-  String outputFilePath;
-  String inputFilePath;
-  String actualFile;
+  private final String outputFilePath;
+  private final String inputFilePath;
   
-  long frameNumber;
-  
-  int FPS;
-  
-  
-  
-  VideoExport(){
+  private long frameNumber;
+  private int FPS;
+
+  VideoExport() {
     frameNumber = 0;
     outputFilePath = sketchPath("")+"test.mp4";
     inputFilePath = sketchPath("")+"temp/anim_%05d.png";
-    FPS = new Integer(30);
+    FPS = 30;
   }
   
-  VideoExport(String fileName){
+  VideoExport(String fileName) {
     frameNumber = 0;
     outputFilePath = fileName;
     inputFilePath = sketchPath("")+"temp/anim_%05d.png";
@@ -35,25 +28,24 @@ class VideoExport{
     return file.delete();
   }
   
-  boolean cleanFolder(){
-    folder = new File(sketchPath("") + "temp");
-    return deleteAllFiles(folder);
+  boolean cleanFolder() {
+    return deleteAllFiles(new File(sketchPath("") + "temp"));
   }
   
-  void setFPS(int FPS_){
+  void setFPS(int FPS_) {
     FPS = FPS_;
   }
   
-  void saveVideoFrame(){
+  void saveVideoFrame() {
     saveFrame(String.format("temp/anim_%05d.png", frameNumber++));
   }
   
-  void closeVideo(){
-    processBuilder = new ProcessBuilder(sketchPath("")+"ffmpeg/ffmpeg.exe", "-i",
+  void closeVideo() {
+    ProcessBuilder processBuilder = new ProcessBuilder(sketchPath("")+"ffmpeg/ffmpeg.exe", "-i",
         inputFilePath, "-c:v", "libx264",
         "-r", String.format("%d",FPS), "-y", "-an", "-pix_fmt", "yuv420p", outputFilePath );
     try {
-      process = processBuilder.start();
+      processBuilder.start();
     } catch (Exception e) {
       e.printStackTrace();
     }

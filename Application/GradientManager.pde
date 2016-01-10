@@ -79,30 +79,30 @@ public class GradientManager {
         grad_window.setVisible(true);
     }
 
-    void setMaxHint(float value) {
+    public void setMaxHint(float value) {
         actual_model.setMaxHint(value);
         updateDisplays();
     }
-    
-    void setMinHint(float value) {
+
+    public void setMinHint(float value) {
         actual_model.setMinHint(value);
         updateDisplays();
     }
 
-    void maxHintCopy() {
+    public void maxHintCopy() {
         setText(valGradMax, actual_model.getMaxHint());
     }
-    
-    void minHintCopy() {
+
+    public void minHintCopy() {
         setText(valGradMin, actual_model.getMinHint());
     }
 
-    void editPoint() {
-        this.gradient_point_editor.edit(gradient_view.getActual());
+    public void editPoint() {
+        this.gradient_point_editor.open(gradient_view.getActual());
     }
 
-    void addPoint() {
-        gradient_point_editor.open();
+    public void addPoint() {
+        gradient_point_editor.open(null);
         colorUpdate();
     }
 
@@ -114,7 +114,7 @@ public class GradientManager {
         return actual_model.get(actual_model.size()-1);
     }
 
-    void colorUpdate() {
+    private void colorUpdate() {
         actual_color_graphics.beginDraw();
 
         if (gradient_view.isEmpty() )
@@ -165,7 +165,7 @@ public class GradientManager {
         gradient_preview_pad.setGraphic(gradient_preview_graphics);
     }
 
-    void Apply_Handler() {
+    public void Apply_Handler() {
         Double x = getTextDouble(valGradX);
         Double y = getTextDouble(valGradY);
         Double z = getTextDouble(valGradZ);
@@ -180,21 +180,21 @@ public class GradientManager {
         
         gradient_list.set(actual_index, actual_model);
     }
-    
-    void OK_Handler() {
+
+    public void OK_Handler() {
         Apply_Handler();
         grad_window.setVisible(false);
     }
 
-    void Cancel_Handler() {
+    public void Cancel_Handler() {
         grad_window.setVisible(false);
     }
 
-    List<GradientPoint> getList(int gradientIndex) {
+    public List<GradientPoint> getList(int gradientIndex) {
         return this.gradient_list.get(gradientIndex).list;
     }
 
-    DVector getReference(int gradientIndex) {
+    public DVector getReference(int gradientIndex) {
         return this.gradient_list.get(gradientIndex).getReference();
     }
 

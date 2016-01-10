@@ -9,7 +9,7 @@ public class ListView<T> {
         this.model = model;
     }
 
-    void reEnumerate() {
+    public void reEnumerate() {
         model.preEnumerate();
         ArrayList<String> list = new ArrayList<String>();
         if (model.isEmpty()) {
@@ -23,11 +23,12 @@ public class ListView<T> {
         model.postEnumerate();
     }
 
-    void add(T element) {
+    public void add(T element) {
         model.add(element);
         reEnumerate();
     }
-    void remove() {
+
+    public void remove() {
         String selected = dropList.getSelectedText();
         for(T element : model) {
             String elementLabel = model.labelFor(element);
@@ -39,7 +40,7 @@ public class ListView<T> {
         reEnumerate();
     }
 
-    void clear() {
+    public void clear() {
         model.clear();
         reEnumerate();
     }
