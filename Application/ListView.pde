@@ -1,8 +1,8 @@
 import g4p_controls.*;
 
 public class ListView<T> {
-    GDropList dropList;
-    ListModel<T> model;
+    private final GDropList dropList;
+    private final ListModel<T> model;
 
     ListView(GDropList dropList, ListModel<T> model) {
         this.dropList = dropList;
@@ -46,5 +46,9 @@ public class ListView<T> {
 
     public T getActual() {
         return this.model.get(dropList.getSelectedIndex());
+    }
+
+    public final List<T> getList() {
+        return this.model;
     }
 }

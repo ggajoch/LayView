@@ -124,26 +124,28 @@ public class GradientManager {
     void colorUpdate() {
         actual_color_graphics.beginDraw();
 
-        if (this.gradient_view.model.isEmpty() )
+        if (gradient_view.isEmpty() )
             actual_color_graphics.background(grad_window.getGraphics().backgroundColor);
         else
-            actual_color_graphics.background(this.gradient_view.model.get(this.gradient_view.dropList.getSelectedIndex()).colour);
+            actual_color_graphics.background(gradient_view.getActual().colour);
 
         actual_color_graphics.endDraw();
         actual_color_pad.setGraphic(actual_color_graphics);
+
         // -------------------------------------------------------
+
         gradient_preview_graphics.beginDraw();
-        if (this.gradient_view.model.size() == 0) {
+        if (gradient_view.size() == 0) {
             gradient_preview_graphics.background(grad_window.getGraphics().backgroundColor);
-        } else if (this.gradient_view.model.size() == 1) {
-            gradient_preview_graphics.background(this.gradient_view.model.get(this.gradient_view.dropList.getSelectedIndex()).colour);
+        } else if (gradient_view.size() == 1) {
+            gradient_preview_graphics.background(gradient_view.getActual().colour);
         } else {
             float minVal = (float) minValue().val;
             float maxVal = (float) maxValue().val;
             ArrayList<Pair<Float, Integer>> color_list = new ArrayList<Pair<Float, Integer>>();
-            for (GradientPoint p : this.gradient_view.model.list) {
+            for (GradientPoint p : gradient_view.getList()) {
                 float val = map((float) p.val, minVal, maxVal, 0.0, gradient_preview_graphics.height);
-                color_list.add(new Pair<Float, Integer>(Float.valueOf(val), Integer.valueOf(p.colour)));
+                color_list.add(new Pair<Float, Integer>(val, p.colour));
             }
 
             int left = 0, right = 1;

@@ -18,8 +18,4 @@ public class FileView extends ListView<File> {
     private boolean isOMF(File file){
         return file.getName().substring(file.getName().lastIndexOf('.')).equals(".omf");
     }
-
-    public List<File> getListFile() {
-        return this.model.list;
-    }
 }
