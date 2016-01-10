@@ -1,4 +1,5 @@
-import java.text.*;
+import java.text.NumberFormat;
+import java.text.DecimalFormat;
 import g4p_controls.GTextField;
 
 public class DisplayOptionsManager {
