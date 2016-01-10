@@ -1,8 +1,5 @@
 import g4p_controls.GDropList;
 
-import java.io.File;
-import java.util.List;
-
 public class FileView extends ListView<File> {
     FileView(GDropList dropList) {
         super(dropList, new FileModel());

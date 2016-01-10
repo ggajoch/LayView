@@ -1,8 +1,3 @@
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 public class GradientModel extends ListModel<GradientPoint> implements Cloneable {
 
     private volatile DVector reference;

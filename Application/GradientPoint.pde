@@ -1,5 +1,3 @@
-import java.util.Comparator;
-
 class GradientPoint {
   public double val;
   public int colour;

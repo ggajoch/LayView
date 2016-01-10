@@ -1,7 +1,5 @@
 import g4p_controls.*;
 
-import java.util.ArrayList;
-
 public class ListView<T> {
     GDropList dropList;
     ListModel<T> model;

@@ -2,10 +2,6 @@ import g4p_controls.GButton;
 import g4p_controls.GLabel;
 import g4p_controls.GSketchPad;
 import g4p_controls.GWindow;
-import processing.core.PGraphics;
-
-import java.security.GeneralSecurityException;
-import java.util.*;
 
 public class GradientManager {
     private ArrayList<GradientModel> gradient_list;
