@@ -1,6 +1,5 @@
 import java.text.*;
 import g4p_controls.GTextField;
-import g4p_controls.GWindow;
 
 public class DisplayOptionsManager {
     private double threshold, ArrowScale, ArrowWidth, ArrowTip, ArrowTipRadius,
@@ -23,12 +22,19 @@ public class DisplayOptionsManager {
 
     private void updateField(GTextField field, double value) {
         NumberFormat formatter = new DecimalFormat("0.######E0");
-        
         field.setText(formatter.format(value));
     }
 
-    private double getField(GTextField field) {
+    private void updateField(GTextField field, int value) {
+        field.setText(Integer.toString(value));
+    }
+
+    private double getFieldDouble(GTextField field) {
         return Double.valueOf(field.getText());
+    }
+
+    private int getFieldInt(GTextField field) {
+        return Integer.valueOf(field.getText());
     }
 
     public void updateDisplays() {
@@ -38,18 +44,18 @@ public class DisplayOptionsManager {
         updateField(valDisplayTip, ArrowTip);
         updateField(valDisplayValues, ScaleValues);
         updateField(valDisplayTipRadius, ArrowTipRadius);
-        valVideoFPS.setText(Integer.toString(FPS));
+        updateField(valVideoFPS, FPS);
         boxMainEnableGradient2.setSelected(gradient2_enable);
     }
 
     public void getFromDisplays() {
-        threshold = getField(valDisplayThreshold);
-        ArrowScale = getField(valDisplayScale);
-        ArrowWidth = getField(valDisplayWidth);
-        ArrowTip = getField(valDisplayTip);
-        ArrowTipRadius = getField(valDisplayTipRadius);
-        ScaleValues = getField(valDisplayValues);
-        FPS = Integer.valueOf(valVideoFPS.getText());
+        threshold = getFieldDouble(valDisplayThreshold);
+        ArrowScale = getFieldDouble(valDisplayScale);
+        ArrowWidth = getFieldDouble(valDisplayWidth);
+        ArrowTip = getFieldDouble(valDisplayTip);
+        ArrowTipRadius = getFieldDouble(valDisplayTipRadius);
+        ScaleValues = getFieldDouble(valDisplayValues);
+        FPS = getFieldInt(valVideoFPS);
         gradient2_enable = boxMainEnableGradient2.isSelected();
     }
 
