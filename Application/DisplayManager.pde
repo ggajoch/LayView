@@ -50,7 +50,7 @@ class DisplayManager{
     cam.setMinimumDistance(1);
     cam.setMaximumDistance(10000);
     display_options_manager = new DisplayOptionsManager();
-    
+   
     ///
     /*createGUI();
     GradientEditWindow.setVisible(false);

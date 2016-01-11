@@ -7,9 +7,13 @@
  */
 
 DisplayManager display;
+DisplayGenerator second;
 
-void setup()  { 
+void settings(){
   size(1024, 768, P3D);
+}
+
+void setup(){ 
   noStroke();
   colorMode(RGB, 1);
   
@@ -24,6 +28,9 @@ void setup()  {
   
   display.mySetup();
   display.display_options_manager.updateDisplays();
+  second = new DisplayGenerator();
+  String[] args = {"YourSketchNameHere"};
+  PApplet.runSketch(args, second);
   
 } 
 
