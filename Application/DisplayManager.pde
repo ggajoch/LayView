@@ -43,6 +43,12 @@ class DisplayManager{
     lastMillis = 0;
   }
   
+  void SurfacesSet(ArrayList<ColourSurface> Surfaces_){
+    synchronized(mutex) {
+      Surfaces = Surfaces_;
+    }
+  }
+  
   void mySetup(){
     /*export = new VideoExport();
     export.cleanFolder();*/
