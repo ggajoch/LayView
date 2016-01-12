@@ -31,6 +31,7 @@ void setup(){
   second = new DisplayGenerator();
   String[] args = {"YourSketchNameHere"};
   PApplet.runSketch(args, second);
+  
 } 
 
 void draw()  { 
