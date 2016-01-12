@@ -8,7 +8,6 @@
 
 DisplayManager display;
 DisplayGenerator second;
-DisplayGenerator third;
 
 void settings(){
   size(1024, 768, P3D);
@@ -32,10 +31,6 @@ void setup(){
   second = new DisplayGenerator();
   String[] args = {"YourSketchNameHere"};
   PApplet.runSketch(args, second);
-  
-  third = new DisplayGenerator();
-  String[] args2 = {"YourSketchNameHere2"};
-  PApplet.runSketch(args2, third);
 } 
 
 void draw()  { 
