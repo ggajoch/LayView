@@ -1,0 +1,61 @@
+# OOMMF OVF 2.0
+# Segment count: 1
+# Begin: Segment
+# Begin: Header
+# Title: Oxs_TimeDriver::Magnetization
+# Desc: Oxs vector field output
+# Desc:  MIF source file: /mnt/gpfs/work/plgrid/groups/plggspinsym/MF/switching-obrazki/p-ap/Anisotropy.mif
+# Desc:  Iteration: 0, State id: 44
+# Desc:  Stage: 0, Stage iteration: 0
+# Desc:  Stage simulation time: 0 s
+# Desc:  Total simulation time: 0 s
+# meshunit: m
+# meshtype: rectangular
+# xbase: 1.0000000000000001e-09
+# ybase: 1.0000000000000001e-09
+# zbase: 3.4999999999999998e-10
+# xnodes: 3
+# ynodes: 4
+# znodes: 2
+# xstepsize: 2.0000000000000001e-09
+# ystepsize: 2.0000000000000001e-09
+# zstepsize: 6.9999999999999996e-10
+# xmin: 0
+# ymin: 0
+# zmin: 0
+# xmax: 7.0000000000000005e-08
+# ymax: 7.0000000000000005e-08
+# zmax: 3.4999999999999999e-09
+# valuedim: 3
+# valuelabels: Magnetization_x Magnetization_y Magnetization_z
+# valueunits: A/m A/m A/m
+#
+# End: Header
+#
+# Begin: Data Text
+ -0 0 -0
+ 0 0 -0
+ -0 -0 0
+ -0 0 0
+ 0 0 0
+ -0 0 -0
+ 0 0 0
+ 0 -0 0
+ -0 0 0
+ 0 0 0
+ 0 0 0
+ -0 -0 0
+ 0 0 0
+ 1273.3346360802716 -35096.486672839113 -999383.11734896118
+ 4091.5945326411479 -34822.215791007708 -999385.14704871667
+ 6802.5532026160618 -34583.619887584857 -999378.65621865098
+ 8886.1561832192419 -34516.433108837962 -999364.62418565247
+ 10563.505733310616 -34621.755518356011 -999344.65845945745
+ 12159.087132934004 -34875.157879448554 -999317.7072197696
+ 14005.970284126905 -35254.79046239124 -999280.207222105
+ 16383.69597131183 -35720.54130506263 -999227.51034746482
+ 18973.707764736493 -36120.480307491664 -999167.30796999892
+ 0 0 0
+ 0 0 0
+# End: Data Text
+# End: Segment

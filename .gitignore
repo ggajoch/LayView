@@ -1,0 +1,6 @@
+*.mp4
+Application/temp/
+.idea
+out
+src
+untitled.iml
