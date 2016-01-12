@@ -20,42 +20,42 @@ synchronized public void GradientEditWindow_draw(PApplet appc, GWinData data) { 
 
 public void listGradList_handler(GDropList source, GEvent event) { //_CODE_:listGradList:798901:
   println("listGradList - GDropList >> GEvent." + event + " @ " + millis());
-  display.gradients.colorUpdate();
+  gradients.colorUpdate();
 } //_CODE_:listGradList:798901:
 
 public void btnGradAdd_handler(GButton source, GEvent event) { //_CODE_:btnGradAdd:714538:
   println("button1 - GButton >> GEvent." + event + " @ " + millis());
-  display.gradients.addPoint();
+  gradients.addPoint();
 } //_CODE_:btnGradAdd:714538:
 
 public void btnGradRemove_handler(GButton source, GEvent event) { //_CODE_:btnGradRemove:368151:
   println("button2 - GButton >> GEvent." + event + " @ " + millis());
-  display.gradients.gradient_view.remove();
+  gradients.gradient_view.remove();
 } //_CODE_:btnGradRemove:368151:
 
 public void btnGradClear_handler(GButton source, GEvent event) { //_CODE_:btnGradClear:424281:
   println("button3 - GButton >> GEvent." + event + " @ " + millis());
-  display.gradients.gradient_view.clear();
+  gradients.gradient_view.clear();
 } //_CODE_:btnGradClear:424281:
 
 public void btnGradOK_handler(GButton source, GEvent event) { //_CODE_:btnGradOK:994464:
   println("button4 - GButton >> GEvent." + event + " @ " + millis());
-  display.gradients.OK_Handler();
-  synchronized(display.mutex) {
-    for(ColourSurface Surface : display.Surfaces){
+  gradients.OK_Handler();
+  synchronized(mutex) {
+    for(ColourSurface Surface : Surfaces){
       Surface.gradientMakers.clear();//remove all gradient makers
-      Gradient gradientMaker = new Gradient(display.gradients.getList(0), display.gradients.getReference(0));
+      Gradient gradientMaker = new Gradient(gradients.getList(0), gradients.getReference(0));
       
-      gradientMaker.max = display.gradients.getGradientModel(0).getMaxVector();
-      gradientMaker.min = display.gradients.getGradientModel(0).getMinVector();
+      gradientMaker.max = gradients.getGradientModel(0).getMaxVector();
+      gradientMaker.min = gradients.getGradientModel(0).getMinVector();
       
       Surface.gradientMakers.add(gradientMaker);
       
       
-      if(display.display_options_manager.getGradient2_enable()){
-        gradientMaker = new Gradient(display.gradients.getList(1), display.gradients.getReference(1));  
-        gradientMaker.max = display.gradients.getGradientModel(1).getMaxVector();
-        gradientMaker.min = display.gradients.getGradientModel(1).getMinVector();
+      if(display_options_manager.getGradient2_enable()){
+        gradientMaker = new Gradient(gradients.getList(1), gradients.getReference(1));  
+        gradientMaker.max = gradients.getGradientModel(1).getMaxVector();
+        gradientMaker.min = gradients.getGradientModel(1).getMinVector();
       
         Surface.gradientMakers.add(gradientMaker);
       }
@@ -68,38 +68,38 @@ public void btnGradOK_handler(GButton source, GEvent event) { //_CODE_:btnGradOK
 
 public void btnGradCancel_handler(GButton source, GEvent event) { //_CODE_:btnGradCancel:328569:
   println("btnGradCancel - GButton >> GEvent." + event + " @ " + millis());
-  display.gradients.Cancel_Handler();
+  gradients.Cancel_Handler();
 } //_CODE_:btnGradCancel:328569:
 
 public void btnGradEdit_handler(GButton source, GEvent event) { //_CODE_:btnGradEdit:448885:
   println("btnGradEdit - GButton >> GEvent." + event + " @ " + millis());
-  display.gradients.editPoint();
+gradients.editPoint();
 } //_CODE_:btnGradEdit:448885:
 
 public void btnGradMax_handler(GButton source, GEvent event) { //_CODE_:btnGradMax:524538:
   println("btnGradMax - GButton >> GEvent." + event + " @ " + millis());
-  display.gradients.maxHintCopy();
+        gradients.maxHintCopy();
 } //_CODE_:btnGradMax:524538:
 
 public void btnGradMin_handler(GButton source, GEvent event) { //_CODE_:btnGradMin:256196:
   println("btnGradMin - GButton >> GEvent." + event + " @ " + millis());
-  display.gradients.minHintCopy();
+  gradients.minHintCopy();
 } //_CODE_:btnGradMin:256196:
 
 public void btnGradRecalculate_handler(GButton source, GEvent event) { //_CODE_:btnGradRecalculate:860732:
-  display.gradients.Apply_Handler();
+  gradients.Apply_Handler();
   println("btnGradRecalculate - GButton >> GEvent." + event + " @ " + millis());
   float max1=0,min1=0,max0=0,min0=0;
-  synchronized(display.mutex) {
-    for(int i=0 ; i<display.Surfaces.size() ; i++){
-      ColourSurface Surface = display.Surfaces.get(i);
+  synchronized(mutex) {
+    for(int i=0 ; i<Surfaces.size() ; i++){
+      ColourSurface Surface = Surfaces.get(i);
       Surface.gradientMakers.clear();//remove all gradient makers
-      Gradient gradientMaker = new Gradient(display.gradients.getList(0), display.gradients.getReference(0));
+      Gradient gradientMaker = new Gradient(gradients.getList(0), gradients.getReference(0));
       
       Surface.gradientMakers.add(gradientMaker);
       
-      if(display.display_options_manager.getGradient2_enable()){
-        gradientMaker = new Gradient(display.gradients.getList(1), display.gradients.getReference(1));  
+      if(display_options_manager.getGradient2_enable()){
+        gradientMaker = new Gradient(gradients.getList(1), gradients.getReference(1));  
         
         Surface.gradientMakers.add(gradientMaker);
       }
@@ -109,26 +109,26 @@ public void btnGradRecalculate_handler(GButton source, GEvent event) { //_CODE_:
       if(i==0){
         max0 = new Float(Surface.gradientMakers.get(0).max);
         min0 = new Float(Surface.gradientMakers.get(0).min);
-        Surface.gradientMakers.get(0).max = display.gradients.getGradientModel(0).getMaxVector();
-        Surface.gradientMakers.get(0).min = display.gradients.getGradientModel(0).getMinVector();
+        Surface.gradientMakers.get(0).max = gradients.getGradientModel(0).getMaxVector();
+        Surface.gradientMakers.get(0).min = gradients.getGradientModel(0).getMinVector();
       }else{
         if(Surface.gradientMakers.get(0).max>max0) max0 = new Float(Surface.gradientMakers.get(0).max);
         if(Surface.gradientMakers.get(0).min<min0) min0 = new Float(Surface.gradientMakers.get(0).min);
-        Surface.gradientMakers.get(0).max = display.gradients.getGradientModel(0).getMaxVector();
-        Surface.gradientMakers.get(0).min = display.gradients.getGradientModel(0).getMinVector();
+        Surface.gradientMakers.get(0).max = gradients.getGradientModel(0).getMaxVector();
+        Surface.gradientMakers.get(0).min = gradients.getGradientModel(0).getMinVector();
       }
       
-      if(display.display_options_manager.getGradient2_enable()){
+      if(display_options_manager.getGradient2_enable()){
         if(i==0){
           max1 = new Float(Surface.gradientMakers.get(1).max);
           min1 = new Float(Surface.gradientMakers.get(1).min);
-          Surface.gradientMakers.get(1).max = display.gradients.getGradientModel(1).getMaxVector();
-          Surface.gradientMakers.get(1).min = display.gradients.getGradientModel(1).getMinVector();
+          Surface.gradientMakers.get(1).max = gradients.getGradientModel(1).getMaxVector();
+          Surface.gradientMakers.get(1).min = gradients.getGradientModel(1).getMinVector();
         }else{
           if(Surface.gradientMakers.get(1).max>max1) max1 = new Float(Surface.gradientMakers.get(1).max);
           if(Surface.gradientMakers.get(1).min<min1) min1 = new Float(Surface.gradientMakers.get(1).min);
-          Surface.gradientMakers.get(1).max = display.gradients.getGradientModel(1).getMaxVector();
-          Surface.gradientMakers.get(1).min = display.gradients.getGradientModel(1).getMinVector();
+          Surface.gradientMakers.get(1).max = gradients.getGradientModel(1).getMaxVector();
+          Surface.gradientMakers.get(1).min = gradients.getGradientModel(1).getMinVector();
         }
       }
       
@@ -140,12 +140,12 @@ public void btnGradRecalculate_handler(GButton source, GEvent event) { //_CODE_:
   println(gradients.getGradientModel(0).getMinVector());*/
   
   
-  if(display.gradients.getActualIndex() == 0){
-    display.gradients.setMaxHint(max0);
-    display.gradients.setMinHint(min0);
+  if(gradients.getActualIndex() == 0){
+    gradients.setMaxHint(max0);
+    gradients.setMinHint(min0);
   }else{
-    display.gradients.setMaxHint(max1);
-    display.gradients.setMinHint(min1);
+    gradients.setMaxHint(max1);
+    gradients.setMinHint(min1);
   }
   
 } //_CODE_:btnGradRecalculate:860732:
@@ -156,17 +156,17 @@ synchronized public void GradientPointEditWindowDraw(PApplet appc, GWinData data
 
 public void btnGradEditOK_handler(GButton source, GEvent event) { //_CODE_:btnGradEditOK:586455:
   println("button3 - GButton >> GEvent." + event + " @ " + millis());
-  display.gradients.gradient_point_editor.OK_handler();
+  gradients.gradient_point_editor.OK_handler();
 } //_CODE_:btnGradEditOK:586455:
 
 public void btnGradEditCancel_handler(GButton source, GEvent event) { //_CODE_:btnGradEditCancel:871784:
   println("button4 - GButton >> GEvent." + event + " @ " + millis());
-  display.gradients.gradient_point_editor.Cancel_handler();
+  gradients.gradient_point_editor.Cancel_handler();
 } //_CODE_:btnGradEditCancel:871784:
 
 public void btnGradEditColor_handler(GButton source, GEvent event) { //_CODE_:btnGradEditColor:672090:
   println("btnGradEditColor - GButton >> GEvent." + event + " @ " + millis());
-  display.gradients.gradient_point_editor.Color_handler();
+  gradients.gradient_point_editor.Color_handler();
 } //_CODE_:btnGradEditColor:672090:
 
 synchronized public void InputSelectorWindow_draw(PApplet appc, GWinData data) { //_CODE_:InputSelectorWindow:417565:
@@ -176,29 +176,29 @@ synchronized public void InputSelectorWindow_draw(PApplet appc, GWinData data) {
 public void btnInputAddFile_handler(GButton source, GEvent event) { //_CODE_:btnInputAddFile:299318:
   println("btnInputAddFile - GButton >> GEvent." + event + " @ " + millis());
         String name = G4P.selectInput("Input Dialog", "txt", "OMF file select");
-        display.file_list.add(new File(name));
+        file_list.add(new File(name));
 } //_CODE_:btnInputAddFile:299318:
 
 public void btnInputClearAll_handler(GButton source, GEvent event) { //_CODE_:btnInputClearAll:840953:
   println("btnInputClearAll - GButton >> GEvent." + event + " @ " + millis());
-        display.file_list.clear();
+        file_list.clear();
 } //_CODE_:btnInputClearAll:840953:
 
 public void btnInputRemove_handler(GButton source, GEvent event) { //_CODE_:btnInputRemove:495293:
   println("btnInputRemove - GButton >> GEvent." + event + " @ " + millis());
-        display.file_list.remove();
+        file_list.remove();
 } //_CODE_:btnInputRemove:495293:
 
 public void btnInputAddFolder_handler(GButton source, GEvent event) { //_CODE_:btnInputAddFolder:844648:
   println("btnInputAddFolder - GButton >> GEvent." + event + " @ " + millis());
         String name = G4P.selectFolder("Select folder to load");
-        display.file_list.addFolder(name);
+        file_list.addFolder(name);
 } //_CODE_:btnInputAddFolder:844648:
 
 public void btnInputClose_handler(GButton source, GEvent event) { //_CODE_:btnInputClose:675739:
   println("button1 - GButton >> GEvent." + event + " @ " + millis());
         InputSelectorWindow.setVisible(false);
-        display.showFiles(display.file_list.getList());
+        showFiles(file_list.getList());
 } //_CODE_:btnInputClose:675739:
 
 public void valDisplayThreshold_handler(GTextField source, GEvent event) { //_CODE_:valDisplayThreshold:389430:
@@ -211,37 +211,37 @@ synchronized public void DisplayOptionsWindow_draw(PApplet appc, GWinData data) 
 
 public void optDisplayTypeBox_handler(GOption source, GEvent event) { //_CODE_:optDisplayTypeBox:999994:
   println("optDisplayTypeBox - GOption >> GEvent." + event + " @ " + millis());
-    display.display_options_manager.setVectors(false);
+    display_options_manager.setVectors(false);
 } //_CODE_:optDisplayTypeBox:999994:
 
 public void optDisplayTypeVectors_handler(GOption source, GEvent event) { //_CODE_:optDisplayTypeVectors:890085:
   println("option1 - GOption >> GEvent." + event + " @ " + millis());
-        display.display_options_manager.setVectors(true);
+        display_options_manager.setVectors(true);
 } //_CODE_:optDisplayTypeVectors:890085:
 
 public void valDisplayScale_handler(GTextField source, GEvent event) { //_CODE_:valDisplayScale:563055:
   println("textfield1 - GTextField >> GEvent." + event + " @ " + millis());
-  display.display_options_manager.setArrowScale(Double.valueOf(source.getText()));
+  display_options_manager.setArrowScale(Double.valueOf(source.getText()));
 } //_CODE_:valDisplayScale:563055:
 
 public void valDisplayWidth_handler(GTextField source, GEvent event) { //_CODE_:valDisplayWidth:446561:
   println("textfield2 - GTextField >> GEvent." + event + " @ " + millis());
-        display.display_options_manager.setArrowWidth(Double.valueOf(source.getText()));
+        display_options_manager.setArrowWidth(Double.valueOf(source.getText()));
 } //_CODE_:valDisplayWidth:446561:
 
 public void valDisplayTip_handler(GTextField source, GEvent event) { //_CODE_:valDisplayTip:725029:
   println("textfield3 - GTextField >> GEvent." + event + " @ " + millis());
-        display.display_options_manager.setArrowTip(Double.valueOf(source.getText()));
+        display_options_manager.setArrowTip(Double.valueOf(source.getText()));
 } //_CODE_:valDisplayTip:725029:
 
 public void valDisplayValues_handler(GTextField source, GEvent event) { //_CODE_:valDisplayValues:471739:
   println("textfield4 - GTextField >> GEvent." + event + " @ " + millis());
-        display.display_options_manager.setScaleValues(Double.valueOf(source.getText()));
+        display_options_manager.setScaleValues(Double.valueOf(source.getText()));
 } //_CODE_:valDisplayValues:471739:
 
 public void valDisplayTipRadius_handler(GTextField source, GEvent event) { //_CODE_:valDisplayTipRadius:506724:
   println("textfield5 - GTextField >> GEvent." + event + " @ " + millis());
-        display.display_options_manager.setArrowTipRadius((Double.valueOf(source.getText())));
+        display_options_manager.setArrowTipRadius((Double.valueOf(source.getText())));
 } //_CODE_:valDisplayTipRadius:506724:
 
 public void btnDisplayClose_handler(GButton source, GEvent event) { //_CODE_:btnDisplayClose:715831:
@@ -255,16 +255,16 @@ synchronized public void VideoControlWindow_draw(PApplet appc, GWinData data) { 
 
 public void valVideoFPS_handler(GTextField source, GEvent event) { //_CODE_:valVideoFPS:260387:
   println("valVideoFPS - GTextField >> GEvent." + event + " @ " + millis());
-  display.display_options_manager.setFPS(Integer.valueOf(source.getText()));
+  display_options_manager.setFPS(Integer.valueOf(source.getText()));
 } //_CODE_:valVideoFPS:260387:
 
 public void btnVideoExport_handler(GButton source, GEvent event) { //_CODE_:btnVideoExport:760889:
   println("button1 - GButton >> GEvent." + event + " @ " + millis());
   String file_name = G4P.selectInput("Input Dialog", "mp4", "OMF file select");
-  display.export = new VideoExport(file_name+".mp4");
-  display.export.cleanFolder();
-  display.export.setFPS(display.display_options_manager.getFPS());
-  display.record = 2;
+  export = new VideoExport(file_name+".mp4");
+  export.cleanFolder();
+  export.setFPS(display_options_manager.getFPS());
+  record = 2;
   // coś tutaj?
   //może policzyć całkę?
   
@@ -272,27 +272,27 @@ public void btnVideoExport_handler(GButton source, GEvent event) { //_CODE_:btnV
 
 public void btnVideoLeft_handler(GImageButton source, GEvent event) { //_CODE_:btnVideoLeft:930974:
   println("btnVideoLeft - GImageButton >> GEvent." + event + " @ " + millis());
-  display.frame--;
-  if(display.frame < 0) display.frame = display.Surfaces.size()-1;
-  println("Frame: "+display.frame);
+  frame--;
+  if(frame < 0) frame = Surfaces.size()-1;
+  println("Frame: "+frame);
 } //_CODE_:btnVideoLeft:930974:
 
 public void btnVideoPlayPause_handler(GImageButton source, GEvent event) { //_CODE_:btnVideoPlauPause:272221:
   println("btnVideoPlauPause - GImageButton >> GEvent." + event + " @ " + millis());
-  if(display.play == 1){
-    display.play = 0; 
+  if(play == 1){
+    play = 0; 
     println("STOP");
   }else{
-    display.play = 1;
+    play = 1;
     println("PLAY");
   }
 } //_CODE_:btnVideoPlauPause:272221:
 
 public void btnVideoRight_handler(GImageButton source, GEvent event) { //_CODE_:btnVideoRight:697452:
   println("btnVideoRight - GImageButton >> GEvent." + event + " @ " + millis());
-  display.frame++;
-  if(display.frame>=display.Surfaces.size()) display.frame = 0;
-  println("Frame: "+display.frame);
+  frame++;
+  if(frame>=Surfaces.size()) frame = 0;
+  println("Frame: "+frame);
 } //_CODE_:btnVideoRight:697452:
 
 public void btnVideoClose_handler(GButton source, GEvent event) { //_CODE_:btnVideoClose:541193:
@@ -303,7 +303,7 @@ public void btnVideoClose_handler(GButton source, GEvent event) { //_CODE_:btnVi
 public void btnVideoCSV_handler(GButton source, GEvent event) { //_CODE_:btnVideoCSV:805648:
   println("btnVideoCSV - GButton >> GEvent." + event + " @ " + millis());
   FrameTextParser parser = new FrameTextParser();
-  display.frameTextList = parser.getFromCSV();
+  frameTextList = parser.getFromCSV();
 } //_CODE_:btnVideoCSV:805648:
 
 synchronized public void MainWindow_draw(PApplet appc, GWinData data) { //_CODE_:MainWindow:899620:
@@ -327,32 +327,32 @@ public void btnMainVideo_handler(GButton source, GEvent event) { //_CODE_:btnMai
 
 public void btnMainGradient1_handler(GButton source, GEvent event) { //_CODE_:btnMainGradient1:574437:
   println("btnMainGradient1 - GButton >> GEvent." + event + " @ " + millis());
-        display.gradients.edit(0);
+        gradients.edit(0);
 } //_CODE_:btnMainGradient1:574437:
 
 public void btnMainGradient2_handler(GButton source, GEvent event) { //_CODE_:btnMainGradient2:361852:
   println("btnMainGradient2 - GButton >> GEvent." + event + " @ " + millis());
-        display.gradients.edit(1);
+        gradients.edit(1);
 } //_CODE_:btnMainGradient2:361852:
 
 public void boxMainEnableGradient2_handler(GCheckbox source, GEvent event) { //_CODE_:boxMainEnableGradient2:636707:
   println("boxMainEnableGradient2 - GCheckbox >> GEvent." + event + " @ " + millis());
-  display.display_options_manager.setGradient2_enable(source.isSelected());
-  synchronized(display.mutex) {
-    for(ColourSurface Surface : display.Surfaces){
+  display_options_manager.setGradient2_enable(source.isSelected());
+  synchronized(mutex) {
+    for(ColourSurface Surface : Surfaces){
       Surface.gradientMakers.clear();//remove all gradient makers
-      Gradient gradientMaker = new Gradient(display.gradients.getList(0), display.gradients.getReference(0));
+      Gradient gradientMaker = new Gradient(gradients.getList(0), gradients.getReference(0));
       
-      gradientMaker.max = display.gradients.getGradientModel(0).getMaxVector();
-      gradientMaker.min = display.gradients.getGradientModel(0).getMinVector();
+      gradientMaker.max = gradients.getGradientModel(0).getMaxVector();
+      gradientMaker.min = gradients.getGradientModel(0).getMinVector();
       
       Surface.gradientMakers.add(gradientMaker);
       
       
-      if(display.display_options_manager.getGradient2_enable()) {
-        gradientMaker = new Gradient(display.gradients.getList(1), display.gradients.getReference(1));
-        gradientMaker.max = display.gradients.getGradientModel(1).getMaxVector();
-        gradientMaker.min = display.gradients.getGradientModel(1).getMinVector();
+      if(display_options_manager.getGradient2_enable()) {
+        gradientMaker = new Gradient(gradients.getList(1), gradients.getReference(1));
+        gradientMaker.max = gradients.getGradientModel(1).getMaxVector();
+        gradientMaker.min = gradients.getGradientModel(1).getMinVector();
       
         Surface.gradientMakers.add(gradientMaker);
       }
