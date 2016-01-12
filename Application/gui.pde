@@ -199,7 +199,6 @@ public void btnInputClose_handler(GButton source, GEvent event) { //_CODE_:btnIn
   println("button1 - GButton >> GEvent." + event + " @ " + millis());
         InputSelectorWindow.setVisible(false);
         display.showFiles(display.file_list.getList());
-        //second.display.showFiles(display.file_list.getList());
 } //_CODE_:btnInputClose:675739:
 
 public void valDisplayThreshold_handler(GTextField source, GEvent event) { //_CODE_:valDisplayThreshold:389430:
