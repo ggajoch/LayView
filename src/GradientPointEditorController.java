@@ -45,6 +45,8 @@ public class GradientPointEditorController {
         try {
             point = new GradientPoint(Double.valueOf(value.getText()), colorPicker.getValue());
             this.stage.close();
+        } catch (NumberFormatException e) {
+            Utils.showErrorMessage("Bad number", "Cannot parse value: \"" + value.getText() + "\"");
         } catch (Exception e) {
             e.printStackTrace();
         }

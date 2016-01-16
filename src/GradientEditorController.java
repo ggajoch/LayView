@@ -106,14 +106,6 @@ public class GradientEditorController {
         setBackground(gradientViewPane, lg1);
     }
 
-    private void showDuplicateAlert() {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("Error");
-        alert.setHeaderText("Duplicate values");
-        alert.setContentText("Cannot insert point with already existing value!");
-        alert.showAndWait();
-    }
-
     private GradientPoint askForPoint(GradientPoint actualPoint) throws Exception {
         GradientPointEditor editor;
         editor = new GradientPointEditor();
@@ -121,8 +113,10 @@ public class GradientEditorController {
     }
 
     private boolean addPoint(GradientPoint point) {
+        if( point == null )
+            return true;
         if( gradientPoints.contains(point) ) {
-            showDuplicateAlert();
+            Utils.showErrorMessage("Duplicate values", "Cannot insert point with already existing value!");
             return false;
         }
         gradientPoints.add(point);
