@@ -5,6 +5,7 @@ import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Alert;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
@@ -159,6 +160,20 @@ public class GradientEditorController {
     private Pane colorPane;
     @FXML
     private Pane gradientViewPane;
+    @FXML
+    private TextField xRefTextField;
+    @FXML
+    private TextField yRefTextField;
+    @FXML
+    private TextField zRefTextField;
+    @FXML
+    private Button minVectorButton;
+    @FXML
+    private Button maxVectorButton;
+    @FXML
+    private TextField minVectorTextField;
+    @FXML
+    private TextField maxVectorTextField;
 
     // --------------------------- button handlers ---------------------------
 
