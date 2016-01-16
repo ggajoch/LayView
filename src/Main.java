@@ -1,30 +1,29 @@
-import processing.core.*;
+import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
 
-class MyApplet extends PApplet {
-    private int x, y;
-    MyApplet(int x, int y) {
-        this.x = x;
-        this.y = y;
-    }
-    public void settings() {
-        this.size(300, 300);
-    }
-    public void setup() {
-        background(color(255, 0, 0));
-        ellipse(x, y, 100, 100);
-    }
-    public void draw() {
+public class Main extends Application {
 
-    }
-}
+    @Override
+    public void start(Stage primaryStage) throws Exception{
+        FXMLLoader load = new FXMLLoader();
+        load.setLocation(getClass().getResource("Main.fxml"));
+        Parent loader = load.load();
 
-public class Main {
+        primaryStage.setTitle("Main");
+        primaryStage.setScene(new Scene(loader, 500, 500));
+
+        Controller windowController = load.getController();
+        windowController.setup();
+
+        primaryStage.show();
+    }
+
+
     public static void main(String[] args) {
-        System.out.println("Hello World!");
-        MyApplet app = new MyApplet(0,0);
-        MyApplet app2 = new MyApplet(100,100);
-        String[] a = {"main"};
-        PApplet.runSketch(a, app);
-        PApplet.runSketch(a, app2);
+        launch(args);
     }
 }
+
