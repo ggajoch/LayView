@@ -49,6 +49,13 @@ public class GradientEditorController {
         choiceBox.getSelectionModel().selectedIndexProperty().addListener((observable, oldValue, newValue) -> {
             recalculateColor(newValue);
         });
+
+        this.xRefTextField.setText(Double.toString(gradient.getReference().x));
+        this.yRefTextField.setText(Double.toString(gradient.getReference().y));
+        this.zRefTextField.setText(Double.toString(gradient.getReference().z));
+
+        this.minVectorTextField.setText(Double.toString(gradient.getMinVector()));
+        this.maxVectorTextField.setText(Double.toString(gradient.getMaxVector()));
     }
 
     private void setBackground(Pane pane, Paint paint) {
@@ -246,18 +253,18 @@ public class GradientEditorController {
         this.maxVectorTextField.setText(this.maxVectorButton.getText());
     }
 
-
     @FXML
     private void ok_handler() {
         try {
             gradientPoints.forEach(System.out::println);
-            gradientToEdit.clear();
             gradientToEdit.setReference(new Vec3d(Utils.toDouble(xRefTextField),
                     Utils.toDouble(yRefTextField),
                     Utils.toDouble(zRefTextField)));
 
             gradientToEdit.setMinVector(Utils.toDouble(minVectorTextField));
             gradientToEdit.setMaxVector(Utils.toDouble(maxVectorTextField));
+
+            gradientToEdit.clear();
             for (GradientPoint p : gradientPoints) {
                 gradientToEdit.add(p);
             }
