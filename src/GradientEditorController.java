@@ -1,3 +1,4 @@
+import com.sun.javafx.geom.Vec3d;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -236,13 +237,38 @@ public class GradientEditorController {
     }
 
     @FXML
+    private void minVectorCopy_handler() {
+        this.minVectorTextField.setText(this.minVectorButton.getText());
+    }
+
+    @FXML
+    private void maxVectorCopy_handler() {
+        this.maxVectorTextField.setText(this.maxVectorButton.getText());
+    }
+
+
+    @FXML
     private void ok_handler() {
-        gradientPoints.forEach(System.out::println);
-        gradientToEdit.clear();
-        for(GradientPoint p : gradientPoints) {
-            gradientToEdit.add(p);
+        try {
+            gradientPoints.forEach(System.out::println);
+            gradientToEdit.clear();
+            gradientToEdit.setReference(new Vec3d(Utils.toDouble(xRefTextField),
+                    Utils.toDouble(yRefTextField),
+                    Utils.toDouble(zRefTextField)));
+
+            gradientToEdit.setMinVector(Utils.toDouble(minVectorTextField));
+            gradientToEdit.setMaxVector(Utils.toDouble(maxVectorTextField));
+            for (GradientPoint p : gradientPoints) {
+                gradientToEdit.add(p);
+            }
+            this.stage.close();
+        } catch (NumberFormatException e) {
+            String[] x = e.getMessage().split("\"");
+            String name = "";
+            if( x.length > 1 )
+                name = x[1];
+            Utils.showErrorMessage("Bad number format!", "Cannot parse \"" + name + "\"");
         }
-        this.stage.close();
     }
 
     @FXML
