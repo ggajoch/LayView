@@ -21,6 +21,7 @@
          <children>
             <Button layoutX="302.0" layoutY="197.0" mnemonicParsing="false" onAction="#Gradient1_handler" text="Gradient 1" />
             <Button layoutX="302.0" layoutY="222.0" mnemonicParsing="false" onAction="#Gradient2_handler" text="Gradient 2" />
+            <Button layoutX="154.0" layoutY="197.0" mnemonicParsing="false" onAction="#file_select_handler" text="File input" />
          </children>
       </Pane>
    </children>

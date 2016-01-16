@@ -19,8 +19,9 @@ public class FileInputSelectorController {
 
     public void setup(Stage stage, FileInput files) {
         this.stage = stage;
-        setFiles(files);
         this.fileChoiceBox.setConverter(new FileConverter());
+        setFiles(files);
+        recalculateView();
     }
 
     public final FileInput getFiles() {
