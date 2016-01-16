@@ -4,7 +4,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 public class GradientEditor {
-    public Gradient exec(Gradient gradient) throws Exception {
+    public Gradient exec(Gradient gradient, double minVectorHint, double maxVectorHint) throws Exception {
         FXMLLoader load = new FXMLLoader();
         load.setLocation(getClass().getResource("GradientEditor.fxml"));
         Parent loader = load.load();
@@ -14,7 +14,7 @@ public class GradientEditor {
         primaryStage.setScene(new Scene(loader));
 
         GradientEditorController windowController = load.getController();
-        windowController.setup(primaryStage, gradient, 1, 2);
+        windowController.setup(primaryStage, gradient, minVectorHint, maxVectorHint);
 
         primaryStage.showAndWait();
         return windowController.getGradient();
