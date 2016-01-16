@@ -1,5 +1,7 @@
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.ColorPicker;
+import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 public class GradientPointEditorController {
@@ -21,7 +23,7 @@ public class GradientPointEditorController {
     // --------------------------- Private methods  --------------------------
 
     private void setPoint(GradientPoint point) {
-        if( point != null ) {
+        if (point != null) {
             value.setText(point.toString());
             colorPicker.setValue(point.getColor());
         }

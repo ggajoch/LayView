@@ -9,6 +9,7 @@ public class Utils {
         alert.setContentText(text);
         alert.showAndWait();
     }
+    
     public static Double toDouble(TextField field) throws NumberFormatException {
         return Double.valueOf(field.getText());
     }

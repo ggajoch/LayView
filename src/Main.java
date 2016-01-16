@@ -7,7 +7,7 @@ import javafx.stage.Stage;
 public class Main extends Application {
 
     @Override
-    public void start(Stage primaryStage) throws Exception{
+    public void start(Stage primaryStage) throws Exception {
         FXMLLoader load = new FXMLLoader();
         load.setLocation(getClass().getResource("Main.fxml"));
         Parent loader = load.load();

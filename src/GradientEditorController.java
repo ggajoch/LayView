@@ -5,7 +5,6 @@ import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
@@ -62,7 +61,7 @@ public class GradientEditorController {
 
     private void setBackground(Pane pane, Paint paint) {
         BackgroundFill myBF = new BackgroundFill(paint, new CornerRadii(1),
-                new Insets(0.0,0.0,0.0,0.0));
+                new Insets(0.0, 0.0, 0.0, 0.0));
         pane.setBackground(new Background(myBF));
     }
 
@@ -90,10 +89,10 @@ public class GradientEditorController {
     }
 
     private void recalculateGradient() {
-        if( gradientPoints.isEmpty() ) {
+        if (gradientPoints.isEmpty()) {
             setBackground(gradientViewPane, Color.WHITE);
             return;
-        } else if( gradientPoints.size() == 1 ) {
+        } else if (gradientPoints.size() == 1) {
             Iterator<GradientPoint> it = gradientPoints.iterator();
             setBackground(gradientViewPane, it.next().getColor());
             return;
@@ -102,14 +101,14 @@ public class GradientEditorController {
         double mini = Double.MAX_VALUE;
         double maxi = Double.MIN_VALUE;
 
-        for(GradientPoint point : gradientPoints) {
+        for (GradientPoint point : gradientPoints) {
             mini = Math.min(mini, point.getOffset());
             maxi = Math.max(maxi, point.getOffset());
         }
-        for(GradientPoint point : gradientPoints) {
+        for (GradientPoint point : gradientPoints) {
             double value = point.getOffset();
             value -= mini;
-            value /= (maxi-mini);
+            value /= (maxi - mini);
             list.add(new Stop(value, point.getColor()));
         }
 
@@ -124,9 +123,9 @@ public class GradientEditorController {
     }
 
     private boolean addPoint(GradientPoint point) {
-        if( point == null )
+        if (point == null)
             return true;
-        if( gradientPoints.contains(point) ) {
+        if (gradientPoints.contains(point)) {
             Utils.showErrorMessage("Duplicate values", "Cannot insert point with already existing value!");
             return false;
         }
@@ -135,10 +134,10 @@ public class GradientEditorController {
     }
 
     private boolean editPoint(GradientPoint prev, GradientPoint now) {
-        if( prev == null ) {
+        if (prev == null) {
             return addPoint(now);
         }
-        if( now.toString().equals(prev.toString()) ) {
+        if (now.toString().equals(prev.toString())) {
             gradientPoints.remove(prev);
             return addPoint(now);
         } else {
@@ -193,7 +192,7 @@ public class GradientEditorController {
             GradientPoint point = new GradientPoint();
             do {
                 point = askForPoint(point);
-            } while( ! addPoint(point) );
+            } while (!addPoint(point));
             recalculateView();
             choiceBox.getSelectionModel().select(point);
             recalculateColor();
@@ -207,10 +206,10 @@ public class GradientEditorController {
     private void edit_handler() {
         try {
             GradientPoint original = choiceBox.getValue();
-            GradientPoint point = (GradientPoint)original.clone();
+            GradientPoint point = (GradientPoint) original.clone();
             do {
                 point = askForPoint(point);
-            } while( ! editPoint(original, point) );
+            } while (!editPoint(original, point));
             recalculateView();
             choiceBox.getSelectionModel().select(point);
             recalculateColor();
@@ -274,7 +273,7 @@ public class GradientEditorController {
         } catch (NumberFormatException e) {
             String[] x = e.getMessage().split("\"");
             String name = "";
-            if( x.length > 1 )
+            if (x.length > 1)
                 name = x[1];
             Utils.showErrorMessage("Bad number format!", "Cannot parse \"" + name + "\"");
         }
