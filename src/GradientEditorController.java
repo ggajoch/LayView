@@ -25,13 +25,15 @@ public class GradientEditorController {
         return gradientToEdit;
     }
 
-    public void setup(Stage stage, Gradient gradient) {
+    public void setup(Stage stage, Gradient gradient, double minVectorHint, double maxVectorHint) {
         this.stage = stage;
         setGradient(gradient);
         recalculateView();
         choiceBox.getSelectionModel().selectFirst();
         recalculateColor();
         recalculateGradient();
+        this.minVectorButton.setText(Double.toString(minVectorHint));
+        this.maxVectorButton.setText(Double.toString(maxVectorHint));
     }
 
     // --------------------------- Private variables  ---------------------------

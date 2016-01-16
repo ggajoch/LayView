@@ -14,7 +14,7 @@ public class GradientEditor {
         primaryStage.setScene(new Scene(loader));
 
         GradientEditorController windowController = load.getController();
-        windowController.setup(primaryStage, gradient);
+        windowController.setup(primaryStage, gradient, 1, 2);
 
         primaryStage.showAndWait();
         return windowController.getGradient();
