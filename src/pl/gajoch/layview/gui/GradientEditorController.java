@@ -1,20 +1,28 @@
+package pl.gajoch.layview.gui;
+
 import com.sun.javafx.geom.Vec3d;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
-import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.*;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
+import pl.gajoch.layview.utils.GUIUtils;
 
+import java.io.IOException;
 import java.util.*;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
+
+import static pl.gajoch.layview.utils.GUIUtils.*;
 
 
 public class GradientEditorController {
@@ -24,25 +32,76 @@ public class GradientEditorController {
         return gradientToEdit;
     }
 
-    public void setup(Stage stage, Gradient gradient, double minVectorHint, double maxVectorHint) {
+    public void setup(Stage stage, Gradient gradient, double minVectorHint, double maxVectorHint) throws IOException {
         this.stage = stage;
+        referenceVector = new Vec3dTextField(xRefTextField, yRefTextField, zRefTextField);
         setGradient(gradient);
         recalculateView();
         choiceBox.getSelectionModel().selectFirst();
         recalculateColor();
         recalculateGradient();
-        this.minVectorButton.setText(Double.toString(minVectorHint));
-        this.maxVectorButton.setText(Double.toString(maxVectorHint));
+        editor = new GradientPointEditor();
+        minHint = minVectorHint;
+        maxHint = maxVectorHint;
+
+        ContextMenu contextMenu = new ContextMenu();
+        MenuItem item1 = new MenuItem("Get prediction");
+        item1.setOnAction(new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent e) {
+                RichTextField.of(minVectorTextField).set(minHint);
+            }
+        });
+        contextMenu.getItems().add(item1);
+        minVectorTextField.setContextMenu(contextMenu);
+
+        contextMenu = new ContextMenu();
+        item1 = new MenuItem("Get prediction");
+        item1.setOnAction(new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent e) {
+                RichTextField.of(maxVectorTextField).set(maxHint);
+            }
+        });
+        contextMenu.getItems().add(item1);
+        maxVectorTextField.setContextMenu(contextMenu);
     }
 
     // --------------------------- Private variables  ---------------------------
 
+    private GradientPointEditor editor;
     private Stage stage;
-    private Set<GradientPoint> gradientPoints;
+    private SortedSet<GradientPoint> gradientPoints;
     private Gradient gradientToEdit;
+    private Vec3dTextField referenceVector;
+    private double minHint, maxHint;
 
     // --------------------------- Private methods  ---------------------------
 
+
+    private static class Vec3dTextField {
+        private final RichTextField x, y, z;
+
+        public Vec3dTextField(RichTextField x, RichTextField y, RichTextField z) {
+            this.x = x;
+            this.y = y;
+            this.z = z;
+        }
+
+        public Vec3dTextField(TextField x, TextField y, TextField z) {
+            this.x = RichTextField.of(x);
+            this.y = RichTextField.of(y);
+            this.z = RichTextField.of(z);
+        }
+
+        public void set(Vec3d vector) {
+            x.set(vector.x);
+            y.set(vector.y);
+            z.set(vector.z);
+        }
+
+        public Vec3d get() throws NumberFormatException {
+            return new Vec3d(x.getDouble(), y.getDouble(), z.getDouble());
+        }
+    }
     private void setGradient(Gradient gradient) {
         gradientToEdit = gradient;
         this.gradientPoints = new TreeSet<>(gradient.getPoints());
@@ -51,12 +110,10 @@ public class GradientEditorController {
             recalculateColor(newValue);
         });
 
-        this.xRefTextField.setText(Double.toString(gradient.getReference().x));
-        this.yRefTextField.setText(Double.toString(gradient.getReference().y));
-        this.zRefTextField.setText(Double.toString(gradient.getReference().z));
+        referenceVector.set(gradient.getReference());
 
-        this.minVectorTextField.setText(Double.toString(gradient.getMinVector()));
-        this.maxVectorTextField.setText(Double.toString(gradient.getMaxVector()));
+        RichTextField.of(minVectorTextField).set(gradient.getMinVector());
+        RichTextField.of(maxVectorTextField).set(gradient.getMaxVector());
     }
 
     private void setBackground(Pane pane, Paint paint) {
@@ -75,7 +132,6 @@ public class GradientEditorController {
         try {
             setBackground(colorPane, choiceBox.getItems().get(active.intValue()).getColor());
         } catch (Exception ignored) {
-
         }
     }
 
@@ -93,32 +149,22 @@ public class GradientEditorController {
             setBackground(gradientViewPane, Color.WHITE);
             return;
         } else if (gradientPoints.size() == 1) {
-            Iterator<GradientPoint> it = gradientPoints.iterator();
-            setBackground(gradientViewPane, it.next().getColor());
+            setBackground(gradientViewPane, gradientPoints.first().getColor());
             return;
         }
-        List<Stop> list = new ArrayList<>();
-        double mini = Double.MAX_VALUE;
-        double maxi = Double.MIN_VALUE;
 
-        for (GradientPoint point : gradientPoints) {
-            mini = Math.min(mini, point.getOffset());
-            maxi = Math.max(maxi, point.getOffset());
-        }
-        for (GradientPoint point : gradientPoints) {
-            double value = point.getOffset();
-            value -= mini;
-            value /= (maxi - mini);
-            list.add(new Stop(value, point.getColor()));
-        }
+        double mini = gradientPoints.first().getOffset();
+        double maxi = gradientPoints.last().getOffset();
+
+        List<Stop> list = gradientPoints.stream()
+                .map(point -> new Stop((point.getOffset()-mini)/(maxi-mini), point.getColor()))
+                .collect(Collectors.toList());
 
         LinearGradient lg1 = new LinearGradient(0, 0, 0, 1.0, true, CycleMethod.REPEAT, list);
         setBackground(gradientViewPane, lg1);
     }
 
-    private GradientPoint askForPoint(GradientPoint actualPoint) throws Exception {
-        GradientPointEditor editor;
-        editor = new GradientPointEditor();
+    private GradientPoint askForPoint(GradientPoint actualPoint) {
         return editor.exec(actualPoint);
     }
 
@@ -126,7 +172,7 @@ public class GradientEditorController {
         if (point == null)
             return true;
         if (gradientPoints.contains(point)) {
-            Utils.showErrorMessage("Duplicate values", "Cannot insert point with already existing value!");
+            showErrorMessage("Duplicate values", "Cannot insert point with already existing value!");
             return false;
         }
         gradientPoints.add(point);
@@ -175,10 +221,6 @@ public class GradientEditorController {
     private TextField yRefTextField;
     @FXML
     private TextField zRefTextField;
-    @FXML
-    private Button minVectorButton;
-    @FXML
-    private Button maxVectorButton;
     @FXML
     private TextField minVectorTextField;
     @FXML
@@ -245,25 +287,14 @@ public class GradientEditorController {
     }
 
     @FXML
-    private void minVectorCopy_handler() {
-        this.minVectorTextField.setText(this.minVectorButton.getText());
-    }
-
-    @FXML
-    private void maxVectorCopy_handler() {
-        this.maxVectorTextField.setText(this.maxVectorButton.getText());
-    }
-
-    @FXML
     private void ok_handler() {
         try {
-            gradientPoints.forEach(System.out::println);
-            gradientToEdit.setReference(new Vec3d(Utils.toDouble(xRefTextField),
-                    Utils.toDouble(yRefTextField),
-                    Utils.toDouble(zRefTextField)));
+            Vec3dTextField reference = new Vec3dTextField(xRefTextField, yRefTextField, zRefTextField);
 
-            gradientToEdit.setMinVector(Utils.toDouble(minVectorTextField));
-            gradientToEdit.setMaxVector(Utils.toDouble(maxVectorTextField));
+            gradientToEdit.setReference(reference.get());
+
+            gradientToEdit.setMinVector(RichTextField.of(minVectorTextField).getDouble());
+            gradientToEdit.setMaxVector(RichTextField.of(maxVectorTextField).getDouble());
 
             gradientToEdit.clear();
             for (GradientPoint p : gradientPoints) {
@@ -275,7 +306,7 @@ public class GradientEditorController {
             String name = "";
             if (x.length > 1)
                 name = x[1];
-            Utils.showErrorMessage("Bad number format!", "Cannot parse \"" + name + "\"");
+            showErrorMessage("Bad number format!", "Cannot parse \"" + name + "\"");
         }
     }
 

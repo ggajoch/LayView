@@ -1,21 +1,30 @@
+package pl.gajoch.layview.gui;
+
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+import java.io.IOException;
+
 public class FileInputSelector {
-    public FileInput exec(FileInput files) throws Exception {
+    private final Stage primaryStage;
+    private final FileInputSelectorController windowController;
+
+    public FileInputSelector() throws IOException {
         FXMLLoader load = new FXMLLoader();
         load.setLocation(getClass().getResource("FileInputSelector.fxml"));
         Parent loader = load.load();
 
-        Stage primaryStage = new Stage();
+        primaryStage = new Stage();
         primaryStage.setTitle("Edit point");
         primaryStage.setScene(new Scene(loader));
 
-        FileInputSelectorController windowController = load.getController();
-        windowController.setup(primaryStage, files);
+        windowController = load.getController();
+    }
 
+    public FileInput exec(FileInput files) {
+        windowController.setup(primaryStage, files);
         primaryStage.showAndWait();
         return windowController.getFiles();
     }

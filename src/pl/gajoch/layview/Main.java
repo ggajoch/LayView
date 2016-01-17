@@ -1,22 +1,26 @@
+package pl.gajoch.layview;
+
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+import pl.gajoch.layview.gui.Controller;
+
 public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
         FXMLLoader load = new FXMLLoader();
-        load.setLocation(getClass().getResource("Main.fxml"));
+        load.setLocation(getClass().getResource("gui/Main.fxml"));
         Parent loader = load.load();
 
-        primaryStage.setTitle("Main");
+        primaryStage.setTitle("pl.gajoch.layview.Main");
         primaryStage.setScene(new Scene(loader, 500, 500));
 
         Controller windowController = load.getController();
-        windowController.setup();
+        windowController.setup(primaryStage);
 
         primaryStage.show();
     }

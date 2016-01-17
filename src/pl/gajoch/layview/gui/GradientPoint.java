@@ -1,3 +1,5 @@
+package pl.gajoch.layview.gui;
+
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Stop;
 

@@ -1,8 +1,13 @@
+package pl.gajoch.layview.gui;
+
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import pl.gajoch.layview.utils.GUIUtils;
+
+import static pl.gajoch.layview.utils.GUIUtils.*;
 
 public class GradientPointEditorController {
     // ----------------------------- Public API  -----------------------------
@@ -45,10 +50,10 @@ public class GradientPointEditorController {
     @FXML
     private void ok_click() {
         try {
-            point = new GradientPoint(Double.valueOf(value.getText()), colorPicker.getValue());
+            point = new GradientPoint(GUIUtils.toDouble(value), colorPicker.getValue());
             this.stage.close();
         } catch (NumberFormatException e) {
-            Utils.showErrorMessage("Bad number", "Cannot parse value: \"" + value.getText() + "\"");
+            showErrorMessage("Bad number", "Cannot parse value: \"" + value.getText() + "\"");
         } catch (Exception e) {
             e.printStackTrace();
         }
