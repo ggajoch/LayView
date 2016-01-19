@@ -1,4 +1,4 @@
-.idea/tasks.xml
-.idea/workspace.xml
-*.iws
+.idea
+target
 out
+*.iml
