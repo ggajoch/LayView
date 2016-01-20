@@ -146,9 +146,15 @@ public class GradientEditorController {
 
     private void recalculateGradient() {
         if (gradientPoints.isEmpty()) {
-            setBackground(gradientViewPane, Color.WHITE);
+            gradientViewPane.setVisible(false);
+            colorPane.setVisible(false);
             return;
-        } else if (gradientPoints.size() == 1) {
+        } else {
+            gradientViewPane.setVisible(true);
+            colorPane.setVisible(true);
+        }
+        
+        if (gradientPoints.size() == 1) {
             setBackground(gradientViewPane, gradientPoints.first().getColor());
             return;
         }
