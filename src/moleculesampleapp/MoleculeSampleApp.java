@@ -117,11 +117,26 @@ public class MoleculeSampleApp extends Application {
                 collect(Collectors.toList());
 
         GridPane gridPane = new GridPane();
+        Group root = new Group();
+
+        final PhongMaterial redMaterial = new PhongMaterial();
+        redMaterial.setDiffuseColor(Color.DARKRED);
+        redMaterial.setSpecularColor(Color.RED);
+
+        Sphere oxygenSphere = new Sphere(40.0);
+        oxygenSphere.setMaterial(redMaterial);
+
+        root.getChildren().add(oxygenSphere);
+
+        root.setTranslateX(100.0);
+        root.setTranslateY(50.0);
+
+        SubScene scena = new SubScene(root,384,384, true, SceneAntialiasing.BALANCED);
 
         gridPane.add(sceneList.get(0), 0, 0);
         gridPane.add(sceneList.get(1), 1, 0);
         gridPane.add(sceneList.get(2), 0, 1);
-        gridPane.add(sceneList.get(3), 1, 1);
+        gridPane.add(scena/*sceneList.get(3)*/, 1, 1);
 
 
         SubScene subScene = new SubScene(gridPane, 768, 768, true, SceneAntialiasing.BALANCED);
