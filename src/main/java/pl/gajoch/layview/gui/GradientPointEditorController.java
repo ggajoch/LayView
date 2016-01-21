@@ -50,7 +50,7 @@ public class GradientPointEditorController {
     @FXML
     private void ok_click() {
         try {
-            point = new GradientPoint(GUIUtils.toDouble(value), colorPicker.getValue());
+            point = new GradientPoint(RichTextField.of(value).getDouble(), colorPicker.getValue());
             this.stage.close();
         } catch (NumberFormatException e) {
             showErrorMessage("Bad number", "Cannot parse value: \"" + value.getText() + "\"");

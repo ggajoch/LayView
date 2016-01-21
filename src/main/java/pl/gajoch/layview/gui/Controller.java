@@ -1,5 +1,6 @@
 package pl.gajoch.layview.gui;
 
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.fxml.FXML;
 import javafx.scene.SubScene;
 import javafx.scene.paint.Color;
@@ -40,14 +41,25 @@ public class Controller {
         edit2 = new GradientEditor();
     }
 
+    void printGradient(Gradient x) {
+        System.out.println("\n\nhandler!");
+        System.out.println(x.getPoints());
+        System.out.println(x.getReference().x);
+    }
+
     @FXML
     private void Gradient1_handler() throws Exception {
-        grad1 = edit1.exec(grad1, 1, 2);
+
+        SimpleObjectProperty<Gradient> g = new SimpleObjectProperty<Gradient>(grad1);
+        g.addListener((observable, oldValue, newValue) -> printGradient(newValue));
+        grad1 = edit1.exec(g, 1, 2);
     }
 
     @FXML
     private void Gradient2_handler() throws Exception {
-        grad2 = edit2.exec(grad2, 3, 4);
+        SimpleObjectProperty<Gradient> g = new SimpleObjectProperty<Gradient>(grad2);
+        g.addListener((observable, oldValue, newValue) -> printGradient(newValue));
+        grad2 = edit2.exec(g, 3, 4);
     }
 
     @FXML

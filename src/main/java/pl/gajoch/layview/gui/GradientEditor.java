@@ -1,5 +1,6 @@
 package pl.gajoch.layview.gui;
 
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -23,7 +24,7 @@ public class GradientEditor {
         windowController = load.getController();
     }
 
-    public Gradient exec(Gradient gradient, double minVectorHint, double maxVectorHint) throws Exception {
+    public Gradient exec(SimpleObjectProperty<Gradient> gradient, double minVectorHint, double maxVectorHint) throws Exception {
         windowController.setup(primaryStage, gradient, minVectorHint, maxVectorHint);
         primaryStage.showAndWait();
         return windowController.getGradient();

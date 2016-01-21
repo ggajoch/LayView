@@ -10,6 +10,10 @@ public class GradientPoint implements Comparable<GradientPoint>, Cloneable {
         this.point = new Stop(0.0, Color.BLACK);
     }
 
+    public GradientPoint(GradientPoint second) {
+        this.point = new Stop(second.point.getOffset(), second.point.getColor());
+    }
+
     public GradientPoint(Stop stop) {
         this.point = stop;
     }
@@ -34,10 +38,6 @@ public class GradientPoint implements Comparable<GradientPoint>, Cloneable {
         Double valThis = this.getStop().getOffset(),
                 valRhs = rhs.getStop().getOffset();
         return (valThis.compareTo(valRhs));
-    }
-
-    public Object clone() throws CloneNotSupportedException {
-        return super.clone();
     }
 
     public String toString() {

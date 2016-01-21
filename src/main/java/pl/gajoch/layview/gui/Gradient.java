@@ -1,6 +1,10 @@
 package pl.gajoch.layview.gui;
 
 import com.sun.javafx.geom.Vec3d;
+import javafx.beans.binding.ObjectBinding;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.value.ObservableValue;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -14,6 +18,13 @@ public class Gradient {
     Gradient() {
         this.points = new ArrayList<GradientPoint>();
         this.reference = new Vec3d();
+    }
+
+    Gradient(Gradient second) {
+        this.points = new ArrayList<>(second.points);
+        this.reference = new Vec3d(second.reference);
+        this.min = second.min;
+        this.max = second.max;
     }
 
     public void setReference(Vec3d vector) {
