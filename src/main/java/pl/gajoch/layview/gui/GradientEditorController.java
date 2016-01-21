@@ -45,7 +45,6 @@ public class GradientEditorController {
         MenuItem item1 = new MenuItem("Get prediction");
         item1.setOnAction(e -> {
             RichTextField.of(minVectorTextField).set(minHint);
-            recalculateOutput();
         });
         contextMenu.getItems().add(item1);
         minVectorTextField.setContextMenu(contextMenu);
@@ -54,7 +53,6 @@ public class GradientEditorController {
         item1 = new MenuItem("Get prediction");
         item1.setOnAction(e -> {
             RichTextField.of(maxVectorTextField).set(maxHint);
-            recalculateOutput();
         });
 
         contextMenu.getItems().add(item1);
@@ -62,8 +60,11 @@ public class GradientEditorController {
 
         choiceBox.getSelectionModel().selectedIndexProperty().addListener((observable, oldValue, newValue) -> {
             recalculateColor(newValue);
-//            recalculateOutput();
         });
+
+        Arrays.asList(xRefTextField, yRefTextField, zRefTextField,
+                maxVectorTextField, minVectorTextField)
+                .forEach(e -> e.textProperty().addListener(ignore -> recalculateOutput()));
     }
 
     // --------------------------- Private variables  ---------------------------
