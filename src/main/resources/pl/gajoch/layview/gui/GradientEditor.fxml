@@ -120,27 +120,27 @@
                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
-                        <TextField fx:id="xRefTextField">
+                        <TextField onKeyReleased="#recalculateOutput" fx:id="xRefTextField">
                            <GridPane.margin>
                               <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                            </GridPane.margin>
                         </TextField>
-                        <TextField fx:id="yRefTextField" GridPane.columnIndex="1">
+                        <TextField fx:id="yRefTextField" onKeyReleased="#recalculateOutput" GridPane.columnIndex="1">
                            <GridPane.margin>
                               <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                            </GridPane.margin>
                         </TextField>
-                        <TextField fx:id="zRefTextField" GridPane.columnIndex="2">
+                        <TextField fx:id="zRefTextField" onKeyReleased="#recalculateOutput" GridPane.columnIndex="2">
                            <GridPane.margin>
                               <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                            </GridPane.margin>
                         </TextField>
-                        <TextField fx:id="maxVectorTextField" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                        <TextField fx:id="maxVectorTextField" onKeyReleased="#recalculateOutput" GridPane.columnIndex="2" GridPane.rowIndex="1">
                            <GridPane.margin>
                               <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                            </GridPane.margin>
                         </TextField>
-                        <TextField fx:id="minVectorTextField" GridPane.columnIndex="2" GridPane.rowIndex="2">
+                        <TextField fx:id="minVectorTextField" onKeyReleased="#recalculateOutput" GridPane.columnIndex="2" GridPane.rowIndex="2">
                            <GridPane.margin>
                               <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                            </GridPane.margin>

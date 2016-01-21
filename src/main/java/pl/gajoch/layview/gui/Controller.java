@@ -49,15 +49,14 @@ public class Controller {
 
     @FXML
     private void Gradient1_handler() throws Exception {
-
-        SimpleObjectProperty<Gradient> g = new SimpleObjectProperty<Gradient>(grad1);
+        SimpleObjectProperty<Gradient> g = new SimpleObjectProperty<>(grad1);
         g.addListener((observable, oldValue, newValue) -> printGradient(newValue));
         grad1 = edit1.exec(g, 1, 2);
     }
 
     @FXML
     private void Gradient2_handler() throws Exception {
-        SimpleObjectProperty<Gradient> g = new SimpleObjectProperty<Gradient>(grad2);
+        SimpleObjectProperty<Gradient> g = new SimpleObjectProperty<>(grad2);
         g.addListener((observable, oldValue, newValue) -> printGradient(newValue));
         grad2 = edit2.exec(g, 3, 4);
     }

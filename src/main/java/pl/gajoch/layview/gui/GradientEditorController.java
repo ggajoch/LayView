@@ -43,25 +43,26 @@ public class GradientEditorController {
 
         ContextMenu contextMenu = new ContextMenu();
         MenuItem item1 = new MenuItem("Get prediction");
-        item1.setOnAction(e -> {RichTextField.of(minVectorTextField).set(minHint); recalculateGradientOutput();});
+        item1.setOnAction(e -> {
+            RichTextField.of(minVectorTextField).set(minHint);
+            recalculateOutput();
+        });
         contextMenu.getItems().add(item1);
         minVectorTextField.setContextMenu(contextMenu);
 
         contextMenu = new ContextMenu();
         item1 = new MenuItem("Get prediction");
-        item1.setOnAction(e -> {RichTextField.of(maxVectorTextField).set(maxHint); recalculateGradientOutput();});
+        item1.setOnAction(e -> {
+            RichTextField.of(maxVectorTextField).set(maxHint);
+            recalculateOutput();
+        });
+
         contextMenu.getItems().add(item1);
         maxVectorTextField.setContextMenu(contextMenu);
 
-        yRefTextField.setOnKeyReleased(event -> recalculateGradientOutput());
-        xRefTextField.setOnKeyReleased(event -> recalculateGradientOutput());
-        zRefTextField.setOnKeyReleased(event -> recalculateGradientOutput());
-        minVectorTextField.setOnKeyReleased(event -> recalculateGradientOutput());
-        maxVectorTextField.setOnKeyReleased(event -> recalculateGradientOutput());
-
         choiceBox.getSelectionModel().selectedIndexProperty().addListener((observable, oldValue, newValue) -> {
             recalculateColor(newValue);
-            recalculateGradientOutput();
+//            recalculateOutput();
         });
     }
 
@@ -200,7 +201,8 @@ public class GradientEditorController {
         }
     }
 
-    private void recalculateGradientOutput() {
+    @FXML
+    private void recalculateOutput() {
         try {
             finalRecalculateGradientOutput();
         } catch(Exception ignored) {
@@ -265,6 +267,7 @@ public class GradientEditorController {
             choiceBox.getSelectionModel().select(point);
             recalculateColor();
             recalculateGradient();
+            recalculateOutput();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -282,6 +285,7 @@ public class GradientEditorController {
             choiceBox.getSelectionModel().select(point);
             recalculateColor();
             recalculateGradient();
+            recalculateOutput();
         } catch (Exception ignored) {
         }
     }
@@ -295,6 +299,7 @@ public class GradientEditorController {
             choiceBox.getSelectionModel().selectFirst();
             recalculateColor();
             recalculateGradient();
+            recalculateOutput();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -307,6 +312,7 @@ public class GradientEditorController {
             recalculateView();
             recalculateColor();
             recalculateGradient();
+            recalculateOutput();
         } catch (Exception e) {
             e.printStackTrace();
         }
