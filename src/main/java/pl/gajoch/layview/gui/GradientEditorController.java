@@ -38,7 +38,6 @@ public class GradientEditorController {
         recalculateGradient();
         editor = new GradientPointEditor();
         minHint = minVectorHint;
-
         maxHint = maxVectorHint;
 
         ContextMenu contextMenu = new ContextMenu();
@@ -105,6 +104,8 @@ public class GradientEditorController {
             return new Vec3d(x.getDouble(), y.getDouble(), z.getDouble());
         }
     }
+
+
     private void setGradient(SimpleObjectProperty<Gradient> gradient) {
         gradientToEdit = gradient;
         originalGradient = new Gradient(gradientToEdit.getValue());
@@ -117,11 +118,6 @@ public class GradientEditorController {
         RichTextField.of(maxVectorTextField).set(originalGradient.getMaxVector());
     }
 
-    private void setBackground(Pane pane, Paint paint) {
-        BackgroundFill myBF = new BackgroundFill(paint, new CornerRadii(1),
-                new Insets(0.0, 0.0, 0.0, 0.0));
-        pane.setBackground(new Background(myBF));
-    }
 
     private void recalculateView() {
         ObservableList<GradientPoint> DescriptionList = FXCollections.observableArrayList();
@@ -131,7 +127,7 @@ public class GradientEditorController {
 
     private void recalculateColor(Number active) {
         try {
-            setBackground(colorPane, choiceBox.getItems().get(active.intValue()).getColor());
+            RichPane.of(colorPane).setFill(choiceBox.getItems().get(active.intValue()));
         } catch (Exception ignored) {
         }
     }
@@ -139,9 +135,10 @@ public class GradientEditorController {
     private void recalculateColor() {
         try {
             GradientPoint point = choiceBox.getValue();
-            setBackground(colorPane, point.getColor());
+            RichPane.of(colorPane).setFill(point);
+            colorPane.setVisible(true);
         } catch (Exception ignore) {
-            setBackground(colorPane, Color.WHITE);
+            colorPane.setVisible(false);
         }
     }
 
@@ -156,7 +153,7 @@ public class GradientEditorController {
         }
         
         if (gradientPoints.size() == 1) {
-            setBackground(gradientViewPane, gradientPoints.first().getColor());
+            RichPane.of(gradientViewPane).setFill(gradientPoints.first());
             return;
         }
 
@@ -167,8 +164,8 @@ public class GradientEditorController {
                 .map(point -> new Stop((point.getOffset()-mini)/(maxi-mini), point.getColor()))
                 .collect(Collectors.toList());
 
-        LinearGradient lg1 = new LinearGradient(0, 0, 0, 1.0, true, CycleMethod.REPEAT, list);
-        setBackground(gradientViewPane, lg1);
+        LinearGradient linearGradient = new LinearGradient(0, 0, 0, 1.0, true, CycleMethod.REPEAT, list);
+        RichPane.of(gradientViewPane).setFill(linearGradient);
     }
 
     private GradientPoint askForPoint(GradientPoint actualPoint) {
