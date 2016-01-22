@@ -151,21 +151,8 @@ public class GradientEditorController {
             gradientViewPane.setVisible(true);
             colorPane.setVisible(true);
         }
-        
-        if (gradientPoints.size() == 1) {
-            RichPane.of(gradientViewPane).setFill(gradientPoints.first());
-            return;
-        }
 
-        double mini = gradientPoints.first().getOffset();
-        double maxi = gradientPoints.last().getOffset();
-
-        List<Stop> list = gradientPoints.stream()
-                .map(point -> new Stop((point.getOffset()-mini)/(maxi-mini), point.getColor()))
-                .collect(Collectors.toList());
-
-        LinearGradient linearGradient = new LinearGradient(0, 0, 0, 1.0, true, CycleMethod.REPEAT, list);
-        RichPane.of(gradientViewPane).setFill(linearGradient);
+        RichPane.of(gradientViewPane).setFill(gradientToEdit.getValue().getPaint());
     }
 
     private GradientPoint askForPoint(GradientPoint actualPoint) {
@@ -263,9 +250,9 @@ public class GradientEditorController {
             } while (!addPoint(point));
             recalculateView();
             choiceBox.getSelectionModel().select(point);
+            recalculateOutput();
             recalculateColor();
             recalculateGradient();
-            recalculateOutput();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -281,9 +268,9 @@ public class GradientEditorController {
             } while (!editPoint(original, point));
             recalculateView();
             choiceBox.getSelectionModel().select(point);
+            recalculateOutput();
             recalculateColor();
             recalculateGradient();
-            recalculateOutput();
         } catch (Exception ignored) {
         }
     }
@@ -295,9 +282,9 @@ public class GradientEditorController {
             gradientPoints.remove(point);
             recalculateView();
             choiceBox.getSelectionModel().selectFirst();
+            recalculateOutput();
             recalculateColor();
             recalculateGradient();
-            recalculateOutput();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -308,9 +295,9 @@ public class GradientEditorController {
         try {
             gradientPoints.clear();
             recalculateView();
+            recalculateOutput();
             recalculateColor();
             recalculateGradient();
-            recalculateOutput();
         } catch (Exception e) {
             e.printStackTrace();
         }

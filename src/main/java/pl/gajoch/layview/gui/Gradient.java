@@ -5,23 +5,26 @@ import javafx.beans.binding.ObjectBinding;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ObservableValue;
+import javafx.scene.paint.CycleMethod;
+import javafx.scene.paint.LinearGradient;
+import javafx.scene.paint.Paint;
+import javafx.scene.paint.Stop;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class Gradient {
-    private final List<GradientPoint> points;
+    private final SortedSet<GradientPoint> points;
     private final Vec3d reference;
     private double min, max;
 
     Gradient() {
-        this.points = new ArrayList<GradientPoint>();
+        this.points = new TreeSet<>();
         this.reference = new Vec3d();
     }
 
     Gradient(Gradient second) {
-        this.points = new ArrayList<>(second.points);
+        this.points = new TreeSet<>(second.points);
         this.reference = new Vec3d(second.reference);
         this.min = second.min;
         this.max = second.max;
@@ -51,33 +54,38 @@ public class Gradient {
         this.max = max;
     }
 
-    Gradient(List<GradientPoint> points, Vec3d reference, double min, double max) {
+    Gradient(TreeSet<GradientPoint> points, Vec3d reference, double min, double max) {
         this.points = points;
-
-        Collections.sort(this.points);
         this.reference = reference;
         this.min = min;
         this.max = max;
     }
 
-    public List<GradientPoint> getPoints() {
+    public SortedSet<GradientPoint> getPoints() {
         return points;
-    }
-
-    public void add(int index, GradientPoint element) {
-        points.add(index, element);
     }
 
     public void add(GradientPoint element) {
         points.add(element);
     }
 
-    public GradientPoint get(int index) {
-        return points.get(index);
-    }
-
     public void clear() {
         this.points.clear();
     }
 
+
+    public Paint getPaint() {
+        if (points.size() == 1) {
+            return points.first().getColor();
+        }
+
+        double mini = points.first().getOffset();
+        double maxi = points.last().getOffset();
+
+        List<Stop> list = points.stream()
+                .map(point -> new Stop((point.getOffset()-mini)/(maxi-mini), point.getColor()))
+                .collect(Collectors.toList());
+
+        return new LinearGradient(0, 0, 0, 1.0, true, CycleMethod.REPEAT, list);
+    }
 }
