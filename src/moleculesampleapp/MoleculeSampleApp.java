@@ -44,6 +44,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.*;
+import javafx.scene.transform.Transform;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.scene.paint.PhongMaterial;
@@ -98,9 +99,11 @@ public class MoleculeSampleApp extends Application {
         }catch (IOException e) {
 //                             TODO: handle exception here
         }*/
-        strzalka.setRotationAxis(new Point3D(1.0,0,0));
-        strzalka.setRotate(angle);
-        angle += 10.0;
+        //strzalka.setRotationAxis(new Point3D(1.0,0,0));
+        //strzalka.setRotate(angle);
+        Rotate rotation = new Rotate(angle,0,0,0,new Point3D(1,0,0));
+        strzalka.getTransforms().add(rotation);
+        angle += Math.PI/36;
         angle = angle % 360;
         return;
     }

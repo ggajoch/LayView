@@ -32,6 +32,7 @@ public class Arrow extends Group {
     }
 
     Arrow(int len_, int radius_, int tipRadius_, int tipLen_) {
+        super();
         this.len = len_;
         this.radius = radius_;
         this.tipRadius = tipRadius_;
@@ -118,5 +119,6 @@ public class Arrow extends Group {
         positioner.setTranslateZ(-(this.len+this.tipLen));
         //this.positioner.setVisible(false);
         this.getChildren().add(positioner);*/
+        //this.setTranslateY(-(this.len+this.tipLen)/4.0);
     }
 }
