@@ -67,8 +67,8 @@ public class MoleculeSampleApp extends Application {
 
     Stage stage;
     Scene scene;
-
-
+    double angle = 0;
+    Arrow strzalka;
     private void handleKeyboard(SubScene scene, final Node root) {
         scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
             @Override
@@ -77,13 +77,16 @@ public class MoleculeSampleApp extends Application {
                     case S:
                         write_snapshot(scene);
                         break;
+                    case Q:
+
+                        break;
                 }
             }
         });
     }
 
     private void write_snapshot(SubScene scene) {
-        WritableImage image = new WritableImage(768, 768);
+        /*WritableImage image = new WritableImage(768, 768);
         scene.snapshot(null, image);
         FileChooser x = new FileChooser();
         FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("PNG files (*.png)", "*.png");
@@ -94,7 +97,11 @@ public class MoleculeSampleApp extends Application {
             ImageIO.write(SwingFXUtils.fromFXImage(image, null), "png", file);
         }catch (IOException e) {
 //                             TODO: handle exception here
-        }
+        }*/
+        System.out.print("Pressed\r\n");
+        strzalka.setRotate(angle);
+        angle += 10.0;
+        angle = angle % 360;
         return;
     }
 
@@ -125,7 +132,7 @@ public class MoleculeSampleApp extends Application {
         Box oxygenSphere = new Box(100.0,100.0,100.0);
         oxygenSphere.setMaterial(redMaterial);
 
-        root.getChildren().add(oxygenSphere);
+        //root.getChildren().add(oxygenSphere);
 
         /*TriangleMesh pyramidMesh = new TriangleMesh();
 
@@ -159,7 +166,7 @@ public class MoleculeSampleApp extends Application {
 
         root.getChildren().add(pyramid);*/
 
-        Arrow strzalka = new Arrow();
+        strzalka = new Arrow();
 
         root.getChildren().add(strzalka);
 
@@ -191,8 +198,9 @@ public class MoleculeSampleApp extends Application {
             listBuilders.get(i).handlers_set(sceneList.get(i));
         }
 
-        handleKeyboard(subScene, gridPane);
+
         */
+        handleKeyboard(subScene, root);
         stage = primaryStage;
         primaryStage.setTitle("Molecule Sample Application");
         primaryStage.setScene(scene);
@@ -201,6 +209,7 @@ public class MoleculeSampleApp extends Application {
         for(int i = 0; i < listBuilders.size(); ++i) {
             listBuilders.get(i).cam_set(sceneList.get(i));
         }*/
+
     }
 
     /**
