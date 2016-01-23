@@ -34,6 +34,7 @@ package moleculesampleapp;
 
 import javafx.application.Application;
 import javafx.embed.swing.SwingFXUtils;
+import javafx.geometry.Point3D;
 import javafx.scene.*;
 import javafx.scene.control.Button;
 import javafx.scene.image.WritableImage;
@@ -42,12 +43,10 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.*;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.scene.paint.PhongMaterial;
-import javafx.scene.shape.Box;
-import javafx.scene.shape.Cylinder;
-import javafx.scene.shape.Sphere;
 import javafx.scene.transform.Rotate;
 import javafx.event.EventHandler;
 import javafx.scene.input.KeyEvent;
@@ -105,7 +104,7 @@ public class MoleculeSampleApp extends Application {
        // setUserAgentStylesheet(STYLESHEET_MODENA);
         System.out.println("start()");
 
-        List<Builder> listBuilders = new ArrayList<Builder>();
+        /*List<Builder> listBuilders = new ArrayList<Builder>();
         listBuilders.add(new Builder());
         listBuilders.add(new Builder());
         listBuilders.add(new Builder());
@@ -116,30 +115,68 @@ public class MoleculeSampleApp extends Application {
                 map(b -> new SubScene(b.getRoot(), 384, 384, true, SceneAntialiasing.BALANCED)).
                 collect(Collectors.toList());
 
-        GridPane gridPane = new GridPane();
+        GridPane gridPane = new GridPane();*/
         Group root = new Group();
 
         final PhongMaterial redMaterial = new PhongMaterial();
-        redMaterial.setDiffuseColor(Color.DARKRED);
-        redMaterial.setSpecularColor(Color.RED);
+        redMaterial.setDiffuseColor(Color.RED);
+        redMaterial.setSpecularColor(Color.DARKRED);
 
-        Sphere oxygenSphere = new Sphere(40.0);
+        Box oxygenSphere = new Box(100.0,100.0,100.0);
         oxygenSphere.setMaterial(redMaterial);
 
         root.getChildren().add(oxygenSphere);
 
-        root.setTranslateX(100.0);
-        root.setTranslateY(50.0);
+        /*TriangleMesh pyramidMesh = new TriangleMesh();
 
-        SubScene scena = new SubScene(root,384,384, true, SceneAntialiasing.BALANCED);
+        pyramidMesh.getTexCoords().addAll(0,0);
+
+        float h = 150;                    // Height
+        float s = 300;                    // Side
+        pyramidMesh.getPoints().addAll(
+                0,    0,    0,            // Point 0 - Top
+                0,    h,    -s/2,         // Point 1 - Front
+                -s/2, h,    0,            // Point 2 - Left
+                s/2,  h,    0,            // Point 3 - Back
+                0,    h,    s/2           // Point 4 - Right
+        );
+
+        pyramidMesh.getFaces().addAll(
+                0,0,  2,0,  1,0,          // Front left face
+                0,0,  1,0,  3,0,          // Front right face
+                0,0,  3,0,  4,0,          // Back right face
+                0,0,  4,0,  2,0,          // Back left face
+                4,0,  1,0,  2,0,          // Bottom rear face
+                4,0,  3,0,  1,0           // Bottom front face
+        );
+
+        MeshView pyramid = new MeshView(pyramidMesh);
+        pyramid.setDrawMode(DrawMode.FILL);
+        pyramid.setMaterial(redMaterial);
+        pyramid.setTranslateX(200);
+        pyramid.setTranslateY(100);
+        pyramid.setTranslateZ(200);
+
+        root.getChildren().add(pyramid);*/
+
+        Arrow strzalka = new Arrow();
+
+        root.getChildren().add(strzalka);
+
+        root.setTranslateX(768/2.0);
+        root.setTranslateY(768/2.0);
+        oxygenSphere.setRotationAxis(new Point3D(1.0,1.0,0.0));
+        oxygenSphere.setRotate(20);
+
+        /*SubScene scena = new SubScene(root,384,384, true, SceneAntialiasing.BALANCED);
 
         gridPane.add(sceneList.get(0), 0, 0);
         gridPane.add(sceneList.get(1), 1, 0);
         gridPane.add(sceneList.get(2), 0, 1);
-        gridPane.add(scena/*sceneList.get(3)*/, 1, 1);
+        gridPane.add(sceneList.get(3), 1, 1);*/
 
 
-        SubScene subScene = new SubScene(gridPane, 768, 768, true, SceneAntialiasing.BALANCED);
+        SubScene subScene = new SubScene(root, 768, 768, true, SceneAntialiasing.BALANCED);
 
         Button btn = new Button("Snapshot");
         btn.setOnAction(event -> write_snapshot(subScene));
@@ -148,22 +185,22 @@ public class MoleculeSampleApp extends Application {
         scene = new Scene(vbox, 800, 800, true);
 
 
-        scene.setFill(Color.BLACK);
+        scene.setFill(Color.LIGHTGRAY);
 
-        for(int i = 0; i < listBuilders.size(); ++i) {
+        /*for(int i = 0; i < listBuilders.size(); ++i) {
             listBuilders.get(i).handlers_set(sceneList.get(i));
         }
 
         handleKeyboard(subScene, gridPane);
-
+        */
         stage = primaryStage;
         primaryStage.setTitle("Molecule Sample Application");
         primaryStage.setScene(scene);
         primaryStage.show();
-
+        /*
         for(int i = 0; i < listBuilders.size(); ++i) {
             listBuilders.get(i).cam_set(sceneList.get(i));
-        }
+        }*/
     }
 
     /**
