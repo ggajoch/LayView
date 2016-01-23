@@ -98,7 +98,7 @@ public class MoleculeSampleApp extends Application {
         }catch (IOException e) {
 //                             TODO: handle exception here
         }*/
-        System.out.print("Pressed\r\n");
+        strzalka.setRotationAxis(new Point3D(1.0,0,0));
         strzalka.setRotate(angle);
         angle += 10.0;
         angle = angle % 360;
@@ -129,42 +129,8 @@ public class MoleculeSampleApp extends Application {
         redMaterial.setDiffuseColor(Color.RED);
         redMaterial.setSpecularColor(Color.DARKRED);
 
-        Box oxygenSphere = new Box(100.0,100.0,100.0);
+        Sphere oxygenSphere = new Sphere(10);
         oxygenSphere.setMaterial(redMaterial);
-
-        //root.getChildren().add(oxygenSphere);
-
-        /*TriangleMesh pyramidMesh = new TriangleMesh();
-
-        pyramidMesh.getTexCoords().addAll(0,0);
-
-        float h = 150;                    // Height
-        float s = 300;                    // Side
-        pyramidMesh.getPoints().addAll(
-                0,    0,    0,            // Point 0 - Top
-                0,    h,    -s/2,         // Point 1 - Front
-                -s/2, h,    0,            // Point 2 - Left
-                s/2,  h,    0,            // Point 3 - Back
-                0,    h,    s/2           // Point 4 - Right
-        );
-
-        pyramidMesh.getFaces().addAll(
-                0,0,  2,0,  1,0,          // Front left face
-                0,0,  1,0,  3,0,          // Front right face
-                0,0,  3,0,  4,0,          // Back right face
-                0,0,  4,0,  2,0,          // Back left face
-                4,0,  1,0,  2,0,          // Bottom rear face
-                4,0,  3,0,  1,0           // Bottom front face
-        );
-
-        MeshView pyramid = new MeshView(pyramidMesh);
-        pyramid.setDrawMode(DrawMode.FILL);
-        pyramid.setMaterial(redMaterial);
-        pyramid.setTranslateX(200);
-        pyramid.setTranslateY(100);
-        pyramid.setTranslateZ(200);
-
-        root.getChildren().add(pyramid);*/
 
         strzalka = new Arrow();
 
@@ -172,8 +138,8 @@ public class MoleculeSampleApp extends Application {
 
         root.setTranslateX(768/2.0);
         root.setTranslateY(768/2.0);
-        oxygenSphere.setRotationAxis(new Point3D(1.0,1.0,0.0));
-        oxygenSphere.setRotate(20);
+
+        root.getChildren().add(oxygenSphere);
 
         /*SubScene scena = new SubScene(root,384,384, true, SceneAntialiasing.BALANCED);
 
