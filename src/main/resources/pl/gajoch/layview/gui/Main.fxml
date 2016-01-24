@@ -10,30 +10,36 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 
-<GridPane alignment="center" hgap="10" vgap="10" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.gajoch.layview.gui.Controller">
-   <rowConstraints>
-      <RowConstraints />
-   </rowConstraints>
-   <columnConstraints>
-      <ColumnConstraints />
-   </columnConstraints>
+<AnchorPane fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.gajoch.layview.gui.Controller">
    <children>
-      <Pane prefHeight="500.0" prefWidth="500.0">
+      <GridPane alignment="center" hgap="10" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" vgap="10" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <rowConstraints>
+            <RowConstraints valignment="TOP" vgrow="ALWAYS" />
+            <RowConstraints vgrow="ALWAYS" />
+            <RowConstraints vgrow="NEVER" />
+         </rowConstraints>
+         <columnConstraints>
+            <ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308" />
+         </columnConstraints>
          <children>
-            <Button layoutX="404.0" layoutY="403.0" mnemonicParsing="false" onAction="#Gradient1_handler" text="Gradient 1" />
-            <Button layoutX="404.0" layoutY="428.0" mnemonicParsing="false" onAction="#Gradient2_handler" text="Gradient 2" />
-            <Button layoutX="408.0" layoutY="453.0" mnemonicParsing="false" onAction="#file_select_handler" text="File input" />
-            <SubScene fx:id="Scene3D" height="340.0" width="500.0">
+            <Pane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" GridPane.halignment="RIGHT" GridPane.rowIndex="1">
+               <children>
+                  <Button layoutX="104.0" mnemonicParsing="false" onAction="#Gradient1_handler" text="Gradient 1" />
+                  <Button layoutX="104.0" layoutY="25.0" mnemonicParsing="false" onAction="#Gradient2_handler" text="Gradient 2" />
+                  <Button layoutX="107.0" layoutY="49.0" mnemonicParsing="false" onAction="#file_select_handler" text="File input" />
+                  <Button fx:id="add" layoutX="33.0" layoutY="50.0" mnemonicParsing="false" text="Add" />
+                  <TextField prefHeight="25.0" prefWidth="52.0" fx:id="xPos" />
+                  <TextField fx:id="yPos" layoutY="25.0" prefHeight="25.0" prefWidth="52.0" />
+                  <TextField layoutX="52.0" prefHeight="25.0" prefWidth="52.0" fx:id="xSize" />
+                  <TextField fx:id="ySize" layoutX="52.0" layoutY="25.0" prefHeight="25.0" prefWidth="52.0" />
+               </children>
+            </Pane>
+            <SubScene fx:id="Scene3D" GridPane.halignment="LEFT" GridPane.hgrow="ALWAYS" GridPane.valignment="TOP" GridPane.vgrow="ALWAYS">
               <root>
                 <Region />
               </root>
             </SubScene>
-            <Button fx:id="add" layoutX="168.0" layoutY="428.0" mnemonicParsing="false" text="Add" />
-            <TextField layoutX="135.0" layoutY="378.0" prefHeight="25.0" prefWidth="52.0" fx:id="xPos" />
-            <TextField fx:id="yPos" layoutX="135.0" layoutY="403.0" prefHeight="25.0" prefWidth="52.0" />
-            <TextField layoutX="187.0" layoutY="378.0" prefHeight="25.0" prefWidth="52.0" fx:id="xSize" />
-            <TextField fx:id="ySize" layoutX="187.0" layoutY="403.0" prefHeight="25.0" prefWidth="52.0" />
          </children>
-      </Pane>
+      </GridPane>
    </children>
-</GridPane>
+</AnchorPane>

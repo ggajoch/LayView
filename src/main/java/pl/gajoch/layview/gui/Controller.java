@@ -12,6 +12,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.stream.Collectors;
 
 public class Controller {
@@ -33,13 +34,15 @@ public class Controller {
     private TextField xSize;
     @FXML
     private TextField ySize;
+    @FXML
+    private Pane Pane3D;
 
     private GradientEditor edit1, edit2;
 
     Pane pane3D;
-    volatile ArrayList<MovableSubScene> subScenes;
-    volatile SimpleObjectProperty<MovableSubScene> actual_scene;
-
+    ArrayList<MovableSubScene> subScenes;
+    SimpleObjectProperty<MovableSubScene> actual_scene;
+    Stage primaryStage;
 
     private void recalculate() {
         pane3D = new Pane();
@@ -53,16 +56,16 @@ public class Controller {
             final Rectangle redBorder = new Rectangle(0, 0, Color.TRANSPARENT);
             redBorder.setStroke(Color.RED);
             redBorder.setManaged(false);
+            redBorder.setDisable(true);
             redBorder.setStrokeWidth(10);
-            redBorder.setLayoutX(actual_scene.getValue().scene.getLayoutX()+5);
-            redBorder.setLayoutY(actual_scene.getValue().scene.getLayoutY()+5);
-            redBorder.setWidth(actual_scene.getValue().scene.getWidth()-10);
-            redBorder.setHeight(actual_scene.getValue().scene.getHeight()-10);
+            redBorder.setLayoutX(actual_scene.getValue().scene.getLayoutX() + 5);
+            redBorder.setLayoutY(actual_scene.getValue().scene.getLayoutY() + 5);
+            redBorder.setWidth(actual_scene.getValue().scene.getWidth() - 10);
+            redBorder.setHeight(actual_scene.getValue().scene.getHeight() - 10);
 
             pane3D.getChildren().add(redBorder);
+            redBorder.setOnMouseDragged(event -> System.out.println("rect dragged"));
         }
-
-//        setTextFields();
         Scene3D.setRoot(pane3D);
     }
 
@@ -84,6 +87,7 @@ public class Controller {
     }
 
     public void setup(Stage stage) throws IOException {
+        this.primaryStage = stage;
         grad1 = new Gradient();
         grad1.add(new GradientPoint(0, Color.BLUE));
         grad1.add(new GradientPoint(1, Color.RED));
@@ -95,10 +99,8 @@ public class Controller {
 
         files = new FileInput();
 
-
         actual_scene = new SimpleObjectProperty<>();
         subScenes = new ArrayList<>();
-
 
         add.setOnAction(event -> {
             subScenes.add(new MovableSubScene(100, 100, actual_scene));
@@ -108,41 +110,77 @@ public class Controller {
         });
 
         xPos.textProperty().addListener((observable, oldValue, newValue) -> {
-            actual_scene.getValue().setLayoutX(Double.valueOf(newValue));
-            recalculate();
+            try {
+                actual_scene.getValue().setLayoutX(Double.valueOf(newValue));
+                recalculate();
+                recalculateWindowSize();
+            } catch (Exception ignored) {
+            }
         });
 
         yPos.textProperty().addListener((observable, oldValue, newValue) -> {
-            actual_scene.getValue().setLayoutY(Double.valueOf(newValue));
-            recalculate();
+            try {
+                actual_scene.getValue().setLayoutY(Double.valueOf(newValue));
+                recalculate();
+                recalculateWindowSize();
+            } catch (Exception ignored) {
+            }
         });
 
         xSize.textProperty().addListener((observable, oldValue, newValue) -> {
-            actual_scene.getValue().setWidth(Double.valueOf(newValue));
-            recalculate();
+            try {
+                actual_scene.getValue().setWidth(Double.valueOf(newValue));
+                recalculate();
+                recalculateWindowSize();
+            } catch (Exception ignored) {
+            }
         });
 
         ySize.textProperty().addListener((observable, oldValue, newValue) -> {
-            actual_scene.getValue().setHeight(Double.valueOf(newValue));
-            recalculate();
+            try {
+                actual_scene.getValue().setHeight(Double.valueOf(newValue));
+                recalculate();
+                recalculateWindowSize();
+            } catch (Exception ignored) {
+            }
         });
 
         actual_scene.addListener((observable, oldValue, newValue) -> {
-            recalculate();
-            setTextFields();
+            try {
+                recalculate();
+                recalculateWindowSize();
+                setTextFields();
+            } catch (Exception ignored) {
+            }
         });
 
 
         Scene3D.setOnMouseClicked(event -> {
-            actual_scene.setValue(null);
-            setTextFields();
+            if( event.isStillSincePress() ) {
+                actual_scene.setValue(null);
+                setTextFields();
+            }
         });
 
 
         pane3D = new Pane();
         Scene3D.setRoot(pane3D);
+    }
 
+    private void recalculateWindowSize() {
+        double maxWidth = Collections.max(
+                subScenes.stream()
+                .map(sc -> sc.getLayoutX()+sc.getWidth())
+                .collect(Collectors.toList()));
 
+        double maxHeight = Collections.max(
+                subScenes.stream()
+                .map(sc -> sc.getLayoutY()+sc.getHeight())
+                .collect(Collectors.toList()));
+
+        Scene3D.setWidth(maxWidth);
+        Scene3D.setHeight(maxHeight);
+        primaryStage.sizeToScene();
     }
 
     void printGradient(Gradient x) {
@@ -153,10 +191,6 @@ public class Controller {
 
     @FXML
     private void Gradient1_handler() throws Exception {
-//        SimpleObjectProperty<Gradient> g = new SimpleObjectProperty<>(grad1);
-//        g.addListener((observable, oldValue, newValue) -> printGradient(newValue));
-//        grad1 = edit1.exec(g, 1, 2);
-
         SimpleObjectProperty<Gradient> g = new SimpleObjectProperty<>(actual_scene.getValue().grad);
         g.addListener((observable, oldValue, newValue) -> printGradient(newValue));
         actual_scene.getValue().grad = edit1.exec(g, 1, 2);
