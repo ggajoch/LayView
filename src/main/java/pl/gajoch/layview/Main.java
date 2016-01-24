@@ -17,7 +17,7 @@ public class Main extends Application {
         Parent loader = load.load();
 
         primaryStage.setTitle("pl.gajoch.layview.Main");
-        primaryStage.setScene(new Scene(loader, 500, 500));
+        primaryStage.setScene(new Scene(loader));
 
         Controller windowController = load.getController();
         windowController.setup(primaryStage);
