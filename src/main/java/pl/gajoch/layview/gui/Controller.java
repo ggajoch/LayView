@@ -168,15 +168,13 @@ public class Controller {
     }
 
     private void recalculateWindowSize() {
-        double maxWidth = Collections.max(
-                subScenes.stream()
-                .map(sc -> sc.getLayoutX()+sc.getWidth())
-                .collect(Collectors.toList()));
+        double maxWidth = subScenes.stream()
+                .mapToDouble(sc -> sc.getLayoutX()+sc.getWidth())
+                .max().getAsDouble();
 
-        double maxHeight = Collections.max(
-                subScenes.stream()
-                .map(sc -> sc.getLayoutY()+sc.getHeight())
-                .collect(Collectors.toList()));
+        double maxHeight = subScenes.stream()
+                .mapToDouble(sc -> sc.getLayoutY()+sc.getHeight())
+                .max().getAsDouble();
 
         Scene3D.setWidth(maxWidth);
         Scene3D.setHeight(maxHeight);
