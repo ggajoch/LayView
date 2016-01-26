@@ -114,7 +114,7 @@ public class Controller {
                 actual_scene.getValue().setLayoutX(Double.valueOf(newValue));
                 recalculate();
                 recalculateWindowSize();
-            } catch (Exception ignored) {
+            } catch (NumberFormatException ignored) {
             }
         });
 
@@ -123,7 +123,7 @@ public class Controller {
                 actual_scene.getValue().setLayoutY(Double.valueOf(newValue));
                 recalculate();
                 recalculateWindowSize();
-            } catch (Exception ignored) {
+            } catch (NumberFormatException ignored) {
             }
         });
 
@@ -132,7 +132,7 @@ public class Controller {
                 actual_scene.getValue().setWidth(Double.valueOf(newValue));
                 recalculate();
                 recalculateWindowSize();
-            } catch (Exception ignored) {
+            } catch (NumberFormatException ignored) {
             }
         });
 
@@ -141,7 +141,7 @@ public class Controller {
                 actual_scene.getValue().setHeight(Double.valueOf(newValue));
                 recalculate();
                 recalculateWindowSize();
-            } catch (Exception ignored) {
+            } catch (NumberFormatException ignored) {
             }
         });
 
@@ -150,7 +150,7 @@ public class Controller {
                 recalculate();
                 recalculateWindowSize();
                 setTextFields();
-            } catch (Exception ignored) {
+            } catch (NumberFormatException ignored) {
             }
         });
 
