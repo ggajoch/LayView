@@ -9,10 +9,12 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
+import org.omg.Messaging.SYNC_WITH_TRANSPORT;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 public class Controller {
@@ -24,7 +26,7 @@ public class Controller {
     private SubScene Scene3D;
 
     @FXML
-    private Button add;
+    private Button add, del;
 
     @FXML
     private TextField xPos;
@@ -107,6 +109,21 @@ public class Controller {
             actual_scene.getValue().redraw();
             recalculate();
             setTextFields();
+            recalculateWindowSize();
+        });
+
+        del.setOnAction(event -> {
+            try {
+                if( subScenes.contains(actual_scene.getValue()) ) {
+                    subScenes.remove(actual_scene.getValue());
+                    actual_scene.setValue(subScenes.get(0));
+                }
+            } catch (IndexOutOfBoundsException exception) {
+                actual_scene.setValue(null);
+            }
+            recalculate();
+            setTextFields();
+            recalculateWindowSize();
         });
 
         xPos.textProperty().addListener((observable, oldValue, newValue) -> {
@@ -148,7 +165,6 @@ public class Controller {
         actual_scene.addListener((observable, oldValue, newValue) -> {
             try {
                 recalculate();
-                recalculateWindowSize();
                 setTextFields();
             } catch (NumberFormatException ignored) {
             }
@@ -168,16 +184,22 @@ public class Controller {
     }
 
     private void recalculateWindowSize() {
-        double maxWidth = subScenes.stream()
-                .mapToDouble(sc -> sc.getLayoutX()+sc.getWidth())
-                .max().getAsDouble();
+        try {
+            double maxWidth = subScenes.stream()
+                    .mapToDouble(sc -> sc.getLayoutX() + sc.getWidth())
+                    .max().getAsDouble();
 
-        double maxHeight = subScenes.stream()
-                .mapToDouble(sc -> sc.getLayoutY()+sc.getHeight())
-                .max().getAsDouble();
+            double maxHeight = subScenes.stream()
+                    .mapToDouble(sc -> sc.getLayoutY() + sc.getHeight())
+                    .max().getAsDouble();
 
-        Scene3D.setWidth(maxWidth);
-        Scene3D.setHeight(maxHeight);
+            Scene3D.setWidth(maxWidth);
+            Scene3D.setHeight(maxHeight);
+
+        } catch (NoSuchElementException ignored) {
+            Scene3D.setWidth(0);
+            Scene3D.setHeight(0);
+        }
         primaryStage.sizeToScene();
     }
 
