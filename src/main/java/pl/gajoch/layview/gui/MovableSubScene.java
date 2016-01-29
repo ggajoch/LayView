@@ -3,71 +3,53 @@ package pl.gajoch.layview.gui;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.scene.SceneAntialiasing;
 import javafx.scene.SubScene;
-import javafx.scene.paint.Color;
+import javafx.scene.input.MouseButton;
+import javafx.scene.layout.Pane;
+
+import java.util.Properties;
 
 public class MovableSubScene {
     Gradient grad;
     SubScene scene;
     SimpleObjectProperty<MovableSubScene> actual_scene;
-    public MovableSubScene(double width, double height, SimpleObjectProperty<MovableSubScene> actual_scene) {
+    Properties properties;
+    public MovableSubScene(GraphicsWindowManager parent, double width, double height) {
 
-        Builder builder = new Builder();
+//        Builder builder = new Builder();
 
-        scene = new SubScene(builder.getRoot(), width, height, true, SceneAntialiasing.BALANCED);
+//        scene = new SubScene(builder.getRoot(), width, height, true, SceneAntialiasing.BALANCED);
+        Pane p = new Pane();
+        scene = new SubScene(p, width, height, true, SceneAntialiasing.BALANCED);
 
-        builder.handlers_set(scene);
-        builder.cam_set(scene);
+//        builder.handlers_set(scene);
+//        builder.cam_set(scene);
 
-        this.actual_scene = actual_scene;
-        actual_scene.setValue(this);
+//        this.actual_scene = actual_scene;
+//        actual_scene.setValue(this);
 
         scene.setOnMouseClicked(event -> {
-            if( event.isStillSincePress() ) {
-                if (actual_scene.getValue() != null && actual_scene.getValue() == this) {
-                    actual_scene.setValue(null);
-                } else {
-                    actual_scene.setValue(this);
-                }
+            if( event.getButton() == MouseButton.PRIMARY && event.isStillSincePress() ) {
+                parent.clicked(this);
                 event.consume();
             }
         });
 
-        grad = new Gradient();
-        grad.add(new GradientPoint(0, Color.BLACK));
+//        grad = new Gradient();
+//        grad.add(new GradientPoint(0, Color.BLACK));
     }
 
-    void redraw() {
+    public void setPosition(WindowPosition position) {
+        scene.setWidth(position.xSize);
+        scene.setHeight(position.ySize);
+        scene.setLayoutX(position.xOffset);
+        scene.setLayoutY(position.yOffset);
     }
 
-    public void setWidth(double value) {
-        scene.setWidth(value);
+    public WindowPosition getPosition() {
+        return new WindowPosition(Double.valueOf(scene.getWidth()).intValue(),
+                Double.valueOf(scene.getHeight()).intValue(),
+                Double.valueOf(scene.getLayoutX()).intValue(),
+                Double.valueOf(scene.getLayoutY()).intValue());
     }
 
-    public void setHeight(double value) {
-        scene.setHeight(value);
-    }
-
-    public void setLayoutX(double value) {
-        scene.setLayoutX(value);
-    }
-
-    public void setLayoutY(double value) {
-        scene.setLayoutY(value);
-    }
-
-    public double getHeight() {
-        return scene.getHeight();
-    }
-
-    public double getWidth() {
-        return scene.getWidth();
-    }
-
-    public double getLayoutX() {
-        return scene.getLayoutX();
-    }
-
-    public double getLayoutY() {
-        return scene.getLayoutY();
-    }
 }

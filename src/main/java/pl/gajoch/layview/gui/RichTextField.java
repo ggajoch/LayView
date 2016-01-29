@@ -12,13 +12,34 @@ public class RichTextField {
         return Double.valueOf(textField.getText());
     }
 
+    public int getInt() {
+        return Integer.valueOf(textField.getText());
+    }
+
     public void set(double value) {
         textField.setText(Double.toString(value));
+    }
+
+    public void set(int value) {
+        textField.setText(Integer.toString(value));
+    }
+
+    public final TextField get() {
+        return textField;
     }
 
     private final TextField textField;
 
     private RichTextField(TextField textField) {
         this.textField = textField;
+    }
+
+    public void disable() {
+        textField.setText(" ");
+        textField.setDisable(true);
+    }
+
+    public void enable() {
+        textField.setDisable(false);
     }
 }

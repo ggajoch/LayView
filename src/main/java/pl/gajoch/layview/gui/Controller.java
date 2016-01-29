@@ -5,17 +5,10 @@ import javafx.fxml.FXML;
 import javafx.scene.SubScene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
-import org.omg.Messaging.SYNC_WITH_TRANSPORT;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.NoSuchElementException;
-import java.util.stream.Collectors;
 
 public class Controller {
     private Gradient grad1;
@@ -26,7 +19,7 @@ public class Controller {
     private SubScene Scene3D;
 
     @FXML
-    private Button add, del;
+    private Button add, del, add2;
 
     @FXML
     private TextField xPos;
@@ -36,57 +29,15 @@ public class Controller {
     private TextField xSize;
     @FXML
     private TextField ySize;
-    @FXML
-    private Pane Pane3D;
 
     private GradientEditor edit1, edit2;
 
-    Pane pane3D;
-    ArrayList<MovableSubScene> subScenes;
-    SimpleObjectProperty<MovableSubScene> actual_scene;
     Stage primaryStage;
 
-    private void recalculate() {
-        pane3D = new Pane();
+    GraphicsWindowManager graphicsWindowManager;
 
-        pane3D.getChildren().addAll(
-                subScenes.stream()
-                        .map(scene -> scene.scene)
-                        .collect(Collectors.toList()));
 
-        if (actual_scene.getValue() != null) {
-            final Rectangle redBorder = new Rectangle(0, 0, Color.TRANSPARENT);
-            redBorder.setStroke(Color.RED);
-            redBorder.setManaged(false);
-            redBorder.setDisable(true);
-            redBorder.setStrokeWidth(10);
-            redBorder.setLayoutX(actual_scene.getValue().scene.getLayoutX() + 5);
-            redBorder.setLayoutY(actual_scene.getValue().scene.getLayoutY() + 5);
-            redBorder.setWidth(actual_scene.getValue().scene.getWidth() - 10);
-            redBorder.setHeight(actual_scene.getValue().scene.getHeight() - 10);
 
-            pane3D.getChildren().add(redBorder);
-            redBorder.setOnMouseDragged(event -> System.out.println("rect dragged"));
-        }
-        Scene3D.setRoot(pane3D);
-    }
-
-    void setTextFields() {
-        String xpos, ypos, xsize, ysize;
-        if (actual_scene.getValue() == null) {
-            xpos = ypos = "-";
-            xsize = ysize = "-";
-        } else {
-            xpos = Integer.toString((int) actual_scene.getValue().getLayoutX());
-            ypos = Integer.toString((int) actual_scene.getValue().getLayoutY());
-            xsize = Integer.toString((int) actual_scene.getValue().getWidth());
-            ysize = Integer.toString((int) actual_scene.getValue().getHeight());
-        }
-        xPos.setText(xpos);
-        yPos.setText(ypos);
-        xSize.setText(xsize);
-        ySize.setText(ysize);
-    }
 
     public void setup(Stage stage) throws IOException {
         this.primaryStage = stage;
@@ -101,121 +52,35 @@ public class Controller {
 
         files = new FileInput();
 
-        actual_scene = new SimpleObjectProperty<>();
-        subScenes = new ArrayList<>();
+
+        graphicsWindowManager = new GraphicsWindowManager(stage, Scene3D,
+                new WindowPositionControl(xSize, ySize, xPos, yPos));
 
         add.setOnAction(event -> {
-            subScenes.add(new MovableSubScene(100, 100, actual_scene));
-            actual_scene.getValue().redraw();
-            recalculate();
-            setTextFields();
-            recalculateWindowSize();
+            graphicsWindowManager.add();
         });
 
         del.setOnAction(event -> {
-            try {
-                if( subScenes.contains(actual_scene.getValue()) ) {
-                    subScenes.remove(actual_scene.getValue());
-                    actual_scene.setValue(subScenes.get(0));
-                }
-            } catch (IndexOutOfBoundsException exception) {
-                actual_scene.setValue(null);
-            }
-            recalculate();
-            setTextFields();
-            recalculateWindowSize();
+            graphicsWindowManager.del();
         });
 
-        xPos.textProperty().addListener((observable, oldValue, newValue) -> {
-            try {
-                actual_scene.getValue().setLayoutX(Double.valueOf(newValue));
-                recalculate();
-                recalculateWindowSize();
-            } catch (NumberFormatException ignored) {
-            }
+        add2.setOnAction(event -> {
+            graphicsWindowManager.add3D();
         });
-
-        yPos.textProperty().addListener((observable, oldValue, newValue) -> {
-            try {
-                actual_scene.getValue().setLayoutY(Double.valueOf(newValue));
-                recalculate();
-                recalculateWindowSize();
-            } catch (NumberFormatException ignored) {
-            }
-        });
-
-        xSize.textProperty().addListener((observable, oldValue, newValue) -> {
-            try {
-                actual_scene.getValue().setWidth(Double.valueOf(newValue));
-                recalculate();
-                recalculateWindowSize();
-            } catch (NumberFormatException ignored) {
-            }
-        });
-
-        ySize.textProperty().addListener((observable, oldValue, newValue) -> {
-            try {
-                actual_scene.getValue().setHeight(Double.valueOf(newValue));
-                recalculate();
-                recalculateWindowSize();
-            } catch (NumberFormatException ignored) {
-            }
-        });
-
-        actual_scene.addListener((observable, oldValue, newValue) -> {
-            try {
-                recalculate();
-                setTextFields();
-            } catch (NumberFormatException ignored) {
-            }
-        });
-
-
-        Scene3D.setOnMouseClicked(event -> {
-            if( event.isStillSincePress() ) {
-                actual_scene.setValue(null);
-                setTextFields();
-            }
-        });
-
-
-        pane3D = new Pane();
-        Scene3D.setRoot(pane3D);
     }
 
-    private void recalculateWindowSize() {
-        try {
-            double maxWidth = subScenes.stream()
-                    .mapToDouble(sc -> sc.getLayoutX() + sc.getWidth())
-                    .max().getAsDouble();
 
-            double maxHeight = subScenes.stream()
-                    .mapToDouble(sc -> sc.getLayoutY() + sc.getHeight())
-                    .max().getAsDouble();
-
-            Scene3D.setWidth(maxWidth);
-            Scene3D.setHeight(maxHeight);
-
-        } catch (NoSuchElementException ignored) {
-            Scene3D.setWidth(0);
-            Scene3D.setHeight(0);
-        }
-        primaryStage.sizeToScene();
-    }
 
     void printGradient(Gradient x) {
         System.out.println("\n\nhandler!");
-        actual_scene.getValue().grad = x;
-        actual_scene.getValue().redraw();
     }
 
     @FXML
     private void Gradient1_handler() throws Exception {
-        SimpleObjectProperty<Gradient> g = new SimpleObjectProperty<>(actual_scene.getValue().grad);
+        SimpleObjectProperty<Gradient> g = new SimpleObjectProperty<>(grad1);
         g.addListener((observable, oldValue, newValue) -> printGradient(newValue));
-        actual_scene.getValue().grad = edit1.exec(g, 1, 2);
-        actual_scene.getValue().redraw();
 
+        edit1.exec((SimpleObjectProperty<Gradient>)graphicsWindowManager.actual_scene.getValue().properties.getOrDefault("grad", new Integer(1)), 0, 0);
     }
 
     @FXML

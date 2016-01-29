@@ -8,25 +8,24 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class GradientEditor {
-    private final GradientEditorController windowController;
+public class GradientViewEditor {
+    private final GradientViewEditorController windowController;
     private final Stage primaryStage;
 
-    public GradientEditor() throws IOException {
+    public GradientViewEditor() throws IOException {
         FXMLLoader load = new FXMLLoader();
-        load.setLocation(getClass().getResource("GradientEditor.fxml"));
+        load.setLocation(getClass().getResource("GradientViewEditor.fxml"));
         Parent loader = load.load();
 
         primaryStage = new Stage();
-        primaryStage.setTitle("Edit point");
+        primaryStage.setTitle("Edit");
         primaryStage.setScene(new Scene(loader));
 
         windowController = load.getController();
     }
 
-    public Gradient exec(SimpleObjectProperty<Gradient> gradient, double minVectorHint, double maxVectorHint) throws IOException {
-        windowController.setup(primaryStage, gradient, minVectorHint, maxVectorHint);
+    public void exec(GradientViewProperties properties) throws IOException {
+        windowController.setup(primaryStage, properties);
         primaryStage.showAndWait();
-        return windowController.getGradient();
     }
 }
