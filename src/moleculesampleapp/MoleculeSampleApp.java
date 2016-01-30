@@ -33,32 +33,19 @@
 package moleculesampleapp;
 
 import javafx.application.Application;
-import javafx.embed.swing.SwingFXUtils;
 import javafx.geometry.Point3D;
 import javafx.scene.*;
 import javafx.scene.control.Button;
-import javafx.scene.image.WritableImage;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.StackPane;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.*;
-import javafx.scene.transform.Transform;
-import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.scene.paint.PhongMaterial;
 import javafx.scene.transform.Rotate;
 import javafx.event.EventHandler;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseEvent;
-
-import javax.imageio.ImageIO;
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  *
@@ -69,63 +56,34 @@ public class MoleculeSampleApp extends Application {
     Stage stage;
     Scene scene;
     double angle = 0;
-    Arrow strzalka;
-    private void handleKeyboard(SubScene scene, final Node root) {
-        scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
-            @Override
-            public void handle(KeyEvent event) {
-                switch (event.getCode()) {
-                    case S:
-                        write_snapshot(scene);
-                        break;
-                    case Q:
+    Arrow myArrow;
 
-                        break;
-                }
-            }
-        });
-    }
+    double mousePosX;
+    double mousePosY;
+    double mouseOldX;
+    double mouseOldY;
+    double mouseDeltaX;
+    double mouseDeltaY;
 
-    private void write_snapshot(SubScene scene) {
-        /*WritableImage image = new WritableImage(768, 768);
-        scene.snapshot(null, image);
-        FileChooser x = new FileChooser();
-        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("PNG files (*.png)", "*.png");
-        x.getExtensionFilters().add(extFilter);
-        File file = x.showSaveDialog(stage);
-//        File file = new File("D:\\Charts.png");
-        try {
-            ImageIO.write(SwingFXUtils.fromFXImage(image, null), "png", file);
-        }catch (IOException e) {
-//                             TODO: handle exception here
-        }*/
-        //strzalka.setRotationAxis(new Point3D(1.0,0,0));
-        //strzalka.setRotate(angle);
-        Rotate rotation = new Rotate(angle,0,0,0,new Point3D(1,0,0));
-        strzalka.getTransforms().add(rotation);
-        angle += Math.PI/36;
-        angle = angle % 360;
-        return;
-    }
+    double horizontalAngle;
+    double verticalAngle;
+    double distance;
+    double transX, transY, transZ;
+
+    private static final double SCROLL_SCALE = 0.025;
+    private static final double ROTATE_SCALE = 10.0;
+
+    Rotate horizontalRotate, verticalRotate;
 
     @Override
     public void start(Stage primaryStage) {
-        
-       // setUserAgentStylesheet(STYLESHEET_MODENA);
+
+        transX = transY = transZ = 0;
+        distance = 1;
+        horizontalAngle = verticalAngle = 0;
+
         System.out.println("start()");
 
-        /*List<Builder> listBuilders = new ArrayList<Builder>();
-        listBuilders.add(new Builder());
-        listBuilders.add(new Builder());
-        listBuilders.add(new Builder());
-        listBuilders.add(new Builder());
-
-
-        List<SubScene> sceneList = listBuilders.stream().
-                map(b -> new SubScene(b.getRoot(), 384, 384, true, SceneAntialiasing.BALANCED)).
-                collect(Collectors.toList());
-
-        GridPane gridPane = new GridPane();*/
         Group root = new Group();
 
         final PhongMaterial redMaterial = new PhongMaterial();
@@ -135,31 +93,71 @@ public class MoleculeSampleApp extends Application {
         Sphere oxygenSphere = new Sphere(10);
         oxygenSphere.setMaterial(redMaterial);
 
-        strzalka = new Arrow();
+        myArrow = new Arrow();
 
-        root.getChildren().add(strzalka);
+        root.getChildren().add(myArrow);
+
+        horizontalRotate = new Rotate();
+        verticalRotate = new Rotate();
+        horizontalRotate.setAxis(new Point3D(0,1,0));
+        verticalRotate.setAxis(new Point3D(1,0,0));
+        myArrow.getTransforms().addAll(horizontalRotate, verticalRotate);
 
         root.setTranslateX(768/2.0);
         root.setTranslateY(768/2.0);
 
         root.getChildren().add(oxygenSphere);
 
-        /*SubScene scena = new SubScene(root,384,384, true, SceneAntialiasing.BALANCED);
-
-        gridPane.add(sceneList.get(0), 0, 0);
-        gridPane.add(sceneList.get(1), 1, 0);
-        gridPane.add(sceneList.get(2), 0, 1);
-        gridPane.add(sceneList.get(3), 1, 1);*/
-
 
         SubScene subScene = new SubScene(root, 768, 768, true, SceneAntialiasing.BALANCED);
 
-        Button btn = new Button("Snapshot");
-        btn.setOnAction(event -> write_snapshot(subScene));
 
-        VBox vbox = new VBox(subScene, btn);
+        VBox vbox = new VBox(subScene);
         scene = new Scene(vbox, 800, 800, true);
 
+
+        scene.setOnMousePressed(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent me) {
+                mousePosX = me.getSceneX();
+                mousePosY = me.getSceneY();
+                mouseOldX = me.getSceneX();
+                mouseOldY = me.getSceneY();
+
+            }
+        });
+        scene.setOnMouseDragged(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent me) {
+                mouseOldX = mousePosX;
+                mouseOldY = mousePosY;
+                mousePosX = me.getSceneX();
+                mousePosY = me.getSceneY();
+                mouseDeltaX = (mousePosX - mouseOldX);
+                mouseDeltaY = (mousePosY - mouseOldY);
+
+                //System.out.print("dx= "+mouseDeltaX+" dy= "+mouseDeltaY+"\r\n");
+                if(me.isPrimaryButtonDown()){
+                    //System.out.print("RIGHT\r\n");
+                    //System.out.print(mouseDeltaX+" "+mouseDeltaY+"\r\n");
+                    horizontalAngle += ROTATE_SCALE * mouseDeltaX;
+                    verticalAngle += ROTATE_SCALE * mouseDeltaY;
+                    System.out.print("H="+horizontalAngle+ "V="+verticalAngle+"\r\n");
+                    horizontalRotate.setAngle(-horizontalAngle/180.0*Math.PI);
+                    verticalRotate.setAngle(verticalAngle/180.0*Math.PI);
+                }else if(me.isSecondaryButtonDown()){
+                    //System.out.print("LEFT\r\n");
+                }
+
+            }
+        });
+        scene.setOnScroll(new EventHandler<ScrollEvent>() {
+            @Override
+            public void handle(ScrollEvent event) {
+                distance += SCROLL_SCALE*event.getDeltaY();
+                System.out.print("Distance="+distance+"\r\n");
+            }
+        });
 
         scene.setFill(Color.LIGHTGRAY);
 
@@ -169,7 +167,7 @@ public class MoleculeSampleApp extends Application {
 
 
         */
-        handleKeyboard(subScene, root);
+        //handleKeyboard(subScene, root);
         stage = primaryStage;
         primaryStage.setTitle("Molecule Sample Application");
         primaryStage.setScene(scene);
