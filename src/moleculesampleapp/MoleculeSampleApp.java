@@ -48,7 +48,10 @@ import javafx.event.EventHandler;
 import javafx.scene.input.KeyEvent;
 import math.math.*;
 import math.math.geometry.Rotation;
+import math.math.geometry.RotationOrder;
 import math.math.geometry.Vector3D;
+
+import java.util.PropertyResourceBundle;
 
 /**
  *
@@ -68,23 +71,23 @@ public class MoleculeSampleApp extends Application {
     double mouseDeltaX;
     double mouseDeltaY;
 
-    double horizontalAngle;
-    double verticalAngle;
-    double axialAngle;
+    double xAngle;
+    double yAngle;
+    double zAngle;
     double distance;
     double transX, transY, transZ;
 
     private static final double SCROLL_SCALE = 0.025;
     private static final double ROTATE_SCALE = .01;
 
-    Rotate horizontalRotate, verticalRotate, axialRotate;
+    Rotate xRotate, yRotate, zRotate;
 
     @Override
     public void start(Stage primaryStage) {
 
         transX = transY = transZ = 0;
         distance = 1;
-        horizontalAngle = verticalAngle = axialAngle = 0;
+        xAngle = yAngle = zAngle = 0;
 
         System.out.println("start()");
 
@@ -101,10 +104,10 @@ public class MoleculeSampleApp extends Application {
 
         root.getChildren().add(myArrow);
 
-        horizontalRotate = new Rotate(0,new Point3D(0,1,0));
-        verticalRotate = new Rotate(0,new Point3D(1,0,0));
-        //axialRotate = new Rotate(0,new Point3D(0,0,1));
-        myArrow.getTransforms().addAll(horizontalRotate, verticalRotate);
+        xRotate = new Rotate(0,new Point3D(1,0,0));
+        yRotate = new Rotate(0,new Point3D(0,1,0));
+        zRotate = new Rotate(0,new Point3D(0,0,1));
+        myArrow.getTransforms().addAll(xRotate, yRotate, zRotate);
 
         root.setTranslateX(768/2.0);
         root.setTranslateY(768/2.0);
@@ -152,14 +155,23 @@ public class MoleculeSampleApp extends Application {
                     horizontalRotate.setAngle(-horizontalAngle);
                     verticalRotate.setAngle(verticalAngle);
                     axialRotate.setAngle(-axialAngle);*/
-                    Rotation baseRotation = new Rotation(new Vector3D(0,0), new Vector3D(horizontalAngle, verticalAngle));//get base rotation (it is transform form neutral point to actual point of view)
+                    Rotation baseRotation = new Rotation(RotationOrder.XYZ, xAngle, yAngle, zAngle);//get base rotation (it is transform form neutral point to actual point of view)
                     Rotation deltaRotation = new Rotation(new Vector3D(0,0), new Vector3D(mouseDeltaX*ROTATE_SCALE,mouseDeltaY*ROTATE_SCALE));//get rotation according to mouse movement
                     Rotation finalRotation = deltaRotation.applyTo(baseRotation);//sum both the rotations
-                    Vector3D finalVector = finalRotation.applyTo(new Vector3D(0,0));
-                    horizontalAngle = finalVector.getAlpha();
-                    verticalAngle = finalVector.getDelta();
-                    horizontalRotate.setAngle(-Math.toDegrees(horizontalAngle));
-                    verticalRotate.setAngle(Math.toDegrees(verticalAngle));
+                    try {
+                        double angles[] = finalRotation.getAngles(RotationOrder.XYZ);
+
+                        xAngle = angles[0];
+                        yAngle = angles[1];
+                        zAngle = angles[2];
+
+
+                        xRotate.setAngle(Math.toDegrees(xAngle));
+                        yRotate.setAngle(Math.toDegrees(yAngle));
+                        zRotate.setAngle(Math.toDegrees(zAngle));
+                    }catch (Exception e){
+                        System.out.print("ROTATE ERROR\r\n");
+                    }
                 }else if(me.isSecondaryButtonDown()){
                     //System.out.print("LEFT\r\n");
                 }
