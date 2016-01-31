@@ -71,7 +71,7 @@ public class MoleculeSampleApp extends Application {
     double transX, transY, transZ;
 
     private static final double SCROLL_SCALE = 0.025;
-    private static final double ROTATE_SCALE = 10.0;
+    private static final double ROTATE_SCALE = .1;
 
     Rotate horizontalRotate, verticalRotate;
 
@@ -140,11 +140,13 @@ public class MoleculeSampleApp extends Application {
                 if(me.isPrimaryButtonDown()){
                     //System.out.print("RIGHT\r\n");
                     //System.out.print(mouseDeltaX+" "+mouseDeltaY+"\r\n");
+                    double oldHorizontalAngle = horizontalAngle;
+                    double oldVerticalAngle = verticalAngle;
                     horizontalAngle += ROTATE_SCALE * mouseDeltaX;
-                    verticalAngle += ROTATE_SCALE * mouseDeltaY;
-                    System.out.print("H="+horizontalAngle+ "V="+verticalAngle+"\r\n");
-                    horizontalRotate.setAngle(-horizontalAngle/180.0*Math.PI);
-                    verticalRotate.setAngle(verticalAngle/180.0*Math.PI);
+                    verticalAngle += ROTATE_SCALE * mouseDeltaY*Math.cos(Math.toRadians(oldHorizontalAngle));
+                    System.out.print("H="+horizontalAngle+ "V="+verticalAngle+" S="+Math.cos(Math.toRadians(horizontalAngle))+"\r\n");
+                    horizontalRotate.setAngle(-horizontalAngle);
+                    verticalRotate.setAngle(verticalAngle);
                 }else if(me.isSecondaryButtonDown()){
                     //System.out.print("LEFT\r\n");
                 }
