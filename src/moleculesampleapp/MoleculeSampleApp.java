@@ -104,9 +104,9 @@ public class MoleculeSampleApp extends Application {
 
         root.getChildren().add(myArrow);
 
-        xRotate = new Rotate(0,new Point3D(1,0,0));
-        yRotate = new Rotate(0,new Point3D(0,1,0));
-        zRotate = new Rotate(0,new Point3D(0,0,1));
+        xRotate = new Rotate(0,new Point3D(0,0,1));
+        yRotate = new Rotate(0,new Point3D(1,0,0));
+        zRotate = new Rotate(0,new Point3D(0,1,0));
         myArrow.getTransforms().addAll(xRotate, yRotate, zRotate);
 
         root.setTranslateX(768/2.0);
