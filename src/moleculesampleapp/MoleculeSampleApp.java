@@ -142,6 +142,14 @@ public class MoleculeSampleApp extends Application {
                 mouseDeltaX = (mousePosX - mouseOldX);
                 mouseDeltaY = (mousePosY - mouseOldY);
 
+                if(me.isControlDown()){
+                    mouseDeltaX = 0;
+                }
+
+                if(me.isShiftDown()){
+                    mouseDeltaY = 0;
+                }
+
                 if(me.isPrimaryButtonDown()){
                     Rotation baseRotation = new Rotation(RotationOrder.XYZ, xAngle, yAngle, zAngle);//get base rotation (it is transform form neutral point to actual point of view)
                     Rotation deltaRotation = new Rotation(new Vector3D(0,0), new Vector3D(-mouseDeltaX*ROTATE_SCALE,-mouseDeltaY*ROTATE_SCALE));//get rotation according to mouse movement
@@ -153,6 +161,7 @@ public class MoleculeSampleApp extends Application {
                         yAngle = angles[1];
                         zAngle = angles[2];
 
+                        
 
                         xRotate.setAngle(Math.toDegrees(xAngle));
                         yRotate.setAngle(Math.toDegrees(yAngle));
