@@ -35,23 +35,19 @@ package moleculesampleapp;
 import javafx.application.Application;
 import javafx.geometry.Point3D;
 import javafx.scene.*;
-import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.*;
+import javafx.scene.transform.Translate;
 import javafx.stage.Stage;
 import javafx.scene.paint.PhongMaterial;
 import javafx.scene.transform.Rotate;
 import javafx.event.EventHandler;
-import javafx.scene.input.KeyEvent;
-import math.math.*;
 import math.math.geometry.Rotation;
 import math.math.geometry.RotationOrder;
 import math.math.geometry.Vector3D;
-
-import java.util.PropertyResourceBundle;
 
 /**
  *
@@ -75,17 +71,18 @@ public class MoleculeSampleApp extends Application {
     double yAngle;
     double zAngle;
     double distance;
-    double transX, transY, transZ;
+    double xOffset, yOffset, zOffset;
 
     private static final double SCROLL_SCALE = 0.025;
     private static final double ROTATE_SCALE = .01;
-
+    private static final double MOVE_SCALE = 1;
     Rotate xRotate, yRotate, zRotate;
+    Translate xyzTranslate;
 
     @Override
     public void start(Stage primaryStage) {
 
-        transX = transY = transZ = 0;
+        xOffset = yOffset = zOffset = 0;
         distance = 1;
         xAngle = yAngle = zAngle = 0;
 
@@ -107,7 +104,10 @@ public class MoleculeSampleApp extends Application {
         xRotate = new Rotate(0,new Point3D(0,0,1));
         yRotate = new Rotate(0,new Point3D(1,0,0));
         zRotate = new Rotate(0,new Point3D(0,1,0));
-        myArrow.getTransforms().addAll(xRotate, yRotate, zRotate);
+
+        xyzTranslate = new Translate(0,0,0);
+
+        myArrow.getTransforms().addAll(xRotate, yRotate, zRotate,xyzTranslate);
 
         root.setTranslateX(768/2.0);
         root.setTranslateY(768/2.0);
@@ -161,7 +161,7 @@ public class MoleculeSampleApp extends Application {
                         yAngle = angles[1];
                         zAngle = angles[2];
 
-                        
+
 
                         xRotate.setAngle(Math.toDegrees(xAngle));
                         yRotate.setAngle(Math.toDegrees(yAngle));
@@ -170,7 +170,16 @@ public class MoleculeSampleApp extends Application {
                         System.out.print("ROTATE ERROR\r\n");
                     }
                 }else if(me.isSecondaryButtonDown()){
-                    //System.out.print("LEFT\r\n");
+                    Rotation baseRotation = new Rotation(RotationOrder.XYZ, xAngle, yAngle, zAngle);
+                    Vector3D planeTranslate = baseRotation.applyTo(new Vector3D(mouseDeltaX*MOVE_SCALE,mouseDeltaY*MOVE_SCALE,0));
+
+                    xOffset += planeTranslate.getX();
+                    yOffset += planeTranslate.getY();
+                    zOffset += planeTranslate.getZ();
+
+                    xyzTranslate.setX(xOffset);
+                    xyzTranslate.setY(yOffset);
+                    xyzTranslate.setZ(zOffset);
                 }
 
             }
