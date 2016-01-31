@@ -67,20 +67,21 @@ public class MoleculeSampleApp extends Application {
 
     double horizontalAngle;
     double verticalAngle;
+    double axialAngle;
     double distance;
     double transX, transY, transZ;
 
     private static final double SCROLL_SCALE = 0.025;
     private static final double ROTATE_SCALE = .1;
 
-    Rotate horizontalRotate, verticalRotate;
+    Rotate horizontalRotate, verticalRotate, axialRotate;
 
     @Override
     public void start(Stage primaryStage) {
 
         transX = transY = transZ = 0;
         distance = 1;
-        horizontalAngle = verticalAngle = 0;
+        horizontalAngle = verticalAngle = axialAngle = 0;
 
         System.out.println("start()");
 
@@ -97,11 +98,10 @@ public class MoleculeSampleApp extends Application {
 
         root.getChildren().add(myArrow);
 
-        horizontalRotate = new Rotate();
-        verticalRotate = new Rotate();
-        horizontalRotate.setAxis(new Point3D(0,1,0));
-        verticalRotate.setAxis(new Point3D(1,0,0));
-        myArrow.getTransforms().addAll(horizontalRotate, verticalRotate);
+        horizontalRotate = new Rotate(0,new Point3D(0,1,0));
+        verticalRotate = new Rotate(0,new Point3D(1,0,0));
+        axialRotate = new Rotate(0,new Point3D(0,0,1));
+        myArrow.getTransforms().addAll(horizontalRotate, verticalRotate, axialRotate);
 
         root.setTranslateX(768/2.0);
         root.setTranslateY(768/2.0);
@@ -144,9 +144,11 @@ public class MoleculeSampleApp extends Application {
                     double oldVerticalAngle = verticalAngle;
                     horizontalAngle += ROTATE_SCALE * mouseDeltaX;
                     verticalAngle += ROTATE_SCALE * mouseDeltaY*Math.cos(Math.toRadians(oldHorizontalAngle));
+                    axialAngle += ROTATE_SCALE * mouseDeltaY*Math.sin(Math.toRadians(oldHorizontalAngle));
                     System.out.print("H="+horizontalAngle+ "V="+verticalAngle+" S="+Math.cos(Math.toRadians(horizontalAngle))+"\r\n");
                     horizontalRotate.setAngle(-horizontalAngle);
                     verticalRotate.setAngle(verticalAngle);
+                    axialRotate.setAngle(-axialAngle);
                 }else if(me.isSecondaryButtonDown()){
                     //System.out.print("LEFT\r\n");
                 }
