@@ -142,21 +142,9 @@ public class MoleculeSampleApp extends Application {
                 mouseDeltaX = (mousePosX - mouseOldX);
                 mouseDeltaY = (mousePosY - mouseOldY);
 
-                //System.out.print("dx= "+mouseDeltaX+" dy= "+mouseDeltaY+"\r\n");
                 if(me.isPrimaryButtonDown()){
-                    //System.out.print("RIGHT\r\n");
-                    //System.out.print(mouseDeltaX+" "+mouseDeltaY+"\r\n");
-                    /*double oldHorizontalAngle = horizontalAngle;
-                    double oldVerticalAngle = verticalAngle;
-                    horizontalAngle += ROTATE_SCALE * mouseDeltaX;
-                    verticalAngle += ROTATE_SCALE * mouseDeltaY*Math.cos(Math.toRadians(oldHorizontalAngle));
-                    axialAngle += ROTATE_SCALE * mouseDeltaY*Math.sin(Math.toRadians(oldHorizontalAngle));
-                    System.out.print("H="+horizontalAngle+ "V="+verticalAngle+" S="+Math.cos(Math.toRadians(horizontalAngle))+"\r\n");
-                    horizontalRotate.setAngle(-horizontalAngle);
-                    verticalRotate.setAngle(verticalAngle);
-                    axialRotate.setAngle(-axialAngle);*/
                     Rotation baseRotation = new Rotation(RotationOrder.XYZ, xAngle, yAngle, zAngle);//get base rotation (it is transform form neutral point to actual point of view)
-                    Rotation deltaRotation = new Rotation(new Vector3D(0,0), new Vector3D(mouseDeltaX*ROTATE_SCALE,mouseDeltaY*ROTATE_SCALE));//get rotation according to mouse movement
+                    Rotation deltaRotation = new Rotation(new Vector3D(0,0), new Vector3D(-mouseDeltaX*ROTATE_SCALE,-mouseDeltaY*ROTATE_SCALE));//get rotation according to mouse movement
                     Rotation finalRotation = deltaRotation.applyTo(baseRotation);//sum both the rotations
                     try {
                         double angles[] = finalRotation.getAngles(RotationOrder.XYZ);
