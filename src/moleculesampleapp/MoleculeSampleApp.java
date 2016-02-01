@@ -107,7 +107,7 @@ public class MoleculeSampleApp extends Application {
 
         xyzTranslate = new Translate(0,0,0);
 
-        myArrow.getTransforms().addAll(xRotate, yRotate, zRotate,xyzTranslate);
+        myArrow.getTransforms().addAll(xRotate, yRotate, zRotate, xyzTranslate);
 
         root.setTranslateX(768/2.0);
         root.setTranslateY(768/2.0);
@@ -170,12 +170,14 @@ public class MoleculeSampleApp extends Application {
                         System.out.print("ROTATE ERROR\r\n");
                     }
                 }else if(me.isSecondaryButtonDown()){
-                    Rotation baseRotation = new Rotation(RotationOrder.XYZ, xAngle, yAngle, zAngle);
-                    Vector3D planeTranslate = baseRotation.applyTo(new Vector3D(mouseDeltaX*MOVE_SCALE,mouseDeltaY*MOVE_SCALE,0));
+                    Rotation baseRotation = new Rotation(RotationOrder.XYZ, yAngle, zAngle, xAngle);
+                    Vector3D planeTranslate = baseRotation.applyInverseTo(new Vector3D(mouseDeltaX*MOVE_SCALE,mouseDeltaY*MOVE_SCALE,0));
 
                     xOffset += planeTranslate.getX();
                     yOffset += planeTranslate.getY();
                     zOffset += planeTranslate.getZ();
+
+                    System.out.print("\tdx="+planeTranslate.getX()+"\tdy="+planeTranslate.getY()+"\tdz="+planeTranslate.getZ()+"\trx="+Math.toDegrees(xAngle)+"\r\n");
 
                     xyzTranslate.setX(xOffset);
                     xyzTranslate.setY(yOffset);
