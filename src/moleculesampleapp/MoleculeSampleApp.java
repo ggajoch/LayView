@@ -184,9 +184,9 @@ public class MoleculeSampleApp extends Application {
                     Rotation baseRotation = new Rotation(RotationOrder.ZXY, xAngle, yAngle, zAngle);//magic happens!
                     Vector3D planeTranslate = baseRotation.applyInverseTo(new Vector3D(mouseDeltaX*MOVE_SCALE,mouseDeltaY*MOVE_SCALE,0));
 
-                    xOffset += planeTranslate.getX();
-                    yOffset += planeTranslate.getY();
-                    zOffset += planeTranslate.getZ();
+                    xOffset += planeTranslate.getX()*Math.pow(10,-scale);
+                    yOffset += planeTranslate.getY()*Math.pow(10,-scale);
+                    zOffset += planeTranslate.getZ()*Math.pow(10,-scale);
 
                     //System.out.print("\tdx="+planeTranslate.getX()+"\tdy="+planeTranslate.getY()+"\tdz="+planeTranslate.getZ()+"\trx="+Math.toDegrees(xAngle)+"\r\n");
 
