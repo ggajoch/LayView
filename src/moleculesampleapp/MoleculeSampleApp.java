@@ -58,36 +58,11 @@ public class MoleculeSampleApp extends Application {
 
     Stage stage;
     Scene scene;
-    double angle = 0;
     Arrow myArrow;
-
-    double mousePosX;
-    double mousePosY;
-    double mouseOldX;
-    double mouseOldY;
-    double mouseDeltaX;
-    double mouseDeltaY;
-
-    double xAngle;
-    double yAngle;
-    double zAngle;
-    double scale;
-    double xOffset, yOffset, zOffset;
-
-    private static final double SCROLL_SCALE = 0.0025;
-    private static final double ROTATE_SCALE = .01;
-    private static final double MOVE_SCALE = 1;
-    Rotate xRotate, yRotate, zRotate;
-    Translate xyzTranslate;
-
-    Scale cameraScale;
+    CameraView camera1;
 
     @Override
     public void start(Stage primaryStage) {
-
-        xOffset = yOffset = zOffset = 0;
-        scale = 0;
-        xAngle = yAngle = zAngle = 0;
 
         System.out.println("start()");
 
@@ -104,24 +79,6 @@ public class MoleculeSampleApp extends Application {
 
 
 
-        xRotate = new Rotate(0,new Point3D(0,0,1));
-        yRotate = new Rotate(0,new Point3D(1,0,0));
-        zRotate = new Rotate(0,new Point3D(0,1,0));
-
-        xyzTranslate = new Translate(0,0,0);
-
-        cameraScale = new Scale(1,1,1);
-
-        myArrow.getTransforms().addAll(xRotate, yRotate, zRotate, xyzTranslate);
-
-        Group cameraDistance = new Group(myArrow, oxygenSphere);
-
-        root.getChildren().add(cameraDistance);
-
-        cameraDistance.getTransforms().addAll(cameraScale);
-
-
-
         root.setTranslateX(768/2.0);
         root.setTranslateY(768/2.0);
 
@@ -130,87 +87,16 @@ public class MoleculeSampleApp extends Application {
 
         SubScene subScene = new SubScene(root, 768, 768, true, SceneAntialiasing.BALANCED);
 
+        camera1 = new CameraView();
+
+        camera1.elements.getChildren().addAll(myArrow);
+        camera1.setHandlers(subScene);
+
+        root.getChildren().addAll(camera1.getView());
+
 
         VBox vbox = new VBox(subScene);
         scene = new Scene(vbox, 800, 800, true);
-
-
-        scene.setOnMousePressed(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent me) {
-                mousePosX = me.getSceneX();
-                mousePosY = me.getSceneY();
-                mouseOldX = me.getSceneX();
-                mouseOldY = me.getSceneY();
-
-            }
-        });
-        scene.setOnMouseDragged(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent me) {
-                mouseOldX = mousePosX;
-                mouseOldY = mousePosY;
-                mousePosX = me.getSceneX();
-                mousePosY = me.getSceneY();
-                mouseDeltaX = (mousePosX - mouseOldX);
-                mouseDeltaY = (mousePosY - mouseOldY);
-
-                if(me.isControlDown()){
-                    mouseDeltaX = 0;
-                }
-
-                if(me.isShiftDown()){
-                    mouseDeltaY = 0;
-                }
-
-                if(me.isPrimaryButtonDown()){
-                    Rotation baseRotation = new Rotation(RotationOrder.XYZ, xAngle, yAngle, zAngle);//get base rotation (it is transform form neutral point to actual point of view)
-                    Rotation deltaRotation = new Rotation(new Vector3D(0,0), new Vector3D(-mouseDeltaX*ROTATE_SCALE,-mouseDeltaY*ROTATE_SCALE));//get rotation according to mouse movement
-                    Rotation finalRotation = deltaRotation.applyTo(baseRotation);//sum both the rotations
-                    try {
-                        double angles[] = finalRotation.getAngles(RotationOrder.XYZ);
-
-                        xAngle = angles[0];
-                        yAngle = angles[1];
-                        zAngle = angles[2];
-
-                        xRotate.setAngle(Math.toDegrees(xAngle));
-                        yRotate.setAngle(Math.toDegrees(yAngle));
-                        zRotate.setAngle(Math.toDegrees(zAngle));
-                    }catch (Exception e){
-                        System.out.print("ROTATE ERROR\r\n");
-                    }
-                }else if(me.isSecondaryButtonDown()){
-                    Rotation baseRotation = new Rotation(RotationOrder.ZXY, xAngle, yAngle, zAngle);//magic happens!
-                    Vector3D planeTranslate = baseRotation.applyInverseTo(new Vector3D(mouseDeltaX*MOVE_SCALE,mouseDeltaY*MOVE_SCALE,0));
-
-                    xOffset += planeTranslate.getX()*Math.pow(10,-scale);
-                    yOffset += planeTranslate.getY()*Math.pow(10,-scale);
-                    zOffset += planeTranslate.getZ()*Math.pow(10,-scale);
-
-                    //System.out.print("\tdx="+planeTranslate.getX()+"\tdy="+planeTranslate.getY()+"\tdz="+planeTranslate.getZ()+"\trx="+Math.toDegrees(xAngle)+"\r\n");
-
-                    xyzTranslate.setX(xOffset);
-                    xyzTranslate.setY(yOffset);
-                    xyzTranslate.setZ(zOffset);
-                }
-
-            }
-        });
-        scene.setOnScroll(new EventHandler<ScrollEvent>() {
-            @Override
-            public void handle(ScrollEvent event) {
-                double modifier = 1.0;
-                if(event.isControlDown()){
-                    modifier = 0.1;
-                }
-                scale += SCROLL_SCALE * modifier * (double)event.getDeltaY();
-                System.out.print("Distance="+ scale +" \tmodifier="+modifier+" \tjump="+event.getDeltaY()+"\r\n");
-                cameraScale.setX(Math.pow(10,scale));
-                cameraScale.setY(Math.pow(10,scale));
-                cameraScale.setZ(Math.pow(10,scale));
-            }
-        });
 
         scene.setFill(Color.LIGHTGRAY);
 

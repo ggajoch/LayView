@@ -104,6 +104,8 @@ public class Arrow extends Group {
         this.tipView.setMaterial(this.arrowMaterial);
         this.tipView.setTranslateZ((double) len);
 
+        this.getChildren().clear();
+
         this.getChildren().add(tipView);
 
         //Generate cylinder
