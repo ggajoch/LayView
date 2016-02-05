@@ -3,6 +3,7 @@ package moleculesampleapp;
 import javafx.event.EventHandler;
 import javafx.geometry.Point3D;
 import javafx.scene.Group;
+import javafx.scene.SceneAntialiasing;
 import javafx.scene.SubScene;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
@@ -34,15 +35,17 @@ public class CameraView {
     private static final double ROTATE_SCALE = .01;
     private static final double MOVE_SCALE = 1;
     private Rotate xRotate, yRotate, zRotate;
-    private Translate xyzTranslate;
+    private Translate xyzTranslate, planeTranslate;
 
     private Scale cameraScale;
 
-    Group elements;
+    public Group elements;
 
     private Group cameraDistance;
 
-    CameraView(){
+    private SubScene scene;
+
+    CameraView(double width, double height, boolean depthBuffer, SceneAntialiasing sceneAntialiasing){
         xOffset = yOffset = zOffset = 0;
         scale = 0;
         xAngle = yAngle = zAngle = 0;
@@ -52,6 +55,7 @@ public class CameraView {
         zRotate = new Rotate(0,new Point3D(0,1,0));
 
         xyzTranslate = new Translate(0,0,0);
+        planeTranslate = new Translate(width/2, height/2, 0);
 
         cameraScale = new Scale(1,1,1);
 
@@ -61,7 +65,13 @@ public class CameraView {
 
         cameraDistance = new Group(elements);
 
-        cameraDistance.getTransforms().addAll(cameraScale);
+        cameraDistance.getTransforms().addAll(planeTranslate, cameraScale);
+
+        scene = new SubScene(cameraDistance, width, height, depthBuffer, sceneAntialiasing);
+
+        scene.setPickOnBounds(true); //to catch mouse also on "background"
+
+        setHandlers(scene);
     }
 
     public void setHandlers(SubScene subScene){
@@ -145,6 +155,9 @@ public class CameraView {
 
     Group getView(){
         return cameraDistance;
+    }
+    SubScene getScene() {
+        return scene;
     }
 
 

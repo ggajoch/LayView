@@ -85,17 +85,17 @@ public class MoleculeSampleApp extends Application {
 
 
 
-        SubScene subScene = new SubScene(root, 768, 768, true, SceneAntialiasing.BALANCED);
+        //SubScene subScene = new SubScene(root, 768, 768, true, SceneAntialiasing.BALANCED);
 
-        camera1 = new CameraView();
+        camera1 = new CameraView(768, 768, true, SceneAntialiasing.BALANCED);
 
         camera1.elements.getChildren().addAll(myArrow);
-        camera1.setHandlers(subScene);
+        //camera1.setHandlers(subScene);
 
-        root.getChildren().addAll(camera1.getView());
+        //root.getChildren().addAll(camera1.getView());
 
 
-        VBox vbox = new VBox(subScene);
+        VBox vbox = new VBox(camera1.getScene());
         scene = new Scene(vbox, 800, 800, true);
 
         scene.setFill(Color.LIGHTGRAY);
