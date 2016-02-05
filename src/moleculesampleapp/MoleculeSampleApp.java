@@ -37,6 +37,7 @@ import javafx.geometry.Point3D;
 import javafx.scene.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.*;
@@ -58,63 +59,79 @@ public class MoleculeSampleApp extends Application {
 
     Stage stage;
     Scene scene;
-    Arrow myArrow;
-    CameraView camera1;
+
 
     @Override
     public void start(Stage primaryStage) {
 
         System.out.println("start()");
 
-        Group root = new Group();
-
         final PhongMaterial redMaterial = new PhongMaterial();
         redMaterial.setDiffuseColor(Color.RED);
         redMaterial.setSpecularColor(Color.DARKRED);
 
+        final PhongMaterial greenMaterial = new PhongMaterial();
+        greenMaterial.setDiffuseColor(Color.GREEN);
+        greenMaterial.setSpecularColor(Color.gray(0.3));
+
         Sphere oxygenSphere = new Sphere(10);
         oxygenSphere.setMaterial(redMaterial);
 
-        myArrow = new Arrow();
+
+
+        Arrow myArrow1 = new Arrow();
+        myArrow1.setMaterial(greenMaterial);
+
+
+        CameraView camera1 = new CameraView(384, 384, true, SceneAntialiasing.BALANCED);
+
+        camera1.elements.getChildren().addAll(myArrow1);
+
+        Arrow myArrow2 = new Arrow();
+        myArrow2.setMaterial(greenMaterial);
+
+
+        CameraView camera2 = new CameraView(384, 384, true, SceneAntialiasing.BALANCED);
+
+        camera2.elements.getChildren().addAll(myArrow2);
+
+        Arrow myArrow3 = new Arrow();
+        myArrow3.setMaterial(greenMaterial);
+
+
+        CameraView camera3 = new CameraView(384, 384, true, SceneAntialiasing.BALANCED);
+
+        camera3.elements.getChildren().addAll(myArrow3);
+
+        Arrow myArrow4 = new Arrow();
+        myArrow4.setMaterial(greenMaterial);
+
+
+        CameraView camera4 = new CameraView(384, 384, true, SceneAntialiasing.BALANCED);
+
+        camera4.elements.getChildren().addAll(myArrow4);
 
 
 
-        root.setTranslateX(768/2.0);
-        root.setTranslateY(768/2.0);
+        GridPane gridPane = new GridPane();
+
+        gridPane.add(camera1.getScene(), 0, 0);
+        gridPane.add(camera2.getScene(), 1, 0);
+        gridPane.add(camera3.getScene(), 0, 1);
+        gridPane.add(camera4.getScene(), 1, 1);
 
 
 
-
-        //SubScene subScene = new SubScene(root, 768, 768, true, SceneAntialiasing.BALANCED);
-
-        camera1 = new CameraView(768, 768, true, SceneAntialiasing.BALANCED);
-
-        camera1.elements.getChildren().addAll(myArrow);
-        //camera1.setHandlers(subScene);
-
-        //root.getChildren().addAll(camera1.getView());
-
-
-        VBox vbox = new VBox(camera1.getScene());
+        SubScene subScene = new SubScene(gridPane, 768, 768, true, SceneAntialiasing.BALANCED);
+        VBox vbox = new VBox(subScene);
         scene = new Scene(vbox, 800, 800, true);
 
         scene.setFill(Color.LIGHTGRAY);
 
-        /*for(int i = 0; i < listBuilders.size(); ++i) {
-            listBuilders.get(i).handlers_set(sceneList.get(i));
-        }
-
-
-        */
-        //handleKeyboard(subScene, root);
         stage = primaryStage;
         primaryStage.setTitle("Molecule Sample Application");
         primaryStage.setScene(scene);
         primaryStage.show();
-        /*
-        for(int i = 0; i < listBuilders.size(); ++i) {
-            listBuilders.get(i).cam_set(sceneList.get(i));
-        }*/
 
     }
 
