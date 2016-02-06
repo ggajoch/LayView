@@ -115,12 +115,5 @@ public class Arrow extends Group {
         this.line.setRotate(90);
         this.line.setTranslateZ(this.len/2.0);
         this.getChildren().add(this.line);
-        //position the group, so it's center is the end of the arrow
-        /*Sphere positioner = new Sphere(0);
-        positioner.setMaterial(this.arrowMaterial);
-        positioner.setTranslateZ(-(this.len+this.tipLen));
-        //this.positioner.setVisible(false);
-        this.getChildren().add(positioner);*/
-        //this.setTranslateY(-(this.len+this.tipLen)/4.0);
     }
 }

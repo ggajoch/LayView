@@ -87,8 +87,8 @@ public class MoleculeSampleApp extends Application {
 
         camera1.elements.getChildren().addAll(myArrow1);
 
-        Arrow myArrow2 = new Arrow();
-        myArrow2.setMaterial(greenMaterial);
+        DArrow myArrow2 = new DArrow(30,5,10,10);
+        myArrow2.setMaterial(redMaterial);
 
 
         CameraView camera2 = new CameraView(384, 384, true, SceneAntialiasing.BALANCED);
