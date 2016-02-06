@@ -5,6 +5,7 @@ import javafx.scene.Group;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.*;
+import javafx.scene.transform.Rotate;
 
 /**
  * Created by Piotr on 23/01/2016.
@@ -20,15 +21,7 @@ public class Arrow extends Group {
     private Cylinder line;
 
     Arrow(){
-        super();
-        this.tipRadius = this.tipLen = 100;
-        this.radius = 50;
-        this.len = 300;
-        this.divisions = 10;
-        this.arrowMaterial = new PhongMaterial();
-        this.arrowMaterial.setDiffuseColor(Color.RED);
-        this.arrowMaterial.setSpecularColor(Color.DARKRED);
-        this.generate();
+        this(300, 50, 100, 100);
     }
 
     Arrow(int len_, int radius_, int tipRadius_, int tipLen_) {

@@ -9,21 +9,11 @@ public class DArrow extends Arrow {
     private double scaleFactor;
     private Scale scale;
     public DArrow(){
-        super(300000,50000,100000,100000);
-        scaleFactor = 0.001;
-        scale = new Scale(scaleFactor,scaleFactor,scaleFactor);
-        this.getTransforms().add(scale);
+        this(300, 50, 100, 100);
     }
 
     public DArrow(double len_, double radius_, double tipRadius_, double tipLen_){
-        super();
-        scaleFactor = 0.001;
-        scale = new Scale(scaleFactor,scaleFactor,scaleFactor);
-        this.getTransforms().add(scale);
-        this.setLen(len_);
-        this.setRadius(radius_);
-        this.setTipRadius(tipRadius_);
-        this.setTipLen(tipLen_);
+        this(len_, radius_, tipRadius_, tipLen_, 0.001);
     }
 
     public DArrow(double len_, double radius_, double tipRadius_, double tipLen_, double scaleFactor_){
