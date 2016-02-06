@@ -83,6 +83,24 @@ public class CameraView {
                 mouseOldX = me.getSceneX();
                 mouseOldY = me.getSceneY();
 
+                if(me.isMiddleButtonDown()){
+
+                    xOffset = yOffset = zOffset = 0;
+                    scale = 0;
+                    xAngle = yAngle = zAngle = 0;
+
+                    xRotate.setAngle(Math.toDegrees(xAngle));
+                    yRotate.setAngle(Math.toDegrees(yAngle));
+                    zRotate.setAngle(Math.toDegrees(zAngle));
+
+                    xyzTranslate.setX(xOffset);
+                    xyzTranslate.setY(yOffset);
+                    xyzTranslate.setZ(zOffset);
+
+                    cameraScale.setX(Math.pow(10,scale));
+                    cameraScale.setY(Math.pow(10,scale));
+                    cameraScale.setZ(Math.pow(10,scale));
+                }
             }
         });
         subScene.setOnMouseDragged(new EventHandler<MouseEvent>() {
