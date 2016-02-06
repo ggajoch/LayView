@@ -32,6 +32,7 @@
 
 package moleculesampleapp;
 
+import com.sun.javafx.geom.Vec3d;
 import javafx.application.Application;
 import javafx.geometry.Point3D;
 import javafx.scene.*;
@@ -79,29 +80,35 @@ public class MoleculeSampleApp extends Application {
 
 
 
-        Arrow myArrow1 = new Arrow();
-        myArrow1.setMaterial(greenMaterial);
+        VectorSurface surface = new VectorSurface();
+
+        for(double x = 0 ; x <100 ; x += 10){
+            for(double y = -100 ; y <100 ; y += 10){
+                for(double z = -100 ; z <100 ; z += 10){
+                    if(Math.sqrt(Math.pow(x,2)+Math.pow(y,2)+Math.pow(z,2))<=100){
+                        surface.add(new VectorPoint(new Vec3d(x,y,z),new Vec3d(x/10,y/10,z/10),new Color(y/200+0.5,0,-y/200+0.5,1)));
+                    }
+                }
+            }
+        }
 
 
         CameraView camera1 = new CameraView(384, 384, true, SceneAntialiasing.BALANCED);
 
-        camera1.elements.getChildren().addAll(myArrow1);
+        camera1.elements.getChildren().addAll(surface.getBoxGroup());
 
-        DArrow myArrow2 = new DArrow(30,5,10,10);
-        myArrow2.setMaterial(redMaterial);
+        VectorArrow myArrow2 = new VectorArrow(new VectorPoint(new Vec3d(0,0,0), new Vec3d(25,50,0), Color.GREEN),50,100,100,1);
+        //myArrow2.setMaterial(redMaterial);
 
 
         CameraView camera2 = new CameraView(384, 384, true, SceneAntialiasing.BALANCED);
 
         camera2.elements.getChildren().addAll(myArrow2);
 
-        Arrow myArrow3 = new Arrow();
-        myArrow3.setMaterial(greenMaterial);
-
 
         CameraView camera3 = new CameraView(384, 384, true, SceneAntialiasing.BALANCED);
 
-        camera3.elements.getChildren().addAll(myArrow3);
+        camera3.elements.getChildren().addAll(surface.getVectorGroup());
 
         Arrow myArrow4 = new Arrow();
         myArrow4.setMaterial(greenMaterial);
