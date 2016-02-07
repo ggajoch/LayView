@@ -3,6 +3,7 @@ package moleculesampleapp;
 import javafx.event.EventHandler;
 import javafx.geometry.Point3D;
 import javafx.scene.Group;
+import javafx.scene.PerspectiveCamera;
 import javafx.scene.SceneAntialiasing;
 import javafx.scene.SubScene;
 import javafx.scene.input.MouseEvent;
@@ -37,11 +38,15 @@ public class CameraView {
     private Rotate xRotate, yRotate, zRotate;
     private Translate xyzTranslate, planeTranslate;
 
+    private PerspectiveCamera camera;
+
     private Scale cameraScale;
 
     public Group elements;
 
     private Group cameraDistance;
+
+    private Group cameraView;
 
     private SubScene scene;
 
@@ -67,9 +72,19 @@ public class CameraView {
 
         cameraDistance.getTransforms().addAll(planeTranslate, cameraScale);
 
-        scene = new SubScene(cameraDistance, width, height, depthBuffer, sceneAntialiasing);
+        camera = new PerspectiveCamera(false);
+
+        //camera.getTransforms().add(planeTranslate.createInverse());
+
+        cameraView = new Group(cameraDistance);
+
+        cameraView.getChildren().add(camera);
+
+        scene = new SubScene(cameraView, width, height, depthBuffer, sceneAntialiasing);
 
         scene.setPickOnBounds(true); //to catch mouse also on "background"
+
+        scene.setCamera(camera);
 
         setHandlers(scene);
     }
