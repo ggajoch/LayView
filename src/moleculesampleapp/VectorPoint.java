@@ -11,31 +11,31 @@ public class VectorPoint {
     public Vec3d vector;
     public Color color;
 
-    public VectorPoint(){
-        color = new Color(0,0,0,1);
-        position = new Vec3d(0,0,0);
-        vector = new Vec3d(0,0,0);
+    public VectorPoint() {
+        color = new Color(0, 0, 0, 1);
+        position = new Vec3d(0, 0, 0);
+        vector = new Vec3d(0, 0, 0);
     }
 
-    public VectorPoint(VectorPoint point){
+    public VectorPoint(VectorPoint point) {
         color = new Color(point.color.getRed(), point.color.getGreen(), point.color.getBlue(), point.color.getOpacity());
         position = new Vec3d(point.position);
         vector = new Vec3d(point.vector);
     }
 
-    public VectorPoint(Vec3d position_){
-        color = new Color(0,0,0,1);
+    public VectorPoint(Vec3d position_) {
+        color = new Color(0, 0, 0, 1);
         position = new Vec3d(position_);
-        vector = new Vec3d(0,0,0);
+        vector = new Vec3d(0, 0, 0);
     }
 
-    public VectorPoint(Vec3d position_, Vec3d vector_){
-        color = new Color(0,0,0,1);
+    public VectorPoint(Vec3d position_, Vec3d vector_) {
+        color = new Color(0, 0, 0, 1);
         position = new Vec3d(position_);
         vector = new Vec3d(vector_);
     }
 
-    public VectorPoint(Vec3d position_, Vec3d vector_, Color color_){
+    public VectorPoint(Vec3d position_, Vec3d vector_, Color color_) {
         color = new Color(color_.getRed(), color_.getGreen(), color_.getBlue(), color_.getOpacity());
         position = new Vec3d(position_);
         vector = new Vec3d(vector_);

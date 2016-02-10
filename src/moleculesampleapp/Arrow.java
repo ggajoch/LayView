@@ -20,7 +20,7 @@ public class Arrow extends Group {
 
     private Cylinder line;
 
-    Arrow(){
+    Arrow() {
         this(300, 50, 100, 100);
     }
 
@@ -37,57 +37,57 @@ public class Arrow extends Group {
         this.generate();
     }
 
-    public void setLen(int len_){
+    public void setLen(int len_) {
         this.len = len_;
         this.generate();
     }
 
-    public void setRadius(int radius_){
+    public void setRadius(int radius_) {
         this.radius = radius_;
         this.generate();
     }
 
-    public void setTipRadius(int tipRadius_){
+    public void setTipRadius(int tipRadius_) {
         this.tipRadius = tipRadius_;
         this.generate();
     }
 
-    public void setTipLen(int tipLen_){
+    public void setTipLen(int tipLen_) {
         this.tipLen = tipLen_;
         this.generate();
     }
 
-    public void setMaterial(PhongMaterial material){
+    public void setMaterial(PhongMaterial material) {
         this.arrowMaterial = material;
         this.generate();
     }
 
-    public void setDivisions(int divisions_){
+    public void setDivisions(int divisions_) {
         this.divisions = divisions_;
         this.generate();
     }
 
-    private void generate(){
+    private void generate() {
         //Generate Arrow Tip (Cone)
         this.tipMesh = new TriangleMesh();
         this.tipView = new MeshView();
-        this.tipMesh.getTexCoords().addAll(0,0);
+        this.tipMesh.getTexCoords().addAll(0, 0);
         this.tipMesh.getPoints().addAll(0, 0, tipLen);//top center
 
-        for(int division = 0 ; division < this.divisions ; division++){
-            double angle = Math.PI/(float)divisions*(float)division*2.0;
+        for (int division = 0; division < this.divisions; division++) {
+            double angle = Math.PI / (float) divisions * (float) division * 2.0;
             this.tipMesh.getPoints().addAll(
-                    (int)(Math.sin(angle)*(double)tipRadius),
-                    (int)(Math.cos(angle)*(double)tipRadius),
+                    (int) (Math.sin(angle) * (double) tipRadius),
+                    (int) (Math.cos(angle) * (double) tipRadius),
                     0
             );
             int face = division + 1;
-            int next = (division + 1)%this.divisions + 1;
+            int next = (division + 1) % this.divisions + 1;
             this.tipMesh.getFaces().addAll(
-                    0,0,                    face,0,     next,0,
-                    this.divisions+1,0,     next,0,     face,0,
-                    0,0,                    next,0,     face,0,//different order - facing opposite side!
-                    this.divisions+1,0,     face,0,     next,0 //different order - facing opposite side!
+                    0, 0, face, 0, next, 0,
+                    this.divisions + 1, 0, next, 0, face, 0,
+                    0, 0, next, 0, face, 0,//different order - facing opposite side!
+                    this.divisions + 1, 0, face, 0, next, 0 //different order - facing opposite side!
             );
         }
         this.tipMesh.getPoints().addAll(0, 0, 0);//bottom center
@@ -102,11 +102,11 @@ public class Arrow extends Group {
         this.getChildren().add(tipView);
 
         //Generate cylinder
-        this.line = new Cylinder(this.radius,this.len);
+        this.line = new Cylinder(this.radius, this.len);
         this.line.setMaterial(this.arrowMaterial);
-        this.line.setRotationAxis(new Point3D(1,0,0));
+        this.line.setRotationAxis(new Point3D(1, 0, 0));
         this.line.setRotate(90);
-        this.line.setTranslateZ(this.len/2.0);
+        this.line.setTranslateZ(this.len / 2.0);
         this.getChildren().add(this.line);
     }
 }
