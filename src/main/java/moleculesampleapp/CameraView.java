@@ -49,19 +49,19 @@ public class CameraView {
 
     private SubScene scene;
 
-    CameraView(double width, double height, boolean depthBuffer, SceneAntialiasing sceneAntialiasing){
-        offset = new Vec3d(0,0,0);
+    CameraView(double width, double height, boolean depthBuffer, SceneAntialiasing sceneAntialiasing) {
+        offset = new Vec3d(0, 0, 0);
         scale = 0;
-        angle = new Vec3d(0,0,0);
+        angle = new Vec3d(0, 0, 0);
 
-        xRotate = new Rotate(0,new Point3D(0,0,1));
-        yRotate = new Rotate(0,new Point3D(1,0,0));
-        zRotate = new Rotate(0,new Point3D(0,1,0));
+        xRotate = new Rotate(0, new Point3D(0, 0, 1));
+        yRotate = new Rotate(0, new Point3D(1, 0, 0));
+        zRotate = new Rotate(0, new Point3D(0, 1, 0));
 
-        xyzTranslate = new Translate(0,0,0);
-        planeTranslate = new Translate(width/2, height/2, 0);
+        xyzTranslate = new Translate(0, 0, 0);
+        planeTranslate = new Translate(width / 2, height / 2, 0);
 
-        cameraScale = new Scale(1,1,1);
+        cameraScale = new Scale(1, 1, 1);
 
         elements = new Group();
 
@@ -88,7 +88,7 @@ public class CameraView {
         setHandlers(scene);
     }
 
-    public void setHandlers(SubScene subScene){
+    public void setHandlers(SubScene subScene) {
         subScene.setOnMousePressed(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent me) {
@@ -97,7 +97,7 @@ public class CameraView {
                 mouseOldX = me.getSceneX();
                 mouseOldY = me.getSceneY();
 
-                if(me.isMiddleButtonDown()){
+                if (me.isMiddleButtonDown()) {
 
                     offset.x = offset.y = offset.z = 0;
                     scale = 0;
@@ -111,9 +111,9 @@ public class CameraView {
                     xyzTranslate.setY(offset.y);
                     xyzTranslate.setZ(offset.z);
 
-                    cameraScale.setX(Math.pow(10,scale));
-                    cameraScale.setY(Math.pow(10,scale));
-                    cameraScale.setZ(Math.pow(10,scale));
+                    cameraScale.setX(Math.pow(10, scale));
+                    cameraScale.setY(Math.pow(10, scale));
+                    cameraScale.setZ(Math.pow(10, scale));
                 }
             }
         });
@@ -127,17 +127,17 @@ public class CameraView {
                 mouseDeltaX = (mousePosX - mouseOldX);
                 mouseDeltaY = (mousePosY - mouseOldY);
 
-                if(me.isControlDown()){
+                if (me.isControlDown()) {
                     mouseDeltaX = 0;
                 }
 
-                if(me.isShiftDown()){
+                if (me.isShiftDown()) {
                     mouseDeltaY = 0;
                 }
 
-                if(me.isPrimaryButtonDown()){
+                if (me.isPrimaryButtonDown()) {
                     Rotation baseRotation = new Rotation(RotationOrder.XYZ, angle.x, angle.y, angle.z);//get base rotation (it is transform form neutral point to actual point of view)
-                    Rotation deltaRotation = new Rotation(new Vector3D(0,0), new Vector3D(-mouseDeltaX*ROTATE_SCALE,-mouseDeltaY*ROTATE_SCALE));//get rotation according to mouse movement
+                    Rotation deltaRotation = new Rotation(new Vector3D(0, 0), new Vector3D(-mouseDeltaX * ROTATE_SCALE, -mouseDeltaY * ROTATE_SCALE));//get rotation according to mouse movement
                     Rotation finalRotation = deltaRotation.applyTo(baseRotation);//sum both the rotations
                     try {
                         double angles[] = finalRotation.getAngles(RotationOrder.XYZ);
@@ -149,16 +149,16 @@ public class CameraView {
                         xRotate.setAngle(Math.toDegrees(angle.x));
                         yRotate.setAngle(Math.toDegrees(angle.y));
                         zRotate.setAngle(Math.toDegrees(angle.z));
-                    }catch (Exception e){
+                    } catch (Exception e) {
                         System.out.print("ROTATE ERROR\r\n");
                     }
-                }else if(me.isSecondaryButtonDown()){
+                } else if (me.isSecondaryButtonDown()) {
                     Rotation baseRotation = new Rotation(RotationOrder.ZXY, angle.x, angle.y, angle.z);//magic happens!
-                    Vector3D planeTranslate = baseRotation.applyInverseTo(new Vector3D(mouseDeltaX*MOVE_SCALE,mouseDeltaY*MOVE_SCALE,0));
+                    Vector3D planeTranslate = baseRotation.applyInverseTo(new Vector3D(mouseDeltaX * MOVE_SCALE, mouseDeltaY * MOVE_SCALE, 0));
 
-                    offset.x += planeTranslate.getX()*Math.pow(10,-scale);
-                    offset.y += planeTranslate.getY()*Math.pow(10,-scale);
-                    offset.z += planeTranslate.getZ()*Math.pow(10,-scale);
+                    offset.x += planeTranslate.getX() * Math.pow(10, -scale);
+                    offset.y += planeTranslate.getY() * Math.pow(10, -scale);
+                    offset.z += planeTranslate.getZ() * Math.pow(10, -scale);
 
                     //System.out.print("\tdx="+planeTranslate.getX()+"\tdy="+planeTranslate.getY()+"\tdz="+planeTranslate.getZ()+"\trx="+Math.toDegrees(xAngle)+"\r\n");
 
@@ -173,21 +173,22 @@ public class CameraView {
             @Override
             public void handle(ScrollEvent event) {
                 double modifier = 1.0;
-                if(event.isControlDown()){
+                if (event.isControlDown()) {
                     modifier = 0.1;
                 }
-                scale += SCROLL_SCALE * modifier * (double)event.getDeltaY();
+                scale += SCROLL_SCALE * modifier * (double) event.getDeltaY();
                 //System.out.print("Distance="+ scale +" \tmodifier="+modifier+" \tjump="+event.getDeltaY()+"\r\n");
-                cameraScale.setX(Math.pow(10,scale));
-                cameraScale.setY(Math.pow(10,scale));
-                cameraScale.setZ(Math.pow(10,scale));
+                cameraScale.setX(Math.pow(10, scale));
+                cameraScale.setY(Math.pow(10, scale));
+                cameraScale.setZ(Math.pow(10, scale));
             }
         });
     }
 
-    Group getView(){
+    Group getView() {
         return cameraDistance;
     }
+
     SubScene getScene() {
         return scene;
     }

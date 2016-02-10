@@ -50,7 +50,6 @@ import javafx.scene.transform.Rotate;
 import javafx.event.EventHandler;
 
 /**
- *
  * @author cmcastil
  */
 public class MoleculeSampleApp extends Application {
@@ -76,14 +75,13 @@ public class MoleculeSampleApp extends Application {
         oxygenSphere.setMaterial(redMaterial);
 
 
-
         VectorSurface surface = new VectorSurface();
 
-        for(double x = 0 ; x <100 ; x += 10){
-            for(double y = -100 ; y <100 ; y += 10){
-                for(double z = -100 ; z <100 ; z += 10){
-                    if(Math.sqrt(Math.pow(x,2)+Math.pow(y,2)+Math.pow(z,2))<=100){
-                        surface.add(new VectorPoint(new Vec3d(x,y,z),new Vec3d(x/10,y/10,z/10),new Color(y/200+0.5,0,-y/200+0.5,1)));
+        for (double x = 0; x < 100; x += 10) {
+            for (double y = -100; y < 100; y += 10) {
+                for (double z = -100; z < 100; z += 10) {
+                    if (Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2) + Math.pow(z, 2)) <= 100) {
+                        surface.add(new VectorPoint(new Vec3d(x, y, z), new Vec3d(x / 10, y / 10, z / 10), new Color(y / 200 + 0.5, 0, -y / 200 + 0.5, 1)));
                     }
                 }
             }
@@ -94,7 +92,7 @@ public class MoleculeSampleApp extends Application {
 
         camera1.elements.getChildren().addAll(surface.getBoxGroup());
 
-        VectorArrow myArrow2 = new VectorArrow(new VectorPoint(new Vec3d(0,0,0), new Vec3d(25,50,0), Color.GREEN),50,100,100,1);
+        VectorArrow myArrow2 = new VectorArrow(new VectorPoint(new Vec3d(0, 0, 0), new Vec3d(25, 50, 0), Color.GREEN), 50, 100, 100, 1);
         //myArrow2.setMaterial(redMaterial);
 
 
@@ -116,14 +114,12 @@ public class MoleculeSampleApp extends Application {
         camera4.elements.getChildren().addAll(myArrow4);
 
 
-
         GridPane gridPane = new GridPane();
 
         gridPane.add(camera1.getScene(), 0, 0);
         gridPane.add(camera2.getScene(), 1, 0);
         gridPane.add(camera3.getScene(), 0, 1);
         gridPane.add(camera4.getScene(), 1, 1);
-
 
 
         SubScene subScene = new SubScene(gridPane, 768, 768, true, SceneAntialiasing.BALANCED);
