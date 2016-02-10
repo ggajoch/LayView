@@ -34,8 +34,8 @@ public class VectorSurface extends BoxSurface {
     public Group getVectorGroup() {
         final Group group = new Group();
         for (VectorPoint point : points) {
-            VectorArrow element = new VectorArrow(point, radius, tipRadius, tipLen, lenScale);
-            element.getTransforms().add(new Translate(point.position.x * pitchScale, point.position.y * pitchScale, point.position.z * pitchScale));
+            Vector element = new Vector(point, new VectorProperties(tipLen, tipRadius,radius, lenScale));
+            //element.getTransforms().add(new Translate(point.position.x * pitchScale, point.position.y * pitchScale, point.position.z * pitchScale));
             group.getChildren().add(element);
         }
         return group;

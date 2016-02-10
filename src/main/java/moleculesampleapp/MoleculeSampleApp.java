@@ -34,20 +34,13 @@ package moleculesampleapp;
 
 import com.sun.javafx.geom.Vec3d;
 import javafx.application.Application;
-import javafx.geometry.Point3D;
 import javafx.scene.*;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.*;
-import javafx.scene.transform.Scale;
-import javafx.scene.transform.Translate;
 import javafx.stage.Stage;
 import javafx.scene.paint.PhongMaterial;
-import javafx.scene.transform.Rotate;
-import javafx.event.EventHandler;
 
 /**
  * @author cmcastil
@@ -92,7 +85,7 @@ public class MoleculeSampleApp extends Application {
 
         camera1.elements.getChildren().addAll(surface.getBoxGroup());
 
-        VectorArrow myArrow2 = new VectorArrow(new VectorPoint(new Vec3d(0, 0, 0), new Vec3d(25, 50, 0), Color.GREEN), 50, 100, 100, 1);
+        Vector myArrow2 = new Vector(new VectorPoint(new Vec3d(0, 0, 0), new Vec3d(25, 50, 0), Color.GREEN),new VectorProperties());
         //myArrow2.setMaterial(redMaterial);
 
 
@@ -105,8 +98,7 @@ public class MoleculeSampleApp extends Application {
 
         camera3.elements.getChildren().addAll(surface.getVectorGroup());
 
-        Arrow myArrow4 = new Arrow();
-        myArrow4.setMaterial(greenMaterial);
+        Vector myArrow4 = new Vector(new VectorPoint(new Vec3d(0, 0, 0), new Vec3d(0, 0, 100), Color.GREEN),new VectorProperties());
 
 
         CameraView camera4 = new CameraView(384, 384, true, SceneAntialiasing.BALANCED);
