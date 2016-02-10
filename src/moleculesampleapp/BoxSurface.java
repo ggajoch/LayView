@@ -52,7 +52,7 @@ public class BoxSurface {
             Box element = new Box(pitch.x*pitchScale, pitch.y*pitchScale, pitch.z*pitchScale);
             PhongMaterial elementMaterial = new PhongMaterial();
             elementMaterial.setDiffuseColor(point.color);
-            elementMaterial.setSpecularColor(Color.gray(0.3));
+            elementMaterial.setSpecularColor(Color.gray(0));
             element.setMaterial(elementMaterial);
             element.getTransforms().add(new Translate(point.position.x*pitchScale,point.position.y*pitchScale,point.position.z*pitchScale));
             group.getChildren().add(element);

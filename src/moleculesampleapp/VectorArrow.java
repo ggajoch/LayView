@@ -19,7 +19,7 @@ public class VectorArrow extends Group {
         arrow.getTransforms().add(new Rotate(90,new Point3D(1,0,0)));
         PhongMaterial arrowMaterial = new PhongMaterial();
         arrowMaterial.setDiffuseColor(vector.color);
-        arrowMaterial.setSpecularColor(Color.gray(0.3));
+        arrowMaterial.setSpecularColor(Color.gray(0));
         arrow.setMaterial(arrowMaterial);
 
         Group rotations = new Group(arrow);
