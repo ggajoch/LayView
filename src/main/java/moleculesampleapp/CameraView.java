@@ -12,9 +12,9 @@ import javafx.scene.input.ScrollEvent;
 import javafx.scene.transform.Rotate;
 import javafx.scene.transform.Scale;
 import javafx.scene.transform.Translate;
-import math.math.geometry.Rotation;
-import math.math.geometry.RotationOrder;
-import math.math.geometry.Vector3D;
+import org.apache.commons.math3.geometry.euclidean.threed.Rotation;
+import org.apache.commons.math3.geometry.euclidean.threed.RotationOrder;
+import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
 
 /**
  * Created by Piotr on 04/02/2016.

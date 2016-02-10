@@ -1,4 +1,4 @@
-.idea/tasks.xml
-.idea/workspace.xml
-*.iws
+LayView.iml
+.idea
 out
+target

@@ -48,9 +48,6 @@ import javafx.stage.Stage;
 import javafx.scene.paint.PhongMaterial;
 import javafx.scene.transform.Rotate;
 import javafx.event.EventHandler;
-import math.math.geometry.Rotation;
-import math.math.geometry.RotationOrder;
-import math.math.geometry.Vector3D;
 
 /**
  *
