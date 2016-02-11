@@ -13,6 +13,7 @@ import javafx.scene.input.ScrollEvent;
 import javafx.scene.transform.Rotate;
 import javafx.scene.transform.Scale;
 import javafx.scene.transform.Translate;
+import org.apache.commons.math3.geometry.euclidean.threed.CardanEulerSingularityException;
 import org.apache.commons.math3.geometry.euclidean.threed.Rotation;
 import org.apache.commons.math3.geometry.euclidean.threed.RotationOrder;
 import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
@@ -144,7 +145,7 @@ public class CameraView {
                     xRotate.setAngle(Math.toDegrees(angle.x));
                     yRotate.setAngle(Math.toDegrees(angle.y));
                     zRotate.setAngle(Math.toDegrees(angle.z));
-                } catch (Exception e) {
+                } catch (CardanEulerSingularityException e) {
                     System.out.print("ROTATE ERROR\r\n");
                 }
             } else if (event.isSecondaryButtonDown()) {
