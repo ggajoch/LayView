@@ -68,7 +68,7 @@ public class MoleculeSampleApp extends Application {
         oxygenSphere.setMaterial(redMaterial);
 
 
-        VectorSurface surface = new VectorSurface();
+        SurfacePointsList surface = new SurfacePointsList();
 
         for (double x = 0; x < 100; x += 10) {
             for (double y = -100; y < 100; y += 10) {
@@ -83,9 +83,9 @@ public class MoleculeSampleApp extends Application {
 
         CameraView camera1 = new CameraView(384, 384, true, SceneAntialiasing.BALANCED);
 
-        camera1.elements.getChildren().addAll(surface.getBoxGroup());
+        camera1.elements.getChildren().addAll(new BoxSurface(surface));
 
-        Vector myArrow2 = new Vector(new VectorPoint(new Vec3d(0, 0, 0), new Vec3d(25, 50, 0), Color.GREEN),new VectorProperties());
+        Vector myArrow2 = new Vector(new VectorPoint(new Vec3d(0, 0, 0), new Vec3d(25, 50, 0), Color.GREEN), new VectorProperties(100, 100, 50, 1));
         //myArrow2.setMaterial(redMaterial);
 
 
@@ -96,9 +96,9 @@ public class MoleculeSampleApp extends Application {
 
         CameraView camera3 = new CameraView(384, 384, true, SceneAntialiasing.BALANCED);
 
-        camera3.elements.getChildren().addAll(surface.getVectorGroup());
+        camera3.elements.getChildren().addAll(new VectorSurface(surface));
 
-        Vector myArrow4 = new Vector(new VectorPoint(new Vec3d(0, 0, 0), new Vec3d(0, 0, 100), Color.GREEN),new VectorProperties());
+        Vector myArrow4 = new Vector(new VectorPoint(new Vec3d(0, 0, 0), new Vec3d(0, 0, 100), Color.GREEN), new VectorProperties(100, 100, 50, 1));
 
 
         CameraView camera4 = new CameraView(384, 384, true, SceneAntialiasing.BALANCED);

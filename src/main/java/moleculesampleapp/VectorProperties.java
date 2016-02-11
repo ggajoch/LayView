@@ -19,15 +19,15 @@ public class VectorProperties {
         this.divisions = divisions;
     }
 
-    public VectorProperties(double tipLen, double tipRadius, double radius, double lenScale, Color SpecularColor){
+    public VectorProperties(double tipLen, double tipRadius, double radius, double lenScale, Color SpecularColor) {
         this(tipLen, tipRadius, radius, lenScale, SpecularColor, 64);
     }
 
-    public VectorProperties(double tipLen, double tipRadius, double radius,  double lenScale) {
+    public VectorProperties(double tipLen, double tipRadius, double radius, double lenScale) {
         this(tipLen, tipRadius, radius, lenScale, Color.BLACK);
     }
 
-    public VectorProperties(){
-        this(100,100,50,1);
+    public VectorProperties() {
+        this(2, 2, 1, 1);
     }
 }

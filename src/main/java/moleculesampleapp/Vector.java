@@ -12,7 +12,7 @@ import javafx.scene.transform.Translate;
  * Created by Piotr on 23/01/2016.
  */
 public class Vector extends Group {
-    Vector(VectorPoint vector, VectorProperties properties){
+    Vector(VectorPoint vector, VectorProperties properties) {
 
         PhongMaterial material = new PhongMaterial();
         material.setDiffuseColor(vector.color);

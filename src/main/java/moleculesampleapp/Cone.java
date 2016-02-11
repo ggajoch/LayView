@@ -8,10 +8,10 @@ import javafx.scene.shape.TriangleMesh;
  * Created by Piotr on 10/02/2016.
  */
 public class Cone extends MeshView {
-    public Cone(double radius, double height, int divisions){
+    public Cone(double radius, double height, int divisions) {
         TriangleMesh mesh = new TriangleMesh();
         mesh.getTexCoords().addAll(0, 0);
-        mesh.getPoints().addAll(0, 0, (float)height);//top center
+        mesh.getPoints().addAll(0, 0, (float) height);//top center
         for (int division = 0; division < divisions; division++) {
             double angle = Math.PI / (float) divisions * (float) division * 2.0;
             mesh.getPoints().addAll(

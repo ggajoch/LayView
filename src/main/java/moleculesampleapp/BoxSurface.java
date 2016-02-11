@@ -12,52 +12,20 @@ import java.util.ArrayList;
 /**
  * Created by Piotr on 06/02/2016.
  */
-public class BoxSurface {
-    protected ArrayList<VectorPoint> points;
-    public VectorPoint min, max;
-    protected Vec3d pitch;
-    protected double pitchScale;
-
-    public BoxSurface() {
-        this(new Vec3d(10, 10, 10), 1.0);
-    }
-
-    public BoxSurface(Vec3d pitch_, double pitchScale_) {
-        points = new ArrayList<>();
-        min = new VectorPoint();
-        max = new VectorPoint();
-        pitch = pitch_;
-        pitchScale = pitchScale_;
-    }
-
-    public void add(VectorPoint point) {
-        if (points.isEmpty()) {
-            max = new VectorPoint(point);
-            min = new VectorPoint(point);
-        } else {
-            if (max.position.x < point.position.x) max.position.x = point.position.x;
-            if (max.position.y < point.position.y) max.position.y = point.position.y;
-            if (max.position.z < point.position.z) max.position.z = point.position.z;
-
-            if (max.vector.x < point.vector.x) max.vector.x = point.vector.x;
-            if (max.vector.y < point.vector.y) max.vector.y = point.vector.y;
-            if (max.vector.z < point.vector.z) max.vector.z = point.vector.z;
-        }
-        points.add(point);
-    }
-
-    public Group getBoxGroup() {
-        final Group group = new Group();
-        for (VectorPoint point : points) {
-            Box element = new Box(pitch.x * pitchScale, pitch.y * pitchScale, pitch.z * pitchScale);
+public class BoxSurface extends Group {
+    public BoxSurface(SurfacePointsList surfacePointsList, BoxProperties boxProperties) {
+        for (VectorPoint point : surfacePointsList.points) {
+            Box element = new Box(boxProperties.dimensions.x, boxProperties.dimensions.y, boxProperties.dimensions.z);
             PhongMaterial elementMaterial = new PhongMaterial();
             elementMaterial.setDiffuseColor(point.color);
-            elementMaterial.setSpecularColor(Color.gray(0));
+            elementMaterial.setSpecularColor(boxProperties.SpecularColor);
             element.setMaterial(elementMaterial);
-            element.getTransforms().add(new Translate(point.position.x * pitchScale, point.position.y * pitchScale, point.position.z * pitchScale));
-            group.getChildren().add(element);
+            element.getTransforms().add(new Translate(point.position.x, point.position.y, point.position.z));
+            this.getChildren().add(element);
         }
-        return group;
     }
 
+    public BoxSurface(SurfacePointsList surfacePointsList) {
+        this(surfacePointsList, new BoxProperties());
+    }
 }
