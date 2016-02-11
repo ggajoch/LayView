@@ -75,8 +75,6 @@ public class CameraView {
 
         camera = new PerspectiveCamera(false);
 
-        //camera.getTransforms().add(planeTranslate.createInverse());
-
         cameraView = new Group(cameraDistance);
 
         cameraView.getChildren().add(camera);
@@ -129,8 +127,12 @@ public class CameraView {
             }
 
             if (event.isPrimaryButtonDown()) {
-                Rotation baseRotation = new Rotation(RotationOrder.XYZ, angle.x, angle.y, angle.z);//get base rotation (it is transform form neutral point to actual point of view)
-                Rotation deltaRotation = new Rotation(new Vector3D(0, 0), new Vector3D(-mouseDelta.getX() * ROTATE_SCALE, -mouseDelta.getY() * ROTATE_SCALE));//get rotation according to mouse movement
+                Rotation baseRotation = new Rotation(RotationOrder.XYZ, angle.x, angle.y, angle.z);
+                //get base rotation (it is transform form neutral point to actual point of view)
+                Rotation deltaRotation = new Rotation(
+                        new Vector3D(0, 0),
+                        new Vector3D(-mouseDelta.getX() * ROTATE_SCALE, -mouseDelta.getY() * ROTATE_SCALE)
+                );//get rotation according to mouse movement
                 Rotation finalRotation = deltaRotation.applyTo(baseRotation);//sum both the rotations
                 try {
                     double angles[] = finalRotation.getAngles(RotationOrder.XYZ);
@@ -147,13 +149,13 @@ public class CameraView {
                 }
             } else if (event.isSecondaryButtonDown()) {
                 Rotation baseRotation = new Rotation(RotationOrder.ZXY, angle.x, angle.y, angle.z);//magic happens!
-                Vector3D planeTranslate = baseRotation.applyInverseTo(new Vector3D(mouseDelta.getX() * MOVE_SCALE, mouseDelta.getY() * MOVE_SCALE, 0));
+                Vector3D planeTranslate = baseRotation.applyInverseTo(
+                        new Vector3D(mouseDelta.getX() * MOVE_SCALE, mouseDelta.getY() * MOVE_SCALE, 0)
+                );
 
                 offset.x += planeTranslate.getX() * Math.pow(10, -scale);
                 offset.y += planeTranslate.getY() * Math.pow(10, -scale);
                 offset.z += planeTranslate.getZ() * Math.pow(10, -scale);
-
-                //System.out.print("\tdx="+planeTranslate.getX()+"\tdy="+planeTranslate.getY()+"\tdz="+planeTranslate.getZ()+"\trx="+Math.toDegrees(xAngle)+"\r\n");
 
                 xyzTranslate.setX(offset.x);
                 xyzTranslate.setY(offset.y);
@@ -168,7 +170,7 @@ public class CameraView {
                 modifier = 0.1;
             }
             scale += SCROLL_SCALE * modifier * event.getDeltaY();
-            //System.out.print("Distance="+ scale +" \tmodifier="+modifier+" \tjump="+event.getDeltaY()+" "+event.getDeltaX()+"\r\n");
+
             cameraScale.setX(Math.pow(10, scale));
             cameraScale.setY(Math.pow(10, scale));
             cameraScale.setZ(Math.pow(10, scale));
