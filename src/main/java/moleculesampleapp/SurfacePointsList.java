@@ -6,19 +6,19 @@ import java.util.ArrayList;
  * Created by Piotr on 11/02/2016.
  */
 public class SurfacePointsList {
-    public ArrayList<VectorPoint> points;
-    public VectorPoint min, max;
+    public ArrayList<SurfacePoint> points;
+    public SurfacePoint min, max;
 
     SurfacePointsList() {
         points = new ArrayList<>();
-        min = new VectorPoint();
-        max = new VectorPoint();
+        min = new SurfacePoint();
+        max = new SurfacePoint();
     }
 
-    public void add(VectorPoint point) {
+    public void add(SurfacePoint point) {
         if (points.isEmpty()) {
-            max = new VectorPoint(point);
-            min = new VectorPoint(point);
+            max = new SurfacePoint(point);
+            min = new SurfacePoint(point);
         } else {
             max.position.x = Math.max(max.position.x, point.position.x);
             max.position.y = Math.max(max.position.y, point.position.y);

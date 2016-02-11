@@ -2,7 +2,6 @@ package moleculesampleapp;
 
 import javafx.geometry.Point3D;
 import javafx.scene.Group;
-import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.*;
 import javafx.scene.transform.Rotate;
@@ -12,7 +11,7 @@ import javafx.scene.transform.Translate;
  * Created by Piotr on 23/01/2016.
  */
 public class Vector extends Group {
-    Vector(VectorPoint vector, VectorProperties properties) {
+    Vector(SurfacePoint vector, VectorProperties properties) {
 
         PhongMaterial material = new PhongMaterial();
         material.setDiffuseColor(vector.color);

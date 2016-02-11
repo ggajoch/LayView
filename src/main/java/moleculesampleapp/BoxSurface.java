@@ -1,20 +1,16 @@
 package moleculesampleapp;
 
-import com.sun.javafx.geom.Vec3d;
 import javafx.scene.Group;
-import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.Box;
 import javafx.scene.transform.Translate;
-
-import java.util.ArrayList;
 
 /**
  * Created by Piotr on 06/02/2016.
  */
 public class BoxSurface extends Group {
     public BoxSurface(SurfacePointsList surfacePointsList, BoxProperties boxProperties) {
-        for (VectorPoint point : surfacePointsList.points) {
+        for (SurfacePoint point : surfacePointsList.points) {
             Box element = new Box(boxProperties.dimensions.x, boxProperties.dimensions.y, boxProperties.dimensions.z);
             PhongMaterial elementMaterial = new PhongMaterial();
             elementMaterial.setDiffuseColor(point.color);
