@@ -3,9 +3,6 @@ package moleculesampleapp;
 import com.sun.javafx.geom.Vec3d;
 import javafx.scene.paint.Color;
 
-/**
- * Created by Piotr on 11/02/2016.
- */
 public class BoxProperties {
     public Color SpecularColor;
     public Vec3d dimensions;

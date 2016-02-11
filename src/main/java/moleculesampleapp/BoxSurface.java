@@ -5,9 +5,6 @@ import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.Box;
 import javafx.scene.transform.Translate;
 
-/**
- * Created by Piotr on 06/02/2016.
- */
 public class BoxSurface extends Group {
     public BoxSurface(SurfacePointsList surfacePointsList, BoxProperties boxProperties) {
         for (SurfacePoint point : surfacePointsList.points) {

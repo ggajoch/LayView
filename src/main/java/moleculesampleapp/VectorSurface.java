@@ -2,9 +2,6 @@ package moleculesampleapp;
 
 import javafx.scene.Group;
 
-/**
- * Created by Piotr on 06/02/2016.
- */
 public class VectorSurface extends Group {
     public VectorSurface(SurfacePointsList surfacePointsList, VectorProperties vectorProperties) {
         for (SurfacePoint point : surfacePointsList.points) {

@@ -2,9 +2,6 @@ package moleculesampleapp;
 
 import java.util.ArrayList;
 
-/**
- * Created by Piotr on 11/02/2016.
- */
 public class SurfacePointsList {
     public ArrayList<SurfacePoint> points;
     public SurfacePoint min, max;

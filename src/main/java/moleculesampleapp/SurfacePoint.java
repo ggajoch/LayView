@@ -3,9 +3,6 @@ package moleculesampleapp;
 import com.sun.javafx.geom.Vec3d;
 import javafx.scene.paint.Color;
 
-/**
- * Created by Piotr on 06/02/2016.
- */
 public class SurfacePoint {
     public Vec3d position;
     public Vec3d vector;

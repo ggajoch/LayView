@@ -2,9 +2,6 @@ package moleculesampleapp;
 
 import javafx.scene.paint.Color;
 
-/**
- * Created by Piotr on 10/02/2016.
- */
 public class VectorProperties {
     public double tipLen, tipRadius, radius, lenScale;
     public Color SpecularColor;

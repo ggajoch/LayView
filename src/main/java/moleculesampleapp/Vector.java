@@ -7,9 +7,6 @@ import javafx.scene.shape.*;
 import javafx.scene.transform.Rotate;
 import javafx.scene.transform.Translate;
 
-/**
- * Created by Piotr on 23/01/2016.
- */
 public class Vector extends Group {
     Vector(SurfacePoint vector, VectorProperties properties) {
 

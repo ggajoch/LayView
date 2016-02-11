@@ -4,9 +4,6 @@ import javafx.scene.shape.DrawMode;
 import javafx.scene.shape.MeshView;
 import javafx.scene.shape.TriangleMesh;
 
-/**
- * Created by Piotr on 10/02/2016.
- */
 public class Cone extends MeshView {
     public Cone(double radius, double height, int divisions) {
         TriangleMesh mesh = new TriangleMesh();

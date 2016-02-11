@@ -1,17 +1,10 @@
 package moleculesampleapp;
 
-import com.sun.javafx.geom.Vec2d;
 import com.sun.javafx.geom.Vec3d;
-import javafx.event.EventHandler;
-import javafx.geometry.Point3D;
 import javafx.scene.Group;
 import javafx.scene.PerspectiveCamera;
 import javafx.scene.SceneAntialiasing;
 import javafx.scene.SubScene;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.input.ScrollEvent;
-import javafx.scene.transform.Rotate;
-import javafx.scene.transform.Scale;
 import javafx.scene.transform.Translate;
 import org.apache.commons.math3.geometry.euclidean.threed.CardanEulerSingularityException;
 import org.apache.commons.math3.geometry.euclidean.threed.Rotation;
@@ -19,9 +12,6 @@ import org.apache.commons.math3.geometry.euclidean.threed.RotationOrder;
 import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 
-/**
- * Created by Piotr on 04/02/2016.
- */
 public class CameraSubScene extends SubScene {
     private Vector2D mousePos;
     private Vector2D mouseOld;
@@ -58,7 +48,6 @@ public class CameraSubScene extends SubScene {
         angle = new Vec3d(0, 0, 0);
 
         vectorRotate = new VectorRotate();
-
 
 
         xyzTranslate = new VectorTranslate();
@@ -101,9 +90,9 @@ public class CameraSubScene extends SubScene {
 
             if (event.isMiddleButtonDown()) {
 
-                offset.set(0,0,0);
+                offset.set(0, 0, 0);
                 scale = 0;
-                angle.set(0,0,0);
+                angle.set(0, 0, 0);
 
                 vectorRotate.set(angle);
 
