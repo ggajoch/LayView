@@ -34,12 +34,13 @@ public class CameraSubScene extends SubScene {
     private static final double SCROLL_SCALE = 0.0025;
     private static final double ROTATE_SCALE = .01;
     private static final double MOVE_SCALE = 1;
-    private Rotate xRotate, yRotate, zRotate;
-    private Translate xyzTranslate, planeTranslate;
+    private VectorRotate vectorRotate;
+    private Translate planeTranslate;
+    private VectorTranslate xyzTranslate;
 
     private PerspectiveCamera camera;
 
-    private Scale cameraScale;
+    private UniformScale cameraScale;
 
     public Group elements;
 
@@ -56,18 +57,23 @@ public class CameraSubScene extends SubScene {
         scale = 0;
         angle = new Vec3d(0, 0, 0);
 
-        xRotate = new Rotate(0, new Point3D(0, 0, 1));
-        yRotate = new Rotate(0, new Point3D(1, 0, 0));
-        zRotate = new Rotate(0, new Point3D(0, 1, 0));
+        vectorRotate = new VectorRotate();
 
-        xyzTranslate = new Translate(0, 0, 0);
+
+
+        xyzTranslate = new VectorTranslate();
         planeTranslate = new Translate(width / 2, height / 2, 0);
 
-        cameraScale = new Scale(1, 1, 1);
+        cameraScale = new UniformScale();
 
         elements = new Group();
 
-        elements.getTransforms().addAll(xRotate, yRotate, zRotate, xyzTranslate);
+        elements.getTransforms().addAll(
+                vectorRotate.xRotate,
+                vectorRotate.yRotate,
+                vectorRotate.zRotate,
+                xyzTranslate
+        );
 
         cameraDistance = new Group(elements);
 
@@ -95,21 +101,15 @@ public class CameraSubScene extends SubScene {
 
             if (event.isMiddleButtonDown()) {
 
-                offset.x = offset.y = offset.z = 0;
+                offset.set(0,0,0);
                 scale = 0;
-                angle.x = angle.y = angle.z = 0;
+                angle.set(0,0,0);
 
-                xRotate.setAngle(Math.toDegrees(angle.x));
-                yRotate.setAngle(Math.toDegrees(angle.y));
-                zRotate.setAngle(Math.toDegrees(angle.z));
+                vectorRotate.set(angle);
 
-                xyzTranslate.setX(offset.x);
-                xyzTranslate.setY(offset.y);
-                xyzTranslate.setZ(offset.z);
+                xyzTranslate.set(offset);
 
-                cameraScale.setX(Math.pow(10, scale));
-                cameraScale.setY(Math.pow(10, scale));
-                cameraScale.setZ(Math.pow(10, scale));
+                cameraScale.set(Math.pow(10, scale));
             }
         });
         subScene.setOnMouseDragged(event -> {
@@ -141,9 +141,7 @@ public class CameraSubScene extends SubScene {
                     angle.y = angles[1];
                     angle.z = angles[2];
 
-                    xRotate.setAngle(Math.toDegrees(angle.x));
-                    yRotate.setAngle(Math.toDegrees(angle.y));
-                    zRotate.setAngle(Math.toDegrees(angle.z));
+                    vectorRotate.set(angle);
                 } catch (CardanEulerSingularityException e) {
                     System.out.print("ROTATE ERROR\r\n");
                 }
@@ -157,9 +155,7 @@ public class CameraSubScene extends SubScene {
                 offset.y += planeTranslate.getY() * Math.pow(10, -scale);
                 offset.z += planeTranslate.getZ() * Math.pow(10, -scale);
 
-                xyzTranslate.setX(offset.x);
-                xyzTranslate.setY(offset.y);
-                xyzTranslate.setZ(offset.z);
+                xyzTranslate.set(offset);
             }
 
         });
@@ -171,9 +167,7 @@ public class CameraSubScene extends SubScene {
             }
             scale += SCROLL_SCALE * modifier * event.getDeltaY();
 
-            cameraScale.setX(Math.pow(10, scale));
-            cameraScale.setY(Math.pow(10, scale));
-            cameraScale.setZ(Math.pow(10, scale));
+            cameraScale.set(Math.pow(10, scale));
         });
     }
 }
