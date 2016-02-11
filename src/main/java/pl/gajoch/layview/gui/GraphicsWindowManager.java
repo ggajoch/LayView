@@ -1,11 +1,16 @@
 package pl.gajoch.layview.gui;
 
+import com.sun.javafx.geom.Vec3d;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.scene.SubScene;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
+import pl.gajoch.layview.graphics3d.CameraSubScene;
+import pl.gajoch.layview.graphics3d.SurfacePoint;
+import pl.gajoch.layview.graphics3d.SurfacePointsList;
+import pl.gajoch.layview.graphics3d.VectorSurface;
 
 import java.util.ArrayList;
 import java.util.NoSuchElementException;
@@ -112,10 +117,25 @@ public class GraphicsWindowManager {
     }
 
     public void add3D() {
-        subScenes.add(new MoleculeView(this, 100, 100));
+        CameraSubScene scene = new CameraSubScene(this,100,100);
+        SurfacePointsList surface = new SurfacePointsList();
+
+        for (double x = 0; x < 100; x += 10) {
+            for (double y = -100; y < 100; y += 10) {
+                for (double z = -100; z < 100; z += 10) {
+                    if (Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2) + Math.pow(z, 2)) <= 100) {
+                        surface.add(new SurfacePoint(new Vec3d(x, y, z), new Vec3d(x / 10, y / 10, z / 10), new Color(y / 200 + 0.5, 0, -y / 200 + 0.5, 1)));
+                    }
+                }
+            }
+        }
+
+        scene.elements.getChildren().addAll(new VectorSurface(surface));
+        subScenes.add(scene);
         recalculate();
         setTextFields();
         recalculateWindowSize();
+        System.out.print("AKBAR\r\n");
     }
 
     public void del() {

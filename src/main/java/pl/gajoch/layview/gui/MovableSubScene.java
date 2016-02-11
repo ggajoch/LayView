@@ -10,7 +10,7 @@ import java.util.Properties;
 
 public class MovableSubScene {
     Gradient grad;
-    SubScene scene;
+    public SubScene scene;
     SimpleObjectProperty<MovableSubScene> actual_scene;
     Properties properties;
     public MovableSubScene(GraphicsWindowManager parent, double width, double height) {
@@ -43,6 +43,11 @@ public class MovableSubScene {
         scene.setHeight(position.ySize);
         scene.setLayoutX(position.xOffset);
         scene.setLayoutY(position.yOffset);
+        fixCenter(position.xSize, position.ySize);
+    }
+
+    public void fixCenter(double width, double height){
+
     }
 
     public WindowPosition getPosition() {
