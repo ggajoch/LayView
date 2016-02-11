@@ -22,7 +22,7 @@ import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 /**
  * Created by Piotr on 04/02/2016.
  */
-public class CameraView {
+public class CameraSubScene extends SubScene {
     private Vector2D mousePos;
     private Vector2D mouseOld;
     private Vector2D mouseDelta;
@@ -47,9 +47,8 @@ public class CameraView {
 
     private Group cameraView;
 
-    private SubScene scene;
-
-    CameraView(double width, double height, boolean depthBuffer, SceneAntialiasing sceneAntialiasing) {
+    CameraSubScene(double width, double height, boolean depthBuffer, SceneAntialiasing sceneAntialiasing) {
+        super(new Group(), width, height, depthBuffer, sceneAntialiasing);
         mousePos = new Vector2D(0, 0);
         mouseOld = new Vector2D(0, 0);
         mouseDelta = new Vector2D(0, 0);
@@ -80,13 +79,13 @@ public class CameraView {
 
         cameraView.getChildren().add(camera);
 
-        scene = new SubScene(cameraView, width, height, depthBuffer, sceneAntialiasing);
+        this.rootProperty().setValue(cameraView);
 
-        scene.setPickOnBounds(true); //to catch mouse also on "background"
+        this.setPickOnBounds(true); //to catch mouse also on "background"
 
-        scene.setCamera(camera);
+        this.setCamera(camera);
 
-        setHandlers(scene);
+        setHandlers(this);
     }
 
     public void setHandlers(SubScene subScene) {
@@ -177,10 +176,4 @@ public class CameraView {
             cameraScale.setZ(Math.pow(10, scale));
         });
     }
-
-    SubScene getScene() {
-        return scene;
-    }
-
-
 }

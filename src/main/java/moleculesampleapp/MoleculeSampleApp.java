@@ -81,7 +81,7 @@ public class MoleculeSampleApp extends Application {
         }
 
 
-        CameraView camera1 = new CameraView(384, 384, true, SceneAntialiasing.BALANCED);
+        CameraSubScene camera1 = new CameraSubScene(384, 384, true, SceneAntialiasing.BALANCED);
 
         camera1.elements.getChildren().addAll(new BoxSurface(surface));
 
@@ -89,29 +89,29 @@ public class MoleculeSampleApp extends Application {
         //myArrow2.setMaterial(redMaterial);
 
 
-        CameraView camera2 = new CameraView(384, 384, true, SceneAntialiasing.BALANCED);
+        CameraSubScene camera2 = new CameraSubScene(384, 384, true, SceneAntialiasing.BALANCED);
 
         camera2.elements.getChildren().addAll(myArrow2);
 
 
-        CameraView camera3 = new CameraView(384, 384, true, SceneAntialiasing.BALANCED);
+        CameraSubScene camera3 = new CameraSubScene(384, 384, true, SceneAntialiasing.BALANCED);
 
         camera3.elements.getChildren().addAll(new VectorSurface(surface));
 
         Vector myArrow4 = new Vector(new SurfacePoint(new Vec3d(0, 0, 0), new Vec3d(0, 0, 100), Color.GREEN), new VectorProperties(100, 100, 50, 1));
 
 
-        CameraView camera4 = new CameraView(384, 384, true, SceneAntialiasing.BALANCED);
+        CameraSubScene camera4 = new CameraSubScene(384, 384, true, SceneAntialiasing.BALANCED);
 
         camera4.elements.getChildren().addAll(myArrow4);
 
 
         GridPane gridPane = new GridPane();
 
-        gridPane.add(camera1.getScene(), 0, 0);
-        gridPane.add(camera2.getScene(), 1, 0);
-        gridPane.add(camera3.getScene(), 0, 1);
-        gridPane.add(camera4.getScene(), 1, 1);
+        gridPane.add(camera1, 0, 0);
+        gridPane.add(camera2, 1, 0);
+        gridPane.add(camera3, 0, 1);
+        gridPane.add(camera4, 1, 1);
 
 
         SubScene subScene = new SubScene(gridPane, 768, 768, true, SceneAntialiasing.BALANCED);
