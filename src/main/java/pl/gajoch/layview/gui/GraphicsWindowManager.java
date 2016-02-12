@@ -7,6 +7,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
+import pl.gajoch.layview.graphics2d.LineGraph;
 import pl.gajoch.layview.graphics3d.CameraSubScene;
 import pl.gajoch.layview.graphics3d.SurfacePoint;
 import pl.gajoch.layview.graphics3d.SurfacePointsList;
@@ -110,7 +111,10 @@ public class GraphicsWindowManager {
 
     public void add() {
 //        subScenes.add(new MovableSubScene(this, 100, 100));
-        subScenes.add(new GradientView(this, 100, 100));
+        GradientView view = new GradientView(this, 100, 100);
+        subScenes.add(view);
+        LineGraph line = new LineGraph();
+        view.scene.rootProperty().setValue(line);
         recalculate();
         setTextFields();
         recalculateWindowSize();
@@ -135,7 +139,6 @@ public class GraphicsWindowManager {
         recalculate();
         setTextFields();
         recalculateWindowSize();
-        System.out.print("AKBAR\r\n");
     }
 
     public void del() {
