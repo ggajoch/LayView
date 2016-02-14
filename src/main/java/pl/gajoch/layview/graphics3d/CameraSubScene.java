@@ -13,8 +13,9 @@ import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 import pl.gajoch.layview.gui.GraphicsWindowManager;
 import pl.gajoch.layview.gui.MovableSubScene;
+import pl.gajoch.layview.gui.MovableSubScene3D;
 
-public class CameraSubScene extends MovableSubScene {
+public class CameraSubScene extends MovableSubScene3D {
     private Vector2D mousePos;
     private Vector2D mouseOld;
     private Vector2D mouseDelta;

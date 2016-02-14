@@ -28,32 +28,7 @@ public class GradientView extends MovableSubScene {
             richPane.setFill(newValue.getPaint());
         });
 
-        ContextMenu contextMenu = new ContextMenu();
-        MenuItem item1 = new MenuItem("Get prediction");
-        item1.setOnAction(e -> {
-            System.out.println("WORKS");
-//            RichTextField.of(minVectorTextField).set(minHint);
-            try {
-                GradientViewEditor gradientViewEditor = new GradientViewEditor();
-                gradientViewEditor.exec(properties);
-            } catch (IOException ignored) {
-                ignored.printStackTrace();
-            }
 
-        });
-        contextMenu.getItems().add(item1);
-
-        scene.addEventHandler(MouseEvent.MOUSE_CLICKED, (MouseEvent me)->{
-            if(me.getButton()== MouseButton.SECONDARY ){
-                System.out.println("Mouse Left Pressed");
-                System.out.println(me.getScreenX());
-                System.out.println(me.getScreenY());
-                contextMenu.show(scene,me.getScreenX(),me.getScreenY());
-            }else{
-                contextMenu.hide();
-            }
-            me.consume();
-        });
 //        scene.setContextMenu(contextMenu);
     }
 }

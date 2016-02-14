@@ -3,9 +3,14 @@ package pl.gajoch.layview.gui;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.scene.SceneAntialiasing;
 import javafx.scene.SubScene;
+import javafx.scene.control.ContextMenu;
+import javafx.scene.control.MenuItem;
 import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 
+import java.io.IOException;
+import java.util.Collection;
 import java.util.Properties;
 
 public class MovableSubScene {
@@ -15,17 +20,8 @@ public class MovableSubScene {
     Properties properties;
     public MovableSubScene(GraphicsWindowManager parent, double width, double height) {
 
-//        Builder builder = new Builder();
-
-//        scene = new SubScene(builder.getRoot(), width, height, true, SceneAntialiasing.BALANCED);
         Pane p = new Pane();
         scene = new SubScene(p, width, height, true, SceneAntialiasing.BALANCED);
-
-//        builder.handlers_set(scene);
-//        builder.cam_set(scene);
-
-//        this.actual_scene = actual_scene;
-//        actual_scene.setValue(this);
 
         scene.setOnMouseClicked(event -> {
             if( event.getButton() == MouseButton.PRIMARY && event.isStillSincePress() ) {
@@ -33,9 +29,28 @@ public class MovableSubScene {
                 event.consume();
             }
         });
+    }
 
-//        grad = new Gradient();
-//        grad.add(new GradientPoint(0, Color.BLACK));
+    protected void generateContextMenu(Collection<? extends MenuItem> list) {
+        ContextMenu contextMenu = new ContextMenu();
+        MenuItem item1 = new MenuItem("Move window");
+        item1.setOnAction(e -> {
+            System.out.println("MOVE!");
+        });
+        contextMenu.getItems().add(item1);
+        contextMenu.getItems().addAll(list);
+
+        scene.addEventHandler(MouseEvent.MOUSE_CLICKED, (MouseEvent me) -> {
+            if (me.getButton() == MouseButton.SECONDARY && me.isStillSincePress()) {
+                System.out.println("Mouse Left Pressed");
+                System.out.println(me.getScreenX());
+                System.out.println(me.getScreenY());
+                contextMenu.show(scene, me.getScreenX(), me.getScreenY());
+            } else {
+                contextMenu.hide();
+            }
+            me.consume();
+        });
     }
 
     public void setPosition(WindowPosition position) {
@@ -56,5 +71,6 @@ public class MovableSubScene {
                 Double.valueOf(scene.getLayoutX()).intValue(),
                 Double.valueOf(scene.getLayoutY()).intValue());
     }
+
 
 }
