@@ -3,8 +3,8 @@ package pl.gajoch.layview.graphics3d;
 import com.sun.javafx.geom.Vec3d;
 import javafx.scene.Group;
 import javafx.scene.PerspectiveCamera;
-import javafx.scene.SceneAntialiasing;
 import javafx.scene.SubScene;
+import javafx.scene.control.MenuItem;
 import javafx.scene.transform.Translate;
 import org.apache.commons.math3.geometry.euclidean.threed.CardanEulerSingularityException;
 import org.apache.commons.math3.geometry.euclidean.threed.Rotation;
@@ -13,9 +13,11 @@ import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 import pl.gajoch.layview.gui.GraphicsWindowManager;
 import pl.gajoch.layview.gui.MovableSubScene;
-import pl.gajoch.layview.gui.MovableSubScene3D;
 
-public class CameraSubScene extends MovableSubScene3D {
+import java.util.ArrayList;
+import java.util.List;
+
+public class CameraSubScene extends MovableSubScene {
     private Vector2D mousePos;
     private Vector2D mouseOld;
     private Vector2D mouseDelta;
@@ -84,6 +86,17 @@ public class CameraSubScene extends MovableSubScene3D {
         super.scene.setCamera(camera);
 
         setHandlers(super.scene);
+
+
+        MenuItem item1 = new MenuItem("Edit");
+        item1.setOnAction(e -> {
+            System.out.println("Edit!");
+        });
+
+        List<MenuItem> menu = new ArrayList<>();
+        menu.add(item1);
+
+        this.generateContextMenu(menu);
     }
 
     public void fixCenter(double width, double height){
