@@ -34,6 +34,8 @@
                   <TextField fx:id="ySize" layoutX="52.0" layoutY="25.0" prefHeight="25.0" prefWidth="52.0" />
                   <Button fx:id="del" layoutX="59.0" layoutY="49.0" mnemonicParsing="false" text="Del" />
                   <Button fx:id="add2" layoutX="3.0" layoutY="71.0" mnemonicParsing="false" text="Add2" />
+                  <Button fx:id="SNAP" layoutX="3.0" layoutY="101.0" mnemonicParsing="false" text="SNAP" />
+                  <Button fx:id="SEJV" layoutX="93.0" layoutY="101.0" mnemonicParsing="false" text="SEJV" />
                </children>
             </Pane>
             <SubScene fx:id="Scene3D" GridPane.halignment="LEFT" GridPane.hgrow="ALWAYS" GridPane.valignment="TOP" GridPane.vgrow="ALWAYS">

@@ -7,6 +7,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import pl.gajoch.layview.videoExporter.VideoExporter;
 
 import java.io.IOException;
 
@@ -19,7 +20,7 @@ public class Controller {
     private SubScene Scene3D;
 
     @FXML
-    private Button add, del, add2;
+    private Button add, del, add2, SNAP, SEJV;
 
     @FXML
     private TextField xPos;
@@ -35,6 +36,8 @@ public class Controller {
     Stage primaryStage;
 
     GraphicsWindowManager graphicsWindowManager;
+
+    public VideoExporter exporter;
 
 
 
@@ -67,9 +70,18 @@ public class Controller {
         add2.setOnAction(event -> {
             graphicsWindowManager.add3D();
         });
+
+        exporter = new VideoExporter(Scene3D,"C:\\Users\\Piotr\\Desktop\\tmp\\OBRAZKEN",
+                "C:\\Users\\Piotr\\Desktop\\tmp\\00test.avi",10,768,768);
+
+        SNAP.setOnAction(event -> {
+            exporter.saveSnapshot();
+        });
+
+        SEJV.setOnAction(event -> {
+            exporter.closeVideo();
+        });
     }
-
-
 
     void printGradient(Gradient x) {
         System.out.println("\n\nhandler!");
