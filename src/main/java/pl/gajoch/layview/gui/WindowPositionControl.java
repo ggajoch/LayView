@@ -8,14 +8,13 @@ public class WindowPositionControl {
     final RichTextField xSize, ySize,
             xOffset, yOffset;
 
-    public WindowPositionControl(TextField xSize, TextField ySize, TextField xOffset, TextField yOffset) {
+    public WindowPositionControl(TextField xSize, TextField ySize, TextField xOffset, TextField yOffset,
+                                 SimpleObjectProperty<WindowPosition> position) {
+        positionProperty = position;
         this.xSize = RichTextField.of(xSize);
         this.ySize = RichTextField.of(ySize);
         this.xOffset = RichTextField.of(xOffset);
         this.yOffset = RichTextField.of(yOffset);
-
-        position = new WindowPosition(0,0,0,0);
-        positionProperty = new SimpleObjectProperty<>(position);
 
         ChangeListener<? super String> handler = (observable1, oldValue1, newValue1) -> {
             try {

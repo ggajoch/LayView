@@ -16,12 +16,17 @@ import java.util.Properties;
 public class MovableSubScene {
     Gradient grad;
     public SubScene scene;
-    SimpleObjectProperty<MovableSubScene> actual_scene;
     Properties properties;
+    public SimpleObjectProperty<WindowPosition> position;
+    private MoveWindowEditor moveWindowEditor;
+
     public MovableSubScene(GraphicsWindowManager parent, double width, double height) {
 
         Pane p = new Pane();
         scene = new SubScene(p, width, height, true, SceneAntialiasing.BALANCED);
+        moveWindowEditor = new MoveWindowEditor();
+
+        position = new SimpleObjectProperty<>();
 
         scene.setOnMouseClicked(event -> {
             if( event.getButton() == MouseButton.PRIMARY && event.isStillSincePress() ) {
@@ -35,7 +40,12 @@ public class MovableSubScene {
         ContextMenu contextMenu = new ContextMenu();
         MenuItem item1 = new MenuItem("Move window");
         item1.setOnAction(e -> {
-            System.out.println("MOVE!");
+            position.set(this.getPosition());
+
+            position.addListener((observable, oldValue, newValue) -> {
+                setPosition(newValue);
+            });
+            moveWindowEditor.exec(position);
         });
         contextMenu.getItems().add(item1);
         contextMenu.getItems().addAll(list);

@@ -2,6 +2,8 @@ package pl.gajoch.layview.gui;
 
 import com.sun.javafx.geom.Vec3d;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.scene.Scene;
 import javafx.scene.SubScene;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -21,8 +23,6 @@ public class GraphicsWindowManager {
     Pane pane3D;
     ArrayList<MovableSubScene> subScenes;
     SimpleObjectProperty<MovableSubScene> actual_scene;
-    WindowPositionControl windowPositionControl;
-
     SubScene subScene;
     Stage stage;
 
@@ -33,24 +33,15 @@ public class GraphicsWindowManager {
             actual_scene.setValue(scene);
         }
     }
-    GraphicsWindowManager(Stage stage, SubScene subScene, WindowPositionControl windowPositionControl) {
+    GraphicsWindowManager(Stage stage, SubScene subScene) {
         this.stage = stage;
         this.subScene = subScene;
-        this.windowPositionControl = windowPositionControl;
-
-        windowPositionControl.addListener((observable, oldValue, newValue) -> {
-            System.out.println("new!");
-            actual_scene.getValue().setPosition(newValue);
-            recalculate();
-            recalculateWindowSize();
-        });
         actual_scene = new SimpleObjectProperty<>();
         subScenes = new ArrayList<>();
 
         actual_scene.addListener((observable, oldValue, newValue) -> {
             try {
                 recalculate();
-                setTextFields();
             } catch (NumberFormatException ignored) {
             }
         });
@@ -58,7 +49,6 @@ public class GraphicsWindowManager {
         subScene.setOnMouseClicked(event -> {
             if( event.isStillSincePress() ) {
                 actual_scene.setValue(null);
-                setTextFields();
             }
         });
 
@@ -109,14 +99,25 @@ public class GraphicsWindowManager {
         stage.sizeToScene();
     }
 
+    private void add_size_recalculations(MovableSubScene scene) {
+        ChangeListener<? super Number> handler = (observable1, oldValue1, newValue1) -> {
+            recalculate();
+            recalculateWindowSize();
+        };
+
+        scene.scene.widthProperty().addListener(handler);
+        scene.scene.heightProperty().addListener(handler);
+        scene.scene.layoutXProperty().addListener(handler);
+        scene.scene.layoutYProperty().addListener(handler);
+    }
+
     public void add() {
-//        subScenes.add(new MovableSubScene(this, 100, 100));
         GradientView view = new GradientView(this, 100, 100);
+        add_size_recalculations(view);
         subScenes.add(view);
         LineGraph line = new LineGraph();
         view.scene.rootProperty().setValue(line);
         recalculate();
-        setTextFields();
         recalculateWindowSize();
     }
 
@@ -134,10 +135,11 @@ public class GraphicsWindowManager {
             }
         }
 
+        add_size_recalculations(scene);
+
         scene.elements.getChildren().addAll(new VectorSurface(surface));
         subScenes.add(scene);
         recalculate();
-        setTextFields();
         recalculateWindowSize();
     }
 
@@ -151,17 +153,6 @@ public class GraphicsWindowManager {
             actual_scene.setValue(null);
         }
         recalculate();
-        setTextFields();
         recalculateWindowSize();
     }
-
-
-    void setTextFields() {
-        if (actual_scene.getValue() == null) {
-            windowPositionControl.noValues();
-        } else {
-            windowPositionControl.set(actual_scene.getValue().getPosition());
-        }
-    }
-
 }

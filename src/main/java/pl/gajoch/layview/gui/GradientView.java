@@ -8,6 +8,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Properties;
 
 public class GradientView extends MovableSubScene {
@@ -15,6 +16,7 @@ public class GradientView extends MovableSubScene {
 
     public GradientView (GraphicsWindowManager parent, double width, double height) {
         super(parent, width, height);
+        generateContextMenu(new ArrayList<>());
 
         GradientViewProperties properties = new GradientViewProperties();
         properties.gradient = new SimpleObjectProperty<>(new Gradient());
@@ -27,8 +29,5 @@ public class GradientView extends MovableSubScene {
         properties.gradient.addListener((observable, oldValue, newValue) -> {
             richPane.setFill(newValue.getPaint());
         });
-
-
-//        scene.setContextMenu(contextMenu);
     }
 }

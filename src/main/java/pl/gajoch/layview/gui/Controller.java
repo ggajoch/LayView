@@ -53,8 +53,7 @@ public class Controller {
         files = new FileInput();
 
 
-        graphicsWindowManager = new GraphicsWindowManager(stage, Scene3D,
-                new WindowPositionControl(xSize, ySize, xPos, yPos));
+        graphicsWindowManager = new GraphicsWindowManager(stage, Scene3D);
 
         add.setOnAction(event -> {
             graphicsWindowManager.add();
