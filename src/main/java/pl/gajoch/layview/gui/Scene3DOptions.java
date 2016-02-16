@@ -1,8 +1,8 @@
 package pl.gajoch.layview.gui;
 
 public class Scene3DOptions {
-    final double tipLen, tipRadius, radius, lenScale, globalScale, FPS;
-    final Gradient gradient1, gradient2;
+    public final double tipLen, tipRadius, radius, lenScale, globalScale, FPS;
+    Gradient gradient1, gradient2;
 
     public Scene3DOptions(double tipLen, double tipRadius, double radius, double lenScale,
                           double globalScale, double FPS,

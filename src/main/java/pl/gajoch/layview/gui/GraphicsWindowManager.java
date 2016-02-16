@@ -92,64 +92,20 @@ public class GraphicsWindowManager {
     }
 
     public void add() {
-        GradientView view = new GradientView(this, 100, 100);
-        addSizeRecalculations(view);
-        subScenes.add(view);
-        LineGraph line = new LineGraph();
-        view.scene.rootProperty().setValue(line);
+        /*MovableSubScene scene = new MovableSubScene(this,600,600);
+        subScenes.add(scene);
+
+        scene.scene.setRoot(new LineGraph());
+
         recalculate();
-        recalculateWindowSize();
+        recalculateWindowSize();*/
+        System.out.print("2D++\r\n");
     }
 
     public void add3D() {
         CameraSubScene scene = new Scene3D(this,600,600);
-        GradientSurfacePointsList surface = new GradientSurfacePointsList();
-
-        HintGradient grad1 = new HintGradient();
-        HintGradient grad2 = new HintGradient();
-
-        grad1.setReference(new Vec3d(1,0,0));
-
-        grad2.setReference(new Vec3d(0,0,1));
-
-        grad1.add(new GradientPoint(-1.0,Color.BLUE));
-        grad1.add(new GradientPoint(0,Color.WHITE));
-        grad1.add(new GradientPoint(1.0,Color.RED));
-
-        grad2.add(new GradientPoint(0,Color.WHITE));
-        grad2.add(new GradientPoint(1.0,Color.GREEN));
-
-        surface.gradients.add(grad1);
-        surface.gradients.add(grad2);
-
-
-
-        for (double x = -100; x <= 100; x += 10) {
-            for (double y = -100; y <= 100; y += 10) {
-                for (double z = 0; z <= 100; z += 10) {
-                    if (Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2) + Math.pow(z, 2)) <= 100) {
-                        surface.add(new SurfacePoint(new Vec3d(x, y, z), new Vec3d(x / 10, y / 10, z / 10), new Color(y / 200 + 0.5, 0, -y / 200 + 0.5, 1)));
-                    }
-                }
-            }
-        }
 
         addSizeRecalculations(scene);
-        surface.GradientsHintReset();
-        surface.GradientsHintCalculate();
-
-        System.out.print("GRAD1: MAX: "+grad1.getHintMax()+"  MIN: "+grad1.getHintMin()+"\r\n");
-        System.out.print("GRAD2: MAX: "+grad2.getHintMax()+"  MIN: "+grad2.getHintMin()+"\r\n");
-
-        grad1.setMaxVector(grad1.getHintMax());
-        grad1.setMinVector(grad1.getHintMin());
-        grad2.setMaxVector(grad2.getHintMax());
-        grad2.setMinVector(grad2.getHintMin());
-
-        surface.GradientsApply();
-
-
-        scene.elements.getChildren().addAll(new VectorSurface(surface));
         subScenes.add(scene);
         recalculate();
         recalculateWindowSize();
