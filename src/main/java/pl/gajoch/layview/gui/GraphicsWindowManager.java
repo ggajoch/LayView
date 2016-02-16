@@ -92,8 +92,9 @@ public class GraphicsWindowManager {
     }
 
     public void add() {
-        GradientView view = new GradientView(this, 100, 100);
+        MovableSubScene view = new MovableSubScene(this, 100, 100);
         addSizeRecalculations(view);
+        view.generateContextMenu(new ArrayList<>());
         subScenes.add(view);
         LineGraph line = new LineGraph();
         view.scene.rootProperty().setValue(line);
