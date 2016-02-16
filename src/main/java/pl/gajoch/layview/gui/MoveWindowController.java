@@ -3,14 +3,15 @@ package pl.gajoch.layview.gui;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import javafx.scene.control.ColorPicker;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 import static pl.gajoch.layview.utils.GUIUtils.showErrorMessage;
 
 public class MoveWindowController {
+
     // ----------------------------- Public API  -----------------------------
+
     public WindowPosition getWindowPosition() {
         return windowPosition.get();
     }
@@ -37,7 +38,6 @@ public class MoveWindowController {
     private Stage stage;
     private WindowPosition start;
     private SimpleObjectProperty<WindowPosition> windowPosition;
-//    private WindowPositionControl control;
     RichTextField xSizeRich, ySizeRich, xOffsetRich, yOffsetRich;
 
     // --------------------------- Private methods  --------------------------
@@ -55,7 +55,6 @@ public class MoveWindowController {
         WindowPosition pos = new WindowPosition(xSizeRich.getInt(), ySizeRich.getInt(),
                 xOffsetRich.getInt(), yOffsetRich.getInt());
         windowPosition.set(pos);
-//        control.set(pos);
     }
 
     // ------------------------------- Objects  ------------------------------

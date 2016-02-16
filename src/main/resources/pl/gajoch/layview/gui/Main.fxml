@@ -14,6 +14,7 @@
    <children>
       <GridPane alignment="center" hgap="10" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" vgap="10" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <rowConstraints>
+            <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="TOP" vgrow="ALWAYS" />
             <RowConstraints valignment="TOP" vgrow="ALWAYS" />
             <RowConstraints vgrow="ALWAYS" />
             <RowConstraints vgrow="NEVER" />
@@ -22,27 +23,38 @@
             <ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308" />
          </columnConstraints>
          <children>
-            <Pane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" GridPane.halignment="RIGHT" GridPane.rowIndex="1">
-               <children>
-                  <Button layoutX="104.0" mnemonicParsing="false" onAction="#Gradient1_handler" text="Gradient 1" />
-                  <Button layoutX="104.0" layoutY="25.0" mnemonicParsing="false" onAction="#Gradient2_handler" text="Gradient 2" />
-                  <Button layoutX="107.0" layoutY="49.0" mnemonicParsing="false" onAction="#file_select_handler" text="File input" />
-                  <Button fx:id="add" layoutX="7.0" layoutY="49.0" mnemonicParsing="false" text="Add" />
-                  <TextField prefHeight="25.0" prefWidth="52.0" fx:id="xPos" />
-                  <TextField fx:id="yPos" layoutY="25.0" prefHeight="25.0" prefWidth="52.0" />
-                  <TextField layoutX="52.0" prefHeight="25.0" prefWidth="52.0" fx:id="xSize" />
-                  <TextField fx:id="ySize" layoutX="52.0" layoutY="25.0" prefHeight="25.0" prefWidth="52.0" />
-                  <Button fx:id="del" layoutX="59.0" layoutY="49.0" mnemonicParsing="false" text="Del" />
-                  <Button fx:id="add2" layoutX="3.0" layoutY="71.0" mnemonicParsing="false" text="Add2" />
-                  <Button fx:id="SNAP" layoutX="3.0" layoutY="101.0" mnemonicParsing="false" text="SNAP" />
-                  <Button fx:id="SEJV" layoutX="93.0" layoutY="101.0" mnemonicParsing="false" text="SEJV" />
-               </children>
-            </Pane>
-            <SubScene fx:id="Scene3D" GridPane.halignment="LEFT" GridPane.hgrow="ALWAYS" GridPane.valignment="TOP" GridPane.vgrow="ALWAYS">
+            <Pane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
+            <SubScene fx:id="Scene3D" GridPane.halignment="LEFT" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="TOP" GridPane.vgrow="ALWAYS">
               <root>
                 <Region />
               </root>
             </SubScene>
+            <MenuBar>
+              <menus>
+                <Menu mnemonicParsing="false" text="File">
+                  <items>
+                    <MenuItem mnemonicParsing="false" onAction="#Close_handler" text="Close" />
+                  </items>
+                </Menu>
+                <Menu mnemonicParsing="false" text="Add ...">
+                  <items>
+                    <MenuItem mnemonicParsing="false" onAction="#Add3D_handler" text="3D" />
+                        <MenuItem mnemonicParsing="false" onAction="#Add2D_handler" text="2D" />
+                  </items>
+                </Menu>
+                  <Menu mnemonicParsing="false" text="Test">
+                    <items>
+                      <MenuItem fx:id="SnapMenu" mnemonicParsing="false" text="Snap" />
+                        <MenuItem fx:id="SejvMenu" mnemonicParsing="false" text="Sejv" />
+                    </items>
+                  </Menu>
+                <Menu mnemonicParsing="false" text="Help">
+                  <items>
+                    <MenuItem mnemonicParsing="false" text="About" />
+                  </items>
+                </Menu>
+              </menus>
+            </MenuBar>
          </children>
       </GridPane>
    </children>
