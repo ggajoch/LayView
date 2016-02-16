@@ -104,7 +104,7 @@ public class GraphicsWindowManager {
 
     public void add3D() {
         CameraSubScene scene = new Scene3D(this,600,600);
-        GradientSurfacePointsList surface = new GradientSurfacePointsList();
+        /*GradientSurfacePointsList surface = new GradientSurfacePointsList();
 
         HintGradient grad1 = new HintGradient();
         HintGradient grad2 = new HintGradient();
@@ -135,7 +135,6 @@ public class GraphicsWindowManager {
             }
         }
 
-        addSizeRecalculations(scene);
         surface.GradientsHintReset();
         surface.GradientsHintCalculate();
 
@@ -150,7 +149,9 @@ public class GraphicsWindowManager {
         surface.GradientsApply();
 
 
-        scene.elements.getChildren().addAll(new VectorSurface(surface));
+        scene.elements.getChildren().addAll(new VectorSurface(surface));*/
+        addSizeRecalculations(scene);
+
         subScenes.add(scene);
         recalculate();
         recalculateWindowSize();
