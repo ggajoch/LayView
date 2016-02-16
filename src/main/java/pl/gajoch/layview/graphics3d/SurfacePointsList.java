@@ -1,6 +1,7 @@
 package pl.gajoch.layview.graphics3d;
 
 import java.util.ArrayList;
+import java.util.Collection;
 
 public class SurfacePointsList {
     public ArrayList<SurfacePoint> points;
@@ -26,5 +27,11 @@ public class SurfacePointsList {
             max.vector.z = Math.max(max.vector.z, point.vector.z);
         }
         points.add(point);
+    }
+
+    public void addAll(Collection<? extends SurfacePoint> collection) {
+        for(SurfacePoint surfacePoint : collection) {
+            this.add(surfacePoint);
+        }
     }
 }
