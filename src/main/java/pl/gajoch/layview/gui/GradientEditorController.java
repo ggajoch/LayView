@@ -24,11 +24,7 @@ import static pl.gajoch.layview.utils.GUIUtils.*;
 public class GradientEditorController {
     // --------------------------- Public API  ---------------------------
 
-    public Gradient getGradient() {
-        return gradientToEdit.getValue();
-    }
-
-    public void setup(Stage stage, SimpleObjectProperty<Gradient> gradient, double minVectorHint, double maxVectorHint) throws IOException {
+    public void setup(Stage stage, SimpleObjectProperty<Gradient> gradient, double minVectorHint, double maxVectorHint) {
         this.stage = stage;
         referenceVector = new Vec3dTextField(xRefTextField, yRefTextField, zRefTextField);
         setGradient(gradient);
@@ -204,7 +200,6 @@ public class GradientEditorController {
 
         temp.clear();
         gradientPoints.forEach(temp::add);
-
         gradientToEdit.setValue(temp);
     }
 

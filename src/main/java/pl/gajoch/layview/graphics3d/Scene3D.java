@@ -21,7 +21,8 @@ public class Scene3D extends CameraSubScene {
         fileInputSelector = new FileInputSelector();
         scene3DOptionsEditor = new Scene3DOptionsEditor();
         files = new FileInput();
-        optionsProperty = new SimpleObjectProperty<>(new Scene3DOptions(0, 0, 0, 0, 0, 0));
+        optionsProperty = new SimpleObjectProperty<>(
+                new Scene3DOptions(0, 0, 0, 0, 0, 0, new Gradient(), new Gradient()));
 
         optionsProperty.addListener((observable, oldValue, newValue) -> {
             System.out.println("Recalculate!");

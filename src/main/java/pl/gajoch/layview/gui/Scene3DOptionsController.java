@@ -13,6 +13,8 @@ public class Scene3DOptionsController {
         this.scene3DOptions = scene3DOptions;
         this.start = new Scene3DOptions(scene3DOptions.get());
 
+        gradientEditor = new GradientEditor();
+
         tipLenRich = RichTextField.of(tipLen);
         tipRadiusRich = RichTextField.of(tipRadius);
         radiusRich = RichTextField.of(radius);
@@ -33,13 +35,35 @@ public class Scene3DOptionsController {
         lenScale.textProperty().addListener(observable -> recalculate());
         globalScale.textProperty().addListener(observable -> recalculate());
         FPS.textProperty().addListener(observable -> recalculate());
+
+        gradientToEdit1 = new SimpleObjectProperty<>(scene3DOptions.get().gradient1);
+        gradientToEdit2 = new SimpleObjectProperty<>(scene3DOptions.get().gradient2);
+
+        Gradient1.setOnAction(event -> {
+            gradientToEdit1 = new SimpleObjectProperty<>(scene3DOptions.get().gradient1);
+            gradientToEdit1.addListener((observable, oldValue, newValue) -> {
+                recalculate();
+            });
+            gradientEditor.exec(gradientToEdit1, 0, 0);
+        });
+        Gradient2.setOnAction(event -> {
+            gradientToEdit2 = new SimpleObjectProperty<>(scene3DOptions.get().gradient2);
+            gradientToEdit2.addListener((observable, oldValue, newValue) -> {
+                recalculate();
+            });
+            gradientEditor.exec(gradientToEdit2, 0, 0);
+        });
     }
 
     // -------------------------- Private variables  -------------------------
 
+
     private Stage stage;
+    private GradientEditor gradientEditor;
     private Scene3DOptions start;
     private SimpleObjectProperty<Scene3DOptions> scene3DOptions;
+
+    private SimpleObjectProperty<Gradient> gradientToEdit1, gradientToEdit2;
 
     private RichTextField tipLenRich, tipRadiusRich, radiusRich, lenScaleRich, globalScaleRich, FPSRich;
 
@@ -48,13 +72,18 @@ public class Scene3DOptionsController {
     private void recalculate() {
         scene3DOptions.set(new Scene3DOptions(tipLenRich.getDouble(), tipRadiusRich.getDouble(),
                 radiusRich.getDouble(), lenScaleRich.getDouble(),
-                globalScaleRich.getDouble(), FPSRich.getDouble()));
+                globalScaleRich.getDouble(), FPSRich.getDouble(),
+                gradientToEdit1.get(), gradientToEdit2.get()));
+
+        scene3DOptions.get().gradient1.getPoints().forEach(System.out::println);
     }
 
     // ------------------------------- Objects  ------------------------------
 
     @FXML
     private Button okButton, cancelButton;
+    @FXML
+    private Button Gradient1, Gradient2;
     @FXML
     private TextField tipLen, tipRadius, radius, lenScale, globalScale, FPS;
 

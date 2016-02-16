@@ -1,6 +1,7 @@
 package pl.gajoch.layview.gui;
 
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -11,10 +12,15 @@ public class GradientPointEditor {
     private final GradientPointEditorController windowController;
     private final Stage primaryStage;
 
-    public GradientPointEditor() throws IOException {
+    public GradientPointEditor() {
         FXMLLoader load = new FXMLLoader();
+        Parent loader = new Group();
         load.setLocation(getClass().getResource("GradientPointEditor.fxml"));
-        Parent loader = load.load();
+        try {
+            loader = load.load();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
 
         primaryStage = new Stage();
         primaryStage.setTitle("Edit point");

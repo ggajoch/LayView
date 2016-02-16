@@ -15,13 +15,13 @@ public class Gradient {
     private double min;
     private double max;
 
-    Gradient() {
+    public Gradient() {
         this.points = new TreeSet<>();
         this.reference = new Vec3d();
         min = max = 0;
     }
 
-    Gradient(Gradient second) {
+    public Gradient(Gradient second) {
         this.points = new TreeSet<>(second.points);
         this.reference = new Vec3d(second.reference);
         this.min = second.min;
