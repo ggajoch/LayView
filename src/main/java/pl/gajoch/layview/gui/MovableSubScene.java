@@ -19,9 +19,10 @@ public class MovableSubScene {
     Properties properties;
     public SimpleObjectProperty<WindowPosition> position;
     private MoveWindowEditor moveWindowEditor;
+    private GraphicsWindowManager graphicsWindowManager;
 
     public MovableSubScene(GraphicsWindowManager parent, double width, double height) {
-
+        graphicsWindowManager = parent;
         Pane p = new Pane();
         scene = new SubScene(p, width, height, true, SceneAntialiasing.BALANCED);
         moveWindowEditor = new MoveWindowEditor();
@@ -38,6 +39,8 @@ public class MovableSubScene {
 
     protected void generateContextMenu(Collection<? extends MenuItem> list) {
         ContextMenu contextMenu = new ContextMenu();
+        contextMenu.getItems().addAll(list);
+
         MenuItem item1 = new MenuItem("Move...");
         item1.setOnAction(e -> {
             position.set(this.getPosition());
@@ -48,7 +51,12 @@ public class MovableSubScene {
             moveWindowEditor.exec(position);
         });
         contextMenu.getItems().add(item1);
-        contextMenu.getItems().addAll(list);
+
+        MenuItem item2 = new MenuItem("Delete");
+        item2.setOnAction(e -> {
+            graphicsWindowManager.del();
+        });
+        contextMenu.getItems().add(item2);
 
         scene.addEventHandler(MouseEvent.MOUSE_CLICKED, (MouseEvent me) -> {
             if (me.getButton() == MouseButton.SECONDARY && me.isStillSincePress()) {
