@@ -86,17 +86,6 @@ public class CameraSubScene extends MovableSubScene {
         super.scene.setCamera(camera);
 
         setHandlers(super.scene);
-
-
-        MenuItem item1 = new MenuItem("Edit");
-        item1.setOnAction(e -> {
-            System.out.println("Edit!");
-        });
-
-        List<MenuItem> menu = new ArrayList<>();
-        menu.add(item1);
-
-        this.generateContextMenu(menu);
     }
 
     public void fixCenter(double width, double height){

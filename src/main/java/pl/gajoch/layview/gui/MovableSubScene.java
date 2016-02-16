@@ -38,7 +38,7 @@ public class MovableSubScene {
 
     protected void generateContextMenu(Collection<? extends MenuItem> list) {
         ContextMenu contextMenu = new ContextMenu();
-        MenuItem item1 = new MenuItem("Move window");
+        MenuItem item1 = new MenuItem("Move...");
         item1.setOnAction(e -> {
             position.set(this.getPosition());
 

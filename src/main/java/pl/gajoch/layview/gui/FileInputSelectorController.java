@@ -93,8 +93,10 @@ public class FileInputSelectorController {
                 new FileChooser.ExtensionFilter("All files", "*.*"));
         List<File> readed_files = fileChooser.showOpenMultipleDialog(stage);
         readed_files.stream().filter(file -> file != null).forEach(file -> {
-            files.add(file);
-            recalculateView();
+            if( ! files.contains(file) ) {
+                files.add(file);
+                recalculateView();
+            }
         });
     }
 
@@ -105,11 +107,10 @@ public class FileInputSelectorController {
         File folder = directoryChooser.showDialog(stage);
         if (folder != null) {
             for (File file : folder.listFiles()) {
-                try {
-                    if (!file.isDirectory() && isOMF(file)) {
+                if (!file.isDirectory() && isOMF(file)) {
+                    if( ! files.contains(file) ) {
                         files.add(file);
                     }
-                } catch (Exception ignored) {
                 }
             }
         }

@@ -119,7 +119,7 @@ public class GraphicsWindowManager {
     }
 
     public void add3D() {
-        CameraSubScene scene = new CameraSubScene(this,600,600);
+        CameraSubScene scene = new Scene3D(this,600,600);
         GradientSurfacePointsList surface = new GradientSurfacePointsList();
 
         HintGradient grad1 = new HintGradient();
