@@ -5,7 +5,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import pl.gajoch.layview.utils.GUIUtils;
 
 import static pl.gajoch.layview.utils.GUIUtils.*;
 

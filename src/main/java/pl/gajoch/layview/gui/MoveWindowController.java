@@ -6,8 +6,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
-import static pl.gajoch.layview.utils.GUIUtils.showErrorMessage;
-
 public class MoveWindowController {
 
     // ----------------------------- Public API  -----------------------------

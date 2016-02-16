@@ -1,12 +1,5 @@
 package pl.gajoch.layview.gui;
 
-import com.sun.javafx.geom.Vec3d;
-
-import java.util.TreeSet;
-
-/**
- * Created by Piotr on 15/02/2016.
- */
 public class HintGradient extends Gradient {
     private double hintMin;
     private double hintMax;

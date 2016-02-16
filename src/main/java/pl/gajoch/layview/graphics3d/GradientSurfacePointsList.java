@@ -7,9 +7,6 @@ import pl.gajoch.layview.gui.HintGradient;
 
 import java.util.ArrayList;
 
-/**
- * Created by Piotr on 15/02/2016.
- */
 public class GradientSurfacePointsList extends SurfacePointsList {
     public ArrayList<HintGradient> gradients;
 

@@ -5,16 +5,10 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.geometry.Insets;
 import javafx.scene.control.*;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.Pane;
-import javafx.scene.paint.*;
 import javafx.stage.Stage;
 
-import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -38,17 +32,13 @@ public class GradientEditorController {
 
         ContextMenu contextMenu = new ContextMenu();
         MenuItem item1 = new MenuItem("Get prediction");
-        item1.setOnAction(e -> {
-            RichTextField.of(minVectorTextField).set(minHint);
-        });
+        item1.setOnAction(e -> RichTextField.of(minVectorTextField).set(minHint));
         contextMenu.getItems().add(item1);
         minVectorTextField.setContextMenu(contextMenu);
 
         contextMenu = new ContextMenu();
         item1 = new MenuItem("Get prediction");
-        item1.setOnAction(e -> {
-            RichTextField.of(maxVectorTextField).set(maxHint);
-        });
+        item1.setOnAction(e -> RichTextField.of(maxVectorTextField).set(maxHint));
 
         contextMenu.getItems().add(item1);
         maxVectorTextField.setContextMenu(contextMenu);

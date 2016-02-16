@@ -9,14 +9,10 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 
-import java.io.IOException;
 import java.util.Collection;
-import java.util.Properties;
 
 public class MovableSubScene {
-    Gradient grad;
     public SubScene scene;
-    Properties properties;
     public SimpleObjectProperty<WindowPosition> position;
     private MoveWindowEditor moveWindowEditor;
     private GraphicsWindowManager graphicsWindowManager;
@@ -53,9 +49,7 @@ public class MovableSubScene {
         contextMenu.getItems().add(item1);
 
         MenuItem item2 = new MenuItem("Delete");
-        item2.setOnAction(e -> {
-            graphicsWindowManager.del(this);
-        });
+        item2.setOnAction(e -> graphicsWindowManager.del(this));
         contextMenu.getItems().add(item2);
 
         scene.addEventHandler(MouseEvent.MOUSE_CLICKED, (MouseEvent me) -> {

@@ -39,9 +39,7 @@ public class Scene3D extends CameraSubScene {
         menu.add(item1);
 
         MenuItem item2 = new MenuItem("Options...");
-        item2.setOnAction(e -> {
-            scene3DOptionsEditor.exec(optionsProperty);
-        });
+        item2.setOnAction(e -> scene3DOptionsEditor.exec(optionsProperty));
         menu.add(item2);
 
         this.generateContextMenu(menu);
