@@ -83,6 +83,7 @@ public class Scene3D extends CameraSubScene {
 
             surface.addAll(omfDatas.stream().findFirst().get().points);
 
+            this.elements.getChildren().addAll(new VectorSurface(surface));
         });
         menu.add(item1);
 
