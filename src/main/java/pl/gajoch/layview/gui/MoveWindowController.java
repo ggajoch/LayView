@@ -22,12 +22,6 @@ public class MoveWindowController {
         xOffsetRich = RichTextField.of(xOffset);
         yOffsetRich = RichTextField.of(yOffset);
 
-//        control  = new WindowPositionControl(xSize, ySize, xOffset, yOffset, windowPosition);
-//        control.addListener((observable, oldValue, newValue) -> {
-//            windowPosition.set(newValue);
-//            setWindowPosition(newValue);
-//        });
-
         setWindowPosition(windowPosition.get());
         start = windowPosition.get();
         this.windowPosition = windowPosition;
