@@ -54,7 +54,7 @@ public class MovableSubScene {
 
         MenuItem item2 = new MenuItem("Delete");
         item2.setOnAction(e -> {
-            graphicsWindowManager.del();
+            graphicsWindowManager.del(this);
         });
         contextMenu.getItems().add(item2);
 

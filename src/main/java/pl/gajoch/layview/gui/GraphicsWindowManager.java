@@ -3,11 +3,9 @@ package pl.gajoch.layview.gui;
 import com.sun.javafx.geom.Vec3d;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ChangeListener;
-import javafx.scene.Scene;
 import javafx.scene.SubScene;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import pl.gajoch.layview.graphics2d.LineGraph;
 import pl.gajoch.layview.graphics3d.*;
@@ -59,21 +57,6 @@ public class GraphicsWindowManager {
                 subScenes.stream()
                         .map(scene -> scene.scene)
                         .collect(Collectors.toList()));
-
-        if (actual_scene.getValue() != null) {
-            final Rectangle redBorder = new Rectangle(0, 0, Color.TRANSPARENT);
-            redBorder.setStroke(Color.RED);
-            redBorder.setManaged(false);
-            redBorder.setDisable(true);
-            redBorder.setStrokeWidth(10);
-            redBorder.setLayoutX(actual_scene.getValue().scene.getLayoutX() + 5);
-            redBorder.setLayoutY(actual_scene.getValue().scene.getLayoutY() + 5);
-            redBorder.setWidth(actual_scene.getValue().scene.getWidth() - 10);
-            redBorder.setHeight(actual_scene.getValue().scene.getHeight() - 10);
-
-            pane3D.getChildren().add(redBorder);
-            redBorder.setOnMouseDragged(event -> System.out.println("rect dragged"));
-        }
     }
 
     private void recalculateWindowSize() {
@@ -96,7 +79,7 @@ public class GraphicsWindowManager {
         stage.sizeToScene();
     }
 
-    private void add_size_recalculations(MovableSubScene scene) {
+    private void addSizeRecalculations(MovableSubScene scene) {
         ChangeListener<? super Number> handler = (observable1, oldValue1, newValue1) -> {
             recalculate();
             recalculateWindowSize();
@@ -110,7 +93,7 @@ public class GraphicsWindowManager {
 
     public void add() {
         GradientView view = new GradientView(this, 100, 100);
-        add_size_recalculations(view);
+        addSizeRecalculations(view);
         subScenes.add(view);
         LineGraph line = new LineGraph();
         view.scene.rootProperty().setValue(line);
@@ -151,7 +134,7 @@ public class GraphicsWindowManager {
             }
         }
 
-        add_size_recalculations(scene);
+        addSizeRecalculations(scene);
         surface.GradientsHintReset();
         surface.GradientsHintCalculate();
 
@@ -172,14 +155,9 @@ public class GraphicsWindowManager {
         recalculateWindowSize();
     }
 
-    public void del() {
-        try {
-            if( subScenes.contains(actual_scene.getValue()) ) {
-                subScenes.remove(actual_scene.getValue());
-                actual_scene.setValue(subScenes.get(0));
-            }
-        } catch (IndexOutOfBoundsException exception) {
-            actual_scene.setValue(null);
+    public void del(MovableSubScene scene) {
+        if( subScenes.contains(scene) ) {
+            subScenes.remove(scene);
         }
         recalculate();
         recalculateWindowSize();
