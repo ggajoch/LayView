@@ -30,8 +30,6 @@ public class SurfacePointsList {
     }
 
     public void addAll(Collection<? extends SurfacePoint> collection) {
-        for(SurfacePoint surfacePoint : collection) {
-            this.add(surfacePoint);
-        }
+        collection.forEach(this::add);
     }
 }
