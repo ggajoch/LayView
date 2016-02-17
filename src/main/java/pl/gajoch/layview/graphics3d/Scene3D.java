@@ -24,8 +24,8 @@ public class Scene3D extends CameraSubScene {
         scene3DOptionsEditor = new Scene3DOptionsEditor();
         files = new FileInput();
 
-        HintGradient grad1 = new HintGradient();
-        HintGradient grad2 = new HintGradient();
+        final HintGradient grad1 = new HintGradient();
+        final HintGradient grad2 = new HintGradient();
 
         VectorProperties vectorProperties = new VectorProperties();
         GradientSurfacePointsList surface = new GradientSurfacePointsList();
@@ -41,18 +41,12 @@ public class Scene3D extends CameraSubScene {
             vectorProperties.tipLen = newValue.tipLen;
             vectorProperties.radius = newValue.radius;
 
+            surface.gradients.clear();
+            surface.gradients.add(newValue.gradient1);
+            surface.gradients.add(newValue.gradient2);
+
             surface.GradientsHintReset();
             surface.GradientsHintCalculate();
-
-            System.out.println("MAKS SETTED:"+grad1.getMaxVector());//NOT WORKING
-
-            System.out.print("GRAD1: MAX: "+grad1.getHintMax()+"  MIN: "+grad1.getHintMin()+"\r\n");
-            System.out.print("GRAD2: MAX: "+grad2.getHintMax()+"  MIN: "+grad2.getHintMin()+"\r\n");
-
-            grad1.setMaxVector(grad1.getHintMax());
-            grad1.setMinVector(grad1.getHintMin());
-            grad2.setMaxVector(grad2.getHintMax());
-            grad2.setMinVector(grad2.getHintMin());
 
             surface.GradientsApply();
 
@@ -61,6 +55,7 @@ public class Scene3D extends CameraSubScene {
             //this.elements.getChildren().remove(0,1);
             System.out.println("END RECALCULATE");
             //after end recalculate displaying grad1 offset points... WHY and WHERE
+            //tu masz hinty policzone także
         });
 
 

@@ -18,7 +18,7 @@ import static pl.gajoch.layview.utils.GUIUtils.*;
 public class GradientEditorController {
     // --------------------------- Public API  ---------------------------
 
-    public void setup(Stage stage, SimpleObjectProperty<Gradient> gradient, double minVectorHint, double maxVectorHint) {
+    public void setup(Stage stage, SimpleObjectProperty<HintGradient> gradient, double minVectorHint, double maxVectorHint) {
         this.stage = stage;
         referenceVector = new Vec3dTextField(xRefTextField, yRefTextField, zRefTextField);
         setGradient(gradient);
@@ -57,8 +57,8 @@ public class GradientEditorController {
     private GradientPointEditor editor;
     private Stage stage;
     private SortedSet<GradientPoint> gradientPoints;
-    private Gradient originalGradient;
-    private SimpleObjectProperty<Gradient> gradientToEdit;
+    private HintGradient originalGradient;
+    private SimpleObjectProperty<HintGradient> gradientToEdit;
     private Vec3dTextField referenceVector;
     private double minHint, maxHint;
 
@@ -92,9 +92,9 @@ public class GradientEditorController {
     }
 
 
-    private void setGradient(SimpleObjectProperty<Gradient> gradient) {
+    private void setGradient(SimpleObjectProperty<HintGradient> gradient) {
         gradientToEdit = gradient;
-        originalGradient = new Gradient(gradientToEdit.getValue());
+        originalGradient = new HintGradient(gradientToEdit.getValue());
         this.gradientPoints = new TreeSet<>(originalGradient.getPoints());
         recalculateView();
 
@@ -181,7 +181,7 @@ public class GradientEditorController {
     }
 
     private void finalRecalculateGradientOutput() {
-        Gradient temp = new Gradient(gradientToEdit.getValue());
+        HintGradient temp = new HintGradient(gradientToEdit.getValue());
         Vec3dTextField reference = new Vec3dTextField(xRefTextField, yRefTextField, zRefTextField);
         temp.setReference(reference.get());
 

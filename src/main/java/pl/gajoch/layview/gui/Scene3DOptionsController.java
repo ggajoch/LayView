@@ -63,7 +63,7 @@ public class Scene3DOptionsController {
     private Scene3DOptions start;
     private SimpleObjectProperty<Scene3DOptions> scene3DOptions;
 
-    private SimpleObjectProperty<Gradient> gradientToEdit1, gradientToEdit2;
+    private SimpleObjectProperty<HintGradient> gradientToEdit1, gradientToEdit2;
 
     private RichTextField tipLenRich, tipRadiusRich, radiusRich, lenScaleRich, globalScaleRich, FPSRich;
 

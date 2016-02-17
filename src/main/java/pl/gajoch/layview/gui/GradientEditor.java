@@ -30,7 +30,7 @@ public class GradientEditor {
         windowController = load.getController();
     }
 
-    public void exec(SimpleObjectProperty<Gradient> gradient, double minVectorHint, double maxVectorHint) {
+    public void exec(SimpleObjectProperty<HintGradient> gradient, double minVectorHint, double maxVectorHint) {
         windowController.setup(primaryStage, gradient, minVectorHint, maxVectorHint);
         primaryStage.showAndWait();
     }
