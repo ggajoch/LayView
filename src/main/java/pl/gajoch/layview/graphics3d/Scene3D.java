@@ -78,11 +78,11 @@ public class Scene3D extends CameraSubScene {
         surface.gradients.add(grad1);
         surface.gradients.add(grad2);
 
-        for (double x = -100; x <= 100; x += 10) {
-            for (double y = -100; y <= 100; y += 10) {
-                for (double z = 0; z <= 100; z += 10) {
-                    if (Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2) + Math.pow(z, 2)) <= 100) {
-                        surface.add(new SurfacePoint(new Vec3d(x, y, z), new Vec3d(x / 10, y / 10, z / 10), new Color(y / 200 + 0.5, 0, -y / 200 + 0.5, 1)));
+        for (double x = -1e-8; x <= 1e-8; x += 1e-9) {
+            for (double y = -1e-8; y <= 1e-8; y += 1e-9) {
+                for (double z = 0; z <= 1e-8; z += 1e-9) {
+                    if (Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2) + Math.pow(z, 2)) <= 1e-8) {
+                        surface.add(new SurfacePoint(new Vec3d(x, y, z), new Vec3d(x * 1e14, y * 1e14, z * 1e14), new Color(y / 200 + 0.5, 0, -y / 200 + 0.5, 1)));
                     }
                 }
             }
@@ -102,6 +102,8 @@ public class Scene3D extends CameraSubScene {
         surface.GradientsApply();
 
         this.elements.getChildren().addAll(new VectorSurface(surface, new VectorProperties()));
+
+        onOptionsChanged(scene3DOptions);
     }
 
     private void onOptionsChanged(Scene3DOptions newValue) {
