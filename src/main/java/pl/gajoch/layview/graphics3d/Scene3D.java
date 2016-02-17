@@ -155,6 +155,6 @@ public class Scene3D extends CameraSubScene {
 
         surf.addAll(omfDatas.stream().findFirst().get().points);
 
-        this.elements.getChildren().addAll(new VectorSurface(surf));
+        this.elements.getChildren().setAll(new VectorSurface(surf));
     }
 }
