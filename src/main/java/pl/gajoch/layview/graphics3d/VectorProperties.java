@@ -27,4 +27,16 @@ public class VectorProperties {
     public VectorProperties() {
         this(2, 2, 1, 1);
     }
+
+    public VectorProperties(VectorProperties second) {
+        this.tipLen = second.tipLen;
+        this.tipRadius = second.tipRadius;
+        this.radius = second.radius;
+        this.SpecularColor = new Color(second.SpecularColor.getRed(),
+                second.SpecularColor.getGreen(),
+                second.SpecularColor.getBlue(),
+                second.SpecularColor.getOpacity());
+        this.lenScale = second.lenScale;
+        this.divisions = second.divisions;
+    }
 }
