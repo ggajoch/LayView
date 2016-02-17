@@ -2,11 +2,11 @@ package pl.gajoch.layview.gui;
 
 public class Scene3DOptions {
     public final double tipLen, tipRadius, radius, lenScale, globalScale, FPS;
-    public final Gradient gradient1, gradient2;
+    public final HintGradient gradient1, gradient2;
 
     public Scene3DOptions(double tipLen, double tipRadius, double radius, double lenScale,
                           double globalScale, double FPS,
-                          final Gradient gradient1, final Gradient gradient2) {
+                          final HintGradient gradient1, final HintGradient gradient2) {
         this.tipLen = tipLen;
         this.tipRadius = tipRadius;
         this.radius = radius;
@@ -24,7 +24,7 @@ public class Scene3DOptions {
         this.lenScale = second.lenScale;
         this.globalScale = second.globalScale;
         this.FPS = second.FPS;
-        this.gradient1 = new Gradient(second.gradient1);
-        this.gradient2 = new Gradient(second.gradient2);
+        this.gradient1 = new HintGradient(second.gradient1);
+        this.gradient2 = new HintGradient(second.gradient2);
     }
 }
