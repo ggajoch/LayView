@@ -8,12 +8,9 @@ import pl.gajoch.layview.gui.*;
 import pl.gajoch.layview.utils.OMFData;
 import pl.gajoch.layview.utils.OMFParser;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class Scene3D extends CameraSubScene {
     private FileInputSelector fileInputSelector;
@@ -21,6 +18,8 @@ public class Scene3D extends CameraSubScene {
 
     private FileInput files;
     SimpleObjectProperty<Scene3DOptions> optionsProperty;
+
+    GradientSurfacePointsList surface = new GradientSurfacePointsList();
 
     public Scene3D(GraphicsWindowManager parent, double width, double height) {
         super(parent, width, height);
@@ -32,86 +31,19 @@ public class Scene3D extends CameraSubScene {
         final HintGradient grad1 = new HintGradient();
         final HintGradient grad2 = new HintGradient();
 
-        VectorProperties vectorProperties = new VectorProperties();
-        GradientSurfacePointsList surface = new GradientSurfacePointsList();
 
         optionsProperty = new SimpleObjectProperty<>(
                 new Scene3DOptions(2, 2, 1, 1, 0, 0, grad1, grad2));
 
         optionsProperty.addListener((observable, oldValue, newValue) -> {
-            System.out.println("Recalculate!");
-            //why not vectorProperties = newValue.vectorProperties?
-            vectorProperties.tipRadius = newValue.tipRadius;
-            vectorProperties.lenScale = newValue.lenScale;
-            vectorProperties.tipLen = newValue.tipLen;
-            vectorProperties.radius = newValue.radius;
-
-            surface.gradients.clear();
-            surface.gradients.add(newValue.gradient1);
-            surface.gradients.add(newValue.gradient2);
-
-            surface.GradientsHintReset();
-            surface.GradientsHintCalculate();
-
-            surface.GradientsApply();
-
-            this.elements.getChildren().clear();
-            this.elements.getChildren().add(new VectorSurface(surface, vectorProperties));
-            //this.elements.getChildren().remove(0,1);
-            System.out.println("END RECALCULATE");
-            //after end recalculate displaying grad1 offset points... WHY and WHERE
-            //tu masz hinty policzone także
+            onOptionsChanged(newValue);
         });
-
 
         List<MenuItem> menu = new ArrayList<>();
 
         MenuItem item1 = new MenuItem("File select...");
         item1.setOnAction(e -> {
-            List<OMFData> omfDatas = fileInputSelector.
-                    exec(files).
-                    stream().
-                    map(file -> new OMFParser().parseFile(file)).
-                    collect(Collectors.toList());
-
-            // what next?
-            GradientSurfacePointsList surface = new GradientSurfacePointsList();
-            HintGradient grad1 = new HintGradient();
-            HintGradient grad2 = new HintGradient();
-
-            grad1.setReference(new Vec3d(1,0,0));
-
-            grad2.setReference(new Vec3d(0,0,1));
-
-            grad1.add(new GradientPoint(-1.0, Color.BLUE));
-            grad1.add(new GradientPoint(0,Color.WHITE));
-            grad1.add(new GradientPoint(1.0,Color.RED));
-
-            grad2.add(new GradientPoint(0,Color.WHITE));
-            grad2.add(new GradientPoint(1.0,Color.GREEN));
-
-            surface.gradients.add(grad1);
-            surface.gradients.add(grad2);
-
-            omfDatas.stream().findFirst().get().points.forEach(surfacePoint -> {
-                System.out.println("point: " + surfacePoint.position);
-            });
-            surface.GradientsHintReset();
-            surface.GradientsHintCalculate();
-
-            System.out.print("GRAD1: MAX: "+grad1.getHintMax()+"  MIN: "+grad1.getHintMin()+"\r\n");
-            System.out.print("GRAD2: MAX: "+grad2.getHintMax()+"  MIN: "+grad2.getHintMin()+"\r\n");
-
-            grad1.setMaxVector(grad1.getHintMax());
-            grad1.setMinVector(grad1.getHintMin());
-            grad2.setMaxVector(grad2.getHintMax());
-            grad2.setMinVector(grad2.getHintMin());
-
-            surface.GradientsApply();
-
-            surface.addAll(omfDatas.stream().findFirst().get().points);
-
-            this.elements.getChildren().addAll(new VectorSurface(surface));
+            onFileSelect();
         });
         menu.add(item1);
 
@@ -120,9 +52,6 @@ public class Scene3D extends CameraSubScene {
         menu.add(item2);
 
         this.generateContextMenu(menu);
-
-
-
 
         grad1.setReference(new Vec3d(1,0,0));
 
@@ -138,8 +67,6 @@ public class Scene3D extends CameraSubScene {
         surface.gradients.add(grad1);
         surface.gradients.add(grad2);
 
-
-
         for (double x = -100; x <= 100; x += 10) {
             for (double y = -100; y <= 100; y += 10) {
                 for (double z = 0; z <= 100; z += 10) {
@@ -149,7 +76,6 @@ public class Scene3D extends CameraSubScene {
                 }
             }
         }
-
 
         surface.GradientsHintReset();
         surface.GradientsHintCalculate();
@@ -163,6 +89,73 @@ public class Scene3D extends CameraSubScene {
         grad2.setMinVector(grad2.getHintMin());
 
         surface.GradientsApply();
-        this.elements.getChildren().addAll(new VectorSurface(surface, vectorProperties));
+        this.elements.getChildren().addAll(new VectorSurface(surface, new VectorProperties()));
+    }
+
+    private void onOptionsChanged(Scene3DOptions newValue) {
+        System.out.println("Recalculate!");
+
+        surface.gradients.clear();
+        surface.gradients.add(newValue.gradient1);
+        surface.gradients.add(newValue.gradient2);
+
+        surface.GradientsHintReset();
+        surface.GradientsHintCalculate();
+
+        surface.GradientsApply();
+
+        this.elements.getChildren().clear();
+        this.elements.getChildren().add(new VectorSurface(surface, newValue.vectorProperties));
+        //this.elements.getChildren().remove(0,1);
+        System.out.println("END RECALCULATE");
+        //after end recalculate displaying grad1 offset points... WHY and WHERE
+        //tu masz hinty policzone także
+    }
+
+    private void onFileSelect() {
+        List<OMFData> omfDatas = fileInputSelector.
+                exec(files).
+                stream().
+                map(file -> new OMFParser().parseFile(file)).
+                collect(Collectors.toList());
+
+        // what next?
+        GradientSurfacePointsList surf = new GradientSurfacePointsList();
+        HintGradient gradient1 = new HintGradient();
+        HintGradient gradient2 = new HintGradient();
+
+        gradient1.setReference(new Vec3d(1,0,0));
+
+        gradient2.setReference(new Vec3d(0,0,1));
+
+        gradient1.add(new GradientPoint(-1.0, Color.BLUE));
+        gradient1.add(new GradientPoint(0,Color.WHITE));
+        gradient1.add(new GradientPoint(1.0,Color.RED));
+
+        gradient2.add(new GradientPoint(0,Color.WHITE));
+        gradient2.add(new GradientPoint(1.0,Color.GREEN));
+
+        surf.gradients.add(gradient1);
+        surf.gradients.add(gradient2);
+
+        omfDatas.stream().findFirst().get().points.forEach(surfacePoint -> {
+            System.out.println("point: " + surfacePoint.position);
+        });
+        surf.GradientsHintReset();
+        surf.GradientsHintCalculate();
+
+        System.out.print("GRAD1: MAX: "+gradient1.getHintMax()+"  MIN: "+gradient1.getHintMin()+"\r\n");
+        System.out.print("GRAD2: MAX: "+gradient2.getHintMax()+"  MIN: "+gradient2.getHintMin()+"\r\n");
+
+        gradient1.setMaxVector(gradient1.getHintMax());
+        gradient1.setMinVector(gradient1.getHintMin());
+        gradient2.setMaxVector(gradient2.getHintMax());
+        gradient2.setMinVector(gradient2.getHintMin());
+
+        surf.GradientsApply();
+
+        surf.addAll(omfDatas.stream().findFirst().get().points);
+
+        this.elements.getChildren().addAll(new VectorSurface(surf));
     }
 }
