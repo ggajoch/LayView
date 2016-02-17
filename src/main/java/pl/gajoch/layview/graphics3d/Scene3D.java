@@ -4,6 +4,7 @@ import com.sun.javafx.geom.Vec3d;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.scene.control.MenuItem;
 import javafx.scene.paint.Color;
+import javafx.scene.transform.Scale;
 import pl.gajoch.layview.gui.*;
 import pl.gajoch.layview.utils.OMFData;
 import pl.gajoch.layview.utils.OMFParser;
@@ -21,6 +22,13 @@ public class Scene3D extends CameraSubScene {
 
     GradientSurfacePointsList surface = new GradientSurfacePointsList();
 
+    private UniformScale globalScale = new UniformScale();
+
+    final HintGradient grad1 = new HintGradient();
+    final HintGradient grad2 = new HintGradient();
+
+    private Scene3DOptions scene3DOptions = new Scene3DOptions(1.5e-10, 2.0e-10, 1.0e-10, 1.0e-15, 1e10, 0, grad1, grad2);
+
     public Scene3D(GraphicsWindowManager parent, double width, double height) {
         super(parent, width, height);
 
@@ -28,12 +36,11 @@ public class Scene3D extends CameraSubScene {
         scene3DOptionsEditor = new Scene3DOptionsEditor();
         files = new FileInput();
 
-        final HintGradient grad1 = new HintGradient();
-        final HintGradient grad2 = new HintGradient();
+
 
 
         optionsProperty = new SimpleObjectProperty<>(
-                new Scene3DOptions(2, 2, 1, 1, 0, 0, grad1, grad2));
+                scene3DOptions);
 
         optionsProperty.addListener((observable, oldValue, newValue) -> {
             onOptionsChanged(newValue);
@@ -52,6 +59,10 @@ public class Scene3D extends CameraSubScene {
         menu.add(item2);
 
         this.generateContextMenu(menu);
+
+        this.elements.getTransforms().add(globalScale);
+
+        //deal with dat junk
 
         grad1.setReference(new Vec3d(1,0,0));
 
@@ -89,11 +100,16 @@ public class Scene3D extends CameraSubScene {
         grad2.setMinVector(grad2.getHintMin());
 
         surface.GradientsApply();
+
         this.elements.getChildren().addAll(new VectorSurface(surface, new VectorProperties()));
     }
 
     private void onOptionsChanged(Scene3DOptions newValue) {
         System.out.println("Recalculate!");
+
+        scene3DOptions = newValue;
+
+        globalScale.set(newValue.globalScale);
 
         surface.gradients.clear();
         surface.gradients.add(newValue.gradient1);
@@ -118,43 +134,13 @@ public class Scene3D extends CameraSubScene {
                 map(file -> new OMFParser().parseFile(file)).
                 collect(Collectors.toList());
 
-        // what next?
-        GradientSurfacePointsList surf = new GradientSurfacePointsList();
-        HintGradient gradient1 = new HintGradient();
-        HintGradient gradient2 = new HintGradient();
-
-        gradient1.setReference(new Vec3d(1,0,0));
-
-        gradient2.setReference(new Vec3d(0,0,1));
-
-        gradient1.add(new GradientPoint(-1.0, Color.BLUE));
-        gradient1.add(new GradientPoint(0,Color.WHITE));
-        gradient1.add(new GradientPoint(1.0,Color.RED));
-
-        gradient2.add(new GradientPoint(0,Color.WHITE));
-        gradient2.add(new GradientPoint(1.0,Color.GREEN));
-
-        surf.gradients.add(gradient1);
-        surf.gradients.add(gradient2);
-
-        omfDatas.stream().findFirst().get().points.forEach(surfacePoint -> {
+        /*omfDatas.stream().findFirst().get().points.forEach(surfacePoint -> {
             System.out.println("point: " + surfacePoint.position);
-        });
-        surf.GradientsHintReset();
-        surf.GradientsHintCalculate();
+        });*/
 
-        System.out.print("GRAD1: MAX: "+gradient1.getHintMax()+"  MIN: "+gradient1.getHintMin()+"\r\n");
-        System.out.print("GRAD2: MAX: "+gradient2.getHintMax()+"  MIN: "+gradient2.getHintMin()+"\r\n");
+        surface.clear();
+        surface.addAll(omfDatas.stream().findFirst().get().points);
 
-        gradient1.setMaxVector(gradient1.getHintMax());
-        gradient1.setMinVector(gradient1.getHintMin());
-        gradient2.setMaxVector(gradient2.getHintMax());
-        gradient2.setMinVector(gradient2.getHintMin());
-
-        surf.GradientsApply();
-
-        surf.addAll(omfDatas.stream().findFirst().get().points);
-
-        this.elements.getChildren().setAll(new VectorSurface(surf));
+        onOptionsChanged(scene3DOptions);
     }
 }

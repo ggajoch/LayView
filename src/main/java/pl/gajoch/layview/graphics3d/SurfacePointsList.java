@@ -32,4 +32,8 @@ public class SurfacePointsList {
     public void addAll(Collection<? extends SurfacePoint> collection) {
         collection.forEach(this::add);
     }
+
+    public void clear() {
+        this.points.clear();
+    }
 }
