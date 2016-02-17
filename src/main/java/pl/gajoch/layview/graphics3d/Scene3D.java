@@ -104,8 +104,7 @@ public class Scene3D extends CameraSubScene {
 
         surface.GradientsApply();
 
-        this.elements.getChildren().clear();
-        this.elements.getChildren().add(new VectorSurface(surface, newValue.vectorProperties));
+        this.elements.getChildren().setAll(new VectorSurface(surface, newValue.vectorProperties));
         //this.elements.getChildren().remove(0,1);
         System.out.println("END RECALCULATE");
         //after end recalculate displaying grad1 offset points... WHY and WHERE

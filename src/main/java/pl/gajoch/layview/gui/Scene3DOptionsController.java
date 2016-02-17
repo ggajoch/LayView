@@ -41,16 +41,20 @@ public class Scene3DOptionsController {
 
         Gradient1.setOnAction(event -> {
             gradientToEdit1 = new SimpleObjectProperty<>(scene3DOptions.get().gradient1);
-//            gradientToEdit1.addListener((observable, oldValue, newValue) -> {
-//                recalculate();
-//            });
+            gradientToEdit1.addListener((observable, oldValue, newValue) -> {
+                if( ! newValue.getReference().equals(oldValue.getReference()) ) {
+                    recalculate();
+                }
+            });
             gradientEditor.exec(gradientToEdit1, 0, 0);
         });
         Gradient2.setOnAction(event -> {
             gradientToEdit2 = new SimpleObjectProperty<>(scene3DOptions.get().gradient2);
-//            gradientToEdit2.addListener((observable, oldValue, newValue) -> {
-//                recalculate();
-//            });
+            gradientToEdit2.addListener((observable, oldValue, newValue) -> {
+                if( ! newValue.getReference().equals(oldValue.getReference()) ) {
+                    recalculate();
+                }
+            });
             gradientEditor.exec(gradientToEdit2, 0, 0);
         });
     }
