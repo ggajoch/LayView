@@ -2,12 +2,14 @@ package pl.gajoch.layview.graphics3d;
 
 import javafx.scene.Group;
 
+import java.util.stream.Collectors;
+
 public class VectorSurface extends Group {
     public VectorSurface(SurfacePointsList surfacePointsList, VectorProperties vectorProperties) {
-        for (SurfacePoint point : surfacePointsList.points) {
-            Vector element = new Vector(point, vectorProperties);
-            this.getChildren().add(element);
-        }
+        this.getChildren()
+                .addAll(surfacePointsList.points.stream()
+                .map(surfacePoint -> new Vector(surfacePoint, vectorProperties))
+                .collect(Collectors.toList()));
     }
 
     public VectorSurface(SurfacePointsList surfacePointsList) {
