@@ -1,6 +1,10 @@
 package pl.gajoch.layview.graphics3d;
 
 import com.sun.javafx.geom.Vec3d;
+import javafx.animation.Animation;
+import javafx.animation.AnimationTimer;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.scene.control.MenuItem;
 import javafx.scene.paint.Color;
@@ -9,8 +13,11 @@ import pl.gajoch.layview.gui.*;
 import pl.gajoch.layview.utils.OMFData;
 import pl.gajoch.layview.utils.OMFParser;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.stream.Collectors;
 
 public class Scene3D extends CameraSubScene {
@@ -20,7 +27,7 @@ public class Scene3D extends CameraSubScene {
     private FileInput files;
     SimpleObjectProperty<Scene3DOptions> optionsProperty;
 
-    GradientSurfacePointsList surface = new GradientSurfacePointsList();
+    //GradientSurfacePointsList surface = new GradientSurfacePointsList();
 
     private UniformScale globalScale = new UniformScale();
 
@@ -29,6 +36,14 @@ public class Scene3D extends CameraSubScene {
 
     private Scene3DOptions scene3DOptions = new Scene3DOptions(1.5e-10, 2.0e-10, 1.0e-10, 1.0e-15, 1e10, 0, grad1, grad2);
 
+    private AnimationTimer timer;
+
+    ArrayList<GradientSurfacePointsList> surfaces = new ArrayList<>();
+
+    long lastTime = 0;
+
+
+
     public Scene3D(GraphicsWindowManager parent, double width, double height) {
         super(parent, width, height);
 
@@ -36,6 +51,19 @@ public class Scene3D extends CameraSubScene {
         scene3DOptionsEditor = new Scene3DOptionsEditor();
         files = new FileInput();
 
+        timer = new AnimationTimer(){
+            @Override
+            public void handle(long arg0){
+                long currentTime = System.nanoTime();
+                if(currentTime > lastTime + 1e8){
+                    lastTime = currentTime;
+
+
+                }
+            }
+        };
+
+        timer.start();
 
 
 
@@ -62,6 +90,70 @@ public class Scene3D extends CameraSubScene {
 
         this.elements.getTransforms().add(globalScale);
 
+        generateExample();
+
+        //this.elements.getChildren().addAll(new VectorSurface(surface, new VectorProperties()));
+
+        onOptionsChanged(scene3DOptions);
+    }
+
+    private void onOptionsChanged(Scene3DOptions newValue) {
+        System.out.println("Recalculate!");
+
+        scene3DOptions = newValue;
+
+        globalScale.set(newValue.globalScale);
+
+
+        boolean isFirst = true;
+        for(GradientSurfacePointsList surface : surfaces){
+            surface.gradients.clear();
+            surface.gradients.add(newValue.gradient1);
+            surface.gradients.add(newValue.gradient2);
+            if(isFirst){
+                surface.GradientsHintReset();
+                isFirst = false;
+            }
+            surface.GradientsHintCalculate();
+            surface.GradientsApply();
+        }
+
+        System.out.print("GRAD1: MAX: "+newValue.gradient1.getHintMax()+"  MIN: "+newValue.gradient1.getHintMin()+"\r\n");
+        System.out.print("GRAD2: MAX: "+newValue.gradient2.getHintMax()+"  MIN: "+newValue.gradient2.getHintMin()+"\r\n");
+
+        this.elements.getChildren().setAll(new VectorSurface(surfaces.get(0), newValue.vectorProperties));
+        //this.elements.getChildren().remove(0,1);
+        System.out.println("END RECALCULATE");
+        //after end recalculate displaying grad1 offset points... WHY and WHERE
+        //tu masz hinty policzone także
+    }
+
+    private void onFileSelect() {
+        List<OMFData> omfDatas = fileInputSelector.
+                exec(files).
+                stream().
+                map(file -> new OMFParser().parseFile(file)).
+                collect(Collectors.toList());
+
+        /*omfDatas.stream().findFirst().get().points.forEach(surfacePoint -> {
+            System.out.println("point: " + surfacePoint.position);
+        });*/
+
+        /*surface.clear();
+        surface.addAll(omfDatas.stream().findFirst().get().points);*/
+
+
+        surfaces.clear();
+        omfDatas.stream().forEach(surfaceData ->{
+            GradientSurfacePointsList currentSurface = new GradientSurfacePointsList();
+            currentSurface.addAll(surfaceData.points);
+            surfaces.add(currentSurface);
+        });
+
+        onOptionsChanged(scene3DOptions);
+    }
+
+    private void generateExample(){
         //deal with dat junk
 
         grad1.setReference(new Vec3d(1,0,0));
@@ -74,6 +166,8 @@ public class Scene3D extends CameraSubScene {
 
         grad2.add(new GradientPoint(0,Color.WHITE));
         grad2.add(new GradientPoint(1.0,Color.GREEN));
+
+        GradientSurfacePointsList surface = new GradientSurfacePointsList();
 
         surface.gradients.add(grad1);
         surface.gradients.add(grad2);
@@ -101,48 +195,7 @@ public class Scene3D extends CameraSubScene {
 
         surface.GradientsApply();
 
-        this.elements.getChildren().addAll(new VectorSurface(surface, new VectorProperties()));
-
-        onOptionsChanged(scene3DOptions);
-    }
-
-    private void onOptionsChanged(Scene3DOptions newValue) {
-        System.out.println("Recalculate!");
-
-        scene3DOptions = newValue;
-
-        globalScale.set(newValue.globalScale);
-
-        surface.gradients.clear();
-        surface.gradients.add(newValue.gradient1);
-        surface.gradients.add(newValue.gradient2);
-
-        surface.GradientsHintReset();
-        surface.GradientsHintCalculate();
-
-        surface.GradientsApply();
-
-        this.elements.getChildren().setAll(new VectorSurface(surface, newValue.vectorProperties));
-        //this.elements.getChildren().remove(0,1);
-        System.out.println("END RECALCULATE");
-        //after end recalculate displaying grad1 offset points... WHY and WHERE
-        //tu masz hinty policzone także
-    }
-
-    private void onFileSelect() {
-        List<OMFData> omfDatas = fileInputSelector.
-                exec(files).
-                stream().
-                map(file -> new OMFParser().parseFile(file)).
-                collect(Collectors.toList());
-
-        /*omfDatas.stream().findFirst().get().points.forEach(surfacePoint -> {
-            System.out.println("point: " + surfacePoint.position);
-        });*/
-
-        surface.clear();
-        surface.addAll(omfDatas.stream().findFirst().get().points);
-
-        onOptionsChanged(scene3DOptions);
+        surfaces.clear();
+        surfaces.add(surface);
     }
 }
