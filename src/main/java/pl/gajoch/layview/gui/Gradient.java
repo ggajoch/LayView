@@ -1,10 +1,7 @@
 package pl.gajoch.layview.gui;
 
 import com.sun.javafx.geom.Vec3d;
-import javafx.scene.paint.CycleMethod;
-import javafx.scene.paint.LinearGradient;
-import javafx.scene.paint.Paint;
-import javafx.scene.paint.Stop;
+import javafx.scene.paint.*;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -74,6 +71,9 @@ public class Gradient {
 
 
     public Paint getPaint() {
+        if (points.size() == 0) {
+            return new Color(0, 0, 0, 1);
+        }
         if (points.size() == 1) {
             return points.first().getColor();
         }
@@ -86,5 +86,13 @@ public class Gradient {
                 .collect(Collectors.toList());
 
         return new LinearGradient(0, 0, 0, 1.0, true, CycleMethod.REPEAT, list);
+    }
+
+    public boolean isValidStrict() {
+        return this.isValid() && this.min != this.max;
+    }
+
+    public boolean isValid() {
+        return this.points.size() >= 2 && this.reference.length() > 0;
     }
 }

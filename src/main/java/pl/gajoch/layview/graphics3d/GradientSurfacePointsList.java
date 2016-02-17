@@ -18,6 +18,7 @@ public class GradientSurfacePointsList extends SurfacePointsList {
     public void GradientsHintReset() {
         if (gradients.isEmpty() || points.isEmpty()) return;
         for (HintGradient gradient : gradients) {
+            if (!gradient.isValid()) continue;
             gradient.setHintMax(lenProjection(points.get(0), gradient));
             gradient.setHintMin(lenProjection(points.get(0), gradient));
         }
@@ -26,6 +27,7 @@ public class GradientSurfacePointsList extends SurfacePointsList {
     public void GradientsHintCalculate() {
         if (gradients.isEmpty() || points.isEmpty()) return;
         for (HintGradient gradient : gradients) {
+            if (!gradient.isValid()) continue;
             for (SurfacePoint point : points) {
                 gradient.setHintMax(Math.max(gradient.getHintMax(), lenProjection(point, gradient)));
                 gradient.setHintMin(Math.min(gradient.getHintMin(), lenProjection(point, gradient)));
@@ -38,6 +40,7 @@ public class GradientSurfacePointsList extends SurfacePointsList {
         for (SurfacePoint point : points) {
             int i = 0;
             for (Gradient gradient : gradients) {
+                if (!gradient.isValidStrict()) continue;
                 Color toAppend = colorMap(point, gradient);
                 point.color = colorWeightedMix(point.color, toAppend, i);
                 i++;
@@ -53,6 +56,7 @@ public class GradientSurfacePointsList extends SurfacePointsList {
     }
 
     private Color colorMap(SurfacePoint point, Gradient gradient) {
+        if (!gradient.isValidStrict()) return new Color(0, 0, 0, 1);
         GradientPoint lower, upper;
 
         lower = upper = new GradientPoint(0, Color.BLACK);
@@ -106,6 +110,7 @@ public class GradientSurfacePointsList extends SurfacePointsList {
     }
 
     private double lenProjection(SurfacePoint point, Gradient gradient) {
+        if (!gradient.isValid()) return 0;
         return point.vector.dot(gradient.getReference()) / gradient.getReference().dot(gradient.getReference());
     }
 }
