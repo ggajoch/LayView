@@ -22,35 +22,35 @@ public class Scene3DOptionsController {
         globalScaleRich = RichTextField.of(globalScale);
         FPSRich = RichTextField.of(FPS);
 
-        tipLenRich.set(scene3DOptions.get().tipLen);
-        tipRadiusRich.set(scene3DOptions.get().tipRadius);
-        radiusRich.set(scene3DOptions.get().radius);
-        lenScaleRich.set(scene3DOptions.get().lenScale);
+        tipLenRich.set(scene3DOptions.get().vectorProperties.tipLen);
+        tipRadiusRich.set(scene3DOptions.get().vectorProperties.tipRadius);
+        radiusRich.set(scene3DOptions.get().vectorProperties.radius);
+        lenScaleRich.set(scene3DOptions.get().vectorProperties.lenScale);
         globalScaleRich.set(scene3DOptions.get().globalScale);
         FPSRich.set(scene3DOptions.get().FPS);
 
-        tipLen.textProperty().addListener(observable -> recalculate());
-        tipRadius.textProperty().addListener(observable -> recalculate());
-        radius.textProperty().addListener(observable -> recalculate());
-        lenScale.textProperty().addListener(observable -> recalculate());
-        globalScale.textProperty().addListener(observable -> recalculate());
-        FPS.textProperty().addListener(observable -> recalculate());
+//        tipLen.textProperty().addListener(observable -> recalculate());
+//        tipRadius.textProperty().addListener(observable -> recalculate());
+//        radius.textProperty().addListener(observable -> recalculate());
+//        lenScale.textProperty().addListener(observable -> recalculate());
+//        globalScale.textProperty().addListener(observable -> recalculate());
+//        FPS.textProperty().addListener(observable -> recalculate());
 
         gradientToEdit1 = new SimpleObjectProperty<>(scene3DOptions.get().gradient1);
         gradientToEdit2 = new SimpleObjectProperty<>(scene3DOptions.get().gradient2);
 
         Gradient1.setOnAction(event -> {
             gradientToEdit1 = new SimpleObjectProperty<>(scene3DOptions.get().gradient1);
-            gradientToEdit1.addListener((observable, oldValue, newValue) -> {
-                recalculate();
-            });
+//            gradientToEdit1.addListener((observable, oldValue, newValue) -> {
+//                recalculate();
+//            });
             gradientEditor.exec(gradientToEdit1, 0, 0);
         });
         Gradient2.setOnAction(event -> {
             gradientToEdit2 = new SimpleObjectProperty<>(scene3DOptions.get().gradient2);
-            gradientToEdit2.addListener((observable, oldValue, newValue) -> {
-                recalculate();
-            });
+//            gradientToEdit2.addListener((observable, oldValue, newValue) -> {
+//                recalculate();
+//            });
             gradientEditor.exec(gradientToEdit2, 0, 0);
         });
     }
@@ -74,8 +74,6 @@ public class Scene3DOptionsController {
                 radiusRich.getDouble(), lenScaleRich.getDouble(),
                 globalScaleRich.getDouble(), FPSRich.getDouble(),
                 gradientToEdit1.get(), gradientToEdit2.get()));
-
-        scene3DOptions.get().gradient1.getPoints().forEach(System.out::println);
     }
 
     // ------------------------------- Objects  ------------------------------
@@ -91,12 +89,13 @@ public class Scene3DOptionsController {
 
     @FXML
     private void ok_click() {
+        recalculate();
         this.stage.close();
     }
 
     @FXML
     private void cancel_click() {
-        scene3DOptions.set(start);
+//        scene3DOptions.set(start);
         this.stage.close();
     }
 }
