@@ -6,6 +6,7 @@ import javafx.animation.AnimationTimer;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.scene.Group;
 import javafx.scene.control.MenuItem;
 import javafx.scene.paint.Color;
 import javafx.scene.transform.Scale;
@@ -27,8 +28,6 @@ public class Scene3D extends CameraSubScene {
     private FileInput files;
     SimpleObjectProperty<Scene3DOptions> optionsProperty;
 
-    //GradientSurfacePointsList surface = new GradientSurfacePointsList();
-
     private UniformScale globalScale = new UniformScale();
 
     final HintGradient grad1 = new HintGradient();
@@ -40,8 +39,10 @@ public class Scene3D extends CameraSubScene {
 
     ArrayList<GradientSurfacePointsList> surfaces = new ArrayList<>();
 
-    long lastTime = 0;
+    ArrayList<Group> renderedSurfaces = new ArrayList<>();
 
+    private long lastTime = 0;
+    private int frameCount = 0;
 
 
     public Scene3D(GraphicsWindowManager parent, double width, double height) {
@@ -51,20 +52,21 @@ public class Scene3D extends CameraSubScene {
         scene3DOptionsEditor = new Scene3DOptionsEditor();
         files = new FileInput();
 
-        timer = new AnimationTimer(){
+        timer = new AnimationTimer() {
             @Override
-            public void handle(long arg0){
+            public void handle(long arg0) {
                 long currentTime = System.nanoTime();
-                if(currentTime > lastTime + 1e8){
+                if (currentTime > lastTime + 1e8) {
                     lastTime = currentTime;
-
-
+                    if (renderedSurfaces.size() == 0) return;
+                    elements.getChildren().setAll(renderedSurfaces.get(frameCount));
+                    frameCount++;
+                    if (frameCount >= renderedSurfaces.size()) frameCount = 0;
                 }
             }
         };
 
         timer.start();
-
 
 
         optionsProperty = new SimpleObjectProperty<>(
@@ -104,24 +106,26 @@ public class Scene3D extends CameraSubScene {
 
         globalScale.set(newValue.globalScale);
 
-
+        renderedSurfaces.clear();
         boolean isFirst = true;
-        for(GradientSurfacePointsList surface : surfaces){
+        for (GradientSurfacePointsList surface : surfaces) {
             surface.gradients.clear();
             surface.gradients.add(newValue.gradient1);
             surface.gradients.add(newValue.gradient2);
-            if(isFirst){
+            if (isFirst) {
                 surface.GradientsHintReset();
                 isFirst = false;
             }
             surface.GradientsHintCalculate();
             surface.GradientsApply();
+            renderedSurfaces.add(new VectorSurface(surface, newValue.vectorProperties));
+            System.out.print(".");
         }
 
-        System.out.print("GRAD1: MAX: "+newValue.gradient1.getHintMax()+"  MIN: "+newValue.gradient1.getHintMin()+"\r\n");
-        System.out.print("GRAD2: MAX: "+newValue.gradient2.getHintMax()+"  MIN: "+newValue.gradient2.getHintMin()+"\r\n");
+        System.out.print("GRAD1: MAX: " + newValue.gradient1.getHintMax() + "  MIN: " + newValue.gradient1.getHintMin() + "\r\n");
+        System.out.print("GRAD2: MAX: " + newValue.gradient2.getHintMax() + "  MIN: " + newValue.gradient2.getHintMin() + "\r\n");
 
-        this.elements.getChildren().setAll(new VectorSurface(surfaces.get(0), newValue.vectorProperties));
+        //this.elements.getChildren().setAll(new VectorSurface(surfaces.get(0), newValue.vectorProperties));
         //this.elements.getChildren().remove(0,1);
         System.out.println("END RECALCULATE");
         //after end recalculate displaying grad1 offset points... WHY and WHERE
@@ -129,6 +133,7 @@ public class Scene3D extends CameraSubScene {
     }
 
     private void onFileSelect() {
+        timer.stop();
         List<OMFData> omfDatas = fileInputSelector.
                 exec(files).
                 stream().
@@ -144,28 +149,30 @@ public class Scene3D extends CameraSubScene {
 
 
         surfaces.clear();
-        omfDatas.stream().forEach(surfaceData ->{
+        omfDatas.stream().forEach(surfaceData -> {
             GradientSurfacePointsList currentSurface = new GradientSurfacePointsList();
             currentSurface.addAll(surfaceData.points);
             surfaces.add(currentSurface);
         });
 
         onOptionsChanged(scene3DOptions);
+        frameCount = 0;
+        timer.start();
     }
 
-    private void generateExample(){
+    private void generateExample() {
         //deal with dat junk
 
-        grad1.setReference(new Vec3d(1,0,0));
+        grad1.setReference(new Vec3d(1, 0, 0));
 
-        grad2.setReference(new Vec3d(0,0,1));
+        grad2.setReference(new Vec3d(0, 0, 1));
 
         grad1.add(new GradientPoint(-1.0, Color.BLUE));
-        grad1.add(new GradientPoint(0,Color.WHITE));
-        grad1.add(new GradientPoint(1.0,Color.RED));
+        grad1.add(new GradientPoint(0, Color.WHITE));
+        grad1.add(new GradientPoint(1.0, Color.RED));
 
-        grad2.add(new GradientPoint(0,Color.WHITE));
-        grad2.add(new GradientPoint(1.0,Color.GREEN));
+        grad2.add(new GradientPoint(0, Color.WHITE));
+        grad2.add(new GradientPoint(1.0, Color.GREEN));
 
         GradientSurfacePointsList surface = new GradientSurfacePointsList();
 
@@ -185,8 +192,8 @@ public class Scene3D extends CameraSubScene {
         surface.GradientsHintReset();
         surface.GradientsHintCalculate();
 
-        System.out.print("GRAD1: MAX: "+grad1.getHintMax()+"  MIN: "+grad1.getHintMin()+"\r\n");
-        System.out.print("GRAD2: MAX: "+grad2.getHintMax()+"  MIN: "+grad2.getHintMin()+"\r\n");
+        System.out.print("GRAD1: MAX: " + grad1.getHintMax() + "  MIN: " + grad1.getHintMin() + "\r\n");
+        System.out.print("GRAD2: MAX: " + grad2.getHintMax() + "  MIN: " + grad2.getHintMin() + "\r\n");
 
         grad1.setMaxVector(grad1.getHintMax());
         grad1.setMinVector(grad1.getHintMin());
