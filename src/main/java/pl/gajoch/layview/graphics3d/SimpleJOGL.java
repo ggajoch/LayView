@@ -38,6 +38,13 @@ public class SimpleJOGL implements GLEventListener {
         frame.getContentPane().add( glcanvas );
         frame.setSize( frame.getContentPane().getPreferredSize() );
         frame.setVisible( true );
+
+        frame.addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent e) {
+                System.exit(0);
+            }
+        });
+
         final FPSAnimator animator = new FPSAnimator( glcanvas, 300,true );
         animator.start();
     }
