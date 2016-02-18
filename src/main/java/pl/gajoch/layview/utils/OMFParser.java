@@ -151,27 +151,33 @@ public class OMFParser {
     }
 
     public OMFData parseFile(File file) {
-        BufferedReader reader;
+        BufferedReader reader = null;
         try {
             reader = new BufferedReader(new FileReader(file));
+            String line;
+            while(true) {
+                try {
+                    line = reader.readLine();
+                    if( line == null ) {
+                        break;
+                    }
+                    parseLine(line);
+                } catch(IOException ex) {
+                    ex.printStackTrace();
+                    break;
+                }
+            }
         } catch (FileNotFoundException ex) {
             ex.printStackTrace();
             return null;
-        }
-        String line;
-
-        while(true) {
+        } finally {
             try {
-                line = reader.readLine();
-                if( line == null ) {
-                    break;
-                }
-                parseLine(line);
-            } catch(IOException ex) {
-                ex.printStackTrace();
-                break;
+                if(reader != null) reader.close();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         }
+
 
         return new OMFData(this.segments.get(0).data.points,
                 this.segments.get(0).header.getDouble("xstepsize"),

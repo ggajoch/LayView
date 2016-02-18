@@ -17,7 +17,7 @@ public class VectorProperties {
     }
 
     public VectorProperties(double tipLen, double tipRadius, double radius, double lenScale, Color SpecularColor) {
-        this(tipLen, tipRadius, radius, lenScale, SpecularColor, 64);
+        this(tipLen, tipRadius, radius, lenScale, SpecularColor, 3);
     }
 
     public VectorProperties(double tipLen, double tipRadius, double radius, double lenScale) {
