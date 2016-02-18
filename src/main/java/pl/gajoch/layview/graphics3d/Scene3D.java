@@ -41,8 +41,7 @@ public class Scene3D extends CameraSubScene {
 
     ArrayList<Group> renderedSurfaces = new ArrayList<>();
 
-    private long lastTime = 0;
-    private int frameCount = 0;
+
 
 
     public Scene3D(GraphicsWindowManager parent, double width, double height) {
@@ -53,16 +52,13 @@ public class Scene3D extends CameraSubScene {
         files = new FileInput();
 
         timer = new AnimationTimer() {
+            private long frameCount = 0;
+
             @Override
             public void handle(long arg0) {
-                long currentTime = System.nanoTime();
-                if (currentTime > lastTime + 1e8) {
-                    lastTime = currentTime;
-                    if (renderedSurfaces.size() == 0) return;
-                    elements.getChildren().setAll(renderedSurfaces.get(frameCount));
-                    frameCount++;
-                    if (frameCount >= renderedSurfaces.size()) frameCount = 0;
-                }
+                int currentFrame = Long.valueOf(frameCount % renderedSurfaces.size()).intValue();
+                elements.getChildren().setAll(renderedSurfaces.get(currentFrame));
+                frameCount = frameCount + 1;
             }
         };
 
@@ -156,7 +152,6 @@ public class Scene3D extends CameraSubScene {
         });
 
         onOptionsChanged(scene3DOptions);
-        frameCount = 0;
         timer.start();
     }
 
