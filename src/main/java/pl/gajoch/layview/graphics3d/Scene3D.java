@@ -45,6 +45,11 @@ public class Scene3D extends CameraSubScene {
     private int frameCount = 0;
 
 
+    /*Vector vector = new Vector(new SurfacePoint(new Vec3d(0,0,0),new Vec3d(1,0,0), Color.DARKGREEN), new VectorProperties());
+    Vector vector2 = new Vector(new SurfacePoint(new Vec3d(10,0,0),new Vec3d(0,10,0), Color.DARKGREEN), new VectorProperties());*/
+
+    ArrayList<Vector> vectors = new ArrayList<>();
+
     public Scene3D(GraphicsWindowManager parent, double width, double height) {
         super(parent, width, height);
 
@@ -56,15 +61,35 @@ public class Scene3D extends CameraSubScene {
             @Override
             public void handle(long arg0) {
                 long currentTime = System.nanoTime();
-                if (currentTime > lastTime + 1e8) {
+                if (currentTime > lastTime + 0.3e8) {
+                    long t0 = System.nanoTime();
                     lastTime = currentTime;
-                    if (renderedSurfaces.size() == 0) return;
-                    elements.getChildren().setAll(renderedSurfaces.get(frameCount));
+                    /*if (renderedSurfaces.size() == 0) return;
+                    renderedSurfaces.get(frameCount).setVisible(false);
                     frameCount++;
                     if (frameCount >= renderedSurfaces.size()) frameCount = 0;
+                    renderedSurfaces.get(frameCount).setVisible(true);
+                    System.out.println("t="+(System.nanoTime()-t0)+"ns");*/
+                    int i = 0;
+                    for(Vector vector:vectors) {
+                        i++;
+                        vector.updateValue(new Vec3d(0, 1e6 * Math.sin(currentTime / 1e9)*i/vectors.size(), 0));
+                    }
                 }
             }
         };
+
+        for (double x = -1e-8; x <= 1e-8; x += 1e-9) {
+            for (double y = -1e-8; y <= 1e-8; y += 1e-9) {
+                for (double z = -1e-8; z <= 1e-8; z += 1e-9) {
+                    //if (Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2) + Math.pow(z, 2)) <= 1e-8) {
+                        vectors.add(new Vector(new SurfacePoint(new Vec3d(x, y, z), new Vec3d(x * 1e14, y * 1e14, z * 1e14), Color.GREEN), scene3DOptions.vectorProperties));
+                    //}
+                }
+            }
+        }
+
+        System.out.println("SIZE: "+vectors.size());
 
         timer.start();
 
@@ -92,11 +117,16 @@ public class Scene3D extends CameraSubScene {
 
         this.elements.getTransforms().add(globalScale);
 
-        generateExample();
+        globalScale.set(scene3DOptions.globalScale);
+
+        //generateExample();
 
         //this.elements.getChildren().addAll(new VectorSurface(surface, new VectorProperties()));
 
-        onOptionsChanged(scene3DOptions);
+        //onOptionsChanged(scene3DOptions);
+
+        this.elements.getChildren().setAll(vectors);
+
     }
 
     private void onOptionsChanged(Scene3DOptions newValue) {
@@ -107,8 +137,11 @@ public class Scene3D extends CameraSubScene {
         globalScale.set(newValue.globalScale);
 
         renderedSurfaces.clear();
+
+
         boolean isFirst = true;
         for (GradientSurfacePointsList surface : surfaces) {
+
             surface.gradients.clear();
             surface.gradients.add(newValue.gradient1);
             surface.gradients.add(newValue.gradient2);
@@ -118,7 +151,10 @@ public class Scene3D extends CameraSubScene {
             }
             surface.GradientsHintCalculate();
             surface.GradientsApply();
-            renderedSurfaces.add(new VectorSurface(surface, newValue.vectorProperties));
+            VectorSurface localSurface = new VectorSurface(surface, newValue.vectorProperties);
+            localSurface.setVisible(false);
+            renderedSurfaces.add(localSurface);
+
             System.out.print(".");
         }
 
@@ -126,6 +162,8 @@ public class Scene3D extends CameraSubScene {
         System.out.print("GRAD2: MAX: " + newValue.gradient2.getHintMax() + "  MIN: " + newValue.gradient2.getHintMin() + "\r\n");
 
         //this.elements.getChildren().setAll(new VectorSurface(surfaces.get(0), newValue.vectorProperties));
+
+        this.elements.getChildren().setAll(renderedSurfaces);
         //this.elements.getChildren().remove(0,1);
         System.out.println("END RECALCULATE");
         //after end recalculate displaying grad1 offset points... WHY and WHERE
@@ -150,12 +188,15 @@ public class Scene3D extends CameraSubScene {
 
         surfaces.clear();
         omfDatas.stream().forEach(surfaceData -> {
+
             GradientSurfacePointsList currentSurface = new GradientSurfacePointsList();
             currentSurface.addAll(surfaceData.points);
             surfaces.add(currentSurface);
+
         });
 
         onOptionsChanged(scene3DOptions);
+
         frameCount = 0;
         timer.start();
     }
@@ -204,5 +245,6 @@ public class Scene3D extends CameraSubScene {
 
         surfaces.clear();
         surfaces.add(surface);
+
     }
 }
