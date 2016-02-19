@@ -110,7 +110,11 @@ public class SimpleJOGL implements GLEventListener {
         gl.glEnable(GL2.GL_NORMALIZE);
         //glut.glutSolidTeapot(1);
         glut.glutSolidCylinder(1,0.001,12,1);
-        glut.glutSolidCone(1,2,12,1);
+        glut.glutSolidCone(1,1,12,1);
+        gl.glPushMatrix();
+        gl.glTranslated(0,0,-1);
+        glut.glutSolidCylinder(0.3,1,12,1);
+        gl.glPopMatrix();
 
         //giving different colors to different sides
         /*gl.glBegin( GL2.GL_QUADS ); // Start Drawing The Cube
