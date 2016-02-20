@@ -38,7 +38,7 @@ public class SimpleJOGL implements GLEventListener, MouseListener, MouseMotionLi
     private double scale;
 
 
-    private static final double SCROLL_SCALE = 0.1;
+    private static final double SCROLL_SCALE = .01;
     private static final double ROTATE_SCALE = .01;
     private static final double MOVE_SCALE = .01;
 
@@ -63,6 +63,9 @@ public class SimpleJOGL implements GLEventListener, MouseListener, MouseMotionLi
         double modifier = 1.0;
         if (e.isControlDown()) {
             modifier = 0.1;
+        }
+        if (e.isShiftDown()) {
+            modifier = 10;
         }
         scale += SCROLL_SCALE * modifier * e.getWheelRotation();
 
