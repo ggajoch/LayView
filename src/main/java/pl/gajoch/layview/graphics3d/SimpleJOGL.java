@@ -8,6 +8,7 @@ import javax.media.opengl.awt.GLCanvas;
 
 import com.jogamp.opengl.util.*;
 import com.jogamp.opengl.util.gl2.GLUT;
+import com.sun.javafx.geom.Vec3d;
 
 import java.awt.DisplayMode;
 import javax.media.opengl.GL2;
@@ -25,17 +26,31 @@ public class SimpleJOGL implements GLEventListener, MouseListener, MouseMotionLi
     private float rquad = 0.0f;
     private GLU glu = new GLU();
     static JFrame frame;
+    static GLCanvas glcanvas;
+
+    private Vec3d mousePos, mouseOld, mouseDelta;
+
+    private Vec3d angle, offset;
+    private double scale;
+
+    private static final double SCROLL_SCALE = 0.0025;
+    private static final double ROTATE_SCALE = .01;
+    private static final double MOVE_SCALE = 1;
 
     public void mouseClicked(MouseEvent e) {
+        System.out.println("Clicked");
     }
 
     public void mouseEntered(MouseEvent e) {
+        System.out.println("Entered");
     }
 
     public void mouseExited(MouseEvent e) {
+        System.out.println("Exited");
     }
 
     public void mouseMoved(MouseEvent e) {
+        System.out.println("EMoved");
     }
 
     public void mouseWheelMoved(MouseWheelEvent e){
@@ -43,6 +58,7 @@ public class SimpleJOGL implements GLEventListener, MouseListener, MouseMotionLi
     }
 
     public void mousePressed(MouseEvent e) {
+        System.out.println("Pressed");
         //prevMouseX = e.getX();
         //prevMouseY = e.getY();
         if ((e.getModifiers() & e.BUTTON3_MASK) != 0) {
@@ -51,12 +67,14 @@ public class SimpleJOGL implements GLEventListener, MouseListener, MouseMotionLi
     }
 
     public void mouseReleased(MouseEvent e) {
+        System.out.println("Released");
         if ((e.getModifiers() & e.BUTTON3_MASK) != 0) {
             //mouseRButtonDown = false;
         }
     }
 
     public void mouseDragged(MouseEvent e) {
+        System.out.println("Dragged");
         int x = e.getX();
         int y = e.getY();
     }
@@ -65,7 +83,7 @@ public class SimpleJOGL implements GLEventListener, MouseListener, MouseMotionLi
         final GLProfile profile = GLProfile.get(GLProfile.GL2);
         GLCapabilities capabilities = new GLCapabilities(profile);
         // The canvas
-        final GLCanvas glcanvas = new GLCanvas(capabilities);
+        glcanvas = new GLCanvas(capabilities);
         SimpleJOGL cube = new SimpleJOGL();
         glcanvas.addGLEventListener(cube);
         glcanvas.setSize(400, 400);
@@ -73,7 +91,6 @@ public class SimpleJOGL implements GLEventListener, MouseListener, MouseMotionLi
         frame.getContentPane().add(glcanvas);
         frame.setSize(frame.getContentPane().getPreferredSize());
         frame.setVisible(true);
-
 
         frame.addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
@@ -107,9 +124,10 @@ public class SimpleJOGL implements GLEventListener, MouseListener, MouseMotionLi
 
         /*drawable.addMouseListener(this);
         drawable.addMouseMotionListener(this);*/
-        frame.addMouseListener(this);
-        frame.addMouseMotionListener(this);
-        frame.addMouseWheelListener(this);
+
+        glcanvas.addMouseListener(this);
+        glcanvas.addMouseMotionListener(this);
+        glcanvas.addMouseWheelListener(this);
 
     }
 
