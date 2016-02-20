@@ -38,13 +38,13 @@ public class SimpleJOGL implements GLEventListener, MouseListener, MouseMotionLi
     private double scale;
 
 
-    private static final double SCROLL_SCALE = 0.0025;
+    private static final double SCROLL_SCALE = 0.1;
     private static final double ROTATE_SCALE = .01;
-    private static final double MOVE_SCALE = 1;
+    private static final double MOVE_SCALE = .01;
 
     public void mouseClicked(MouseEvent e) {
         //System.out.println("Clicked");
-        System.out.println(e.getClickCount());
+        //System.out.println(e.getClickCount());
     }
 
     public void mouseEntered(MouseEvent e) {
@@ -59,7 +59,7 @@ public class SimpleJOGL implements GLEventListener, MouseListener, MouseMotionLi
         //System.out.println("EMoved");
     }
 
-    public void mouseWheelMoved(MouseWheelEvent e){
+    public void mouseWheelMoved(MouseWheelEvent e) {
         double modifier = 1.0;
         if (e.isControlDown()) {
             modifier = 0.1;
@@ -71,6 +71,11 @@ public class SimpleJOGL implements GLEventListener, MouseListener, MouseMotionLi
 
     public void mousePressed(MouseEvent e) {
         mousePos.set(e.getX(), e.getY(), 0);
+        if ((e.getModifiers() & e.BUTTON2_MASK) != 0) {
+            angle.set(0,0,0);
+            offset.set(0,0,0);
+            scale = 0;
+        }
     }
 
     public void mouseReleased(MouseEvent e) {
@@ -83,16 +88,15 @@ public class SimpleJOGL implements GLEventListener, MouseListener, MouseMotionLi
         mouseDelta.set(mousePos);
         mouseDelta.sub(mouseOld);
 
-        if(e.isControlDown()){
+        if (e.isControlDown()) {
             mouseDelta.x = 0;
         }
 
-        if(e.isShiftDown()){
+        if (e.isShiftDown()) {
             mouseDelta.y = 0;
         }
 
-        if((e.getModifiers() & e.BUTTON1_MASK) != 0){
-            //System.out.println("Right");
+        if ((e.getModifiers() & e.BUTTON1_MASK) != 0) {
             Rotation baseRotation = new Rotation(RotationOrder.XYZ, angle.x, angle.y, angle.z);
             //get base rotation (it is transform form neutral point to actual point of view)
             Rotation deltaRotation = new Rotation(
@@ -107,29 +111,25 @@ public class SimpleJOGL implements GLEventListener, MouseListener, MouseMotionLi
                 angle.y = angles[1];
                 angle.z = angles[2];
 
-                //vectorRotate.set(angle);
             } catch (CardanEulerSingularityException ex) {
                 System.out.print("ROTATE ERROR\r\n");
             }
         }
-        if((e.getModifiers() & e.BUTTON2_MASK) != 0){
+        /*if((e.getModifiers() & e.BUTTON2_MASK) != 0){
             System.out.println("Middle");
-        }
-        if((e.getModifiers() & e.BUTTON3_MASK) != 0){
+        }*/
+        if ((e.getModifiers() & e.BUTTON3_MASK) != 0) {
             Rotation baseRotation = new Rotation(RotationOrder.ZXY, angle.x, angle.y, angle.z);//magic happens!
             Vector3D planeTranslate = baseRotation.applyInverseTo(
-                    new Vector3D(mouseDelta.x * MOVE_SCALE, mouseDelta.y * MOVE_SCALE, 0)
+                    new Vector3D(mouseDelta.x * MOVE_SCALE, -mouseDelta.y * MOVE_SCALE, 0)
             );
 
             offset.x += planeTranslate.getX() * Math.pow(10, -scale);
             offset.y += planeTranslate.getY() * Math.pow(10, -scale);
             offset.z += planeTranslate.getZ() * Math.pow(10, -scale);
 
-            //xyzTranslate.set(offset);
+            //TODO: deal with window resize to maintain 1:1 movement!!
         }
-        System.out.println("Dragged");
-        int x = e.getX();
-        int y = e.getY();
     }
 
     public static void main(String[] args) {
@@ -219,9 +219,13 @@ public class SimpleJOGL implements GLEventListener, MouseListener, MouseMotionLi
         gl.glTranslatef(0f, 0f, -5.0f);
         //gl.glRotatef(-90, 1.0f, 0.0f, 0); // Rotate The Cube On X, Y & Z
 
-        gl.glRotated(Math.toDegrees(angle.x), 0,0,1);
-        gl.glRotated(Math.toDegrees(angle.y), 1,0,0);
-        gl.glRotated(Math.toDegrees(angle.z), 0,1,0);
+        gl.glRotated(Math.toDegrees(angle.x), 0, 0, 1);
+        gl.glRotated(Math.toDegrees(angle.y), 1, 0, 0);
+        gl.glRotated(Math.toDegrees(angle.z), 0, 1, 0);
+
+        gl.glTranslated(offset.x, offset.y, offset.z);
+
+        gl.glScaled(Math.pow(10, scale), Math.pow(10, scale), Math.pow(10, scale));
 
         gl.glColor3f(0f, 1f, 0f); //green color
         gl.glColorMaterial(GL.GL_FRONT, GL2.GL_AMBIENT_AND_DIFFUSE);
