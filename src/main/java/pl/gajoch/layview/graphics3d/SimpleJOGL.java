@@ -2,8 +2,7 @@ package pl.gajoch.layview.graphics3d;
 
 
 import java.awt.Frame;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
+import java.awt.event.*;
 import javax.media.opengl.*;
 import javax.media.opengl.awt.GLCanvas;
 
@@ -21,12 +20,46 @@ import javax.media.opengl.glu.GLU;
 import javax.media.opengl.glu.GLUquadric;
 import javax.swing.JFrame;
 
-public class SimpleJOGL implements GLEventListener {
+public class SimpleJOGL implements GLEventListener, MouseListener, MouseMotionListener, MouseWheelListener {
 
     private float rquad = 0.0f;
     private GLU glu = new GLU();
+    static JFrame frame;
 
-    public static DisplayMode dm, dm_old;
+    public void mouseClicked(MouseEvent e) {
+    }
+
+    public void mouseEntered(MouseEvent e) {
+    }
+
+    public void mouseExited(MouseEvent e) {
+    }
+
+    public void mouseMoved(MouseEvent e) {
+    }
+
+    public void mouseWheelMoved(MouseWheelEvent e){
+        System.out.println("Wheel "+e.getWheelRotation());
+    }
+
+    public void mousePressed(MouseEvent e) {
+        //prevMouseX = e.getX();
+        //prevMouseY = e.getY();
+        if ((e.getModifiers() & e.BUTTON3_MASK) != 0) {
+            //mouseRButtonDown = true;
+        }
+    }
+
+    public void mouseReleased(MouseEvent e) {
+        if ((e.getModifiers() & e.BUTTON3_MASK) != 0) {
+            //mouseRButtonDown = false;
+        }
+    }
+
+    public void mouseDragged(MouseEvent e) {
+        int x = e.getX();
+        int y = e.getY();
+    }
 
     public static void main(String[] args) {
         final GLProfile profile = GLProfile.get(GLProfile.GL2);
@@ -36,10 +69,11 @@ public class SimpleJOGL implements GLEventListener {
         SimpleJOGL cube = new SimpleJOGL();
         glcanvas.addGLEventListener(cube);
         glcanvas.setSize(400, 400);
-        final JFrame frame = new JFrame(" Multicolored cube");
+        frame = new JFrame(" Multicolored cube");
         frame.getContentPane().add(glcanvas);
         frame.setSize(frame.getContentPane().getPreferredSize());
         frame.setVisible(true);
+
 
         frame.addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
@@ -70,6 +104,13 @@ public class SimpleJOGL implements GLEventListener {
         gl.glEnable(GL2.GL_DEPTH_TEST);
         gl.glDepthFunc(GL2.GL_LEQUAL);
         gl.glHint(GL2.GL_PERSPECTIVE_CORRECTION_HINT, GL2.GL_NICEST);
+
+        /*drawable.addMouseListener(this);
+        drawable.addMouseMotionListener(this);*/
+        frame.addMouseListener(this);
+        frame.addMouseMotionListener(this);
+        frame.addMouseWheelListener(this);
+
     }
 
     @Override
@@ -86,34 +127,29 @@ public class SimpleJOGL implements GLEventListener {
         gl.glLoadIdentity();
     }
 
-    /*private void update() {
-        theta += 0.01;
-        s = Math.sin(theta);
-        c = Math.cos(theta);
-    }*/
-
     private void render(GLAutoDrawable drawable) {
         final GL2 gl = drawable.getGL().getGL2();
         final GLUT glut = new GLUT();
         final GLUquadric gluq = glu.gluNewQuadric();
         glu.gluQuadricOrientation(gluq, glu.GLU_OUTSIDE);
         gl.glClear(GL2.GL_COLOR_BUFFER_BIT | GL2.GL_DEPTH_BUFFER_BIT);
+        gl.glClearColor(0.8f, 0.8f, 0.8f, 1.0f);
         gl.glLoadIdentity();
         gl.glTranslatef(0f, 0f, -5.0f);
         gl.glRotatef(rquad, 1.0f, 0.0f, 0); // Rotate The Cube On X, Y & Z
         gl.glColor3f(0f, 1f, 0f); //green color
         gl.glColorMaterial(GL.GL_FRONT, GL2.GL_AMBIENT_AND_DIFFUSE);
-        gl.glMateriali(1,1,1);
+        gl.glMateriali(1, 1, 1);
         gl.glEnable(GL2.GL_COLOR_MATERIAL);
         gl.glEnable(GL2.GL_LIGHTING);
         gl.glEnable(GL2.GL_LIGHT0);
         gl.glEnable(GL2.GL_NORMALIZE);
         //glut.glutSolidTeapot(1);
-        glut.glutSolidCylinder(1,0.001,12,1);
-        glut.glutSolidCone(1,1,12,1);
+        glut.glutSolidCylinder(1, 0.001, 12, 1);
+        glut.glutSolidCone(1, 1, 12, 1);
         gl.glPushMatrix();
-        gl.glTranslated(0,0,-1);
-        glut.glutSolidCylinder(0.3,1,12,1);
+        gl.glTranslated(0, 0, -1);
+        glut.glutSolidCylinder(0.3, 1, 12, 1);
         gl.glPopMatrix();
 
         //giving different colors to different sides
@@ -123,32 +159,7 @@ public class SimpleJOGL implements GLEventListener {
         gl.glVertex3f( -1.0f, 1.0f, -1.0f); // Top Left Of The Quad (Top)
         gl.glVertex3f( -1.0f, 1.0f, 1.0f ); // Bottom Left Of The Quad (Top)
         gl.glVertex3f( 1.0f, 1.0f, 1.0f ); // Bottom Right Of The Quad (Top)
-        gl.glColor3f( 0f,1f,0f ); //green color
-        gl.glVertex3f( 1.0f, -1.0f, 1.0f ); // Top Right Of The Quad
-        gl.glVertex3f( -1.0f, -1.0f, 1.0f ); // Top Left Of The Quad
-        gl.glVertex3f( -1.0f, -1.0f, -1.0f ); // Bottom Left Of The Quad
-        gl.glVertex3f( 1.0f, -1.0f, -1.0f ); // Bottom Right Of The Quad
-        gl.glColor3f( 0f,0f,1f ); //blue color
-        gl.glVertex3f( 1.0f, 1.0f, 1.0f ); // Top Right Of The Quad (Front)
-        gl.glVertex3f( -1.0f, 1.0f, 1.0f ); // Top Left Of The Quad (Front)
-        gl.glVertex3f( -1.0f, -1.0f, 1.0f ); // Bottom Left Of The Quad
-        gl.glVertex3f( 1.0f, -1.0f, 1.0f ); // Bottom Right Of The Quad
-        gl.glColor3f( 1f,1f,0f ); //yellow (red + green)
-        gl.glVertex3f( 1.0f, -1.0f, -1.0f ); // Bottom Left Of The Quad
-        gl.glVertex3f( -1.0f, -1.0f, -1.0f ); // Bottom Right Of The Quad
-        gl.glVertex3f( -1.0f, 1.0f, -1.0f ); // Top Right Of The Quad (Back)
-        gl.glVertex3f( 1.0f, 1.0f, -1.0f ); // Top Left Of The Quad (Back)
-        gl.glColor3f( 1f,0f,1f ); //purple (red + green)
-        gl.glVertex3f( -1.0f, 1.0f, 1.0f ); // Top Right Of The Quad (Left)
-        gl.glVertex3f( -1.0f, 1.0f, -1.0f ); // Top Left Of The Quad (Left)
-        gl.glVertex3f( -1.0f, -1.0f, -1.0f ); // Bottom Left Of The Quad
-        gl.glVertex3f( -1.0f, -1.0f, 1.0f ); // Bottom Right Of The Quad
-        gl.glColor3f( 0f,1f, 1f ); //sky blue (blue +green)
-        gl.glVertex3f( 1.0f, 1.0f, -1.0f ); // Top Right Of The Quad (Right)
-        gl.glVertex3f( 1.0f, 1.0f, 1.0f ); // Top Left Of The Quad
-        gl.glVertex3f( 1.0f, -1.0f, 1.0f ); // Bottom Left Of The Quad
-        gl.glVertex3f( 1.0f, -1.0f, -1.0f ); // Bottom Right Of The Quad
-        gl.glEnd(); // Done Drawing The Quad*/
+        */
         gl.glFlush();
 
 
