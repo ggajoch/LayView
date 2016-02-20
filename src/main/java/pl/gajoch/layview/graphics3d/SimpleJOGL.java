@@ -9,6 +9,10 @@ import javax.media.opengl.awt.GLCanvas;
 import com.jogamp.opengl.util.*;
 import com.jogamp.opengl.util.gl2.GLUT;
 import com.sun.javafx.geom.Vec3d;
+import org.apache.commons.math3.geometry.euclidean.threed.CardanEulerSingularityException;
+import org.apache.commons.math3.geometry.euclidean.threed.Rotation;
+import org.apache.commons.math3.geometry.euclidean.threed.RotationOrder;
+import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
 
 import java.awt.DisplayMode;
 import javax.media.opengl.GL2;
@@ -33,47 +37,96 @@ public class SimpleJOGL implements GLEventListener, MouseListener, MouseMotionLi
     private Vec3d angle, offset;
     private double scale;
 
+
     private static final double SCROLL_SCALE = 0.0025;
     private static final double ROTATE_SCALE = .01;
     private static final double MOVE_SCALE = 1;
 
     public void mouseClicked(MouseEvent e) {
-        System.out.println("Clicked");
+        //System.out.println("Clicked");
+        System.out.println(e.getClickCount());
     }
 
     public void mouseEntered(MouseEvent e) {
-        System.out.println("Entered");
+        //System.out.println("Entered");
     }
 
     public void mouseExited(MouseEvent e) {
-        System.out.println("Exited");
+        //System.out.println("Exited");
     }
 
     public void mouseMoved(MouseEvent e) {
-        System.out.println("EMoved");
+        //System.out.println("EMoved");
     }
 
     public void mouseWheelMoved(MouseWheelEvent e){
-        System.out.println("Wheel "+e.getWheelRotation());
+        double modifier = 1.0;
+        if (e.isControlDown()) {
+            modifier = 0.1;
+        }
+        scale += SCROLL_SCALE * modifier * e.getWheelRotation();
+
+        //cameraScale.set(Math.pow(10, scale));
     }
 
     public void mousePressed(MouseEvent e) {
-        System.out.println("Pressed");
-        //prevMouseX = e.getX();
-        //prevMouseY = e.getY();
-        if ((e.getModifiers() & e.BUTTON3_MASK) != 0) {
-            //mouseRButtonDown = true;
-        }
+        mousePos.set(e.getX(), e.getY(), 0);
     }
 
     public void mouseReleased(MouseEvent e) {
-        System.out.println("Released");
-        if ((e.getModifiers() & e.BUTTON3_MASK) != 0) {
-            //mouseRButtonDown = false;
-        }
+        //System.out.println("Released");
     }
 
     public void mouseDragged(MouseEvent e) {
+        mouseOld.set(mousePos);
+        mousePos.set(e.getX(), e.getY(), 0);
+        mouseDelta.set(mousePos);
+        mouseDelta.sub(mouseOld);
+
+        if(e.isControlDown()){
+            mouseDelta.x = 0;
+        }
+
+        if(e.isShiftDown()){
+            mouseDelta.y = 0;
+        }
+
+        if((e.getModifiers() & e.BUTTON1_MASK) != 0){
+            //System.out.println("Right");
+            Rotation baseRotation = new Rotation(RotationOrder.XYZ, angle.x, angle.y, angle.z);
+            //get base rotation (it is transform form neutral point to actual point of view)
+            Rotation deltaRotation = new Rotation(
+                    new Vector3D(0, 0),
+                    new Vector3D(mouseDelta.x * ROTATE_SCALE, -mouseDelta.y * ROTATE_SCALE)
+            );//get rotation according to mouse movement
+            Rotation finalRotation = deltaRotation.applyTo(baseRotation);//sum both the rotations
+            try {
+                double angles[] = finalRotation.getAngles(RotationOrder.XYZ);
+
+                angle.x = angles[0];
+                angle.y = angles[1];
+                angle.z = angles[2];
+
+                //vectorRotate.set(angle);
+            } catch (CardanEulerSingularityException ex) {
+                System.out.print("ROTATE ERROR\r\n");
+            }
+        }
+        if((e.getModifiers() & e.BUTTON2_MASK) != 0){
+            System.out.println("Middle");
+        }
+        if((e.getModifiers() & e.BUTTON3_MASK) != 0){
+            Rotation baseRotation = new Rotation(RotationOrder.ZXY, angle.x, angle.y, angle.z);//magic happens!
+            Vector3D planeTranslate = baseRotation.applyInverseTo(
+                    new Vector3D(mouseDelta.x * MOVE_SCALE, mouseDelta.y * MOVE_SCALE, 0)
+            );
+
+            offset.x += planeTranslate.getX() * Math.pow(10, -scale);
+            offset.y += planeTranslate.getY() * Math.pow(10, -scale);
+            offset.z += planeTranslate.getZ() * Math.pow(10, -scale);
+
+            //xyzTranslate.set(offset);
+        }
         System.out.println("Dragged");
         int x = e.getX();
         int y = e.getY();
@@ -100,6 +153,7 @@ public class SimpleJOGL implements GLEventListener, MouseListener, MouseMotionLi
 
         final FPSAnimator animator = new FPSAnimator(glcanvas, 300, true);
         animator.start();
+
     }
 
     @Override
@@ -124,6 +178,15 @@ public class SimpleJOGL implements GLEventListener, MouseListener, MouseMotionLi
 
         /*drawable.addMouseListener(this);
         drawable.addMouseMotionListener(this);*/
+
+        mousePos = new Vec3d();
+        mouseOld = new Vec3d();
+        mouseDelta = new Vec3d();
+
+        angle = new Vec3d();
+        offset = new Vec3d();
+
+        scale = 0;
 
         glcanvas.addMouseListener(this);
         glcanvas.addMouseMotionListener(this);
@@ -154,7 +217,12 @@ public class SimpleJOGL implements GLEventListener, MouseListener, MouseMotionLi
         gl.glClearColor(0.8f, 0.8f, 0.8f, 1.0f);
         gl.glLoadIdentity();
         gl.glTranslatef(0f, 0f, -5.0f);
-        gl.glRotatef(rquad, 1.0f, 0.0f, 0); // Rotate The Cube On X, Y & Z
+        //gl.glRotatef(-90, 1.0f, 0.0f, 0); // Rotate The Cube On X, Y & Z
+
+        gl.glRotated(Math.toDegrees(angle.x), 0,0,1);
+        gl.glRotated(Math.toDegrees(angle.y), 1,0,0);
+        gl.glRotated(Math.toDegrees(angle.z), 0,1,0);
+
         gl.glColor3f(0f, 1f, 0f); //green color
         gl.glColorMaterial(GL.GL_FRONT, GL2.GL_AMBIENT_AND_DIFFUSE);
         gl.glMateriali(1, 1, 1);
@@ -181,6 +249,6 @@ public class SimpleJOGL implements GLEventListener, MouseListener, MouseMotionLi
         gl.glFlush();
 
 
-        rquad -= 0.30f;
+        //rquad -= 0.30f;
     }
 }
