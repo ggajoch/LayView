@@ -9,6 +9,7 @@ import javax.media.opengl.awt.GLCanvas;
 import com.jogamp.opengl.util.*;
 import com.jogamp.opengl.util.gl2.GLUT;
 import com.sun.javafx.geom.Vec3d;
+import javafx.scene.paint.Color;
 import org.apache.commons.math3.geometry.euclidean.threed.CardanEulerSingularityException;
 import org.apache.commons.math3.geometry.euclidean.threed.Rotation;
 import org.apache.commons.math3.geometry.euclidean.threed.RotationOrder;
@@ -67,7 +68,7 @@ public class SimpleJOGL implements GLEventListener, MouseListener, MouseMotionLi
         if (e.isShiftDown()) {
             modifier = 10;
         }
-        scale += SCROLL_SCALE * modifier * e.getWheelRotation();
+        scale -= SCROLL_SCALE * modifier * e.getWheelRotation();
 
         //cameraScale.set(Math.pow(10, scale));
     }
@@ -75,8 +76,8 @@ public class SimpleJOGL implements GLEventListener, MouseListener, MouseMotionLi
     public void mousePressed(MouseEvent e) {
         mousePos.set(e.getX(), e.getY(), 0);
         if ((e.getModifiers() & e.BUTTON2_MASK) != 0) {
-            angle.set(0,0,0);
-            offset.set(0,0,0);
+            angle.set(0, 0, 0);
+            offset.set(0, 0, 0);
             scale = 0;
         }
     }
@@ -154,7 +155,7 @@ public class SimpleJOGL implements GLEventListener, MouseListener, MouseMotionLi
             }
         });
 
-        final FPSAnimator animator = new FPSAnimator(glcanvas, 300, true);
+        final FPSAnimator animator = new FPSAnimator(glcanvas, 30, true);
         animator.start();
 
     }
@@ -178,9 +179,11 @@ public class SimpleJOGL implements GLEventListener, MouseListener, MouseMotionLi
         gl.glEnable(GL2.GL_DEPTH_TEST);
         gl.glDepthFunc(GL2.GL_LEQUAL);
         gl.glHint(GL2.GL_PERSPECTIVE_CORRECTION_HINT, GL2.GL_NICEST);
-
-        /*drawable.addMouseListener(this);
-        drawable.addMouseMotionListener(this);*/
+        gl.glEnable(GL2.GL_COLOR_MATERIAL);
+        gl.glColorMaterial(GL.GL_FRONT, GL2.GL_AMBIENT_AND_DIFFUSE);
+        gl.glEnable(GL2.GL_LIGHTING);
+        gl.glEnable(GL2.GL_LIGHT0);
+        gl.glEnable(GL2.GL_NORMALIZE);
 
         mousePos = new Vec3d();
         mouseOld = new Vec3d();
@@ -211,16 +214,38 @@ public class SimpleJOGL implements GLEventListener, MouseListener, MouseMotionLi
         gl.glLoadIdentity();
     }
 
+    void arrow(GL2 gl, GLUT glut, Vec3d pos, Vec3d val, Color color) {
+
+        gl.glColor3d(color.getRed(), color.getGreen(), color.getBlue()); //green color
+
+        gl.glPushMatrix();
+
+        gl.glRotated(Math.toDegrees(Math.atan2(-val.y, val.z)),
+                1, 0, 0);//in plane Y-Z
+        gl.glRotated(Math.toDegrees(Math.atan2(val.x, Math.sqrt(Math.pow(val.y, 2) + Math.pow(val.z, 2)))),
+                0, 1, 0);//out of plane Y-Z
+        gl.glTranslated(pos.x, pos.y, pos.z);
+
+
+        gl.glPushMatrix();
+        gl.glTranslated(0, 0, val.length());
+        glut.glutSolidCylinder(0.05, 0.0001, 12, 1);
+        glut.glutSolidCone(0.05, 0.05, 12, 1);
+        gl.glPopMatrix();
+
+        glut.glutSolidCylinder(0.03, val.length(), 12, 1);
+        gl.glPopMatrix();
+    }
+
     private void render(GLAutoDrawable drawable) {
         final GL2 gl = drawable.getGL().getGL2();
         final GLUT glut = new GLUT();
-        final GLUquadric gluq = glu.gluNewQuadric();
-        glu.gluQuadricOrientation(gluq, glu.GLU_OUTSIDE);
+        //final GLUquadric gluq = glu.gluNewQuadric();
+        //glu.gluQuadricOrientation(gluq, glu.GLU_OUTSIDE);
         gl.glClear(GL2.GL_COLOR_BUFFER_BIT | GL2.GL_DEPTH_BUFFER_BIT);
         gl.glClearColor(0.8f, 0.8f, 0.8f, 1.0f);
         gl.glLoadIdentity();
         gl.glTranslatef(0f, 0f, -5.0f);
-        //gl.glRotatef(-90, 1.0f, 0.0f, 0); // Rotate The Cube On X, Y & Z
 
         gl.glRotated(Math.toDegrees(angle.x), 0, 0, 1);
         gl.glRotated(Math.toDegrees(angle.y), 1, 0, 0);
@@ -230,21 +255,17 @@ public class SimpleJOGL implements GLEventListener, MouseListener, MouseMotionLi
 
         gl.glScaled(Math.pow(10, scale), Math.pow(10, scale), Math.pow(10, scale));
 
-        gl.glColor3f(0f, 1f, 0f); //green color
-        gl.glColorMaterial(GL.GL_FRONT, GL2.GL_AMBIENT_AND_DIFFUSE);
-        gl.glMateriali(1, 1, 1);
-        gl.glEnable(GL2.GL_COLOR_MATERIAL);
-        gl.glEnable(GL2.GL_LIGHTING);
-        gl.glEnable(GL2.GL_LIGHT0);
-        gl.glEnable(GL2.GL_NORMALIZE);
-        //glut.glutSolidTeapot(1);
-        glut.glutSolidCylinder(1, 0.001, 12, 1);
-        glut.glutSolidCone(1, 1, 12, 1);
-        gl.glPushMatrix();
-        gl.glTranslated(0, 0, -1);
-        glut.glutSolidCylinder(0.3, 1, 12, 1);
-        gl.glPopMatrix();
 
+        arrow(gl, glut, new Vec3d(0, 0, 0), new Vec3d(0.1, 0.1, 0), Color.DARKGREEN);
+
+        /*
+        glut.glutSolidCylinder(0.05, 0.0001, 12, 1);
+        glut.glutSolidCone(0.05, 0.05, 12, 1);
+        gl.glPushMatrix();
+        gl.glTranslated(0, 0, -.1);
+        glut.glutSolidCylinder(0.03, .1, 12, 1);
+        gl.glPopMatrix();
+        */
         //giving different colors to different sides
         /*gl.glBegin( GL2.GL_QUADS ); // Start Drawing The Cube
         gl.glColor3f( 1f,0f,0f );   //red color
@@ -256,6 +277,6 @@ public class SimpleJOGL implements GLEventListener, MouseListener, MouseMotionLi
         gl.glFlush();
 
 
-        //rquad -= 0.30f;
+        rquad -= 0.30f;
     }
 }
