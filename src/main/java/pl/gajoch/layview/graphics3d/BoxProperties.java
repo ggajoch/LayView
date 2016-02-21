@@ -12,4 +12,8 @@ public class BoxProperties {
     public BoxProperties() {
         this(new Vec3d(10, 10, 10));
     }
+
+    public BoxProperties(BoxProperties second){
+        this.dimensions = new Vec3d(second.dimensions);
+    }
 }

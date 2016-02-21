@@ -201,16 +201,18 @@ public class SimpleJOGL implements GLEventListener, MouseListener, MouseMotionLi
         glcanvas.addMouseMotionListener(this);
         glcanvas.addMouseWheelListener(this);
 
-        Scene3DOptions options = new Scene3DOptions(0.025, 0.025, 0.01, 0.1, 1.0, 30, new HintGradient(), new HintGradient());
+        Scene3DOptions options = new Scene3DOptions(0.025, 0.025, 0.01, 0.1, new Vec3d(.1,.1,.1), 1.0, 30, new HintGradient(), new HintGradient());
         presenter = new SurfacesPresenter(options);
 
-        for(double angle = 0 ; angle <= Math.PI*4 ; angle += Math.PI/150) {
+        for (double angle = 0; angle <= Math.PI * 4; angle += Math.PI / 150) {
             SurfacePointsList surfacePoints = new SurfacePointsList();
 
             for (double x = -1; x <= 1; x += .1) {
                 for (double y = -1; y <= 1; y += .1) {
                     for (double z = -1; z <= 1; z += .1) {
-                        SurfacePoint point = new SurfacePoint(new Vec3d(x, y, z), new Vec3d(x / 10*Math.sin(angle), y / 10*Math.cos(angle), z / 10), Color.DARKGOLDENROD);
+                        SurfacePoint point = new SurfacePoint(new Vec3d(x, y, z),
+                                new Vec3d(x / 10 * Math.sin(angle), y / 10 * Math.cos(angle), z / 10),
+                                new Color((x + 1) / 2 * Math.abs(Math.sin(angle)), (y + 1) / 2 * Math.abs(Math.cos(angle)), (z + 1) / 2, 1));
                         surfacePoints.add(point);
                     }
                 }
@@ -218,7 +220,7 @@ public class SimpleJOGL implements GLEventListener, MouseListener, MouseMotionLi
 
             presenter.surfaces.add(surfacePoints);
         }
-        System.out.println("Surfaces: "+presenter.surfaces.size());
+        System.out.println("Surfaces: " + presenter.surfaces.size());
 
     }
 
@@ -243,7 +245,7 @@ public class SimpleJOGL implements GLEventListener, MouseListener, MouseMotionLi
     private void render(GLAutoDrawable drawable) {
         final GL2 gl = drawable.getGL().getGL2();
         now = System.nanoTime();
-        System.out.println(1e9f/((float)(now-last)));
+        System.out.println(1e9f / ((float) (now - last)));
         last = now;
         gl.glClear(GL2.GL_COLOR_BUFFER_BIT | GL2.GL_DEPTH_BUFFER_BIT);
         gl.glClearColor(0.8f, 0.8f, 0.8f, 1.0f);
@@ -260,7 +262,7 @@ public class SimpleJOGL implements GLEventListener, MouseListener, MouseMotionLi
 
 
         presenter.drawVectors(gl, frameCt++);
-        if(frameCt>=presenter.surfaces.size())frameCt=0;
+        if (frameCt >= presenter.surfaces.size()) frameCt = 0;
 
 
         gl.glFlush();

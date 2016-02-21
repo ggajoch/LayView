@@ -118,4 +118,15 @@ public class SurfacesPresenter {
             drawVector(gl, point);
         }
     }
+
+    private void drawBox(GL2 gl, SurfacePoint point) {
+
+    }
+
+    public void drawBoxes(GL2 gl, int frame){
+        if(frame>= surfaces.size())return;
+        for(SurfacePoint point : surfaces.get(frame).points){
+            drawBox(gl, point);
+        }
+    }
 }
