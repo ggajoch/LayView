@@ -143,7 +143,7 @@ public class SimpleJOGL implements GLEventListener, MouseListener, MouseMotionLi
         glcanvas = new GLCanvas(capabilities);
         SimpleJOGL cube = new SimpleJOGL();
         glcanvas.addGLEventListener(cube);
-        glcanvas.setSize(400, 400);
+        glcanvas.setSize(700, 700);
         frame = new JFrame(" Multicolored cube");
         frame.getContentPane().add(glcanvas);
         frame.setSize(frame.getContentPane().getPreferredSize());
@@ -219,23 +219,30 @@ public class SimpleJOGL implements GLEventListener, MouseListener, MouseMotionLi
         gl.glColor3d(color.getRed(), color.getGreen(), color.getBlue()); //green color
 
         gl.glPushMatrix();
-
-        gl.glRotated(Math.toDegrees(Math.atan2(-val.y, val.z)),
-                1, 0, 0);//in plane Y-Z
-        gl.glRotated(Math.toDegrees(Math.atan2(val.x, Math.sqrt(Math.pow(val.y, 2) + Math.pow(val.z, 2)))),
-                0, 1, 0);//out of plane Y-Z
         gl.glTranslated(pos.x, pos.y, pos.z);
+        {
+            gl.glPushMatrix();
+            gl.glRotated(Math.toDegrees(Math.atan2(-val.y, val.z)),
+                    1, 0, 0);//in plane Y-Z
+            gl.glRotated(Math.toDegrees(Math.atan2(val.x, Math.sqrt(Math.pow(val.y, 2) + Math.pow(val.z, 2)))),
+                    0, 1, 0);//out of plane Y-Z
 
 
-        gl.glPushMatrix();
-        gl.glTranslated(0, 0, val.length());
-        glut.glutSolidCylinder(0.05, 0.0001, 12, 1);
-        glut.glutSolidCone(0.05, 0.05, 12, 1);
-        gl.glPopMatrix();
+            {
+                gl.glPushMatrix();
+                gl.glTranslated(0, 0, val.length());
+                glut.glutSolidCylinder(0.025, 0.00005, 12, 1);
+                glut.glutSolidCone(0.025, 0.025, 12, 1);
+                gl.glPopMatrix();
+            }
 
-        glut.glutSolidCylinder(0.03, val.length(), 12, 1);
+
+            glut.glutSolidCylinder(0.01, val.length(), 12, 1);
+            gl.glPopMatrix();
+        }
         gl.glPopMatrix();
     }
+
 
     private void render(GLAutoDrawable drawable) {
         final GL2 gl = drawable.getGL().getGL2();
@@ -256,7 +263,19 @@ public class SimpleJOGL implements GLEventListener, MouseListener, MouseMotionLi
         gl.glScaled(Math.pow(10, scale), Math.pow(10, scale), Math.pow(10, scale));
 
 
-        arrow(gl, glut, new Vec3d(0, 0, 0), new Vec3d(0.1, 0.1, 0), Color.DARKGREEN);
+        //arrow(gl, glut, new Vec3d(0, 0, 0), new Vec3d(0.1, 0.1, 0), Color.DARKGREEN);
+        Vec3d pos = new Vec3d(0,1,0);
+        Vec3d val = new Vec3d(0.1,0.1,0);
+        for(pos.x = -1; pos.x < 1 ; pos.x += .1){
+            for(pos.y = -1 ; pos.y < 1 ; pos.y+= .1){
+                for(pos.z = -1 ; pos.z < 1 ; pos.z+= .1){
+                    val.x = pos.x/10*Math.sin(rquad);
+                    val.y = pos.y/10*Math.cos(rquad);
+                    val.z = pos.z/10;
+                    arrow(gl, glut, pos, val, Color.GREEN);
+                }
+            }
+        }
 
         /*
         glut.glutSolidCylinder(0.05, 0.0001, 12, 1);
