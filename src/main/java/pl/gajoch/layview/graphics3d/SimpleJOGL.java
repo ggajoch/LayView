@@ -170,17 +170,21 @@ public class SimpleJOGL implements GLEventListener, MouseListener, MouseMotionLi
     public void dispose(GLAutoDrawable drawable) {
     }
 
+    private GLUT glut;
+    private GL2 gl;
+
     @Override
     public void init(GLAutoDrawable drawable) {
-        final GL2 gl = drawable.getGL().getGL2();
-        gl.glShadeModel(GL2.GL_SMOOTH);
+        gl = drawable.getGL().getGL2();
+        glut = new GLUT();
+        gl.glShadeModel(GL2.GL_FLAT);
         gl.glClearColor(0f, 0f, 0f, 0f);
         gl.glClearDepth(1.0f);
         gl.glEnable(GL2.GL_DEPTH_TEST);
         gl.glDepthFunc(GL2.GL_LEQUAL);
         gl.glHint(GL2.GL_PERSPECTIVE_CORRECTION_HINT, GL2.GL_NICEST);
         gl.glEnable(GL2.GL_COLOR_MATERIAL);
-        gl.glColorMaterial(GL.GL_FRONT, GL2.GL_AMBIENT_AND_DIFFUSE);
+        gl.glColorMaterial(GL.GL_FRONT_AND_BACK, GL2.GL_AMBIENT_AND_DIFFUSE);
         gl.glEnable(GL2.GL_LIGHTING);
         gl.glEnable(GL2.GL_LIGHT0);
         gl.glEnable(GL2.GL_NORMALIZE);
@@ -214,9 +218,13 @@ public class SimpleJOGL implements GLEventListener, MouseListener, MouseMotionLi
         gl.glLoadIdentity();
     }
 
-    void arrow(GL2 gl, GLUT glut, Vec3d pos, Vec3d val, Color color) {
-
-        gl.glColor3d(color.getRed(), color.getGreen(), color.getBlue()); //green color
+    void arrow(GL2 gl, Vec3d pos, Vec3d val, Color color) {
+        int divisions=6;
+        double tipLen = 0.025;
+        double tipRadius = 0.025;
+        double radius = 0.01;
+        double angleJump = Math.PI*2/divisions;
+        gl.glColor3d(color.getRed(), color.getGreen(), color.getBlue());
 
         gl.glPushMatrix();
         gl.glTranslated(pos.x, pos.y, pos.z);
@@ -227,26 +235,88 @@ public class SimpleJOGL implements GLEventListener, MouseListener, MouseMotionLi
             gl.glRotated(Math.toDegrees(Math.atan2(val.x, Math.sqrt(Math.pow(val.y, 2) + Math.pow(val.z, 2)))),
                     0, 1, 0);//out of plane Y-Z
 
+            double sin, cos, sinPrev, cosPrev;
 
+            //drawing cone
             {
-                gl.glPushMatrix();
-                gl.glTranslated(0, 0, val.length());
-                glut.glutSolidCylinder(0.025, 0.00005, 12, 1);
-                glut.glutSolidCone(0.025, 0.025, 12, 1);
-                gl.glPopMatrix();
+                gl.glBegin(GL2.GL_TRIANGLE_FAN);
+                gl.glVertex3d(0, 0, val.length() + tipLen);//top point of the cone
+
+
+                sinPrev = tipRadius * Math.sin(-angleJump);
+                cosPrev = tipRadius * Math.cos(-angleJump);
+
+                for (int division = 0; division <= divisions; division++) {
+                    sin = tipRadius * Math.sin(angleJump * division);
+                    cos = tipRadius * Math.cos(angleJump * division);
+
+                    gl.glNormal3d(-tipLen * (cos - cosPrev), -tipLen * (sinPrev - sin), -(sinPrev * cos - cosPrev * sin));
+                    gl.glVertex3d(sin, cos, val.length());
+
+                    sinPrev = sin;
+                    cosPrev = cos;
+                }
+                gl.glEnd();
+            }
+
+            //drawing cone cap
+            {
+                gl.glNormal3d(0, 0, -1);
+                gl.glBegin(GL2.GL_POLYGON);
+                for (int division = 0; division <= divisions; division++) {
+                    gl.glVertex3d(tipRadius * Math.sin(angleJump * division), tipRadius * Math.cos(angleJump * division), val.length());
+
+                }
+                gl.glEnd();
+            }
+
+            //drawing Cylinder walls
+            {
+                gl.glBegin(GL2.GL_QUAD_STRIP);
+                sin = radius * Math.sin(angleJump);
+                cos = radius * Math.cos(angleJump);
+                //TODO: revise setting of Normal3d
+                for (int division = 0; division <= divisions+1; division++) {
+                    sinPrev = radius * Math.sin(angleJump * division);
+                    cosPrev = radius * Math.cos(angleJump * division);
+
+                    if(division>0) {
+                        gl.glVertex3d(sin, cos, val.length());
+                        gl.glVertex3d(sin, cos, 0);
+                    }
+                    gl.glNormal3d(sin+sinPrev, cos+cosPrev,  0); //aka mean of nex 2 vectors
+                    sin = sinPrev;
+                    cos = cosPrev;
+                }
+                gl.glEnd();
+            }
+
+            //drawing cylinder bottom cap
+            {
+                gl.glNormal3d(0, 0, -1);
+                gl.glBegin(GL2.GL_POLYGON);
+                //gl.glVertex3d(0, 0, 0);//center of disk
+                for (int division = 0; division <= divisions; division++) {
+                    gl.glVertex3d(radius * Math.sin(angleJump * division), radius * Math.cos(angleJump * division), 0);
+
+                }
+                gl.glEnd();
             }
 
 
-            glut.glutSolidCylinder(0.01, val.length(), 12, 1);
             gl.glPopMatrix();
         }
         gl.glPopMatrix();
     }
 
+    private long last = 0, now;
 
     private void render(GLAutoDrawable drawable) {
-        final GL2 gl = drawable.getGL().getGL2();
-        final GLUT glut = new GLUT();
+        now = System.nanoTime();
+        System.out.println(1e9f/((float)(now-last)));
+        last = now;
+        //final GL2 gl = drawable.getGL().getGL2();
+        //final GLUT glut = new GLUT();
         //final GLUquadric gluq = glu.gluNewQuadric();
         //glu.gluQuadricOrientation(gluq, glu.GLU_OUTSIDE);
         gl.glClear(GL2.GL_COLOR_BUFFER_BIT | GL2.GL_DEPTH_BUFFER_BIT);
@@ -262,37 +332,20 @@ public class SimpleJOGL implements GLEventListener, MouseListener, MouseMotionLi
 
         gl.glScaled(Math.pow(10, scale), Math.pow(10, scale), Math.pow(10, scale));
 
-
-        //arrow(gl, glut, new Vec3d(0, 0, 0), new Vec3d(0.1, 0.1, 0), Color.DARKGREEN);
-        Vec3d pos = new Vec3d(0,1,0);
-        Vec3d val = new Vec3d(0.1,0.1,0);
-        for(pos.x = -1; pos.x < 1 ; pos.x += .1){
-            for(pos.y = -1 ; pos.y < 1 ; pos.y+= .1){
-                for(pos.z = -1 ; pos.z < 1 ; pos.z+= .1){
+        Vec3d pos = new Vec3d(0,0,0);
+        Vec3d val = new Vec3d(0.1,0,0);
+        //arrow(gl, glut, pos, val, Color.GREEN);
+        for(pos.x = -1; pos.x <= 1 ; pos.x += .1){
+            for(pos.y = -1 ; pos.y <= 1 ; pos.y+= .1){
+                for(pos.z = -1 ; pos.z <= 1 ; pos.z+= .1){
                     val.x = pos.x/10*Math.sin(rquad);
                     val.y = pos.y/10*Math.cos(rquad);
                     val.z = pos.z/10;
-                    arrow(gl, glut, pos, val, Color.GREEN);
+                    arrow(gl, pos, val, Color.GREEN);
                 }
             }
         }
 
-        /*
-        glut.glutSolidCylinder(0.05, 0.0001, 12, 1);
-        glut.glutSolidCone(0.05, 0.05, 12, 1);
-        gl.glPushMatrix();
-        gl.glTranslated(0, 0, -.1);
-        glut.glutSolidCylinder(0.03, .1, 12, 1);
-        gl.glPopMatrix();
-        */
-        //giving different colors to different sides
-        /*gl.glBegin( GL2.GL_QUADS ); // Start Drawing The Cube
-        gl.glColor3f( 1f,0f,0f );   //red color
-        gl.glVertex3f( 1.0f, 1.0f, -1.0f ); // Top Right Of The Quad (Top)
-        gl.glVertex3f( -1.0f, 1.0f, -1.0f); // Top Left Of The Quad (Top)
-        gl.glVertex3f( -1.0f, 1.0f, 1.0f ); // Bottom Left Of The Quad (Top)
-        gl.glVertex3f( 1.0f, 1.0f, 1.0f ); // Bottom Right Of The Quad (Top)
-        */
         gl.glFlush();
 
 
