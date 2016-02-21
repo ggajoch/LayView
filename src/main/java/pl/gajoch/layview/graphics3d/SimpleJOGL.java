@@ -14,6 +14,8 @@ import org.apache.commons.math3.geometry.euclidean.threed.CardanEulerSingularity
 import org.apache.commons.math3.geometry.euclidean.threed.Rotation;
 import org.apache.commons.math3.geometry.euclidean.threed.RotationOrder;
 import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
+import pl.gajoch.layview.gui.HintGradient;
+import pl.gajoch.layview.gui.Scene3DOptions;
 
 import java.awt.DisplayMode;
 import javax.media.opengl.GL2;
@@ -28,10 +30,12 @@ import javax.swing.JFrame;
 
 public class SimpleJOGL implements GLEventListener, MouseListener, MouseMotionListener, MouseWheelListener {
 
-    private float rquad = 0.0f;
-    private GLU glu = new GLU();
+
     static JFrame frame;
     static GLCanvas glcanvas;
+
+
+    private SurfacesPresenter presenter;
 
     private Vec3d mousePos, mouseOld, mouseDelta;
 
@@ -144,7 +148,7 @@ public class SimpleJOGL implements GLEventListener, MouseListener, MouseMotionLi
         SimpleJOGL cube = new SimpleJOGL();
         glcanvas.addGLEventListener(cube);
         glcanvas.setSize(700, 700);
-        frame = new JFrame(" Multicolored cube");
+        frame = new JFrame("LayVIEW development preview");
         frame.getContentPane().add(glcanvas);
         frame.setSize(frame.getContentPane().getPreferredSize());
         frame.setVisible(true);
@@ -162,7 +166,6 @@ public class SimpleJOGL implements GLEventListener, MouseListener, MouseMotionLi
 
     @Override
     public void display(GLAutoDrawable drawable) {
-        //update();
         render(drawable);
     }
 
@@ -170,13 +173,9 @@ public class SimpleJOGL implements GLEventListener, MouseListener, MouseMotionLi
     public void dispose(GLAutoDrawable drawable) {
     }
 
-    private GLUT glut;
-    private GL2 gl;
-
     @Override
     public void init(GLAutoDrawable drawable) {
-        gl = drawable.getGL().getGL2();
-        glut = new GLUT();
+        final GL2 gl = drawable.getGL().getGL2();
         gl.glShadeModel(GL2.GL_FLAT);
         gl.glClearColor(0f, 0f, 0f, 0f);
         gl.glClearDepth(1.0f);
@@ -202,11 +201,31 @@ public class SimpleJOGL implements GLEventListener, MouseListener, MouseMotionLi
         glcanvas.addMouseMotionListener(this);
         glcanvas.addMouseWheelListener(this);
 
+        Scene3DOptions options = new Scene3DOptions(0.025, 0.025, 0.01, 0.1, 1.0, 30, new HintGradient(), new HintGradient());
+        presenter = new SurfacesPresenter(options);
+
+        for(double angle = 0 ; angle <= Math.PI*4 ; angle += Math.PI/150) {
+            SurfacePointsList surfacePoints = new SurfacePointsList();
+
+            for (double x = -1; x <= 1; x += .1) {
+                for (double y = -1; y <= 1; y += .1) {
+                    for (double z = -1; z <= 1; z += .1) {
+                        SurfacePoint point = new SurfacePoint(new Vec3d(x, y, z), new Vec3d(x / 10*Math.sin(angle), y / 10*Math.cos(angle), z / 10), Color.DARKGOLDENROD);
+                        surfacePoints.add(point);
+                    }
+                }
+            }
+
+            presenter.surfaces.add(surfacePoints);
+        }
+        System.out.println("Surfaces: "+presenter.surfaces.size());
+
     }
 
     @Override
     public void reshape(GLAutoDrawable drawable, int x, int y, int width, int height) {
         final GL2 gl = drawable.getGL().getGL2();
+        final GLU glu = new GLU();
         if (height <= 0)
             height = 1;
         final float h = (float) width / (float) height;
@@ -218,107 +237,14 @@ public class SimpleJOGL implements GLEventListener, MouseListener, MouseMotionLi
         gl.glLoadIdentity();
     }
 
-    void arrow(GL2 gl, Vec3d pos, Vec3d val, Color color) {
-        int divisions=6;
-        double tipLen = 0.025;
-        double tipRadius = 0.025;
-        double radius = 0.01;
-        double angleJump = Math.PI*2/divisions;
-        gl.glColor3d(color.getRed(), color.getGreen(), color.getBlue());
-
-        gl.glPushMatrix();
-        gl.glTranslated(pos.x, pos.y, pos.z);
-        {
-            gl.glPushMatrix();
-            gl.glRotated(Math.toDegrees(Math.atan2(-val.y, val.z)),
-                    1, 0, 0);//in plane Y-Z
-            gl.glRotated(Math.toDegrees(Math.atan2(val.x, Math.sqrt(Math.pow(val.y, 2) + Math.pow(val.z, 2)))),
-                    0, 1, 0);//out of plane Y-Z
-
-            double sin, cos, sinPrev, cosPrev;
-
-            //drawing cone
-            {
-                gl.glBegin(GL2.GL_TRIANGLE_FAN);
-                gl.glVertex3d(0, 0, val.length() + tipLen);//top point of the cone
-
-
-                sinPrev = tipRadius * Math.sin(-angleJump);
-                cosPrev = tipRadius * Math.cos(-angleJump);
-
-                for (int division = 0; division <= divisions; division++) {
-                    sin = tipRadius * Math.sin(angleJump * division);
-                    cos = tipRadius * Math.cos(angleJump * division);
-
-                    gl.glNormal3d(-tipLen * (cos - cosPrev), -tipLen * (sinPrev - sin), -(sinPrev * cos - cosPrev * sin));
-                    gl.glVertex3d(sin, cos, val.length());
-
-                    sinPrev = sin;
-                    cosPrev = cos;
-                }
-                gl.glEnd();
-            }
-
-            //drawing cone cap
-            {
-                gl.glNormal3d(0, 0, -1);
-                gl.glBegin(GL2.GL_POLYGON);
-                for (int division = 0; division <= divisions; division++) {
-                    gl.glVertex3d(tipRadius * Math.sin(angleJump * division), tipRadius * Math.cos(angleJump * division), val.length());
-
-                }
-                gl.glEnd();
-            }
-
-            //drawing Cylinder walls
-            {
-                gl.glBegin(GL2.GL_QUAD_STRIP);
-                sin = radius * Math.sin(angleJump);
-                cos = radius * Math.cos(angleJump);
-                //TODO: revise setting of Normal3d
-                for (int division = 0; division <= divisions+1; division++) {
-                    sinPrev = radius * Math.sin(angleJump * division);
-                    cosPrev = radius * Math.cos(angleJump * division);
-
-                    if(division>0) {
-                        gl.glVertex3d(sin, cos, val.length());
-                        gl.glVertex3d(sin, cos, 0);
-                    }
-                    gl.glNormal3d(sin+sinPrev, cos+cosPrev,  0); //aka mean of nex 2 vectors
-                    sin = sinPrev;
-                    cos = cosPrev;
-                }
-                gl.glEnd();
-            }
-
-            //drawing cylinder bottom cap
-            {
-                gl.glNormal3d(0, 0, -1);
-                gl.glBegin(GL2.GL_POLYGON);
-                //gl.glVertex3d(0, 0, 0);//center of disk
-                for (int division = 0; division <= divisions; division++) {
-                    gl.glVertex3d(radius * Math.sin(angleJump * division), radius * Math.cos(angleJump * division), 0);
-
-                }
-                gl.glEnd();
-            }
-
-
-            gl.glPopMatrix();
-        }
-        gl.glPopMatrix();
-    }
-
     private long last = 0, now;
+    private int frameCt = 0;
 
     private void render(GLAutoDrawable drawable) {
+        final GL2 gl = drawable.getGL().getGL2();
         now = System.nanoTime();
         System.out.println(1e9f/((float)(now-last)));
         last = now;
-        //final GL2 gl = drawable.getGL().getGL2();
-        //final GLUT glut = new GLUT();
-        //final GLUquadric gluq = glu.gluNewQuadric();
-        //glu.gluQuadricOrientation(gluq, glu.GLU_OUTSIDE);
         gl.glClear(GL2.GL_COLOR_BUFFER_BIT | GL2.GL_DEPTH_BUFFER_BIT);
         gl.glClearColor(0.8f, 0.8f, 0.8f, 1.0f);
         gl.glLoadIdentity();
@@ -332,23 +258,11 @@ public class SimpleJOGL implements GLEventListener, MouseListener, MouseMotionLi
 
         gl.glScaled(Math.pow(10, scale), Math.pow(10, scale), Math.pow(10, scale));
 
-        Vec3d pos = new Vec3d(0,0,0);
-        Vec3d val = new Vec3d(0.1,0,0);
-        //arrow(gl, glut, pos, val, Color.GREEN);
-        for(pos.x = -1; pos.x <= 1 ; pos.x += .1){
-            for(pos.y = -1 ; pos.y <= 1 ; pos.y+= .1){
-                for(pos.z = -1 ; pos.z <= 1 ; pos.z+= .1){
-                    val.x = pos.x/10*Math.sin(rquad);
-                    val.y = pos.y/10*Math.cos(rquad);
-                    val.z = pos.z/10;
-                    arrow(gl, pos, val, Color.GREEN);
-                }
-            }
-        }
+
+        presenter.drawVectors(gl, frameCt++);
+        if(frameCt>=presenter.surfaces.size())frameCt=0;
+
 
         gl.glFlush();
-
-
-        rquad -= 0.30f;
     }
 }

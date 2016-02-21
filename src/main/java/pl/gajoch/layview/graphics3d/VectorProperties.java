@@ -18,7 +18,7 @@ public class VectorProperties {
 
 
     public VectorProperties() {
-        this(2, 2, 1, 1);
+        this(0.025, 0.025, 0.01, 0.1);
     }
 
     public VectorProperties(VectorProperties second) {
