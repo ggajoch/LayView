@@ -11,16 +11,21 @@ import java.util.ArrayList;
 public class SurfacesPresenter {
     public ArrayList<SurfacePointsList> surfaces;
     private Scene3DOptions options;
+    private TrigonometricTab trig;
+    private int lastDivisions;
 
     public SurfacesPresenter(Scene3DOptions options) {
         this.options = options;
         surfaces = new ArrayList<>();
+        trig = new TrigonometricTab(options.vectorProperties.divisions);
+        lastDivisions = options.vectorProperties.divisions;
     }
 
     private void drawVector(GL2 gl, SurfacePoint point) {
-        final double angleJump = Math.PI * 2 / options.vectorProperties.divisions;
-
-        //TODO: optimise sin and cos calculation -> table!!!
+        //TODO: maybe do it better?
+        if(lastDivisions!=options.vectorProperties.divisions){
+            trig = new TrigonometricTab(options.vectorProperties.divisions);
+        }
         gl.glColor3d(point.color.getRed(), point.color.getGreen(), point.color.getBlue());
 
         gl.glPushMatrix();
@@ -42,12 +47,12 @@ public class SurfacesPresenter {
                 gl.glVertex3d(0, 0, point.vector.length() + options.vectorProperties.tipLen);//top point of the cone
 
 
-                sinPrev = options.vectorProperties.tipRadius * Math.sin(-angleJump);
-                cosPrev = options.vectorProperties.tipRadius * Math.cos(-angleJump);
+                sinPrev = options.vectorProperties.tipRadius * trig.sin(-1);
+                cosPrev = options.vectorProperties.tipRadius * trig.cos(-1);
 
                 for (int division = 0; division <= options.vectorProperties.divisions; division++) {
-                    sin = options.vectorProperties.tipRadius * Math.sin(angleJump * division);
-                    cos = options.vectorProperties.tipRadius * Math.cos(angleJump * division);
+                    sin = options.vectorProperties.tipRadius * trig.sin(division);
+                    cos = options.vectorProperties.tipRadius * trig.cos(division);
 
                     gl.glNormal3d(-options.vectorProperties.tipLen * (cos - cosPrev),
                             -options.vectorProperties.tipLen * (sinPrev - sin),
@@ -65,8 +70,8 @@ public class SurfacesPresenter {
                 gl.glNormal3d(0, 0, -1);
                 gl.glBegin(GL2.GL_POLYGON);
                 for (int division = 0; division <= options.vectorProperties.divisions; division++) {
-                    gl.glVertex3d(options.vectorProperties.tipRadius * Math.sin(angleJump * division),
-                            options.vectorProperties.tipRadius * Math.cos(angleJump * division),
+                    gl.glVertex3d(options.vectorProperties.tipRadius *trig.sin(division),
+                            options.vectorProperties.tipRadius * trig.cos(division),
                             point.vector.length());
 
                 }
@@ -76,12 +81,12 @@ public class SurfacesPresenter {
             //drawing Cylinder walls
             {
                 gl.glBegin(GL2.GL_QUAD_STRIP);
-                sin = options.vectorProperties.radius * Math.sin(angleJump);
-                cos = options.vectorProperties.radius * Math.cos(angleJump);
+                sin = options.vectorProperties.radius * trig.sin(0);
+                cos = options.vectorProperties.radius * trig.cos(0);
                 //TODO: revise setting of Normal3d
                 for (int division = 0; division <= options.vectorProperties.divisions + 1; division++) {
-                    sinPrev = options.vectorProperties.radius * Math.sin(angleJump * division);
-                    cosPrev = options.vectorProperties.radius * Math.cos(angleJump * division);
+                    sinPrev = options.vectorProperties.radius * trig.sin(division);
+                    cosPrev = options.vectorProperties.radius * trig.cos(division);
 
                     if (division > 0) {
                         gl.glVertex3d(sin, cos, point.vector.length());
@@ -100,8 +105,8 @@ public class SurfacesPresenter {
                 gl.glBegin(GL2.GL_POLYGON);
                 //gl.glVertex3d(0, 0, 0);//center of disk
                 for (int division = 0; division <= options.vectorProperties.divisions; division++) {
-                    gl.glVertex3d(options.vectorProperties.radius * Math.sin(angleJump * division),
-                            options.vectorProperties.radius * Math.cos(angleJump * division),
+                    gl.glVertex3d(options.vectorProperties.radius * trig.sin(division),
+                            options.vectorProperties.radius * trig.cos(division),
                             0);
 
                 }
