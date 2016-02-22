@@ -22,10 +22,6 @@ public class SurfacesPresenter {
     }
 
     private void drawVector(GL2 gl, SurfacePoint point) {
-        //TODO: maybe do it better?
-        if(lastDivisions!=options.vectorProperties.divisions){
-            trig = new TrigonometricTab(options.vectorProperties.divisions);
-        }
         gl.glColor3d(point.color.getRed(), point.color.getGreen(), point.color.getBlue());
 
         gl.glPushMatrix();
@@ -120,6 +116,11 @@ public class SurfacesPresenter {
     }
 
     public void drawVectors(GL2 gl, int frame) {
+        //TODO: maybe do it better?
+        if(lastDivisions!=options.vectorProperties.divisions){
+            trig = new TrigonometricTab(options.vectorProperties.divisions);
+            lastDivisions = options.vectorProperties.divisions;
+        }
         if (frame >= surfaces.size()) return;
         for (SurfacePoint point : surfaces.get(frame).points) {
             drawVector(gl, point);
