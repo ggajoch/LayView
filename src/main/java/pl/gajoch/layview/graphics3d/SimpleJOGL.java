@@ -34,6 +34,8 @@ public class SimpleJOGL implements GLEventListener, MouseListener, MouseMotionLi
     static JFrame frame;
     static GLCanvas glcanvas;
 
+    private boolean isVectors = false;
+
 
     private SurfacesPresenter presenter;
 
@@ -50,6 +52,9 @@ public class SimpleJOGL implements GLEventListener, MouseListener, MouseMotionLi
     public void mouseClicked(MouseEvent e) {
         //System.out.println("Clicked");
         //System.out.println(e.getClickCount());
+        if(e.getClickCount()==2){
+            isVectors = !isVectors;
+        }
     }
 
     public void mouseEntered(MouseEvent e) {
@@ -159,7 +164,7 @@ public class SimpleJOGL implements GLEventListener, MouseListener, MouseMotionLi
             }
         });
 
-        final FPSAnimator animator = new FPSAnimator(glcanvas, 30, true);
+        final FPSAnimator animator = new FPSAnimator(glcanvas, 300, true);
         animator.start();
 
     }
@@ -261,7 +266,11 @@ public class SimpleJOGL implements GLEventListener, MouseListener, MouseMotionLi
         gl.glScaled(Math.pow(10, scale), Math.pow(10, scale), Math.pow(10, scale));
 
 
-        presenter.drawVectors(gl, frameCt++);
+        if(isVectors){
+            presenter.drawVectors(gl, frameCt++);
+        }else{
+            presenter.drawBoxes(gl, frameCt++);
+        }
         if (frameCt >= presenter.surfaces.size()) frameCt = 0;
 
 
