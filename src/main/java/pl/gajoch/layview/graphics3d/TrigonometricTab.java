@@ -21,12 +21,12 @@ public class TrigonometricTab {
     }
 
     public double sin(int division){
-        if(division <0) division = this.divisions -1;
+        for(;division<0;division+=this.divisions);
         return sinTab[division % this.divisions];
     }
 
     public double cos(int division){
-        if(division <0) division = this.divisions -1;
+        for(;division<0;division+=this.divisions);
         return cosTab[division % this.divisions];
     }
 }
