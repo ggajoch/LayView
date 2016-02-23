@@ -14,6 +14,7 @@ import org.apache.commons.math3.geometry.euclidean.threed.CardanEulerSingularity
 import org.apache.commons.math3.geometry.euclidean.threed.Rotation;
 import org.apache.commons.math3.geometry.euclidean.threed.RotationOrder;
 import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
+import pl.gajoch.layview.gui.GradientPoint;
 import pl.gajoch.layview.gui.HintGradient;
 import pl.gajoch.layview.gui.Scene3DOptions;
 
@@ -226,6 +227,35 @@ public class SimpleJOGL implements GLEventListener, MouseListener, MouseMotionLi
             presenter.surfaces.add(surfacePoints);
         }
         System.out.println("Surfaces: " + presenter.surfaces.size());
+
+        HintGradient gradient1 = new HintGradient(), gradient2 = new HintGradient();
+
+        gradient1.setReference(new Vec3d(1,0,0));
+        gradient1.add(new GradientPoint(-1.0,Color.RED));
+        gradient1.add(new GradientPoint(0,Color.WHITE));
+        gradient1.add(new GradientPoint(1.0,Color.BLUE));
+
+        gradient2.setReference(new Vec3d(0,1,0));
+        gradient2.add(new GradientPoint(-1.0,Color.DARKGREEN));
+        gradient2.add(new GradientPoint(1.0,Color.GOLD));
+
+        presenter.gradients.add(gradient1);
+        presenter.gradients.add(gradient2);
+
+        presenter.GradientsHintReset();
+        presenter.GradientsHintCalculate();
+
+        gradient1.setMaxVector(gradient1.getHintMax());
+        gradient1.setMinVector(gradient1.getHintMin());
+
+        gradient2.setMaxVector(gradient2.getHintMax());
+        gradient2.setMinVector(gradient2.getHintMin());
+
+        /*System.out.println("G1: MAX: "+gradient1.getHintMax()+" MIN: "+gradient1.getHintMin());
+        System.out.println("G2: MAX: "+gradient2.getHintMax()+" MIN: "+gradient2.getHintMin());*/
+
+        presenter.GradientsApply();
+        //presenter.gradients.add(gradient2);
 
     }
 
