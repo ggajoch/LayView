@@ -9,9 +9,6 @@ import pl.gajoch.layview.gui.Scene3DOptions;
 import javax.media.opengl.GL2;
 import java.util.ArrayList;
 
-/**
- * Created by Piotr on 21/02/2016.
- */
 public class SurfacesPresenter {
     public ArrayList<SurfacePointsList> surfaces;
 

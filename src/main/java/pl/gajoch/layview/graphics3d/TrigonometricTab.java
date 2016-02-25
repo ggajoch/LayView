@@ -1,10 +1,5 @@
 package pl.gajoch.layview.graphics3d;
 
-import java.util.ArrayList;
-
-/**
- * Created by Piotr on 22/02/2016.
- */
 public class TrigonometricTab {
     private double[] sinTab;
     private double[] cosTab;
