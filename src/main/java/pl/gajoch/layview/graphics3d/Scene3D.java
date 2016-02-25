@@ -58,6 +58,8 @@ public class Scene3D extends CameraSubScene {
         files = new FileInput();
 
         timer = new AnimationTimer() {
+            private long frameCount = 0;
+
             @Override
             public void handle(long arg0) {
                 long currentTime = System.nanoTime();
@@ -196,7 +198,6 @@ public class Scene3D extends CameraSubScene {
         });
 
         onOptionsChanged(scene3DOptions);
-
         frameCount = 0;
         timer.start();
     }
