@@ -51,23 +51,23 @@ public class SimpleJOGL implements GLEventListener, MouseListener, MouseMotionLi
     private static final double MOVE_SCALE = .01;
 
     public void mouseClicked(MouseEvent e) {
-        //System.out.println("Clicked");
-        //System.out.println(e.getClickCount());
+        System.out.println("Clicked");
+        System.out.println(e.getClickCount());
         if(e.getClickCount()==2){
             isVectors = !isVectors;
         }
     }
 
     public void mouseEntered(MouseEvent e) {
-        //System.out.println("Entered");
+        System.out.println("Entered");
     }
 
     public void mouseExited(MouseEvent e) {
-        //System.out.println("Exited");
+        System.out.println("Exited");
     }
 
     public void mouseMoved(MouseEvent e) {
-        //System.out.println("EMoved");
+        System.out.println("EMoved");
     }
 
     public void mouseWheelMoved(MouseWheelEvent e) {
@@ -203,9 +203,9 @@ public class SimpleJOGL implements GLEventListener, MouseListener, MouseMotionLi
 
         scale = 0;
 
-        glcanvas.addMouseListener(this);
-        glcanvas.addMouseMotionListener(this);
-        glcanvas.addMouseWheelListener(this);
+//        glcanvas.addMouseListener(this);
+//        glcanvas.addMouseMotionListener(this);
+//        glcanvas.addMouseWheelListener(this);
 
         Scene3DOptions options = new Scene3DOptions(0.025, 0.025, 0.01, 0.1, new Vec3d(.1,.1,.1), 1.0, 30, new HintGradient(), new HintGradient());
         presenter = new SurfacesPresenter(options);
@@ -213,9 +213,9 @@ public class SimpleJOGL implements GLEventListener, MouseListener, MouseMotionLi
         for (double angle = 0; angle <= Math.PI * 4; angle += Math.PI / 150) {
             SurfacePointsList surfacePoints = new SurfacePointsList();
 
-            for (double x = -1; x <= 1; x += .1) {
-                for (double y = -1; y <= 1; y += .1) {
-                    for (double z = -1; z <= 1; z += .1) {
+            for (double x = -1; x <= 1; x += .5) {
+                for (double y = -1; y <= 1; y += .5) {
+                    for (double z = -1; z <= 1; z += .5) {
                         SurfacePoint point = new SurfacePoint(new Vec3d(x, y, z),
                                 new Vec3d(x / 10 * Math.sin(angle), y / 10 * Math.cos(angle), z / 10),
                                 new Color((x + 1) / 2 * Math.abs(Math.sin(angle)), (y + 1) / 2 * Math.abs(Math.cos(angle)), (z + 1) / 2, 1));
@@ -280,7 +280,7 @@ public class SimpleJOGL implements GLEventListener, MouseListener, MouseMotionLi
     private void render(GLAutoDrawable drawable) {
         final GL2 gl = drawable.getGL().getGL2();
         now = System.nanoTime();
-        System.out.println(1e9f / ((float) (now - last)));
+//        System.out.println(1e9f / ((float) (now - last)));
         last = now;
         gl.glClear(GL2.GL_COLOR_BUFFER_BIT | GL2.GL_DEPTH_BUFFER_BIT);
         gl.glClearColor(0.8f, 0.8f, 0.8f, 1.0f);

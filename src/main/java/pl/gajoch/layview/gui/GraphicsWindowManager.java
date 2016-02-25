@@ -105,7 +105,7 @@ public class GraphicsWindowManager {
     }
 
     public void add3D() {
-        CameraSubScene scene = new Scene3D(this,600,600);
+        MovableSubScene scene = new JOGLScene(this,600,600);
         addSizeRecalculations(scene);
         subScenes.add(scene);
         recalculate();
