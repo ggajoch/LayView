@@ -32,8 +32,8 @@ import javax.swing.JFrame;
 public class SimpleJOGL implements GLEventListener, MouseListener, MouseMotionListener, MouseWheelListener {
 
 
-    static JFrame frame;
-    static GLCanvas glcanvas;
+    JFrame frame;
+    GLCanvas glcanvas;
 
     private boolean isVectors = false;
 
@@ -147,26 +147,26 @@ public class SimpleJOGL implements GLEventListener, MouseListener, MouseMotionLi
     }
 
     public static void main(String[] args) {
-        final GLProfile profile = GLProfile.get(GLProfile.GL2);
-        GLCapabilities capabilities = new GLCapabilities(profile);
-        // The canvas
-        glcanvas = new GLCanvas(capabilities);
-        SimpleJOGL cube = new SimpleJOGL();
-        glcanvas.addGLEventListener(cube);
-        glcanvas.setSize(700, 700);
-        frame = new JFrame("LayVIEW development preview");
-        frame.getContentPane().add(glcanvas);
-        frame.setSize(frame.getContentPane().getPreferredSize());
-        frame.setVisible(true);
-
-        frame.addWindowListener(new WindowAdapter() {
-            public void windowClosing(WindowEvent e) {
-                System.exit(0);
-            }
-        });
-
-        final FPSAnimator animator = new FPSAnimator(glcanvas, 300, true);
-        animator.start();
+//        final GLProfile profile = GLProfile.get(GLProfile.GL2);
+//        GLCapabilities capabilities = new GLCapabilities(profile);
+//        // The canvas
+//        glcanvas = new GLCanvas(capabilities);
+//        SimpleJOGL cube = new SimpleJOGL();
+//        glcanvas.addGLEventListener(cube);
+//        glcanvas.setSize(700, 700);
+//        frame = new JFrame("LayVIEW development preview");
+//        frame.getContentPane().add(glcanvas);
+//        frame.setSize(frame.getContentPane().getPreferredSize());
+//        frame.setVisible(true);
+//
+//        frame.addWindowListener(new WindowAdapter() {
+//            public void windowClosing(WindowEvent e) {
+//                System.exit(0);
+//            }
+//        });
+//
+//        final FPSAnimator animator = new FPSAnimator(glcanvas, 300, true);
+//        animator.start();
 
     }
 

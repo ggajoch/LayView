@@ -16,6 +16,7 @@ import pl.gajoch.layview.gui.Controller;
 import javax.media.opengl.GLCapabilities;
 import javax.media.opengl.GLProfile;
 import javax.media.opengl.awt.GLCanvas;
+import javax.media.opengl.awt.GLJPanel;
 import javax.swing.*;
 import java.awt.*;
 import java.util.concurrent.Callable;
@@ -23,7 +24,7 @@ import java.util.concurrent.FutureTask;
 
 public class Main extends Application {
     GLCanvas glcanvas;
-    JPanel  frame;
+    GLJPanel  frame;
     JFrame jframe;
 
     @Override
@@ -48,19 +49,19 @@ public class Main extends Application {
         glcanvas.addGLEventListener(cube);
         glcanvas.setSize(700, 700);
 
-        frame = new JPanel();
-        jframe = new JFrame();
+        frame = new GLJPanel();
+//        jframe = new JFrame();
 
         JPanel jpanel = new JPanel();
-        jpanel.add(new JButton("AAA"));
+//        jpanel.add(new JButton("AAA"));
         frame.add(glcanvas);
         frame.add(jpanel);
         frame.setSize(700, 700);
         frame.setVisible(true);
 
-        jframe.add(glcanvas);
-        jframe.setSize(700, 700);
-        jframe.setVisible(true);
+//        jframe.add(glcanvas);
+//        jframe.setSize(700, 700);
+//        jframe.setVisible(true);
 
         final SwingNode swingNode = new SwingNode();
         swingNode.setContent(frame);
