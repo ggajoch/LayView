@@ -236,7 +236,7 @@ public class SimpleJOGL implements GLEventListener, MouseListener, MouseMotionLi
         gradient1.add(new GradientPoint(1.0,Color.BLUE));
 
         gradient2.setReference(new Vec3d(0,1,0));
-        gradient2.add(new GradientPoint(-1.0,Color.DARKGREEN));
+        gradient2.add(new GradientPoint(-1.0,Color.GREEN));
         gradient2.add(new GradientPoint(1.0,Color.GOLD));
 
         presenter.gradients.add(gradient1);
@@ -255,7 +255,6 @@ public class SimpleJOGL implements GLEventListener, MouseListener, MouseMotionLi
         System.out.println("G2: MAX: "+gradient2.getHintMax()+" MIN: "+gradient2.getHintMin());*/
 
         presenter.GradientsApply();
-        //presenter.gradients.add(gradient2);
 
     }
 
