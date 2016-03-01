@@ -19,7 +19,6 @@ public class Test3DCamera {
         GLCapabilities capabilities = new GLCapabilities(profile);
         // The canvas
         canvasCamera = new GLCanvas3DCamera(capabilities);
-        Test3DCamera cube = new Test3DCamera();
         canvasCamera.addGLEventListener(canvasCamera);
         canvasCamera.setSize(700, 700);
         frame = new JFrame("LayVIEW development preview");
