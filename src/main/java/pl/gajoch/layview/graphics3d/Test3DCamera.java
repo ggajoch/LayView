@@ -9,7 +9,7 @@ import javax.media.opengl.GLCapabilities;
 import javax.media.opengl.GLProfile;
 import javax.swing.JFrame;
 
-public class SimpleJOGL {
+public class Test3DCamera {
 
     static GLCanvas3DCamera canvasCamera;
     static JFrame frame;
@@ -19,7 +19,7 @@ public class SimpleJOGL {
         GLCapabilities capabilities = new GLCapabilities(profile);
         // The canvas
         canvasCamera = new GLCanvas3DCamera(capabilities);
-        SimpleJOGL cube = new SimpleJOGL();
+        Test3DCamera cube = new Test3DCamera();
         canvasCamera.addGLEventListener(canvasCamera);
         canvasCamera.setSize(700, 700);
         frame = new JFrame("LayVIEW development preview");
