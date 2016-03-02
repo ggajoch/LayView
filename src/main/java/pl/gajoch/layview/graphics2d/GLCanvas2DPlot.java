@@ -37,14 +37,14 @@ public class GLCanvas2DPlot extends GLCanvas implements GLEventListener, MouseLi
     private static final double ROTATE_SCALE = .01;
     private static final double MOVE_SCALE = .01;
 
-    public GLCanvas2DPlot(GLCapabilities capabilities){
+    public GLCanvas2DPlot(GLCapabilities capabilities) {
         super(capabilities);
     }
 
     public void mouseClicked(MouseEvent e) {
         //System.out.println("Clicked");
         //System.out.println(e.getClickCount());
-        if(e.getClickCount()==2){
+        if (e.getClickCount() == 2) {
             isVectors = !isVectors;
         }
     }
@@ -107,6 +107,8 @@ public class GLCanvas2DPlot extends GLCanvas implements GLEventListener, MouseLi
         gl.glMatrixMode(GL2.GL_MODELVIEW);
         gl.glLoadIdentity();
         gl.glClearColor(0f, 0f, 0f, 0f);
+        gl.glEnable(GL2.GL_LINE_SMOOTH);
+        gl.glHint(GL2.GL_LINE_SMOOTH_HINT, GL2.GL_NICEST);
 
         mousePos = new Vec3d();
         mouseOld = new Vec3d();
@@ -122,7 +124,6 @@ public class GLCanvas2DPlot extends GLCanvas implements GLEventListener, MouseLi
         this.addMouseWheelListener(this);
 
 
-
     }
 
     @Override
@@ -134,8 +135,10 @@ public class GLCanvas2DPlot extends GLCanvas implements GLEventListener, MouseLi
         gl.glClear(GL2.GL_COLOR_BUFFER_BIT | GL2.GL_DEPTH_BUFFER_BIT);
         gl.glMatrixMode(GL2.GL_PROJECTION);
         gl.glLoadIdentity();
-        gl.glOrtho(-2*h, 2*h, -2, 2, -1, 1);
+        gl.glOrtho(-2 * h, 2 * h, -2, 2, -1, 1);
         gl.glMatrixMode(GL2.GL_MODELVIEW);
+
+
     }
 
     private long last = 0, now;
@@ -151,14 +154,24 @@ public class GLCanvas2DPlot extends GLCanvas implements GLEventListener, MouseLi
         gl.glLoadIdentity();
         //gl.glTranslatef(0f, 0f, -5.0f);
 
-        gl.glColor3d(0,1,0);
+        gl.glColor3d(0, 1, 0);
 
-        gl.glBegin(GL2.GL_QUADS);
+        /*gl.glBegin(GL2.GL_QUADS);
 
         gl.glVertex2d(-1,-1);
         gl.glVertex2d(1,-1);
         gl.glVertex2d(1,1);
         gl.glVertex2d(-1,1);
+
+        gl.glEnd();*/
+
+        gl.glLineWidth(3);
+
+        gl.glBegin(GL2.GL_LINE_STRIP);
+
+        for (double angle = -Math.PI * 2; angle < Math.PI * 2; angle += 0.1) {
+            gl.glVertex2d(angle / 3, Math.sin(angle));
+        }
 
         gl.glEnd();
 
