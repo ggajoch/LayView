@@ -35,7 +35,7 @@ public class GLCanvas3DCamera extends GLCanvas implements GLEventListener, Mouse
 
     private static final double SCROLL_SCALE = .01;
     private static final double ROTATE_SCALE = .01;
-    private static final double MOVE_SCALE = .01;
+    private final double MOVE_SCALE = 3.275;
 
     public GLCanvas3DCamera(GLCapabilities capabilities){
         super(capabilities);
@@ -124,9 +124,10 @@ public class GLCanvas3DCamera extends GLCanvas implements GLEventListener, Mouse
             System.out.println("Middle");
         }*/
         if ((e.getModifiers() & e.BUTTON3_MASK) != 0) {
+
             Rotation baseRotation = new Rotation(RotationOrder.ZXY, angle.x, angle.y, angle.z);//magic happens!
             Vector3D planeTranslate = baseRotation.applyInverseTo(
-                    new Vector3D(mouseDelta.x * MOVE_SCALE, -mouseDelta.y * MOVE_SCALE, 0)
+                    new Vector3D(mouseDelta.x * MOVE_SCALE / this.getHeight(), -mouseDelta.y * MOVE_SCALE / this.getHeight(), 0)
             );
 
             offset.x += planeTranslate.getX() * Math.pow(10, -scale);
@@ -222,6 +223,8 @@ public class GLCanvas3DCamera extends GLCanvas implements GLEventListener, Mouse
         System.out.println("G2: MAX: "+gradient2.getHintMax()+" MIN: "+gradient2.getHintMin());*/
 
         presenter.GradientsApply();
+
+
 
     }
 
