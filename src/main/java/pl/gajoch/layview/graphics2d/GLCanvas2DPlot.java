@@ -1,5 +1,6 @@
 package pl.gajoch.layview.graphics2d;
 
+import com.jogamp.opengl.util.awt.TextRenderer;
 import com.sun.javafx.geom.Vec3d;
 import javafx.scene.paint.Color;
 import org.apache.commons.math3.geometry.euclidean.threed.CardanEulerSingularityException;
@@ -16,14 +17,13 @@ import pl.gajoch.layview.gui.Scene3DOptions;
 import javax.media.opengl.*;
 import javax.media.opengl.awt.GLCanvas;
 import javax.media.opengl.glu.GLU;
+import java.awt.*;
 import java.awt.event.*;
 
-/**
- * Created by Piotr on 02/03/2016.
- */
 public class GLCanvas2DPlot extends GLCanvas implements GLEventListener, MouseListener, MouseMotionListener, MouseWheelListener {
-    private boolean isVectors = false;
+    private boolean isLine = true;
 
+    private TextRenderer renderer;
 
     private SurfacesPresenter presenter;
 
@@ -45,7 +45,7 @@ public class GLCanvas2DPlot extends GLCanvas implements GLEventListener, MouseLi
         //System.out.println("Clicked");
         //System.out.println(e.getClickCount());
         if (e.getClickCount() == 2) {
-            isVectors = !isVectors;
+            isLine = !isLine;
         }
     }
 
@@ -110,6 +110,8 @@ public class GLCanvas2DPlot extends GLCanvas implements GLEventListener, MouseLi
         gl.glEnable(GL2.GL_LINE_SMOOTH);
         gl.glHint(GL2.GL_LINE_SMOOTH_HINT, GL2.GL_NICEST);
 
+        renderer = new TextRenderer(new Font("ComicSans", Font.BOLD, 36));
+
         mousePos = new Vec3d();
         mouseOld = new Vec3d();
         mouseDelta = new Vec3d();
@@ -144,15 +146,17 @@ public class GLCanvas2DPlot extends GLCanvas implements GLEventListener, MouseLi
     private long last = 0, now;
     private int frameCt = 0;
 
+    private double a0 = 0;
+
     private void render(GLAutoDrawable drawable) {
         final GL2 gl = drawable.getGL().getGL2();
-        /*now = System.nanoTime();
-        System.out.println(1e9f / ((float) (now - last)));
-        last = now;*/
+        now = System.nanoTime();
+        //System.out.println(1e9f / ((float) (now - last)));
+        String fps = new String("FPS = " + String.format("%.2f", 1e9f / ((float) (now - last))));
+        last = now;
         gl.glClear(GL2.GL_COLOR_BUFFER_BIT | GL2.GL_DEPTH_BUFFER_BIT);
         gl.glClearColor(0.8f, 0.8f, 0.8f, 1.0f);
         gl.glLoadIdentity();
-        //gl.glTranslatef(0f, 0f, -5.0f);
 
         gl.glColor3d(0, 1, 0);
 
@@ -170,11 +174,18 @@ public class GLCanvas2DPlot extends GLCanvas implements GLEventListener, MouseLi
         gl.glBegin(GL2.GL_LINE_STRIP);
 
         for (double angle = -Math.PI * 2; angle < Math.PI * 2; angle += 0.1) {
-            gl.glVertex2d(angle / 3, Math.sin(angle));
+            gl.glColor3d(0, (angle / Math.PI / 4)+0.5, 0);
+            gl.glVertex2d(angle / Math.PI, Math.sin(angle+a0)+Math.sin(angle*2+a0*2));
         }
 
         gl.glEnd();
 
+        renderer.beginRendering(this.getWidth(), this.getHeight());
+        renderer.setColor(1.0f, 0.2f, 0.2f, 0.8f);
+        renderer.draw(fps, 0, 0);
+        renderer.endRendering();
+
         gl.glFlush();
+        a0+=0.03;
     }
 }
