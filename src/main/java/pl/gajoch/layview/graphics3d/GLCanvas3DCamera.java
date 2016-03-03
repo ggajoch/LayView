@@ -1,6 +1,7 @@
 package pl.gajoch.layview.graphics3d;
 
 import com.jogamp.opengl.util.FPSAnimator;
+import com.jogamp.opengl.util.awt.TextRenderer;
 import com.sun.javafx.geom.Vec3d;
 import javafx.scene.paint.Color;
 import org.apache.commons.math3.geometry.euclidean.threed.CardanEulerSingularityException;
@@ -15,6 +16,7 @@ import javax.media.opengl.*;
 import javax.media.opengl.awt.GLCanvas;
 import javax.media.opengl.glu.GLU;
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.*;
 
 /**
@@ -23,6 +25,8 @@ import java.awt.event.*;
 public class GLCanvas3DCamera extends GLCanvas implements GLEventListener, MouseListener, MouseMotionListener, MouseWheelListener {
 
     private boolean isVectors = false;
+
+    TextRenderer renderer;
 
 
     private SurfacesPresenter presenter;
@@ -37,14 +41,14 @@ public class GLCanvas3DCamera extends GLCanvas implements GLEventListener, Mouse
     private static final double ROTATE_SCALE = .01;
     private final double MOVE_SCALE = 3.275;
 
-    public GLCanvas3DCamera(GLCapabilities capabilities){
+    public GLCanvas3DCamera(GLCapabilities capabilities) {
         super(capabilities);
     }
 
     public void mouseClicked(MouseEvent e) {
         //System.out.println("Clicked");
         //System.out.println(e.getClickCount());
-        if(e.getClickCount()==2){
+        if (e.getClickCount() == 2) {
             isVectors = !isVectors;
         }
     }
@@ -162,6 +166,8 @@ public class GLCanvas3DCamera extends GLCanvas implements GLEventListener, Mouse
         gl.glEnable(GL2.GL_LIGHT0);
         gl.glEnable(GL2.GL_NORMALIZE);
 
+        renderer = new TextRenderer(new Font("SansSerif", Font.BOLD, 36));
+
         mousePos = new Vec3d();
         mouseOld = new Vec3d();
         mouseDelta = new Vec3d();
@@ -175,7 +181,7 @@ public class GLCanvas3DCamera extends GLCanvas implements GLEventListener, Mouse
         this.addMouseMotionListener(this);
         this.addMouseWheelListener(this);
 
-        Scene3DOptions options = new Scene3DOptions(0.025, 0.025, 0.01, 0.1, new Vec3d(.1,.1,.1), 1.0, 30, new HintGradient(), new HintGradient());
+        Scene3DOptions options = new Scene3DOptions(0.025, 0.025, 0.01, 0.1, new Vec3d(.1, .1, .1), 1.0, 30, new HintGradient(), new HintGradient());
         presenter = new SurfacesPresenter(options);
 
         for (double angle = 0; angle <= Math.PI * 4; angle += Math.PI / 150) {
@@ -198,14 +204,14 @@ public class GLCanvas3DCamera extends GLCanvas implements GLEventListener, Mouse
 
         HintGradient gradient1 = new HintGradient(), gradient2 = new HintGradient();
 
-        gradient1.setReference(new Vec3d(1,0,0));
-        gradient1.add(new GradientPoint(-1.0,Color.RED));
-        gradient1.add(new GradientPoint(0,Color.WHITE));
-        gradient1.add(new GradientPoint(1.0,Color.BLUE));
+        gradient1.setReference(new Vec3d(1, 0, 0));
+        gradient1.add(new GradientPoint(-1.0, Color.RED));
+        gradient1.add(new GradientPoint(0, Color.WHITE));
+        gradient1.add(new GradientPoint(1.0, Color.BLUE));
 
-        gradient2.setReference(new Vec3d(0,1,0));
-        gradient2.add(new GradientPoint(-1.0,Color.GREEN));
-        gradient2.add(new GradientPoint(1.0,Color.GOLD));
+        gradient2.setReference(new Vec3d(0, 1, 0));
+        gradient2.add(new GradientPoint(-1.0, Color.GREEN));
+        gradient2.add(new GradientPoint(1.0, Color.GOLD));
 
         presenter.gradients.add(gradient1);
         presenter.gradients.add(gradient2);
@@ -223,7 +229,6 @@ public class GLCanvas3DCamera extends GLCanvas implements GLEventListener, Mouse
         System.out.println("G2: MAX: "+gradient2.getHintMax()+" MIN: "+gradient2.getHintMin());*/
 
         presenter.GradientsApply();
-
 
 
     }
@@ -247,9 +252,12 @@ public class GLCanvas3DCamera extends GLCanvas implements GLEventListener, Mouse
     private int frameCt = 0;
 
     private void render(GLAutoDrawable drawable) {
+
+
         final GL2 gl = drawable.getGL().getGL2();
         now = System.nanoTime();
-        System.out.println(1e9f / ((float) (now - last)));
+        //System.out.println(1e9f / ((float) (now - last)));
+        String fps = new String("FPS = " + String.format("%.2f", 1e9f / ((float) (now - last))));
         last = now;
         gl.glClear(GL2.GL_COLOR_BUFFER_BIT | GL2.GL_DEPTH_BUFFER_BIT);
         gl.glClearColor(0.8f, 0.8f, 0.8f, 1.0f);
@@ -265,12 +273,19 @@ public class GLCanvas3DCamera extends GLCanvas implements GLEventListener, Mouse
         gl.glScaled(Math.pow(10, scale), Math.pow(10, scale), Math.pow(10, scale));
 
 
-        if(isVectors){
+        if (isVectors) {
             presenter.drawVectors(gl, frameCt++);
-        }else{
+        } else {
             presenter.drawBoxes(gl, frameCt++);
         }
         if (frameCt >= presenter.surfaces.size()) frameCt = 0;
+
+        renderer.beginRendering(this.getWidth(), this.getHeight());
+        // optionally set the color
+        renderer.setColor(1.0f, 0.2f, 0.2f, 0.8f);
+        renderer.draw3D(fps, 0, 0, 0, 1);
+        // ... more draw commands, color changes, etc.
+        renderer.endRendering();
 
 
         gl.glFlush();
