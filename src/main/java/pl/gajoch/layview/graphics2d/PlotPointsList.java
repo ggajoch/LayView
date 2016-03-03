@@ -4,9 +4,6 @@ package pl.gajoch.layview.graphics2d;
 import java.util.ArrayList;
 import java.util.Collection;
 
-/**
- * Created by Piotr on 03/03/2016.
- */
 public class PlotPointsList {
     public ArrayList<PlotPoint> points;
     public PlotPoint min, max;
