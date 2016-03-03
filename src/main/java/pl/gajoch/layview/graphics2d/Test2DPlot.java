@@ -9,9 +9,6 @@ import javax.swing.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
-/**
- * Created by Piotr on 02/03/2016.
- */
 public class Test2DPlot {
     static GLCanvas2DPlot canvasCamera;
     static JFrame frame;

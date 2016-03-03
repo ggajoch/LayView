@@ -19,14 +19,11 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
-/**
- * Created by Piotr on 01/03/2016.
- */
 public class GLCanvas3DCamera extends GLCanvas implements GLEventListener, MouseListener, MouseMotionListener, MouseWheelListener {
 
     private boolean isVectors = false;
 
-    TextRenderer renderer;
+    private TextRenderer renderer;
 
 
     private SurfacesPresenter presenter;
