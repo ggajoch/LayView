@@ -1,6 +1,7 @@
 package pl.gajoch.layview.graphics2d;
 
 import com.jogamp.opengl.util.awt.TextRenderer;
+import com.sun.javafx.geom.Vec2d;
 import com.sun.javafx.geom.Vec3d;
 import javafx.scene.paint.Color;
 import org.apache.commons.math3.geometry.euclidean.threed.CardanEulerSingularityException;
@@ -25,7 +26,7 @@ public class GLCanvas2DPlot extends GLCanvas implements GLEventListener, MouseLi
 
     private TextRenderer renderer;
 
-    private SurfacesPresenter presenter;
+    private PlotPresenter presenter;
 
     private Vec3d mousePos, mouseOld, mouseDelta;
 
@@ -125,7 +126,11 @@ public class GLCanvas2DPlot extends GLCanvas implements GLEventListener, MouseLi
         this.addMouseMotionListener(this);
         this.addMouseWheelListener(this);
 
+        presenter = new PlotPresenter(new PlotOptions());
 
+        for (double angle = -Math.PI * 2; angle < Math.PI * 2; angle += 0.1) {
+            presenter.points.add(new PlotPoint(new Vec2d(angle / Math.PI, Math.sin(angle)+Math.sin(angle*2))));
+        }
     }
 
     @Override
@@ -169,7 +174,7 @@ public class GLCanvas2DPlot extends GLCanvas implements GLEventListener, MouseLi
 
         gl.glEnd();*/
 
-        gl.glLineWidth(3);
+        /*gl.glLineWidth(3);
 
         gl.glBegin(GL2.GL_LINE_STRIP);
 
@@ -178,7 +183,15 @@ public class GLCanvas2DPlot extends GLCanvas implements GLEventListener, MouseLi
             gl.glVertex2d(angle / Math.PI, Math.sin(angle+a0)+Math.sin(angle*2+a0*2));
         }
 
-        gl.glEnd();
+        gl.glEnd();*/
+
+        if(frameCt>=presenter.points.size()){
+            frameCt = 0;
+        }
+        presenter.draw(gl,frameCt);
+
+        frameCt++;
+
 
         renderer.beginRendering(this.getWidth(), this.getHeight());
         renderer.setColor(1.0f, 0.2f, 0.2f, 0.8f);
