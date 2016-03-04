@@ -17,7 +17,7 @@ public class SurfacesPresenter {
 
     public ArrayList<HintGradient> gradients;
 
-    private Scene3DOptions options;
+    public Scene3DOptions options;
     private TrigonometricTab trig;
     private int lastDivisions;
 
@@ -264,6 +264,14 @@ public class SurfacesPresenter {
         if (frame >= surfaces.size()) return;
         for (SurfacePoint point : surfaces.get(frame).points) {
             drawBox(gl, point);
+        }
+    }
+
+    public void draw(GL2 gl, int frame){
+        if(options.isVectors){
+            drawVectors(gl, frame);
+        }else{
+            drawBoxes(gl, frame);
         }
     }
 

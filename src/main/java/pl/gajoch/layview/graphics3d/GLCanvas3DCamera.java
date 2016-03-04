@@ -46,7 +46,7 @@ public class GLCanvas3DCamera extends GLCanvas implements GLEventListener, Mouse
         //System.out.println("Clicked");
         //System.out.println(e.getClickCount());
         if (e.getClickCount() == 2) {
-            isVectors = !isVectors;
+            presenter.options.isVectors = !presenter.options.isVectors;
         }
     }
 
@@ -270,11 +270,7 @@ public class GLCanvas3DCamera extends GLCanvas implements GLEventListener, Mouse
         gl.glScaled(Math.pow(10, scale), Math.pow(10, scale), Math.pow(10, scale));
 
 
-        if (isVectors) {
-            presenter.drawVectors(gl, frameCt++);
-        } else {
-            presenter.drawBoxes(gl, frameCt++);
-        }
+        presenter.draw(gl, frameCt++);
         if (frameCt >= presenter.surfaces.size()) frameCt = 0;
 
         renderer.beginRendering(this.getWidth(), this.getHeight());
