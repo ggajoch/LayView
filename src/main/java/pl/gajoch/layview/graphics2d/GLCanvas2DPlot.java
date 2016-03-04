@@ -46,7 +46,7 @@ public class GLCanvas2DPlot extends GLCanvas implements GLEventListener, MouseLi
         //System.out.println("Clicked");
         //System.out.println(e.getClickCount());
         if (e.getClickCount() == 2) {
-            isLine = !isLine;
+            presenter.options.isLine = !presenter.options.isLine;
         }
     }
 

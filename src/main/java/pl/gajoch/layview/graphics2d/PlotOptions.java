@@ -4,14 +4,16 @@ import javafx.scene.paint.Color;
 
 public class PlotOptions {
     public float width;
-    public float symbolRadius;
+    public double symbolRadius;
     public boolean isLine;
     public Color color;
+    public int divisions;
 
     public PlotOptions() {
         width = 3;
-        symbolRadius = 1;
+        symbolRadius = 0.05;
         isLine = true;
         color = Color.GREEN;
+        divisions = 10;
     }
 }
