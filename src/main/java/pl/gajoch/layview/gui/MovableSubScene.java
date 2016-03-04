@@ -1,87 +1,91 @@
 package pl.gajoch.layview.gui;
 
+import javafx.application.Platform;
 import javafx.beans.property.SimpleObjectProperty;
-import javafx.scene.SceneAntialiasing;
-import javafx.scene.SubScene;
-import javafx.scene.control.ContextMenu;
-import javafx.scene.control.MenuItem;
-import javafx.scene.input.MouseButton;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Pane;
 
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.Collection;
 
 public class MovableSubScene {
-    public SubScene scene;
-    public SimpleObjectProperty<WindowPosition> position;
+    public JPanel scene;
+    public SimpleObjectProperty<Rectangle> position;
     private MoveWindowEditor moveWindowEditor;
     private GraphicsWindowManager graphicsWindowManager;
+    private JPopupMenu contextMenu;
 
-    public MovableSubScene(GraphicsWindowManager parent, double width, double height) {
+    public MovableSubScene(GraphicsWindowManager parent, int width, int height) {
         graphicsWindowManager = parent;
-        Pane p = new Pane();
-        scene = new SubScene(p, width, height, true, SceneAntialiasing.BALANCED);
+        //scene = new SubScene(p, width, height, true, SceneAntialiasing.BALANCED);
+        scene = new JPanel();
+        scene.setLayout(null);
         moveWindowEditor = new MoveWindowEditor();
 
         position = new SimpleObjectProperty<>();
+        position.setValue(new Rectangle(0, 0, width, height));
+        scene.setBounds(position.getValue());
 
-        scene.setOnMouseClicked(event -> {
-            if( event.getButton() == MouseButton.PRIMARY && event.isStillSincePress() ) {
-                parent.clicked(this);
-                event.consume();
-            }
-        });
+//        scene.setOnMouseClicked(event -> {
+//            if( event.getButton() == MouseButton.PRIMARY && event.isStillSincePress() ) {
+//                parent.clicked(this);
+//                event.consume();
+//            }
+//        });
     }
 
-    protected void generateContextMenu(Collection<? extends MenuItem> list) {
-        ContextMenu contextMenu = new ContextMenu();
-        contextMenu.getItems().addAll(list);
-
-        MenuItem item1 = new MenuItem("Move...");
-        item1.setOnAction(e -> {
+    protected void openContextMenu(MouseEvent me) {
+        System.out.println("Mouse Left Pressed");
+        System.out.println(me.getX());
+        System.out.println(me.getY());
+        contextMenu.show(scene, me.getX(), me.getY());
+        me.consume();
+    }
+    protected void generateContextMenu(Collection<? extends JMenuItem> list) {
+        contextMenu = new JPopupMenu("Menu");
+        list.forEach(contextMenu::add);
+        JMenuItem item = new JMenuItem("Move...");
+        item.addActionListener(e1 -> {
             position.set(this.getPosition());
 
-            position.addListener((observable, oldValue, newValue) -> {
-                setPosition(newValue);
+            SimpleObjectProperty<Rectangle> actual_position = new SimpleObjectProperty<>(position.get());
+            actual_position.addListener((observable, oldValue, newValue) -> {
+                SwingUtilities.invokeLater(() -> {
+                    setPosition(newValue);
+                    position.set(actual_position.get());
+                });
             });
-            moveWindowEditor.exec(position);
+            Platform.runLater(() ->
+                moveWindowEditor.exec(actual_position));
         });
-        contextMenu.getItems().add(item1);
+        contextMenu.add(item);
 
-        MenuItem item2 = new MenuItem("Delete");
-        item2.setOnAction(e -> graphicsWindowManager.del(this));
-        contextMenu.getItems().add(item2);
 
-        scene.addEventHandler(MouseEvent.MOUSE_CLICKED, (MouseEvent me) -> {
-            if (me.getButton() == MouseButton.SECONDARY && me.isStillSincePress()) {
-                System.out.println("Mouse Left Pressed");
-                System.out.println(me.getScreenX());
-                System.out.println(me.getScreenY());
-                contextMenu.show(scene, me.getScreenX(), me.getScreenY());
-            } else {
-                contextMenu.hide();
-            }
-            me.consume();
-        });
+        JMenuItem item2 = new JMenuItem("Delete");
+        item2.addActionListener(e1 -> graphicsWindowManager.del(this));
+        contextMenu.add(item2);
+
+        scene.setComponentPopupMenu(contextMenu);
+
+        System.out.println("context menu generated!");
     }
 
-    public void setPosition(WindowPosition position) {
-        scene.setWidth(position.xSize);
-        scene.setHeight(position.ySize);
-        scene.setLayoutX(position.xOffset);
-        scene.setLayoutY(position.yOffset);
-        fixCenter(position.xSize, position.ySize);
+    public void setPosition(Rectangle position) {
+        scene.setBounds(position);
+        scene.repaint();
+        fixCenter(position.getWidth(), position.getHeight());
     }
 
-    public void fixCenter(double width, double height){
+    public void fixCenter(double width, double height) {
 
     }
 
-    public WindowPosition getPosition() {
-        return new WindowPosition(Double.valueOf(scene.getWidth()).intValue(),
-                Double.valueOf(scene.getHeight()).intValue(),
-                Double.valueOf(scene.getLayoutX()).intValue(),
-                Double.valueOf(scene.getLayoutY()).intValue());
+    public Rectangle getPosition() {
+        return new Rectangle(scene.getX(),
+                scene.getY(),
+                scene.getWidth(),
+                scene.getHeight());
     }
 
 

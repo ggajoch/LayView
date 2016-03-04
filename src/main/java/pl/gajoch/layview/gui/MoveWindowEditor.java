@@ -7,6 +7,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+import java.awt.*;
 import java.io.IOException;
 
 public class MoveWindowEditor {
@@ -29,9 +30,8 @@ public class MoveWindowEditor {
         windowController = load.getController();
     }
 
-    public WindowPosition exec(SimpleObjectProperty<WindowPosition> windowPosition) {
+    public void exec(SimpleObjectProperty<Rectangle> windowPosition) {
         windowController.setup(primaryStage, windowPosition);
         primaryStage.showAndWait();
-        return windowController.getWindowPosition();
     }
 }

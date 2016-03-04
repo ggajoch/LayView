@@ -6,15 +6,17 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
+import java.awt.*;
+
 public class MoveWindowController {
 
     // ----------------------------- Public API  -----------------------------
 
-    public WindowPosition getWindowPosition() {
+    public Rectangle getWindowPosition() {
         return windowPosition.get();
     }
 
-    public void setup(Stage stage, SimpleObjectProperty<WindowPosition> windowPosition) {
+    public void setup(Stage stage, SimpleObjectProperty<Rectangle> windowPosition) {
         this.stage = stage;
         xSizeRich = RichTextField.of(xSize);
         ySizeRich = RichTextField.of(ySize);
@@ -34,24 +36,24 @@ public class MoveWindowController {
     // -------------------------- Private variables  -------------------------
 
     private Stage stage;
-    private WindowPosition start;
-    private SimpleObjectProperty<WindowPosition> windowPosition;
+    private Rectangle start;
+    private SimpleObjectProperty<Rectangle> windowPosition;
     RichTextField xSizeRich, ySizeRich, xOffsetRich, yOffsetRich;
 
     // --------------------------- Private methods  --------------------------
 
-    private void setWindowPosition(WindowPosition windowPosition) {
+    private void setWindowPosition(Rectangle windowPosition) {
         if (windowPosition != null) {
-            xSizeRich.set(windowPosition.xSize);
-            ySizeRich.set(windowPosition.ySize);
-            xOffsetRich.set(windowPosition.xOffset);
-            yOffsetRich.set(windowPosition.yOffset);
+            xSizeRich.setInteger(windowPosition.getWidth());
+            ySizeRich.setInteger(windowPosition.getHeight());
+            xOffsetRich.setInteger(windowPosition.getX());
+            yOffsetRich.setInteger(windowPosition.getY());
         }
     }
 
     private void recalculate() {
-        WindowPosition pos = new WindowPosition(xSizeRich.getInt(), ySizeRich.getInt(),
-                xOffsetRich.getInt(), yOffsetRich.getInt());
+        Rectangle pos = new Rectangle(xOffsetRich.getInt(), yOffsetRich.getInt(),
+                xSizeRich.getInt(), ySizeRich.getInt());
         windowPosition.set(pos);
     }
 

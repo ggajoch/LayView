@@ -3,6 +3,7 @@ package pl.gajoch.layview.graphics3d;
 import com.jogamp.opengl.util.FPSAnimator;
 import com.sun.javafx.geom.Vec3d;
 import javafx.animation.AnimationTimer;
+import javafx.application.Platform;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.embed.swing.SwingNode;
 import javafx.scene.Group;
@@ -17,8 +18,7 @@ import javax.media.opengl.GLCapabilities;
 import javax.media.opengl.GLProfile;
 import javax.media.opengl.awt.GLCanvas;
 import javax.swing.*;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
+import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -35,7 +35,7 @@ public class JOGLScene extends MovableSubScene {
     final HintGradient grad1 = new HintGradient();
     final HintGradient grad2 = new HintGradient();
 
-    private Scene3DOptions scene3DOptions = new Scene3DOptions(1.5e-10, 2.0e-10, 1.0e-10, 1.0e-15, new Vec3d(1, 1, 1), 1e10, 0, grad1, grad2);
+    private volatile Scene3DOptions scene3DOptions = new Scene3DOptions(1.5e-10, 2.0e-10, 1.0e-10, 1.0e-15, new Vec3d(1, 1, 1), 1e10, 0, grad1, grad2);
 
     ArrayList<GradientSurfacePointsList> surfaces = new ArrayList<>();
 
@@ -51,11 +51,10 @@ public class JOGLScene extends MovableSubScene {
     ArrayList<Vector> vectors = new ArrayList<>();
 
 
-    JPanel frame;
     GLCanvas glcanvas;
 
 
-    public JOGLScene(GraphicsWindowManager parent, double width, double height) {
+    public JOGLScene(GraphicsWindowManager parent, int width, int height) {
         super(parent, width, height);
 
         fileInputSelector = new FileInputSelector();
@@ -69,16 +68,20 @@ public class JOGLScene extends MovableSubScene {
             onOptionsChanged(newValue);
         });
 
-        List<MenuItem> menu = new ArrayList<>();
+        List<JMenuItem> menu = new ArrayList<>();
 
-        MenuItem item1 = new MenuItem("File select...");
-        item1.setOnAction(e -> {
+        JMenuItem item1 = new JMenuItem("File select...");
+        item1.addActionListener(e -> {
             onFileSelect();
         });
         menu.add(item1);
 
-        MenuItem item2 = new MenuItem("Options...");
-        item2.setOnAction(e -> scene3DOptionsEditor.exec(optionsProperty));
+        JMenuItem item2 = new JMenuItem("Options...");
+        item2.addActionListener(e -> {
+            Platform.runLater(() -> {
+                scene3DOptionsEditor.exec(optionsProperty);
+            });
+        });
         menu.add(item2);
 
         this.generateContextMenu(menu);
@@ -87,43 +90,69 @@ public class JOGLScene extends MovableSubScene {
         GLCapabilities capabilities = new GLCapabilities(profile);
         // The canvas
         glcanvas = new GLCanvas(capabilities);
+
+
         SimpleJOGL cube = new SimpleJOGL();
         glcanvas.addGLEventListener(cube);
-        glcanvas.setSize(600, 600);
+        glcanvas.setSize(width, height);
+        //glcanvas.setAutoSwapBufferMode(true);
 
-//        frame = new JPanel("LayVIEW development preview");
-        frame = new JPanel();
+        glcanvas.addMouseWheelListener(new MouseWheelListener() {
+            @Override
+            public void mouseWheelMoved(MouseWheelEvent e) {
+                cube.mouseWheelMoved(e);
+            }
+        });
 
-        frame.add(glcanvas);
-        frame.setSize((int)Math.round(width), (int)Math.round(height));
-        frame.setVisible(true);
+        glcanvas.addMouseMotionListener(new MouseMotionListener() {
+            @Override
+            public void mouseDragged(MouseEvent e) {
+                cube.mouseDragged(e);
+            }
 
-//        frame.getContentPane().add(glcanvas);
-//        frame.setSize(frame.getContentPane().getPreferredSize());
-//        frame.setVisible(true);
+            @Override
+            public void mouseMoved(MouseEvent e) {
+                cube.mouseMoved(e);
+            }
+        });
 
-//        frame.addWindowListener(new WindowAdapter() {
-//            public void windowClosing(WindowEvent e) {
-//                System.exit(0);
-//            }
-//        });
+        glcanvas.addMouseListener(new MouseListener() {
+            @Override
+            public void mouseClicked(MouseEvent me) {
+                System.out.println("clicked!");
+                System.out.println(me.getButton());
+                if (me.getButton() == MouseEvent.BUTTON3) {
+                    openContextMenu(me);
+                }
+            }
 
-        final SwingNode swingNode = new SwingNode();
-        swingNode.setContent(frame);
-//        frame.getContentPane().add(glcanvas);
-//        frame.setSize(frame.getContentPane().getPreferredSize());
-//        frame.setVisible(true);
-//
-//        frame.addWindowListener(new WindowAdapter() {
-//            public void windowClosing(WindowEvent e) {
-//                System.exit(0);
-//            }
-//        });
+            @Override
+            public void mousePressed(MouseEvent e) {
+                System.out.println("B");
+                cube.mousePressed(e);
+            }
 
-        StackPane pane = new StackPane();
-        pane.getChildren().add(swingNode);
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                System.out.println("C");
+                cube.mouseReleased(e);
+            }
 
-        this.scene.rootProperty().setValue(pane);
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                System.out.println("D");
+                cube.mouseEntered(e);
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                System.out.println("E");
+                cube.mouseExited(e);
+            }
+        });
+
+        SwingUtilities.invokeLater(() ->
+            this.scene.add(glcanvas));
 
         final FPSAnimator animator = new FPSAnimator(glcanvas, 300, true);
         animator.start();
@@ -172,32 +201,35 @@ public class JOGLScene extends MovableSubScene {
 
     private void onFileSelect() {
 //        timer.stop();
-        List<OMFData> omfDatas = fileInputSelector.
+        Platform.runLater(() -> {
+            List<OMFData> omfDatas = fileInputSelector.
                 exec(files).
                 stream().
                 map(file -> new OMFParser().parseFile(file)).
                 collect(Collectors.toList());
 
-        /*omfDatas.stream().findFirst().get().points.forEach(surfacePoint -> {
+
+            /*omfDatas.stream().findFirst().get().points.forEach(surfacePoint -> {
             System.out.println("point: " + surfacePoint.position);
-        });*/
+            });*/
 
-        /*surface.clear();
-        surface.addAll(omfDatas.stream().findFirst().get().points);*/
+            /*surface.clear();
+            surface.addAll(omfDatas.stream().findFirst().get().points);*/
 
 
-        surfaces.clear();
-        omfDatas.stream().forEach(surfaceData -> {
+            surfaces.clear();
+            omfDatas.stream().forEach(surfaceData -> {
 
             GradientSurfacePointsList currentSurface = new GradientSurfacePointsList();
             currentSurface.addAll(surfaceData.points);
             surfaces.add(currentSurface);
 
-        });
+            });
 
-        onOptionsChanged(scene3DOptions);
-        frameCount = 0;
-//        timer.start();
+            onOptionsChanged(scene3DOptions);
+            frameCount = 0;
+            //        timer.start();
+        });
     }
 
     private void generateExample() {

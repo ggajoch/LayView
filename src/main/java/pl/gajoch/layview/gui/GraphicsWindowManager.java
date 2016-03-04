@@ -1,25 +1,21 @@
 package pl.gajoch.layview.gui;
 
-import com.sun.javafx.geom.Vec3d;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.scene.SubScene;
-import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-import pl.gajoch.layview.graphics2d.LineGraph;
 import pl.gajoch.layview.graphics3d.*;
 
+import javax.swing.*;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.NoSuchElementException;
-import java.util.stream.Collectors;
 
 public class GraphicsWindowManager {
-    Pane pane3D;
-    ArrayList<MovableSubScene> subScenes;
+    JPanel pane3D;
+    volatile JFrame frame;
+    volatile ArrayList<MovableSubScene> subScenes;
     SimpleObjectProperty<MovableSubScene> actual_scene;
-    SubScene subScene;
-    Stage stage;
 
     public void clicked(MovableSubScene scene) {
         if (actual_scene.getValue() != null && actual_scene.getValue() == scene) {
@@ -29,8 +25,6 @@ public class GraphicsWindowManager {
         }
     }
     GraphicsWindowManager(Stage stage, SubScene subScene) {
-        this.stage = stage;
-        this.subScene = subScene;
         actual_scene = new SimpleObjectProperty<>();
         subScenes = new ArrayList<>();
 
@@ -47,57 +41,71 @@ public class GraphicsWindowManager {
             }
         });
 
-        pane3D = new Pane();
-        subScene.setRoot(pane3D);
+        pane3D = new JPanel();
+        java.awt.EventQueue.invokeLater(() -> {
+            frame = new JFrame("Main");
+            frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+            frame.setLayout(null);
+            frame.setVisible(false);
+        });
+
+        //subScene.setRoot(pane3D);
     }
 
+    Boolean vis = Boolean.TRUE;
     private void recalculate() {
-        pane3D.getChildren().clear();
-        pane3D.getChildren().addAll(
-                subScenes.stream()
-                        .map(scene -> scene.scene)
-                        .collect(Collectors.toList()));
+        System.out.println("Rec!");
+        SwingUtilities.invokeLater(() -> {
+            frame.getContentPane().removeAll();
+            for (MovableSubScene scene : subScenes) {
+                System.out.println("Position: " + scene.position.get());
+                frame.add(scene.scene);
+            }
+            frame.repaint();
+        });
     }
 
     private void recalculateWindowSize() {
         try {
-            double maxWidth = subScenes.stream()
-                    .mapToDouble(sc -> sc.getPosition().xOffset + sc.getPosition().xSize)
+            int maxWidth = (int)subScenes.stream()
+                    .mapToDouble(sc -> sc.getPosition().getX() + sc.getPosition().getWidth())
                     .max().getAsDouble();
 
-            double maxHeight = subScenes.stream()
-                    .mapToDouble(sc -> sc.getPosition().yOffset + sc.getPosition().ySize)
+            int maxHeight = (int)subScenes.stream()
+                    .mapToDouble(sc -> sc.getPosition().getY() + sc.getPosition().getHeight())
                     .max().getAsDouble();
 
-            subScene.setWidth(maxWidth);
-            subScene.setHeight(maxHeight);
-            System.out.println("size: " + maxWidth + maxHeight);
+            java.awt.EventQueue.invokeLater(() -> {
+                Insets insets = frame.getInsets();
+                frame.setSize(insets.left + insets.right + maxWidth, insets.top + insets.bottom + maxHeight);
+                if( ! frame.isVisible() )
+                    frame.setVisible(true);
+            });
+            System.out.println("size: " + maxWidth + " x " + maxHeight);
         } catch (NoSuchElementException ignored) {
-            subScene.setWidth(0);
-            subScene.setHeight(0);
+            java.awt.EventQueue.invokeLater(() -> {
+                frame.setVisible(false);
+            });
         }
-        stage.sizeToScene();
+//        stage.sizeToScene();
     }
 
     private void addSizeRecalculations(MovableSubScene scene) {
-        ChangeListener<? super Number> handler = (observable1, oldValue1, newValue1) -> {
+        ChangeListener<? super Rectangle> handler = (observable1, oldValue1, newValue1) -> {
             recalculate();
             recalculateWindowSize();
         };
 
-        scene.scene.widthProperty().addListener(handler);
-        scene.scene.heightProperty().addListener(handler);
-        scene.scene.layoutXProperty().addListener(handler);
-        scene.scene.layoutYProperty().addListener(handler);
+        scene.position.addListener(handler);
     }
 
     public void add() {
-        MovableSubScene view = new MovableSubScene(this, 100, 100);
+        MovableSubScene view = new JPanelTest(this, 100, 100);
         addSizeRecalculations(view);
         view.generateContextMenu(new ArrayList<>());
         subScenes.add(view);
-        LineGraph line = new LineGraph();
-        view.scene.rootProperty().setValue(line);
+        //LineGraph line = new LineGraph();
+        //view.scene.rootProperty().setValue(line);
 
         recalculate();
         recalculateWindowSize();

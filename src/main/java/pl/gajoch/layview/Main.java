@@ -29,18 +29,20 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-//        FXMLLoader load = new FXMLLoader();
-//        load.setLocation(getClass().getResource("gui/Main.fxml"));
-//        Parent loader = load.load();
-//
-//        primaryStage.setTitle("pl.gajoch.layview.Main");
-//        Scene scene = new Scene(loader);
-//        primaryStage.setScene(scene);
-//
-//        Controller windowController = load.getController();
-//        windowController.setup(primaryStage);
-//
-//        primaryStage.show();
+        FXMLLoader load = new FXMLLoader();
+        load.setLocation(getClass().getResource("gui/Main.fxml"));
+        Parent loader = load.load();
+
+        primaryStage.setTitle("pl.gajoch.layview.Main");
+        Scene scene = new Scene(loader);
+        primaryStage.setScene(scene);
+
+        Controller windowController = load.getController();
+        windowController.setup(primaryStage);
+
+        primaryStage.show();
+
+        // ------------
 
         final GLProfile profile = GLProfile.get(GLProfile.GL2);
         GLCapabilities capabilities = new GLCapabilities(profile);
@@ -69,13 +71,13 @@ public class Main extends Application {
 
         StackPane pane = new StackPane();
         pane.getChildren().add(swingNode);
-        Scene scene = new Scene(pane, 700, 700);
-        primaryStage.setScene(scene);
-
-        final FPSAnimator animator = new FPSAnimator(glcanvas, 300, true);
-        animator.start();
-
-        primaryStage.show();
+//        Scene scene = new Scene(pane, 700, 700);
+//        primaryStage.setScene(scene);
+//
+//        final FPSAnimator animator = new FPSAnimator(glcanvas, 300, true);
+//        animator.start();
+//
+//        primaryStage.show();
     }
 
     public static void main(String[] args) {

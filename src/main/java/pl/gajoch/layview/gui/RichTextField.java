@@ -24,6 +24,9 @@ public class RichTextField {
         textField.setText(Integer.toString(value));
     }
 
+    public void setInteger(Number number) {
+        this.set(number.intValue());
+    }
     public final TextField get() {
         return textField;
     }
