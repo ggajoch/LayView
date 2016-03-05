@@ -4,10 +4,18 @@ import javafx.scene.paint.Color;
 
 public class PlotOptions {
     public float width;
+
     public double symbolRadius;
-    public boolean isLine;
-    public Color color;
     public int divisions;
+
+    public boolean isLine;
+
+    public Color color;
+
+    public String xLabel;
+    public String yLabel;
+
+    public boolean showGrid;
 
     public PlotOptions() {
         width = 3;
@@ -15,5 +23,8 @@ public class PlotOptions {
         isLine = true;
         color = Color.GREEN;
         divisions = 10;
+        xLabel = new String ("X");
+        yLabel = new String ("Y");
+        showGrid = true;
     }
 }

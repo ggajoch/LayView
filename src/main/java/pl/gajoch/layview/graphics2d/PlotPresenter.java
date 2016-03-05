@@ -21,11 +21,16 @@ public class PlotPresenter {
     }
 
     public void draw(GL2 gl, int frame){
+        drawAxes(gl);
         if(options.isLine){
             drawLine(gl, frame);
         }else{
             drawPoints(gl, frame);
         }
+    }
+
+    private void drawAxes(GL2 gl){
+
     }
 
     private void drawPoints(GL2 gl, int frame){
