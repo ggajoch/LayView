@@ -5,6 +5,8 @@ import java.util.*;
 public class Scheduler {
     private static final PriorityQueue<Event> queue = new PriorityQueue<>();
 
+    private Scheduler() {}
+
     public static void start() {
 
         long prev_time = 0;
