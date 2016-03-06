@@ -16,14 +16,12 @@ public class Scheduler {
             event.resetHandler();
         }
 
-        long prev_time = 0;
-
+        long start = micros();
         while( ! queueCopy.isEmpty() ) {
             Event now = queueCopy.peek();
-            long next = micros() + now.offset_actual - prev_time;
+            long next = start + now.offset_actual;
             while (micros() < next) {
             }
-            prev_time = now.offset_actual;
             now.dispatchHandler();
             queueCopy.remove();
         }
