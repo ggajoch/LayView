@@ -151,8 +151,6 @@ public class GLCanvas2DPlot extends GLCanvas implements GLEventListener, MouseLi
     private long last = 0, now;
     private int frameCt = 0;
 
-    private double a0 = 0;
-
     private void render(GLAutoDrawable drawable) {
         final GL2 gl = drawable.getGL().getGL2();
         now = System.nanoTime();
@@ -165,26 +163,6 @@ public class GLCanvas2DPlot extends GLCanvas implements GLEventListener, MouseLi
 
         gl.glColor3d(0, 1, 0);
 
-        /*gl.glBegin(GL2.GL_QUADS);
-
-        gl.glVertex2d(-1,-1);
-        gl.glVertex2d(1,-1);
-        gl.glVertex2d(1,1);
-        gl.glVertex2d(-1,1);
-
-        gl.glEnd();*/
-
-        /*gl.glLineWidth(3);
-
-        gl.glBegin(GL2.GL_LINE_STRIP);
-
-        for (double angle = -Math.PI * 2; angle < Math.PI * 2; angle += 0.1) {
-            gl.glColor3d(0, (angle / Math.PI / 4)+0.5, 0);
-            gl.glVertex2d(angle / Math.PI, Math.sin(angle+a0)+Math.sin(angle*2+a0*2));
-        }
-
-        gl.glEnd();*/
-
         if(frameCt>=presenter.points.size()){
             frameCt = 0;
         }
@@ -192,13 +170,15 @@ public class GLCanvas2DPlot extends GLCanvas implements GLEventListener, MouseLi
 
         frameCt++;
 
-
         renderer.beginRendering(this.getWidth(), this.getHeight());
         renderer.setColor(1.0f, 0.2f, 0.2f, 0.8f);
         renderer.draw(fps, 0, 0);
         renderer.endRendering();
 
         gl.glFlush();
-        a0+=0.03;
+    }
+
+    public void reset(){
+        frameCt = 0;
     }
 }

@@ -2,6 +2,9 @@ package pl.gajoch.layview.graphics2d;
 
 import com.jogamp.opengl.util.FPSAnimator;
 import pl.gajoch.layview.graphics3d.GLCanvas3DCamera;
+import pl.gajoch.layview.scheduler.EventType;
+import pl.gajoch.layview.scheduler.RepeatedEvent;
+import pl.gajoch.layview.scheduler.Scheduler;
 
 import javax.media.opengl.GLCapabilities;
 import javax.media.opengl.GLProfile;
@@ -31,8 +34,24 @@ public class Test2DPlot {
             }
         });
 
-        final FPSAnimator animator = new FPSAnimator(canvasCamera, 300, true);
-        animator.start();
+        /*final FPSAnimator animator = new FPSAnimator(canvasCamera, 300, true);
+        animator.start();*/
+        Scheduler.schedule(new RepeatedEvent(EventType.UPDATE3D, (int)1e6/30, 70) {
+            @Override
+            public void dispatch() {
+                canvasCamera.display();
+            }
+
+            @Override
+            public void reset(){
+                canvasCamera.reset();
+            }
+        });
+
+        while(true) {
+            Scheduler.start();
+            System.out.println("DONE");
+        }
 
     }
 }
