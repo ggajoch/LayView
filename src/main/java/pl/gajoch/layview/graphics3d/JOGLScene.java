@@ -30,8 +30,6 @@ public class JOGLScene extends MovableSubScene {
     private FileInput files;
     SimpleObjectProperty<Scene3DOptions> optionsProperty;
 
-    private UniformScale globalScale = new UniformScale();
-
     final HintGradient grad1 = new HintGradient();
     final HintGradient grad2 = new HintGradient();
 
@@ -47,8 +45,6 @@ public class JOGLScene extends MovableSubScene {
 
     /*Vector vector = new Vector(new SurfacePoint(new Vec3d(0,0,0),new Vec3d(1,0,0), Color.DARKGREEN), new VectorProperties());
     Vector vector2 = new Vector(new SurfacePoint(new Vec3d(10,0,0),new Vec3d(0,10,0), Color.DARKGREEN), new VectorProperties());*/
-
-    ArrayList<Vector> vectors = new ArrayList<>();
 
 
     GLCanvas glcanvas;
@@ -161,7 +157,7 @@ public class JOGLScene extends MovableSubScene {
     private void onOptionsChanged(Scene3DOptions newValue) {
         System.out.println("Recalculate!");
 
-        scene3DOptions = newValue;
+        /*scene3DOptions = newValue;
 
         globalScale.set(newValue.globalScale);
 
@@ -196,7 +192,7 @@ public class JOGLScene extends MovableSubScene {
         //this.elements.getChildren().remove(0,1);
         System.out.println("END RECALCULATE");
         //after end recalculate displaying grad1 offset points... WHY and WHERE
-        //tu masz hinty policzone także
+        //tu masz hinty policzone także*/
     }
 
     private void onFileSelect() {
@@ -217,7 +213,7 @@ public class JOGLScene extends MovableSubScene {
             surface.addAll(omfDatas.stream().findFirst().get().points);*/
 
 
-            surfaces.clear();
+           /* surfaces.clear();
             omfDatas.stream().forEach(surfaceData -> {
 
             GradientSurfacePointsList currentSurface = new GradientSurfacePointsList();
@@ -227,55 +223,8 @@ public class JOGLScene extends MovableSubScene {
             });
 
             onOptionsChanged(scene3DOptions);
-            frameCount = 0;
+            frameCount = 0;*/
             //        timer.start();
         });
-    }
-
-    private void generateExample() {
-        //deal with dat junk
-
-        grad1.setReference(new Vec3d(1, 0, 0));
-
-        grad2.setReference(new Vec3d(0, 0, 1));
-
-        grad1.add(new GradientPoint(-1.0, Color.BLUE));
-        grad1.add(new GradientPoint(0, Color.WHITE));
-        grad1.add(new GradientPoint(1.0, Color.RED));
-
-        grad2.add(new GradientPoint(0, Color.WHITE));
-        grad2.add(new GradientPoint(1.0, Color.GREEN));
-
-        GradientSurfacePointsList surface = new GradientSurfacePointsList();
-
-        surface.gradients.add(grad1);
-        surface.gradients.add(grad2);
-
-        for (double x = -1e-8; x <= 1e-8; x += 1e-9) {
-            for (double y = -1e-8; y <= 1e-8; y += 1e-9) {
-                for (double z = 0; z <= 1e-8; z += 1e-9) {
-                    if (Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2) + Math.pow(z, 2)) <= 1e-8) {
-                        surface.add(new SurfacePoint(new Vec3d(x, y, z), new Vec3d(x * 1e14, y * 1e14, z * 1e14), new Color(y / 200 + 0.5, 0, -y / 200 + 0.5, 1)));
-                    }
-                }
-            }
-        }
-
-        surface.GradientsHintReset();
-        surface.GradientsHintCalculate();
-
-        System.out.print("GRAD1: MAX: " + grad1.getHintMax() + "  MIN: " + grad1.getHintMin() + "\r\n");
-        System.out.print("GRAD2: MAX: " + grad2.getHintMax() + "  MIN: " + grad2.getHintMin() + "\r\n");
-
-        grad1.setMaxVector(grad1.getHintMax());
-        grad1.setMinVector(grad1.getHintMin());
-        grad2.setMaxVector(grad2.getHintMax());
-        grad2.setMinVector(grad2.getHintMin());
-
-        surface.GradientsApply();
-
-        surfaces.clear();
-        surfaces.add(surface);
-
     }
 }
