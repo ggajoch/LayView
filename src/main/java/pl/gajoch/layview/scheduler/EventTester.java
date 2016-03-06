@@ -50,7 +50,17 @@ public class EventTester {
                 i++;
                 System.out.println("Event 6, " + i + " time.");
             }
+
+            @Override
+            void reset() {
+                i = 0;
+            }
         });
+
+        Scheduler.start();
+        System.out.println("---------------");
+        Scheduler.start();
+        System.out.println("---------------");
         Scheduler.start();
     }
 }

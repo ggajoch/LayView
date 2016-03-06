@@ -1,23 +1,29 @@
 package pl.gajoch.layview.scheduler;
 
 abstract public class RepeatedEvent extends Event {
-    final private int deltaT, times;
+    final private int times;
     private int counter;
 
     public RepeatedEvent(EventType type, int offset_us, int times) {
         super(type, offset_us);
         this.times = times;
-        deltaT = offset_us;
         counter = 0;
     }
 
     @Override
     void dispatchHandler() {
         dispatch();
-        offset_us += deltaT;
+        offset_actual += offset_us;
         counter++;
         if( counter < times ) {
-            Scheduler.schedule(this);
+            Scheduler.__scheduleCurrentRun(this);
         }
+    }
+
+    @Override
+    void resetHandler() {
+        counter = 0;
+        offset_actual = offset_us;
+        reset();
     }
 }
