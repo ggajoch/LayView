@@ -23,7 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class JOGLScene extends MovableSubScene {
+public class JOGL3DScene extends MovableSubScene {
     private FileInputSelector fileInputSelector;
     private Scene3DOptionsEditor scene3DOptionsEditor;
 
@@ -33,7 +33,7 @@ public class JOGLScene extends MovableSubScene {
     private volatile Scene3DOptions scene3DOptions = new Scene3DOptions(0.025, 0.025, 0.01, 0.1, new Vec3d(.1, .1, .1), 1.0, 30, new HintGradient(), new HintGradient());
 
 
-    public JOGLScene(GraphicsWindowManager parent, int width, int height) {
+    public JOGL3DScene(GraphicsWindowManager parent, int width, int height) {
         super(parent, width, height);
 
         fileInputSelector = new FileInputSelector();
