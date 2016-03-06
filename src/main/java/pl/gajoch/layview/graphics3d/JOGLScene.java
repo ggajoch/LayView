@@ -30,10 +30,7 @@ public class JOGLScene extends MovableSubScene {
     private FileInput files;
     SimpleObjectProperty<Scene3DOptions> optionsProperty;
 
-    final HintGradient grad1 = new HintGradient();
-    final HintGradient grad2 = new HintGradient();
-
-    private volatile Scene3DOptions scene3DOptions = new Scene3DOptions(1.5e-10, 2.0e-10, 1.0e-10, 1.0e-15, new Vec3d(1, 1, 1), 1e10, 0, grad1, grad2);
+    private volatile Scene3DOptions scene3DOptions = new Scene3DOptions(0.025, 0.025, 0.01, 0.1, new Vec3d(.1, .1, .1), 1.0, 30, new HintGradient(), new HintGradient());
 
 
     public JOGLScene(GraphicsWindowManager parent, int width, int height) {
@@ -72,6 +69,7 @@ public class JOGLScene extends MovableSubScene {
         GLCapabilities capabilities = new GLCapabilities(profile);
 
         GLCanvas3DCamera glcanvas = new GLCanvas3DCamera(capabilities);
+        glcanvas.setOptions(scene3DOptions);
         glcanvas.addGLEventListener(glcanvas);
         glcanvas.setSize(width, height);
 

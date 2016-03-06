@@ -21,10 +21,9 @@ import java.awt.event.*;
 
 public class GLCanvas3DCamera extends GLCanvas implements GLEventListener, MouseListener, MouseMotionListener, MouseWheelListener {
 
-    private boolean isVectors = false;
-
     private TextRenderer renderer;
 
+    private Scene3DOptions options;
 
     private SurfacesPresenter presenter;
 
@@ -40,6 +39,10 @@ public class GLCanvas3DCamera extends GLCanvas implements GLEventListener, Mouse
 
     public GLCanvas3DCamera(GLCapabilities capabilities) {
         super(capabilities);
+    }
+
+    public void setOptions(Scene3DOptions options){
+        this.options = options;
     }
 
     public void mouseClicked(MouseEvent e) {
@@ -178,7 +181,6 @@ public class GLCanvas3DCamera extends GLCanvas implements GLEventListener, Mouse
         this.addMouseMotionListener(this);
         this.addMouseWheelListener(this);
 
-        Scene3DOptions options = new Scene3DOptions(0.025, 0.025, 0.01, 0.1, new Vec3d(.1, .1, .1), 1.0, 30, new HintGradient(), new HintGradient());
         presenter = new SurfacesPresenter(options);
 
         for (double angle = 0; angle <= Math.PI * 4; angle += Math.PI / 15) {
@@ -199,28 +201,26 @@ public class GLCanvas3DCamera extends GLCanvas implements GLEventListener, Mouse
         }
         System.out.println("Surfaces: " + presenter.surfaces.size());
 
-        HintGradient gradient1 = new HintGradient(), gradient2 = new HintGradient();
+        options.gradient1.setReference(new Vec3d(1, 0, 0));
+        options.gradient1.add(new GradientPoint(-1.0, Color.RED));
+        options.gradient1.add(new GradientPoint(0, Color.WHITE));
+        options.gradient1.add(new GradientPoint(1.0, Color.BLUE));
 
-        gradient1.setReference(new Vec3d(1, 0, 0));
-        gradient1.add(new GradientPoint(-1.0, Color.RED));
-        gradient1.add(new GradientPoint(0, Color.WHITE));
-        gradient1.add(new GradientPoint(1.0, Color.BLUE));
+        options.gradient2.setReference(new Vec3d(0, 1, 0));
+        options.gradient2.add(new GradientPoint(-1.0, Color.GREEN));
+        options.gradient2.add(new GradientPoint(1.0, Color.GOLD));
 
-        gradient2.setReference(new Vec3d(0, 1, 0));
-        gradient2.add(new GradientPoint(-1.0, Color.GREEN));
-        gradient2.add(new GradientPoint(1.0, Color.GOLD));
-
-        presenter.gradients.add(gradient1);
-        presenter.gradients.add(gradient2);
+        presenter.gradients.add(options.gradient1);
+        presenter.gradients.add(options.gradient2);
 
         presenter.GradientsHintReset();
         presenter.GradientsHintCalculate();
 
-        gradient1.setMaxVector(gradient1.getHintMax());
-        gradient1.setMinVector(gradient1.getHintMin());
+        options.gradient1.setMaxVector(options.gradient1.getHintMax());
+        options.gradient1.setMinVector(options.gradient1.getHintMin());
 
-        gradient2.setMaxVector(gradient2.getHintMax());
-        gradient2.setMinVector(gradient2.getHintMin());
+        options.gradient2.setMaxVector(options.gradient2.getHintMax());
+        options.gradient2.setMinVector(options.gradient2.getHintMin());
 
         /*System.out.println("G1: MAX: "+gradient1.getHintMax()+" MIN: "+gradient1.getHintMin());
         System.out.println("G2: MAX: "+gradient2.getHintMax()+" MIN: "+gradient2.getHintMin());*/
