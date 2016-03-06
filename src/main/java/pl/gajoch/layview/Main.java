@@ -10,7 +10,7 @@ import javafx.scene.Scene;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
-//import pl.gajoch.layview.graphics3d.SimpleJOGL;
+import pl.gajoch.layview.graphics3d.SimpleJOGL;
 import pl.gajoch.layview.gui.Controller;
 
 import javax.media.opengl.GLCapabilities;
