@@ -4,6 +4,7 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.scene.SubScene;
 import javafx.stage.Stage;
+import pl.gajoch.layview.graphics2d.JOGL2DScene;
 import pl.gajoch.layview.graphics3d.*;
 
 import javax.swing.*;
@@ -24,6 +25,7 @@ public class GraphicsWindowManager {
             actual_scene.setValue(scene);
         }
     }
+
     GraphicsWindowManager(Stage stage, SubScene subScene) {
         actual_scene = new SimpleObjectProperty<>();
         subScenes = new ArrayList<>();
@@ -36,7 +38,7 @@ public class GraphicsWindowManager {
         });
 
         subScene.setOnMouseClicked(event -> {
-            if( event.isStillSincePress() ) {
+            if (event.isStillSincePress()) {
                 actual_scene.setValue(null);
             }
         });
@@ -49,10 +51,10 @@ public class GraphicsWindowManager {
             frame.setVisible(false);
         });
 
-        //subScene.setRoot(pane3D);
     }
 
     Boolean vis = Boolean.TRUE;
+
     private void recalculate() {
         System.out.println("Rec!");
         SwingUtilities.invokeLater(() -> {
@@ -67,18 +69,18 @@ public class GraphicsWindowManager {
 
     private void recalculateWindowSize() {
         try {
-            int maxWidth = (int)subScenes.stream()
+            int maxWidth = (int) subScenes.stream()
                     .mapToDouble(sc -> sc.getPosition().getX() + sc.getPosition().getWidth())
                     .max().getAsDouble();
 
-            int maxHeight = (int)subScenes.stream()
+            int maxHeight = (int) subScenes.stream()
                     .mapToDouble(sc -> sc.getPosition().getY() + sc.getPosition().getHeight())
                     .max().getAsDouble();
 
             java.awt.EventQueue.invokeLater(() -> {
                 Insets insets = frame.getInsets();
                 frame.setSize(insets.left + insets.right + maxWidth, insets.top + insets.bottom + maxHeight);
-                if( ! frame.isVisible() )
+                if (!frame.isVisible())
                     frame.setVisible(true);
             });
             System.out.println("size: " + maxWidth + " x " + maxHeight);
@@ -100,12 +102,10 @@ public class GraphicsWindowManager {
     }
 
     public void add() {
-        MovableSubScene view = new JPanelTest(this, 100, 100);
+        MovableSubScene view = new JOGL2DScene(this, 600, 600);
         addSizeRecalculations(view);
         view.generateContextMenu(new ArrayList<>());
         subScenes.add(view);
-        //LineGraph line = new LineGraph();
-        //view.scene.rootProperty().setValue(line);
 
         recalculate();
         recalculateWindowSize();
@@ -113,7 +113,7 @@ public class GraphicsWindowManager {
     }
 
     public void add3D() {
-        MovableSubScene scene = new JOGLScene(this,600,600);
+        MovableSubScene scene = new JOGL3DScene(this, 600, 600);
         addSizeRecalculations(scene);
         subScenes.add(scene);
         recalculate();
@@ -121,7 +121,7 @@ public class GraphicsWindowManager {
     }
 
     public void del(MovableSubScene scene) {
-        if( subScenes.contains(scene) ) {
+        if (subScenes.contains(scene)) {
             subScenes.remove(scene);
         }
         recalculate();
