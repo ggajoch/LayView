@@ -25,6 +25,14 @@ public class SurfacePointsList {
             max.vector.x = Math.max(max.vector.x, point.vector.x);
             max.vector.y = Math.max(max.vector.y, point.vector.y);
             max.vector.z = Math.max(max.vector.z, point.vector.z);
+
+            min.position.x = Math.min(min.position.x, point.position.x);
+            min.position.y = Math.min(min.position.y, point.position.y);
+            min.position.z = Math.min(min.position.z, point.position.z);
+
+            min.vector.x = Math.min(min.vector.x, point.vector.x);
+            min.vector.y = Math.min(min.vector.y, point.vector.y);
+            min.vector.z = Math.min(min.vector.z, point.vector.z);
         }
         points.add(point);
     }

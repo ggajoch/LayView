@@ -9,12 +9,15 @@ import pl.gajoch.layview.gui.Scene3DOptions;
 import javax.media.opengl.GL2;
 import java.util.ArrayList;
 
+/**
+ * Created by Piotr on 21/02/2016.
+ */
 public class SurfacesPresenter {
     public ArrayList<SurfacePointsList> surfaces;
 
     public ArrayList<HintGradient> gradients;
 
-    private Scene3DOptions options;
+    public Scene3DOptions options;
     private TrigonometricTab trig;
     private int lastDivisions;
 
@@ -261,6 +264,14 @@ public class SurfacesPresenter {
         if (frame >= surfaces.size()) return;
         for (SurfacePoint point : surfaces.get(frame).points) {
             drawBox(gl, point);
+        }
+    }
+
+    public void draw(GL2 gl, int frame){
+        if(options.isVectors){
+            drawVectors(gl, frame);
+        }else{
+            drawBoxes(gl, frame);
         }
     }
 

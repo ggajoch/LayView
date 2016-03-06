@@ -1,13 +1,7 @@
 package pl.gajoch.layview.graphics3d;
 
-
-import java.awt.Frame;
-import java.awt.event.*;
-import javax.media.opengl.*;
-import javax.media.opengl.awt.GLCanvas;
-
-import com.jogamp.opengl.util.*;
-import com.jogamp.opengl.util.gl2.GLUT;
+import com.jogamp.opengl.util.FPSAnimator;
+import com.jogamp.opengl.util.awt.TextRenderer;
 import com.sun.javafx.geom.Vec3d;
 import javafx.scene.paint.Color;
 import org.apache.commons.math3.geometry.euclidean.threed.CardanEulerSingularityException;
@@ -18,24 +12,18 @@ import pl.gajoch.layview.gui.GradientPoint;
 import pl.gajoch.layview.gui.HintGradient;
 import pl.gajoch.layview.gui.Scene3DOptions;
 
-import java.awt.DisplayMode;
-import javax.media.opengl.GL2;
-import javax.media.opengl.GLAutoDrawable;
-import javax.media.opengl.GLCapabilities;
-import javax.media.opengl.GLEventListener;
-import javax.media.opengl.GLProfile;
+import javax.media.opengl.*;
 import javax.media.opengl.awt.GLCanvas;
 import javax.media.opengl.glu.GLU;
-import javax.media.opengl.glu.GLUquadric;
-import javax.swing.JFrame;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
 
-public class SimpleJOGL implements GLEventListener, MouseListener, MouseMotionListener, MouseWheelListener {
-
-
-    JFrame frame;
-    GLCanvas glcanvas;
+public class GLCanvas3DCamera extends GLCanvas implements GLEventListener, MouseListener, MouseMotionListener, MouseWheelListener {
 
     private boolean isVectors = false;
+
+    private TextRenderer renderer;
 
 
     private SurfacesPresenter presenter;
@@ -48,26 +36,30 @@ public class SimpleJOGL implements GLEventListener, MouseListener, MouseMotionLi
 
     private static final double SCROLL_SCALE = .01;
     private static final double ROTATE_SCALE = .01;
-    private static final double MOVE_SCALE = .01;
+    private final double MOVE_SCALE = 3.275;
+
+    public GLCanvas3DCamera(GLCapabilities capabilities) {
+        super(capabilities);
+    }
 
     public void mouseClicked(MouseEvent e) {
-        System.out.println("Clicked");
-        System.out.println(e.getClickCount());
-        if(e.getClickCount()==2){
-            isVectors = !isVectors;
+        //System.out.println("Clicked");
+        //System.out.println(e.getClickCount());
+        if (e.getClickCount() == 2) {
+            presenter.options.isVectors = !presenter.options.isVectors;
         }
     }
 
     public void mouseEntered(MouseEvent e) {
-        System.out.println("Entered");
+        //System.out.println("Entered");
     }
 
     public void mouseExited(MouseEvent e) {
-        System.out.println("Exited");
+        //System.out.println("Exited");
     }
 
     public void mouseMoved(MouseEvent e) {
-        System.out.println("EMoved");
+        //System.out.println("EMoved");
     }
 
     public void mouseWheelMoved(MouseWheelEvent e) {
@@ -133,9 +125,10 @@ public class SimpleJOGL implements GLEventListener, MouseListener, MouseMotionLi
             System.out.println("Middle");
         }*/
         if ((e.getModifiers() & e.BUTTON3_MASK) != 0) {
+
             Rotation baseRotation = new Rotation(RotationOrder.ZXY, angle.x, angle.y, angle.z);//magic happens!
             Vector3D planeTranslate = baseRotation.applyInverseTo(
-                    new Vector3D(mouseDelta.x * MOVE_SCALE, -mouseDelta.y * MOVE_SCALE, 0)
+                    new Vector3D(mouseDelta.x * MOVE_SCALE / this.getHeight(), -mouseDelta.y * MOVE_SCALE / this.getHeight(), 0)
             );
 
             offset.x += planeTranslate.getX() * Math.pow(10, -scale);
@@ -144,30 +137,6 @@ public class SimpleJOGL implements GLEventListener, MouseListener, MouseMotionLi
 
             //TODO: deal with window resize to maintain 1:1 movement!!
         }
-    }
-
-    public static void main(String[] args) {
-//        final GLProfile profile = GLProfile.get(GLProfile.GL2);
-//        GLCapabilities capabilities = new GLCapabilities(profile);
-//        // The canvas
-//        glcanvas = new GLCanvas(capabilities);
-//        SimpleJOGL cube = new SimpleJOGL();
-//        glcanvas.addGLEventListener(cube);
-//        glcanvas.setSize(700, 700);
-//        frame = new JFrame("LayVIEW development preview");
-//        frame.getContentPane().add(glcanvas);
-//        frame.setSize(frame.getContentPane().getPreferredSize());
-//        frame.setVisible(true);
-//
-//        frame.addWindowListener(new WindowAdapter() {
-//            public void windowClosing(WindowEvent e) {
-//                System.exit(0);
-//            }
-//        });
-//
-//        final FPSAnimator animator = new FPSAnimator(glcanvas, 300, true);
-//        animator.start();
-
     }
 
     @Override
@@ -194,6 +163,8 @@ public class SimpleJOGL implements GLEventListener, MouseListener, MouseMotionLi
         gl.glEnable(GL2.GL_LIGHT0);
         gl.glEnable(GL2.GL_NORMALIZE);
 
+        renderer = new TextRenderer(new Font("SansSerif", Font.BOLD, 36));
+
         mousePos = new Vec3d();
         mouseOld = new Vec3d();
         mouseDelta = new Vec3d();
@@ -203,19 +174,19 @@ public class SimpleJOGL implements GLEventListener, MouseListener, MouseMotionLi
 
         scale = 0;
 
-//        glcanvas.addMouseListener(this);
-//        glcanvas.addMouseMotionListener(this);
-//        glcanvas.addMouseWheelListener(this);
+        this.addMouseListener(this);
+        this.addMouseMotionListener(this);
+        this.addMouseWheelListener(this);
 
-        Scene3DOptions options = new Scene3DOptions(0.025, 0.025, 0.01, 0.1, new Vec3d(.1,.1,.1), 1.0, 30, new HintGradient(), new HintGradient());
+        Scene3DOptions options = new Scene3DOptions(0.025, 0.025, 0.01, 0.1, new Vec3d(.1, .1, .1), 1.0, 30, new HintGradient(), new HintGradient());
         presenter = new SurfacesPresenter(options);
 
-        for (double angle = 0; angle <= Math.PI * 4; angle += Math.PI / 150) {
+        for (double angle = 0; angle <= Math.PI * 4; angle += Math.PI / 15) {
             SurfacePointsList surfacePoints = new SurfacePointsList();
 
-            for (double x = -1; x <= 1; x += .5) {
-                for (double y = -1; y <= 1; y += .5) {
-                    for (double z = -1; z <= 1; z += .5) {
+            for (double x = -1; x <= 1; x += .1) {
+                for (double y = -1; y <= 1; y += .1) {
+                    for (double z = -1; z <= 1; z += .1) {
                         SurfacePoint point = new SurfacePoint(new Vec3d(x, y, z),
                                 new Vec3d(x / 10 * Math.sin(angle), y / 10 * Math.cos(angle), z / 10),
                                 new Color((x + 1) / 2 * Math.abs(Math.sin(angle)), (y + 1) / 2 * Math.abs(Math.cos(angle)), (z + 1) / 2, 1));
@@ -230,14 +201,14 @@ public class SimpleJOGL implements GLEventListener, MouseListener, MouseMotionLi
 
         HintGradient gradient1 = new HintGradient(), gradient2 = new HintGradient();
 
-        gradient1.setReference(new Vec3d(1,0,0));
-        gradient1.add(new GradientPoint(-1.0,Color.RED));
-        gradient1.add(new GradientPoint(0,Color.WHITE));
-        gradient1.add(new GradientPoint(1.0,Color.BLUE));
+        gradient1.setReference(new Vec3d(1, 0, 0));
+        gradient1.add(new GradientPoint(-1.0, Color.RED));
+        gradient1.add(new GradientPoint(0, Color.WHITE));
+        gradient1.add(new GradientPoint(1.0, Color.BLUE));
 
-        gradient2.setReference(new Vec3d(0,1,0));
-        gradient2.add(new GradientPoint(-1.0,Color.DARKGREEN));
-        gradient2.add(new GradientPoint(1.0,Color.GOLD));
+        gradient2.setReference(new Vec3d(0, 1, 0));
+        gradient2.add(new GradientPoint(-1.0, Color.GREEN));
+        gradient2.add(new GradientPoint(1.0, Color.GOLD));
 
         presenter.gradients.add(gradient1);
         presenter.gradients.add(gradient2);
@@ -255,7 +226,7 @@ public class SimpleJOGL implements GLEventListener, MouseListener, MouseMotionLi
         System.out.println("G2: MAX: "+gradient2.getHintMax()+" MIN: "+gradient2.getHintMin());*/
 
         presenter.GradientsApply();
-        //presenter.gradients.add(gradient2);
+
 
     }
 
@@ -278,9 +249,12 @@ public class SimpleJOGL implements GLEventListener, MouseListener, MouseMotionLi
     private int frameCt = 0;
 
     private void render(GLAutoDrawable drawable) {
+
+
         final GL2 gl = drawable.getGL().getGL2();
         now = System.nanoTime();
-//        System.out.println(1e9f / ((float) (now - last)));
+        //System.out.println(1e9f / ((float) (now - last)));
+        String fps = new String("FPS = " + String.format("%.2f", 1e9f / ((float) (now - last))));
         last = now;
         gl.glClear(GL2.GL_COLOR_BUFFER_BIT | GL2.GL_DEPTH_BUFFER_BIT);
         gl.glClearColor(0.8f, 0.8f, 0.8f, 1.0f);
@@ -296,14 +270,21 @@ public class SimpleJOGL implements GLEventListener, MouseListener, MouseMotionLi
         gl.glScaled(Math.pow(10, scale), Math.pow(10, scale), Math.pow(10, scale));
 
 
-        if(isVectors){
-            presenter.drawVectors(gl, frameCt++);
-        }else{
-            presenter.drawBoxes(gl, frameCt++);
-        }
+        presenter.draw(gl, frameCt++);
         if (frameCt >= presenter.surfaces.size()) frameCt = 0;
+
+        renderer.beginRendering(this.getWidth(), this.getHeight());
+        // optionally set the color
+        renderer.setColor(1.0f, 0.2f, 0.2f, 0.8f);
+        renderer.draw3D(fps, 0, 0, 0, 1);
+        // ... more draw commands, color changes, etc.
+        renderer.endRendering();
 
 
         gl.glFlush();
+    }
+
+    public void reset(){
+        frameCt = 0;
     }
 }

@@ -35,20 +35,6 @@ public class JOGLScene extends MovableSubScene {
 
     private volatile Scene3DOptions scene3DOptions = new Scene3DOptions(1.5e-10, 2.0e-10, 1.0e-10, 1.0e-15, new Vec3d(1, 1, 1), 1e10, 0, grad1, grad2);
 
-    ArrayList<GradientSurfacePointsList> surfaces = new ArrayList<>();
-
-    ArrayList<Group> renderedSurfaces = new ArrayList<>();
-
-    private long lastTime = 0;
-    private int frameCount = 0;
-
-
-    /*Vector vector = new Vector(new SurfacePoint(new Vec3d(0,0,0),new Vec3d(1,0,0), Color.DARKGREEN), new VectorProperties());
-    Vector vector2 = new Vector(new SurfacePoint(new Vec3d(10,0,0),new Vec3d(0,10,0), Color.DARKGREEN), new VectorProperties());*/
-
-
-    GLCanvas glcanvas;
-
 
     public JOGLScene(GraphicsWindowManager parent, int width, int height) {
         super(parent, width, height);
@@ -84,66 +70,37 @@ public class JOGLScene extends MovableSubScene {
 
         final GLProfile profile = GLProfile.get(GLProfile.GL2);
         GLCapabilities capabilities = new GLCapabilities(profile);
-        // The canvas
-        glcanvas = new GLCanvas(capabilities);
 
-
-        SimpleJOGL cube = new SimpleJOGL();
-        glcanvas.addGLEventListener(cube);
+        GLCanvas3DCamera glcanvas = new GLCanvas3DCamera(capabilities);
+        glcanvas.addGLEventListener(glcanvas);
         glcanvas.setSize(width, height);
-        //glcanvas.setAutoSwapBufferMode(true);
-
-        glcanvas.addMouseWheelListener(new MouseWheelListener() {
-            @Override
-            public void mouseWheelMoved(MouseWheelEvent e) {
-                cube.mouseWheelMoved(e);
-            }
-        });
-
-        glcanvas.addMouseMotionListener(new MouseMotionListener() {
-            @Override
-            public void mouseDragged(MouseEvent e) {
-                cube.mouseDragged(e);
-            }
-
-            @Override
-            public void mouseMoved(MouseEvent e) {
-                cube.mouseMoved(e);
-            }
-        });
 
         glcanvas.addMouseListener(new MouseListener() {
             @Override
-            public void mouseClicked(MouseEvent me) {
-                System.out.println("clicked!");
-                System.out.println(me.getButton());
-                if (me.getButton() == MouseEvent.BUTTON3) {
-                    openContextMenu(me);
+            public void mouseClicked(MouseEvent e) {
+                if(e.getButton() == MouseEvent.BUTTON3){
+                    openContextMenu(e);
                 }
             }
 
             @Override
             public void mousePressed(MouseEvent e) {
-                System.out.println("B");
-                cube.mousePressed(e);
+
             }
 
             @Override
             public void mouseReleased(MouseEvent e) {
-                System.out.println("C");
-                cube.mouseReleased(e);
+
             }
 
             @Override
             public void mouseEntered(MouseEvent e) {
-                System.out.println("D");
-                cube.mouseEntered(e);
+
             }
 
             @Override
             public void mouseExited(MouseEvent e) {
-                System.out.println("E");
-                cube.mouseExited(e);
+
             }
         });
 
