@@ -26,8 +26,8 @@ abstract public class Event implements Comparable<Event> {
         reset();
     }
 
-    abstract void dispatch();
-    void reset() {
+    public abstract void dispatch();
+    public void reset() {
 
     }
 
