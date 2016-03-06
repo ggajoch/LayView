@@ -38,19 +38,19 @@ public class Test3DCamera {
         /*final FPSAnimator animator = new FPSAnimator(canvasCamera, 300, true);
         animator.start();*/
 
-        Scheduler.schedule(new RepeatedEvent(EventType.UPDATE3D, (int)1e6/60, 100) {
+        Scheduler.schedule(new RepeatedEvent(EventType.UPDATE3D, (int) 1e6 / 60, 100) {
             @Override
             public void dispatch() {
                 canvasCamera.display();
             }
 
             @Override
-            public void reset(){
+            public void reset() {
                 canvasCamera.reset();
             }
         });
 
-        while(true) {
+        while (true) {
             Scheduler.start();
             System.out.println("DONE");
         }

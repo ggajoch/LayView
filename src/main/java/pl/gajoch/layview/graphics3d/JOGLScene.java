@@ -76,7 +76,7 @@ public class JOGLScene extends MovableSubScene {
         glcanvas.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                if(e.getButton() == MouseEvent.BUTTON3){
+                if (e.getButton() == MouseEvent.BUTTON3) {
                     openContextMenu(e);
                 }
             }
@@ -103,7 +103,7 @@ public class JOGLScene extends MovableSubScene {
         });
 
         SwingUtilities.invokeLater(() ->
-            this.scene.add(glcanvas));
+                this.scene.add(glcanvas));
 
         final FPSAnimator animator = new FPSAnimator(glcanvas, 300, true);
         animator.start();
@@ -154,10 +154,10 @@ public class JOGLScene extends MovableSubScene {
 //        timer.stop();
         Platform.runLater(() -> {
             List<OMFData> omfDatas = fileInputSelector.
-                exec(files).
-                stream().
-                map(file -> new OMFParser().parseFile(file)).
-                collect(Collectors.toList());
+                    exec(files).
+                    stream().
+                    map(file -> new OMFParser().parseFile(file)).
+                    collect(Collectors.toList());
 
 
             /*omfDatas.stream().findFirst().get().points.forEach(surfacePoint -> {

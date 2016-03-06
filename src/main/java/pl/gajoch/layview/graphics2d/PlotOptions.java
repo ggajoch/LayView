@@ -23,8 +23,8 @@ public class PlotOptions {
         isLine = true;
         color = Color.GREEN;
         divisions = 10;
-        xLabel = new String ("X");
-        yLabel = new String ("Y");
+        xLabel = new String("X");
+        yLabel = new String("Y");
         showGrid = true;
     }
 }

@@ -9,9 +9,6 @@ import pl.gajoch.layview.gui.Scene3DOptions;
 import javax.media.opengl.GL2;
 import java.util.ArrayList;
 
-/**
- * Created by Piotr on 21/02/2016.
- */
 public class SurfacesPresenter {
     public ArrayList<SurfacePointsList> surfaces;
 
@@ -74,7 +71,7 @@ public class SurfacesPresenter {
                 gl.glNormal3d(0, 0, -1);
                 gl.glBegin(GL2.GL_POLYGON);
                 for (int division = 0; division <= options.vectorProperties.divisions; division++) {
-                    gl.glVertex3d(options.vectorProperties.tipRadius *trig.sin(division),
+                    gl.glVertex3d(options.vectorProperties.tipRadius * trig.sin(division),
                             options.vectorProperties.tipRadius * trig.cos(division),
                             point.vector.length());
 
@@ -125,7 +122,7 @@ public class SurfacesPresenter {
 
     public void drawVectors(GL2 gl, int frame) {
         //TODO: maybe do it better?
-        if(lastDivisions!=options.vectorProperties.divisions){
+        if (lastDivisions != options.vectorProperties.divisions) {
             trig = new TrigonometricTab(options.vectorProperties.divisions);
             lastDivisions = options.vectorProperties.divisions;
         }
@@ -140,7 +137,7 @@ public class SurfacesPresenter {
         gl.glColor3d(point.color.getRed(), point.color.getGreen(), point.color.getBlue());
 
         //right
-        gl.glNormal3d(1,0,0);
+        gl.glNormal3d(1, 0, 0);
         gl.glVertex3d(
                 point.position.x + options.boxProperties.dimensions.x / 2,
                 point.position.y + options.boxProperties.dimensions.y / 2,
@@ -159,7 +156,7 @@ public class SurfacesPresenter {
                 point.position.z - options.boxProperties.dimensions.z / 2);
 
         //left
-        gl.glNormal3d(-1,0,0);
+        gl.glNormal3d(-1, 0, 0);
         gl.glVertex3d(
                 point.position.x - options.boxProperties.dimensions.x / 2,
                 point.position.y + options.boxProperties.dimensions.y / 2,
@@ -178,7 +175,7 @@ public class SurfacesPresenter {
                 point.position.z - options.boxProperties.dimensions.z / 2);
 
         //top
-        gl.glNormal3d(0,1,0);
+        gl.glNormal3d(0, 1, 0);
         gl.glVertex3d(
                 point.position.x + options.boxProperties.dimensions.x / 2,
                 point.position.y + options.boxProperties.dimensions.y / 2,
@@ -198,7 +195,7 @@ public class SurfacesPresenter {
 
 
         //bottom
-        gl.glNormal3d(0,-1,0);
+        gl.glNormal3d(0, -1, 0);
         gl.glVertex3d(
                 point.position.x + options.boxProperties.dimensions.x / 2,
                 point.position.y - options.boxProperties.dimensions.y / 2,
@@ -218,7 +215,7 @@ public class SurfacesPresenter {
 
 
         //back
-        gl.glNormal3d(0,0,-1);
+        gl.glNormal3d(0, 0, -1);
         gl.glVertex3d(
                 point.position.x + options.boxProperties.dimensions.x / 2,
                 point.position.y + options.boxProperties.dimensions.y / 2,
@@ -238,7 +235,7 @@ public class SurfacesPresenter {
 
 
         //front
-        gl.glNormal3d(0,0,1);
+        gl.glNormal3d(0, 0, 1);
         gl.glVertex3d(
                 point.position.x + options.boxProperties.dimensions.x / 2,
                 point.position.y + options.boxProperties.dimensions.y / 2,
@@ -267,17 +264,17 @@ public class SurfacesPresenter {
         }
     }
 
-    public void draw(GL2 gl, int frame){
-        if(options.isVectors){
+    public void draw(GL2 gl, int frame) {
+        if (options.isVectors) {
             drawVectors(gl, frame);
-        }else{
+        } else {
             drawBoxes(gl, frame);
         }
     }
 
     public void GradientsHintReset() {
         if (gradients.isEmpty() || surfaces.isEmpty()) return;
-        if(surfaces.get(0).points.isEmpty()) return;
+        if (surfaces.get(0).points.isEmpty()) return;
         for (HintGradient gradient : gradients) {
             if (!gradient.isValid()) continue;
             gradient.setHintMax(lenProjection(surfaces.get(0).points.get(0), gradient));
@@ -289,7 +286,7 @@ public class SurfacesPresenter {
         //if (gradients.isEmpty() || surfaces.isEmpty()) return;
         for (HintGradient gradient : gradients) {
             if (!gradient.isValid()) continue;
-            for(SurfacePointsList surface : surfaces) {
+            for (SurfacePointsList surface : surfaces) {
                 for (SurfacePoint point : surface.points) {
                     gradient.setHintMax(Math.max(gradient.getHintMax(), lenProjection(point, gradient)));
                     gradient.setHintMin(Math.min(gradient.getHintMin(), lenProjection(point, gradient)));
@@ -300,7 +297,7 @@ public class SurfacesPresenter {
 
     public void GradientsApply() {
         //if (gradients.isEmpty() || surfaces.isEmpty()) return;
-        for(SurfacePointsList surface : surfaces) {
+        for (SurfacePointsList surface : surfaces) {
             for (SurfacePoint point : surface.points) {
                 int i = 0;
                 for (Gradient gradient : gradients) {

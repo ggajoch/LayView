@@ -41,7 +41,7 @@ public class GLCanvas3DCamera extends GLCanvas implements GLEventListener, Mouse
         super(capabilities);
     }
 
-    public void setOptions(Scene3DOptions options){
+    public void setOptions(Scene3DOptions options) {
         this.options = options;
     }
 
@@ -284,7 +284,7 @@ public class GLCanvas3DCamera extends GLCanvas implements GLEventListener, Mouse
         gl.glFlush();
     }
 
-    public void reset(){
+    public void reset() {
         frameCt = 0;
     }
 }

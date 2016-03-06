@@ -129,7 +129,7 @@ public class GLCanvas2DPlot extends GLCanvas implements GLEventListener, MouseLi
         presenter = new PlotPresenter(new PlotOptions());
 
         for (double angle = -Math.PI * 2; angle < Math.PI * 2; angle += 0.1) {
-            presenter.points.add(new PlotPoint(new Vec2d(angle / Math.PI, Math.sin(angle)+Math.sin(angle*2))));
+            presenter.points.add(new PlotPoint(new Vec2d(angle / Math.PI, Math.sin(angle) + Math.sin(angle * 2))));
         }
     }
 
@@ -163,10 +163,10 @@ public class GLCanvas2DPlot extends GLCanvas implements GLEventListener, MouseLi
 
         gl.glColor3d(0, 1, 0);
 
-        if(frameCt>=presenter.points.size()){
+        if (frameCt >= presenter.points.size()) {
             frameCt = 0;
         }
-        presenter.draw(gl,frameCt);
+        presenter.draw(gl, frameCt);
 
         frameCt++;
 
@@ -178,7 +178,7 @@ public class GLCanvas2DPlot extends GLCanvas implements GLEventListener, MouseLi
         gl.glFlush();
     }
 
-    public void reset(){
+    public void reset() {
         frameCt = 0;
     }
 }
