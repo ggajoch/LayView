@@ -283,4 +283,8 @@ public class GLCanvas3DCamera extends GLCanvas implements GLEventListener, Mouse
 
         gl.glFlush();
     }
+
+    public void reset(){
+        frameCt = 0;
+    }
 }

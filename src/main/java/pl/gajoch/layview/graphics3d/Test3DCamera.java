@@ -4,6 +4,9 @@ package pl.gajoch.layview.graphics3d;
 import java.awt.event.*;
 
 import com.jogamp.opengl.util.*;
+import pl.gajoch.layview.scheduler.EventType;
+import pl.gajoch.layview.scheduler.RepeatedEvent;
+import pl.gajoch.layview.scheduler.Scheduler;
 
 import javax.media.opengl.GLCapabilities;
 import javax.media.opengl.GLProfile;
@@ -32,8 +35,25 @@ public class Test3DCamera {
             }
         });
 
-        final FPSAnimator animator = new FPSAnimator(canvasCamera, 300, true);
-        animator.start();
+        /*final FPSAnimator animator = new FPSAnimator(canvasCamera, 300, true);
+        animator.start();*/
+
+        Scheduler.schedule(new RepeatedEvent(EventType.UPDATE3D, (int)1e6/30, 100) {
+            @Override
+            public void dispatch() {
+                canvasCamera.display();
+            }
+
+            @Override
+            public void reset(){
+                canvasCamera.reset();
+            }
+        });
+
+        while(true) {
+            Scheduler.start();
+            System.out.println("DONE");
+        }
 
     }
 }
