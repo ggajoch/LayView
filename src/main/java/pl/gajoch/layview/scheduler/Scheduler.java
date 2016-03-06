@@ -3,29 +3,29 @@ package pl.gajoch.layview.scheduler;
 import java.util.*;
 
 public class Scheduler {
-    public SortedSet<Event> set;
+    private static final PriorityQueue<Event> queue = new PriorityQueue<>();
 
-    public Scheduler() {
-        set = new TreeSet<>();
-    }
+    private Scheduler() {}
 
-    public void dispatchAll() {
-        Iterator it = set.iterator();
+    public static void start() {
 
-        Event prev = set.first();
-        long next = micros() + prev.offset_us;
-        while (micros() < next);
-        prev.dispatch();
-        while(it.hasNext()) {
-            Event now = (Event) it.next();
-            next = micros() + now.offset_us - prev.offset_us;
-            while (micros() < next);
-            now.dispatch();
-            prev = now;
+        long prev_time = 0;
+
+        while( ! queue.isEmpty() ) {
+            Event now = queue.poll();
+            long next = micros() + now.offset_us - prev_time;
+            while (micros() < next) {
+            }
+            prev_time = now.offset_us;
+            now.dispatchHandler();
         }
     }
 
-    private long micros() {
+    public static void schedule(Event event) {
+        queue.add(event);
+    }
+
+    private static long micros() {
         return (System.nanoTime()/1000);
     }
 }
