@@ -6,21 +6,21 @@ public class EventTester {
     public static void main(String[] args) {
         Scheduler.schedule(new Event(EventType.UPDATE3D, 1) {
             @Override
-            void dispatch() {
+            public void dispatch() {
                 System.out.println("Event 1");
             }
         });
 
         Scheduler.schedule(new Event(EventType.SNAPSHOT, 0) {
             @Override
-            void dispatch() {
+            public void dispatch() {
                 System.out.println("Event 2");
             }
         });
 
         Scheduler.schedule(new Event(EventType.UPDATE3D, 1) {
             @Override
-            void dispatch() {
+            public void dispatch() {
                 System.out.println("Event 3");
             }
         });
@@ -28,7 +28,7 @@ public class EventTester {
         for(int i = 0; i < 10; ++i) {
             Scheduler.schedule(new Event(EventType.UPDATE3D, i*1000000) {
                 @Override
-                void dispatch() {
+                public void dispatch() {
                     System.out.println("Event 4");
                 }
             });
@@ -37,7 +37,7 @@ public class EventTester {
         Scheduler.schedule(new RepeatedEvent(EventType.SNAPSHOT, 1000000, 20) {
             int i = 0;
             @Override
-            void dispatch() {
+            public void dispatch() {
                 i++;
                 System.out.println("Event 5, " + i + " time.");
             }
@@ -46,13 +46,13 @@ public class EventTester {
         Scheduler.schedule(new RepeatedEvent(EventType.SNAPSHOT, 100000, 10) {
             int i = 0;
             @Override
-            void dispatch() {
+            public void dispatch() {
                 i++;
                 System.out.println("Event 6, " + i + " time.");
             }
 
             @Override
-            void reset() {
+            public void reset() {
                 i = 0;
             }
         });
