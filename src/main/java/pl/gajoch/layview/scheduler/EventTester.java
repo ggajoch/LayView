@@ -1,7 +1,5 @@
 package pl.gajoch.layview.scheduler;
 
-import java.util.concurrent.TimeUnit;
-
 public class EventTester {
     public static void main(String[] args) {
         Scheduler.schedule(new Event(EventType.UPDATE3D, 1) {
