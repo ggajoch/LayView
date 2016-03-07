@@ -133,7 +133,7 @@ public class GLCanvas2DPlotViewer extends GLCanvas implements GLEventListener, M
         presenter = new PlotPresenter(new SimpleObjectProperty<>(new PlotOptions()));
 
         for (double angle = -Math.PI * 2; angle < Math.PI * 2; angle += 0.1) {
-            presenter.plotPointsList.add(new PlotPoint(new Point2D.Double(angle / Math.PI, Math.sin(angle) + Math.sin(angle * 2))));
+            presenter.plotPointsList.add(new PlotPoint(new Point2D.Double(angle / Math.PI * 100, (Math.sin(angle) + Math.sin(angle * 2))*100)));
         }
     }
 
@@ -146,7 +146,7 @@ public class GLCanvas2DPlotViewer extends GLCanvas implements GLEventListener, M
         gl.glClear(GL2.GL_COLOR_BUFFER_BIT | GL2.GL_DEPTH_BUFFER_BIT);
         gl.glMatrixMode(GL2.GL_PROJECTION);
         gl.glLoadIdentity();
-        gl.glOrtho(-2 * h, 2 * h, -2, 2, -1, 1);
+        gl.glOrtho(-width/2.0, width/2.0, -height/2.0, height/2.0, -1, 1);
         gl.glMatrixMode(GL2.GL_MODELVIEW);
 
 
