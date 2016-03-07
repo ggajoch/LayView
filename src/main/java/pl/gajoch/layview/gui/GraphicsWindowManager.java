@@ -2,9 +2,7 @@ package pl.gajoch.layview.gui;
 
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ChangeListener;
-import javafx.scene.SubScene;
-import javafx.stage.Stage;
-import pl.gajoch.layview.graphics2d.JOGL2DScene;
+import pl.gajoch.layview.graphics2d.JPanel2D;
 import pl.gajoch.layview.graphics3d.*;
 
 import javax.swing.*;
@@ -13,20 +11,12 @@ import java.util.ArrayList;
 import java.util.NoSuchElementException;
 
 public class GraphicsWindowManager {
-    JPanel pane3D;
-    volatile JFrame frame;
-    volatile ArrayList<MovableSubScene> subScenes;
-    SimpleObjectProperty<MovableSubScene> actual_scene;
+    static JPanel pane3D;
+    volatile static JFrame frame;
+    volatile static ArrayList<MovableJPanel> subScenes;
+    static SimpleObjectProperty<MovableJPanel> actual_scene;
 
-    public void clicked(MovableSubScene scene) {
-        if (actual_scene.getValue() != null && actual_scene.getValue() == scene) {
-            actual_scene.setValue(null);
-        } else {
-            actual_scene.setValue(scene);
-        }
-    }
-
-    GraphicsWindowManager(Stage stage, SubScene subScene) {
+    GraphicsWindowManager() {
         actual_scene = new SimpleObjectProperty<>();
         subScenes = new ArrayList<>();
 
@@ -34,12 +24,6 @@ public class GraphicsWindowManager {
             try {
                 recalculate();
             } catch (NumberFormatException ignored) {
-            }
-        });
-
-        subScene.setOnMouseClicked(event -> {
-            if (event.isStillSincePress()) {
-                actual_scene.setValue(null);
             }
         });
 
@@ -53,21 +37,18 @@ public class GraphicsWindowManager {
 
     }
 
-    Boolean vis = Boolean.TRUE;
-
-    private void recalculate() {
+    private static void recalculate() {
         System.out.println("Rec!");
         SwingUtilities.invokeLater(() -> {
             frame.getContentPane().removeAll();
-            for (MovableSubScene scene : subScenes) {
-                System.out.println("Position: " + scene.position.get());
-                frame.add(scene.scene);
+            for (MovableJPanel scene : subScenes) {
+                frame.add(scene);
             }
             frame.repaint();
         });
     }
 
-    private void recalculateWindowSize() {
+    private static void recalculateWindowSize() {
         try {
             int maxWidth = (int) subScenes.stream()
                     .mapToDouble(sc -> sc.getPosition().getX() + sc.getPosition().getWidth())
@@ -92,17 +73,17 @@ public class GraphicsWindowManager {
 //        stage.sizeToScene();
     }
 
-    private void addSizeRecalculations(MovableSubScene scene) {
+    private static void addSizeRecalculations(MovableJPanel scene) {
         ChangeListener<? super Rectangle> handler = (observable1, oldValue1, newValue1) -> {
             recalculate();
             recalculateWindowSize();
         };
 
-        scene.position.addListener(handler);
+        scene.getPositionProperty().addListener(handler);
     }
 
-    public void add() {
-        MovableSubScene view = new JOGL2DScene(this, 600, 600);
+    public static void add() {
+        MovableJPanel view = new JPanel2D(600, 600);
         addSizeRecalculations(view);
         view.generateContextMenu(new ArrayList<>());
         subScenes.add(view);
@@ -112,15 +93,15 @@ public class GraphicsWindowManager {
         System.out.print("2D++\r\n");
     }
 
-    public void add3D() {
-        MovableSubScene scene = new JOGL3DScene(this, 600, 600);
+    public static void add3D() {
+        MovableJPanel scene = new JPanel3D(600, 600);
         addSizeRecalculations(scene);
         subScenes.add(scene);
         recalculate();
         recalculateWindowSize();
     }
 
-    public void del(MovableSubScene scene) {
+    public static void del(MovableJPanel scene) {
         if (subScenes.contains(scene)) {
             subScenes.remove(scene);
         }

@@ -1,20 +1,32 @@
 package pl.gajoch.layview.graphics2d;
 
 
-import com.sun.javafx.geom.Vec2d;
+import java.awt.geom.Point2D;
 
 public class PlotPoint {
-    public Vec2d value;
+    private final Point2D value;
 
-    public PlotPoint() {
-        value = new Vec2d();
+    public final Point2D get() {
+        return value;
     }
 
-    public PlotPoint(Vec2d value) {
+    public double getY() {
+        return value.getY();
+    }
+
+    public double getX() {
+        return value.getX();
+    }
+
+    public PlotPoint() {
+        value = new Point2D.Double();
+    }
+
+    public PlotPoint(Point2D value) {
         this.value = value;
     }
 
     public PlotPoint(PlotPoint second) {
-        this.value = new Vec2d(second.value);
+        this.value = new Point2D.Double(second.getX(), second.getY());
     }
 }

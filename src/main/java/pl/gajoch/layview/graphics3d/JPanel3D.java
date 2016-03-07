@@ -1,51 +1,44 @@
-package pl.gajoch.layview.graphics2d;
+package pl.gajoch.layview.graphics3d;
 
 import com.jogamp.opengl.util.FPSAnimator;
 import com.sun.javafx.geom.Vec3d;
-import javafx.animation.AnimationTimer;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleObjectProperty;
-import javafx.embed.swing.SwingNode;
-import javafx.scene.Group;
-import javafx.scene.control.MenuItem;
-import javafx.scene.layout.StackPane;
-import javafx.scene.paint.Color;
 import pl.gajoch.layview.gui.*;
 import pl.gajoch.layview.utils.OMFData;
 import pl.gajoch.layview.utils.OMFParser;
 
 import javax.media.opengl.GLCapabilities;
 import javax.media.opengl.GLProfile;
-import javax.media.opengl.awt.GLCanvas;
 import javax.swing.*;
 import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class JOGL2DScene extends MovableSubScene {
+public class JPanel3D extends MovableJPanel {
     private FileInputSelector fileInputSelector;
-    //private Scene3DOptionsEditor scene3DOptionsEditor;
+    private Scene3DOptionsEditor scene3DOptionsEditor;
 
     private FileInput files;
-    //SimpleObjectProperty<Scene3DOptions> optionsProperty;
+    SimpleObjectProperty<Scene3DOptions> optionsProperty;
 
-    //private volatile Scene3DOptions scene3DOptions = new Scene3DOptions(0.025, 0.025, 0.01, 0.1, new Vec3d(.1, .1, .1), 1.0, 30, new HintGradient(), new HintGradient());
+    private volatile Scene3DOptions scene3DOptions = new Scene3DOptions(0.025, 0.025, 0.01, 0.1, new Vec3d(.1, .1, .1), 1.0, 30, new HintGradient(), new HintGradient());
 
 
-    public JOGL2DScene(GraphicsWindowManager parent, int width, int height) {
-        super(parent, width, height);
+    public JPanel3D(int width, int height) {
+        super(width, height);
 
         fileInputSelector = new FileInputSelector();
-        //scene3DOptionsEditor = new Scene3DOptionsEditor();
+        scene3DOptionsEditor = new Scene3DOptionsEditor();
         files = new FileInput();
 
-        /*optionsProperty = new SimpleObjectProperty<>(
+        optionsProperty = new SimpleObjectProperty<>(
                 scene3DOptions);
 
         optionsProperty.addListener((observable, oldValue, newValue) -> {
             onOptionsChanged(newValue);
-        });*/
+        });
 
         List<JMenuItem> menu = new ArrayList<>();
 
@@ -55,21 +48,21 @@ public class JOGL2DScene extends MovableSubScene {
         });
         menu.add(item1);
 
-        /*JMenuItem item2 = new JMenuItem("Options...");
+        JMenuItem item2 = new JMenuItem("Options...");
         item2.addActionListener(e -> {
             Platform.runLater(() -> {
                 scene3DOptionsEditor.exec(optionsProperty);
             });
         });
-        menu.add(item2);*/
+        menu.add(item2);
 
         this.generateContextMenu(menu);
 
         final GLProfile profile = GLProfile.get(GLProfile.GL2);
         GLCapabilities capabilities = new GLCapabilities(profile);
 
-        GLCanvas2DPlot glcanvas = new GLCanvas2DPlot(capabilities);
-        //glcanvas.setOptions(scene3DOptions);
+        GLCanvas3DSurfaceViewer glcanvas = new GLCanvas3DSurfaceViewer(capabilities);
+        glcanvas.setOptions(scene3DOptions);
         glcanvas.addGLEventListener(glcanvas);
         glcanvas.setSize(width, height);
 
@@ -103,7 +96,7 @@ public class JOGL2DScene extends MovableSubScene {
         });
 
         SwingUtilities.invokeLater(() ->
-                this.scene.add(glcanvas));
+                this.add(glcanvas));
 
         final FPSAnimator animator = new FPSAnimator(glcanvas, 300, true);
         animator.start();

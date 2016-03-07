@@ -8,11 +8,11 @@ public class RichTextField {
         return new RichTextField(field);
     }
 
-    public double getDouble() {
+    public double getDouble() throws NumberFormatException {
         return Double.valueOf(textField.getText());
     }
 
-    public int getInt() {
+    public int getInt() throws NumberFormatException {
         return Integer.valueOf(textField.getText());
     }
 

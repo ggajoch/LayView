@@ -1,31 +1,35 @@
 package pl.gajoch.layview.graphics2d;
 
+import com.sun.javaws.exceptions.InvalidArgumentException;
+import javafx.beans.property.SimpleObjectProperty;
 import pl.gajoch.layview.graphics3d.TrigonometricTab;
 
 import javax.media.opengl.GL2;
-import java.util.ArrayList;
 
 public class PlotPresenter {
-    public PlotOptions options;
+    public SimpleObjectProperty<PlotOptions> options;
 
     private TrigonometricTab trig;
-    private int lastDivisions;
+    public PlotPointsList plotPointsList;
 
-    public ArrayList<PlotPoint> points;
-
-    public PlotPresenter(PlotOptions options) {
+    public PlotPresenter(SimpleObjectProperty<PlotOptions> options) {
         this.options = options;
-        points = new ArrayList<>();
-        trig = new TrigonometricTab(options.divisions);
-        lastDivisions = options.divisions;
+        options.addListener((observable, oldValue, newValue) -> {
+            trig = new TrigonometricTab(newValue.divisions);
+        });
+        plotPointsList = new PlotPointsList();
     }
 
     public void draw(GL2 gl, int frame) {
         drawAxes(gl);
-        if (options.isLine) {
-            drawLine(gl, frame);
-        } else {
-            drawPoints(gl, frame);
+        try {
+            if (options.get().isLine) {
+                drawLine(gl, frame);
+            } else {
+                drawPoints(gl, frame);
+            }
+        } catch (InvalidArgumentException ex) {
+            ex.printStackTrace();
         }
     }
 
@@ -33,37 +37,36 @@ public class PlotPresenter {
 
     }
 
-    private void drawPoints(GL2 gl, int frame) {
-        if (frame >= 0 && frame < points.size()) {
-            gl.glColor3d(options.color.getRed(), options.color.getGreen(), options.color.getBlue());
-            for (int i = 0; i < frame; i++) {
-                drawPoint(gl, points.get(i));
-            }
-        }
+    private void drawPoints(GL2 gl, int frame) throws InvalidArgumentException {
+        if( frame < 0 )
+            throw new InvalidArgumentException(new String[]{"Frame number must be positive!"});
+
+        gl.glColor3d(options.get().color.getRed(), options.get().color.getGreen(), options.get().color.getBlue());
+        plotPointsList.subList(0, frame).forEach(plotPoint -> drawPoint(gl, plotPoint));
     }
 
     private void drawPoint(GL2 gl, PlotPoint point) {
         gl.glBegin(GL2.GL_TRIANGLE_FAN);
-        gl.glVertex2d(point.value.x, point.value.y);
+        gl.glVertex2d(point.getX(), point.getY());
 
-        for (int division = 0; division <= options.divisions; division++) {
-            gl.glVertex2d(point.value.x + trig.sin(division) * options.symbolRadius,
-                    point.value.y + trig.cos(division) * options.symbolRadius);
+        for (int division = 0; division <= options.get().divisions; division++) {
+            gl.glVertex2d(point.getX() + trig.sin(division) * options.get().symbolRadius,
+                    point.getY() + trig.cos(division) * options.get().symbolRadius);
         }
 
         gl.glEnd();
     }
 
-    private void drawLine(GL2 gl, int frame) {
-        if (frame >= 0 && frame < points.size()) {
-            gl.glLineWidth(options.width);
-            gl.glColor3d(options.color.getRed(), options.color.getGreen(), options.color.getBlue());
-            gl.glBegin(GL2.GL_LINE_STRIP);
-            for (int i = 0; i < frame; i++) {
-                PlotPoint point = points.get(i);
-                gl.glVertex2d(point.value.x, point.value.y);
-            }
-            gl.glEnd();
-        }
+    private void drawLine(GL2 gl, int frame) throws InvalidArgumentException {
+        if( frame < 0 )
+            throw new InvalidArgumentException(new String[]{"Frame number must be positive!"});
+
+        gl.glLineWidth(options.get().width);
+        gl.glColor3d(options.get().color.getRed(), options.get().color.getGreen(), options.get().color.getBlue());
+        gl.glBegin(GL2.GL_LINE_STRIP);
+
+        plotPointsList.subList(0, frame).forEach(plotPoint -> gl.glVertex2d(plotPoint.getX(), plotPoint.getY()));
+
+        gl.glEnd();
     }
 }

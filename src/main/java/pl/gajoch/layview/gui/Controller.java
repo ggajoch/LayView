@@ -25,7 +25,7 @@ public class Controller {
     public void setup(Stage stage) throws IOException {
         this.primaryStage = stage;
 
-        graphicsWindowManager = new GraphicsWindowManager(stage, Scene3D);
+        graphicsWindowManager = new GraphicsWindowManager();
 
         exporter = new VideoExporter(Scene3D,"C:\\Users\\Piotr\\Desktop\\tmp\\OBRAZKEN",
                 "C:\\Users\\Piotr\\Desktop\\tmp\\00test.avi",10,768,768);

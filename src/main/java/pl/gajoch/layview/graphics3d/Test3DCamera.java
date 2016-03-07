@@ -3,7 +3,6 @@ package pl.gajoch.layview.graphics3d;
 
 import java.awt.event.*;
 
-import com.jogamp.opengl.util.*;
 import pl.gajoch.layview.scheduler.EventType;
 import pl.gajoch.layview.scheduler.RepeatedEvent;
 import pl.gajoch.layview.scheduler.Scheduler;
@@ -14,14 +13,14 @@ import javax.swing.JFrame;
 
 public class Test3DCamera {
 
-    static GLCanvas3DCamera canvasCamera;
+    static GLCanvas3DSurfaceViewer canvasCamera;
     static JFrame frame;
 
     public static void main(String[] args) {
         final GLProfile profile = GLProfile.get(GLProfile.GL2);
         GLCapabilities capabilities = new GLCapabilities(profile);
         // The canvas
-        canvasCamera = new GLCanvas3DCamera(capabilities);
+        canvasCamera = new GLCanvas3DSurfaceViewer(capabilities);
         canvasCamera.addGLEventListener(canvasCamera);
         canvasCamera.setSize(700, 700);
         frame = new JFrame("LayVIEW development preview");

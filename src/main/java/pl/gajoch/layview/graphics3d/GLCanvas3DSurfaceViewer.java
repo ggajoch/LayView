@@ -19,7 +19,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
-public class GLCanvas3DCamera extends GLCanvas implements GLEventListener, MouseListener, MouseMotionListener, MouseWheelListener {
+public class GLCanvas3DSurfaceViewer extends GLCanvas implements GLEventListener, MouseListener, MouseMotionListener, MouseWheelListener {
 
     private TextRenderer renderer;
 
@@ -37,7 +37,7 @@ public class GLCanvas3DCamera extends GLCanvas implements GLEventListener, Mouse
     private static final double ROTATE_SCALE = .01;
     private final double MOVE_SCALE = 3.275;
 
-    public GLCanvas3DCamera(GLCapabilities capabilities) {
+    public GLCanvas3DSurfaceViewer(GLCapabilities capabilities) {
         super(capabilities);
     }
 

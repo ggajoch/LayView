@@ -3,6 +3,7 @@ package pl.gajoch.layview.graphics2d;
 import com.jogamp.opengl.util.awt.TextRenderer;
 import com.sun.javafx.geom.Vec2d;
 import com.sun.javafx.geom.Vec3d;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.scene.paint.Color;
 import org.apache.commons.math3.geometry.euclidean.threed.CardanEulerSingularityException;
 import org.apache.commons.math3.geometry.euclidean.threed.Rotation;
@@ -20,8 +21,9 @@ import javax.media.opengl.awt.GLCanvas;
 import javax.media.opengl.glu.GLU;
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.geom.Point2D;
 
-public class GLCanvas2DPlot extends GLCanvas implements GLEventListener, MouseListener, MouseMotionListener, MouseWheelListener {
+public class GLCanvas2DPlotViewer extends GLCanvas implements GLEventListener, MouseListener, MouseMotionListener, MouseWheelListener {
     private boolean isLine = true;
 
     private TextRenderer renderer;
@@ -38,7 +40,7 @@ public class GLCanvas2DPlot extends GLCanvas implements GLEventListener, MouseLi
     private static final double ROTATE_SCALE = .01;
     private static final double MOVE_SCALE = .01;
 
-    public GLCanvas2DPlot(GLCapabilities capabilities) {
+    public GLCanvas2DPlotViewer(GLCapabilities capabilities) {
         super(capabilities);
     }
 
@@ -46,7 +48,9 @@ public class GLCanvas2DPlot extends GLCanvas implements GLEventListener, MouseLi
         //System.out.println("Clicked");
         //System.out.println(e.getClickCount());
         if (e.getClickCount() == 2) {
-            presenter.options.isLine = !presenter.options.isLine;
+            PlotOptions now = presenter.options.get();
+            now.isLine = !now.isLine;
+            presenter.options.set(now);
         }
     }
 
@@ -126,10 +130,10 @@ public class GLCanvas2DPlot extends GLCanvas implements GLEventListener, MouseLi
         this.addMouseMotionListener(this);
         this.addMouseWheelListener(this);
 
-        presenter = new PlotPresenter(new PlotOptions());
+        presenter = new PlotPresenter(new SimpleObjectProperty<>(new PlotOptions()));
 
         for (double angle = -Math.PI * 2; angle < Math.PI * 2; angle += 0.1) {
-            presenter.points.add(new PlotPoint(new Vec2d(angle / Math.PI, Math.sin(angle) + Math.sin(angle * 2))));
+            presenter.plotPointsList.add(new PlotPoint(new Point2D.Double(angle / Math.PI, Math.sin(angle) + Math.sin(angle * 2))));
         }
     }
 
@@ -163,7 +167,7 @@ public class GLCanvas2DPlot extends GLCanvas implements GLEventListener, MouseLi
 
         gl.glColor3d(0, 1, 0);
 
-        if (frameCt >= presenter.points.size()) {
+        if (frameCt >= presenter.plotPointsList.size()) {
             frameCt = 0;
         }
         presenter.draw(gl, frameCt);

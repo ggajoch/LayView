@@ -1,7 +1,6 @@
 package pl.gajoch.layview.graphics2d;
 
-import com.jogamp.opengl.util.FPSAnimator;
-//import pl.gajoch.layview.graphics3d.GLCanvas3DCamera;
+//import pl.gajoch.layview.graphics3d.GLCanvas3DSurfaceViewer;
 import pl.gajoch.layview.scheduler.EventType;
 import pl.gajoch.layview.scheduler.RepeatedEvent;
 import pl.gajoch.layview.scheduler.Scheduler;
@@ -13,14 +12,14 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
 public class Test2DPlot {
-    static GLCanvas2DPlot canvasCamera;
+    static GLCanvas2DPlotViewer canvasCamera;
     static JFrame frame;
 
     public static void main(String[] args) {
         final GLProfile profile = GLProfile.get(GLProfile.GL2);
         GLCapabilities capabilities = new GLCapabilities(profile);
         // The canvas
-        canvasCamera = new GLCanvas2DPlot(capabilities);
+        canvasCamera = new GLCanvas2DPlotViewer(capabilities);
         canvasCamera.addGLEventListener(canvasCamera);
         canvasCamera.setSize(700, 700);
         frame = new JFrame("LayVIEW development preview");
