@@ -3,6 +3,9 @@ package pl.gajoch.layview.graphics3d;
 
 import java.awt.event.*;
 
+import com.sun.javafx.geom.Vec3d;
+import pl.gajoch.layview.gui.HintGradient;
+import pl.gajoch.layview.gui.Scene3DOptions;
 import pl.gajoch.layview.scheduler.EventType;
 import pl.gajoch.layview.scheduler.RepeatedEvent;
 import pl.gajoch.layview.scheduler.Scheduler;
@@ -21,6 +24,7 @@ public class Test3DCamera {
         GLCapabilities capabilities = new GLCapabilities(profile);
         // The canvas
         canvasCamera = new GLCanvas3DSurfaceViewer(capabilities);
+        canvasCamera.setOptions(new Scene3DOptions(0.025, 0.025, 0.01, 0.1, new Vec3d(.1, .1, .1), 1.0, 30, new HintGradient(), new HintGradient()));
         canvasCamera.addGLEventListener(canvasCamera);
         canvasCamera.setSize(700, 700);
         frame = new JFrame("LayVIEW development preview");
