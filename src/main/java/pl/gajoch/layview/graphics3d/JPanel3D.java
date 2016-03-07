@@ -11,6 +11,7 @@ import pl.gajoch.layview.utils.OMFParser;
 import javax.media.opengl.GLCapabilities;
 import javax.media.opengl.GLProfile;
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,12 +20,17 @@ import java.util.stream.Collectors;
 public class JPanel3D extends MovableJPanel {
     private FileInputSelector fileInputSelector;
     private Scene3DOptionsEditor scene3DOptionsEditor;
+    private GLCanvas3DSurfaceViewer glcanvas;
 
     private FileInput files;
     SimpleObjectProperty<Scene3DOptions> optionsProperty;
 
     private volatile Scene3DOptions scene3DOptions = new Scene3DOptions(0.025, 0.025, 0.01, 0.1, new Vec3d(.1, .1, .1), 1.0, 30, new HintGradient(), new HintGradient());
 
+    @Override
+    public void fixCenter(Rectangle position) {
+        glcanvas.reshape((int)position.getX(), (int)position.getY(), (int)position.getWidth(), (int)position.getHeight());
+    }
 
     public JPanel3D(int width, int height) {
         super(width, height);
@@ -61,7 +67,7 @@ public class JPanel3D extends MovableJPanel {
         final GLProfile profile = GLProfile.get(GLProfile.GL2);
         GLCapabilities capabilities = new GLCapabilities(profile);
 
-        GLCanvas3DSurfaceViewer glcanvas = new GLCanvas3DSurfaceViewer(capabilities);
+        glcanvas = new GLCanvas3DSurfaceViewer(capabilities);
         glcanvas.setOptions(scene3DOptions);
         glcanvas.addGLEventListener(glcanvas);
         glcanvas.setSize(width, height);
