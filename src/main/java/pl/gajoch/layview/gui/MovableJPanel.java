@@ -56,6 +56,11 @@ abstract public class MovableJPanel extends JPanel {
     public void setPosition(Rectangle position) {
         this.setBounds(position);
         this.repaint();
+        fixCenter(position.getWidth(), position.getHeight());
+    }
+
+    public void fixCenter(double width, double height) {
+
     }
 
     public Rectangle getPosition() {
