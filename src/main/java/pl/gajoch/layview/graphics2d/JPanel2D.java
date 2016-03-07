@@ -9,6 +9,7 @@ import pl.gajoch.layview.utils.OMFParser;
 import javax.media.opengl.GLCapabilities;
 import javax.media.opengl.GLProfile;
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +18,13 @@ import java.util.stream.Collectors;
 public class JPanel2D extends MovableJPanel {
     private FileInputSelector fileInputSelector;
     private FileInput files;
+
+    private GLCanvas2DPlotViewer glcanvas;
+
+    @Override
+    public void fixCenter(Rectangle position) {
+        glcanvas.reshape((int)position.getX(), (int)position.getY(), (int)position.getWidth(), (int)position.getHeight());
+    }
 
     public JPanel2D(int width, int height) {
         super(width, height);
@@ -36,7 +44,7 @@ public class JPanel2D extends MovableJPanel {
         final GLProfile profile = GLProfile.get(GLProfile.GL2);
         GLCapabilities capabilities = new GLCapabilities(profile);
 
-        GLCanvas2DPlotViewer glcanvas = new GLCanvas2DPlotViewer(capabilities);
+        glcanvas = new GLCanvas2DPlotViewer(capabilities);
         glcanvas.addGLEventListener(glcanvas);
         glcanvas.setSize(width, height);
 
