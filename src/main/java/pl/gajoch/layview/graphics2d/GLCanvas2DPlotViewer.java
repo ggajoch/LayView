@@ -142,7 +142,6 @@ public class GLCanvas2DPlotViewer extends GLCanvas implements GLEventListener, M
         final GL2 gl = drawable.getGL().getGL2();
         if (height <= 0)
             height = 1;
-        final double h = (float) width / (float) height;
         gl.glClear(GL2.GL_COLOR_BUFFER_BIT | GL2.GL_DEPTH_BUFFER_BIT);
         gl.glMatrixMode(GL2.GL_PROJECTION);
         gl.glLoadIdentity();
