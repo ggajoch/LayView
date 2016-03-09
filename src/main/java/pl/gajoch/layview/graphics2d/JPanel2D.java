@@ -27,7 +27,7 @@ public class JPanel2D extends MovableJPanel {
 
     @Override
     public void fixCenter(Rectangle position) {
-        glcanvas.reshape((int)position.getX(), (int)position.getY(), (int)position.getWidth(), (int)position.getHeight());
+        glcanvas.reshape(0, 0, (int)position.getWidth(), (int)position.getHeight());
     }
 
     public JPanel2D(int width, int height) {

@@ -33,7 +33,7 @@ public class JPanel3D extends MovableJPanel {
 
     @Override
     public void fixCenter(Rectangle position) {
-        glcanvas.reshape((int) position.getX(), (int) position.getY(), (int) position.getWidth(), (int) position.getHeight());
+        glcanvas.reshape(0, 0, (int) position.getWidth(), (int) position.getHeight());
     }
 
     public JPanel3D(int width, int height) {
@@ -130,6 +130,8 @@ public class JPanel3D extends MovableJPanel {
     private void onOptionsChanged(Scene3DOptions newValue) {
         System.out.println("Recalculate!");
 
+        glcanvas.setOptions(newValue);
+
         /*scene3DOptions = newValue;
 
         globalScale.set(newValue.globalScale);
@@ -184,6 +186,14 @@ public class JPanel3D extends MovableJPanel {
 
             });
 
+            scene3DOptions.vectorProperties.lenScale = 0.00000001 / glcanvas.presenter.getMaxVectorLength();
+            scene3DOptions.vectorProperties.tipLen = 0.00025 / glcanvas.presenter.getMaxVectorLength();
+            scene3DOptions.vectorProperties.tipRadius = 0.00025 / glcanvas.presenter.getMaxVectorLength();
+            scene3DOptions.vectorProperties.radius = 0.0001 / glcanvas.presenter.getMaxVectorLength();
+
+            System.out.println("max_len: " + glcanvas.presenter.getMaxVectorLength());
+            System.out.println("len_scale: " + scene3DOptions.vectorProperties.lenScale);
+
             onOptionsChanged(scene3DOptions);
 
             timing = new RepeatedEvent(EventType.UPDATE3D, (int) 1e6 / 24, glcanvas.presenter.surfaces.size()) {
@@ -198,8 +208,9 @@ public class JPanel3D extends MovableJPanel {
                 }
             };
             Scheduler.schedule(timing);
+            System.out.println("Added surfaces: " + glcanvas.presenter.surfaces.size());
         });
 
-        System.out.println("Added surfaces: "+glcanvas.presenter.surfaces.size());
+
     }
 }
