@@ -33,7 +33,7 @@ public class JPanel3D extends MovableJPanel {
 
     @Override
     public void fixCenter(Rectangle position) {
-        glcanvas.reshape((int)position.getX(), (int)position.getY(), (int)position.getWidth(), (int)position.getHeight());
+        glcanvas.reshape((int) position.getX(), (int) position.getY(), (int) position.getWidth(), (int) position.getHeight());
     }
 
     public JPanel3D(int width, int height) {
@@ -108,10 +108,15 @@ public class JPanel3D extends MovableJPanel {
         SwingUtilities.invokeLater(() ->
                 this.add(glcanvas));
 
-        timing = new RepeatedEvent(EventType.UPDATE3D, (int)1e6/24, 61) {
+        timing = new RepeatedEvent(EventType.UPDATE3D, 10, 0) {
             @Override
             public void dispatch() {
                 glcanvas.display();
+            }
+
+            @Override
+            public void reset() {
+                glcanvas.reset();
             }
         };
 
@@ -164,31 +169,37 @@ public class JPanel3D extends MovableJPanel {
     }
 
     private void onFileSelect() {
-//        timer.stop();
         Platform.runLater(() -> {
+            Scheduler.remove(timing);
             FileInput omfDatas = fileInputSelector.exec(files);
 
 
-            /*omfDatas.stream().findFirst().get().points.forEach(surfacePoint -> {
-            System.out.println("point: " + surfacePoint.position);
-            });*/
+            glcanvas.presenter.surfaces.clear();
 
-            /*surface.clear();
-            surface.addAll(omfDatas.stream().findFirst().get().points);*/
+            omfDatas.omfDataList.forEach(surfaceData -> {
 
-
-           /* surfaces.clear();
-            omfDatas.stream().forEach(surfaceData -> {
-
-            GradientSurfacePointsList currentSurface = new GradientSurfacePointsList();
-            currentSurface.addAll(surfaceData.points);
-            surfaces.add(currentSurface);
+                SurfacePointsList currentSurface = new SurfacePointsList(omfDatas.threshold);
+                currentSurface.addAll(surfaceData.points);
+                glcanvas.presenter.surfaces.add(currentSurface);
 
             });
 
             onOptionsChanged(scene3DOptions);
-            frameCount = 0;*/
-            //        timer.start();
+
+            timing = new RepeatedEvent(EventType.UPDATE3D, (int) 1e6 / 24, glcanvas.presenter.surfaces.size()) {
+                @Override
+                public void dispatch() {
+                    glcanvas.display();
+                }
+
+                @Override
+                public void reset() {
+                    glcanvas.reset();
+                }
+            };
+            Scheduler.schedule(timing);
         });
+
+        System.out.println("Added surfaces: "+glcanvas.presenter.surfaces.size());
     }
 }

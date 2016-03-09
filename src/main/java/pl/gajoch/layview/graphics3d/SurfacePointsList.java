@@ -6,14 +6,21 @@ import java.util.Collection;
 public class SurfacePointsList {
     public ArrayList<SurfacePoint> points;
     public SurfacePoint min, max;
+    private double threshold;
 
-    public SurfacePointsList() {
+    public SurfacePointsList(double threshold) {
+        this.threshold = threshold;
         points = new ArrayList<>();
         min = new SurfacePoint();
         max = new SurfacePoint();
     }
 
+    public SurfacePointsList() {
+        this(-1);
+    }
+
     public void add(SurfacePoint point) {
+        if (point.vector.length() <= threshold) return;
         if (points.isEmpty()) {
             max = new SurfacePoint(point);
             min = new SurfacePoint(point);

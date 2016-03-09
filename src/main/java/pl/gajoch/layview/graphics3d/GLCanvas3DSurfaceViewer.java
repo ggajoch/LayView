@@ -25,7 +25,7 @@ public class GLCanvas3DSurfaceViewer extends GLCanvas implements GLEventListener
 
     private Scene3DOptions options;
 
-    private SurfacesPresenter presenter;
+    public SurfacesPresenter presenter;
 
     private Vec3d mousePos, mouseOld, mouseDelta;
 
@@ -183,7 +183,7 @@ public class GLCanvas3DSurfaceViewer extends GLCanvas implements GLEventListener
 
         presenter = new SurfacesPresenter(options);
 
-        for (double angle = 0; angle <= Math.PI * 4; angle += Math.PI / 15) {
+        /*for (double angle = 0; angle <= Math.PI * 4; angle += Math.PI / 15) {
             SurfacePointsList surfacePoints = new SurfacePointsList();
 
             for (double x = -1; x <= 1; x += .1) {
@@ -222,10 +222,10 @@ public class GLCanvas3DSurfaceViewer extends GLCanvas implements GLEventListener
         options.gradient2.setMaxVector(options.gradient2.getHintMax());
         options.gradient2.setMinVector(options.gradient2.getHintMin());
 
-        /*System.out.println("G1: MAX: "+gradient1.getHintMax()+" MIN: "+gradient1.getHintMin());
-        System.out.println("G2: MAX: "+gradient2.getHintMax()+" MIN: "+gradient2.getHintMin());*/
+        System.out.println("G1: MAX: "+gradient1.getHintMax()+" MIN: "+gradient1.getHintMin());
+        System.out.println("G2: MAX: "+gradient2.getHintMax()+" MIN: "+gradient2.getHintMin());
 
-        presenter.GradientsApply();
+        presenter.GradientsApply();*/
 
 
     }
