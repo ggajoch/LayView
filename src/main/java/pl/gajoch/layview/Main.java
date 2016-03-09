@@ -7,9 +7,14 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import pl.gajoch.layview.gui.Controller;
+import pl.gajoch.layview.scheduler.Scheduler;
+
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class Main extends Application {
 
+    Timer timer;
     @Override
     public void start(Stage primaryStage) throws Exception {
         FXMLLoader load = new FXMLLoader();
@@ -24,6 +29,16 @@ public class Main extends Application {
         windowController.setup(primaryStage);
 
         primaryStage.show();
+        timer = new Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                while(true) {
+                    Scheduler.start();
+                    System.out.println("DONE");
+                }
+            }
+        }, 100);
     }
 
     public static void main(String[] args) {

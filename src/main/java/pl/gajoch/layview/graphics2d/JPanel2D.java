@@ -3,6 +3,9 @@ package pl.gajoch.layview.graphics2d;
 import com.jogamp.opengl.util.FPSAnimator;
 import javafx.application.Platform;
 import pl.gajoch.layview.gui.*;
+import pl.gajoch.layview.scheduler.EventType;
+import pl.gajoch.layview.scheduler.RepeatedEvent;
+import pl.gajoch.layview.scheduler.Scheduler;
 import pl.gajoch.layview.utils.OMFData;
 import pl.gajoch.layview.utils.OMFParser;
 
@@ -20,6 +23,7 @@ public class JPanel2D extends MovableJPanel {
     private FileInput files;
 
     private GLCanvas2DPlotViewer glcanvas;
+    private RepeatedEvent timing;
 
     @Override
     public void fixCenter(Rectangle position) {
@@ -80,7 +84,16 @@ public class JPanel2D extends MovableJPanel {
         SwingUtilities.invokeLater(() ->
                 this.add(glcanvas));
 
-        final FPSAnimator animator = new FPSAnimator(glcanvas, 10, true);
-        animator.start();
+        timing = new RepeatedEvent(EventType.UPDATE2D, (int)1e6/24, 61) {
+            @Override
+            public void dispatch() {
+                glcanvas.display();
+            }
+        };
+
+        Scheduler.schedule(timing);
+
+        /*final FPSAnimator animator = new FPSAnimator(glcanvas, 10, true);
+        animator.start();*/
     }
 }

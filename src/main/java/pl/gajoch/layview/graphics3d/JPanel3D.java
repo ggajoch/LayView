@@ -5,6 +5,9 @@ import com.sun.javafx.geom.Vec3d;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleObjectProperty;
 import pl.gajoch.layview.gui.*;
+import pl.gajoch.layview.scheduler.EventType;
+import pl.gajoch.layview.scheduler.RepeatedEvent;
+import pl.gajoch.layview.scheduler.Scheduler;
 import pl.gajoch.layview.utils.OMFData;
 import pl.gajoch.layview.utils.OMFParser;
 
@@ -21,6 +24,7 @@ public class JPanel3D extends MovableJPanel {
     private FileInputSelector fileInputSelector;
     private Scene3DOptionsEditor scene3DOptionsEditor;
     private GLCanvas3DSurfaceViewer glcanvas;
+    private RepeatedEvent timing;
 
     private FileInput files;
     SimpleObjectProperty<Scene3DOptions> optionsProperty;
@@ -104,8 +108,18 @@ public class JPanel3D extends MovableJPanel {
         SwingUtilities.invokeLater(() ->
                 this.add(glcanvas));
 
-        final FPSAnimator animator = new FPSAnimator(glcanvas, 300, true);
-        animator.start();
+        timing = new RepeatedEvent(EventType.UPDATE3D, (int)1e6/24, 61) {
+            @Override
+            public void dispatch() {
+                glcanvas.display();
+            }
+        };
+
+        Scheduler.schedule(timing);
+
+        /*final FPSAnimator animator = new FPSAnimator(glcanvas, 300, true);
+        animator.start();*/
+
     }
 
     private void onOptionsChanged(Scene3DOptions newValue) {

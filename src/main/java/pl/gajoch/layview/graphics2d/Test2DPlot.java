@@ -35,7 +35,7 @@ public class Test2DPlot {
 
         /*final FPSAnimator animator = new FPSAnimator(canvasCamera, 300, true);
         animator.start();*/
-        Scheduler.schedule(new RepeatedEvent(EventType.UPDATE3D, (int) 1e6 / 30, 70) {
+        Scheduler.schedule(new RepeatedEvent(EventType.UPDATE2D, (int) 1e6 / 24, 120) {
             @Override
             public void dispatch() {
                 canvasCamera.display();
