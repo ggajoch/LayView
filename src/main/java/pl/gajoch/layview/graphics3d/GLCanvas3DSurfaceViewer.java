@@ -39,10 +39,14 @@ public class GLCanvas3DSurfaceViewer extends GLCanvas implements GLEventListener
 
     public GLCanvas3DSurfaceViewer(GLCapabilities capabilities) {
         super(capabilities);
+        options = new Scene3DOptions(0.025, 0.025, 0.01, 0.1, new Vec3d(.1, .1, .1), 1.0, 30, new HintGradient(), new HintGradient());
+        presenter = new SurfacesPresenter(options);
     }
 
     public void setOptions(Scene3DOptions options) {
         this.options = options;
+        presenter.options = options;
+        System.out.println(presenter.options.vectorProperties.lenScale);
     }
 
     public void mouseClicked(MouseEvent e) {
@@ -134,9 +138,9 @@ public class GLCanvas3DSurfaceViewer extends GLCanvas implements GLEventListener
                     new Vector3D(mouseDelta.x * MOVE_SCALE / this.getHeight(), -mouseDelta.y * MOVE_SCALE / this.getHeight(), 0)
             );
 
-            offset.x += planeTranslate.getX() * Math.pow(10, -scale);
-            offset.y += planeTranslate.getY() * Math.pow(10, -scale);
-            offset.z += planeTranslate.getZ() * Math.pow(10, -scale);
+            offset.x += planeTranslate.getX();
+            offset.y += planeTranslate.getY();
+            offset.z += planeTranslate.getZ();
 
             //TODO: deal with window resize to maintain 1:1 movement!!
         }
@@ -181,7 +185,7 @@ public class GLCanvas3DSurfaceViewer extends GLCanvas implements GLEventListener
         this.addMouseMotionListener(this);
         this.addMouseWheelListener(this);
 
-        presenter = new SurfacesPresenter(options);
+        //presenter = new SurfacesPresenter(options);
 
         /*for (double angle = 0; angle <= Math.PI * 4; angle += Math.PI / 15) {
             SurfacePointsList surfacePoints = new SurfacePointsList();
@@ -222,8 +226,8 @@ public class GLCanvas3DSurfaceViewer extends GLCanvas implements GLEventListener
         options.gradient2.setMaxVector(options.gradient2.getHintMax());
         options.gradient2.setMinVector(options.gradient2.getHintMin());
 
-        System.out.println("G1: MAX: "+gradient1.getHintMax()+" MIN: "+gradient1.getHintMin());
-        System.out.println("G2: MAX: "+gradient2.getHintMax()+" MIN: "+gradient2.getHintMin());
+        //System.out.println("G1: MAX: "+gradient1.getHintMax()+" MIN: "+gradient1.getHintMin());
+        //System.out.println("G2: MAX: "+gradient2.getHintMax()+" MIN: "+gradient2.getHintMin());
 
         presenter.GradientsApply();*/
 
@@ -240,7 +244,7 @@ public class GLCanvas3DSurfaceViewer extends GLCanvas implements GLEventListener
         gl.glViewport(0, 0, width, height);
         gl.glMatrixMode(GL2.GL_PROJECTION);
         gl.glLoadIdentity();
-        glu.gluPerspective(45.0f, h, 1.0, 20.0);
+        glu.gluPerspective(45.0f, h, 1, 20.0);
         gl.glMatrixMode(GL2.GL_MODELVIEW);
         gl.glLoadIdentity();
     }

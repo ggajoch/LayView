@@ -35,7 +35,7 @@ public class Main extends Application {
             public void run() {
                 while(true) {
                     Scheduler.start();
-                    System.out.println("DONE");
+                    //System.out.println("DONE");
                 }
             }
         }, 100);

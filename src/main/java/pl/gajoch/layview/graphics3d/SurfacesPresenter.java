@@ -45,7 +45,7 @@ public class SurfacesPresenter {
             //drawing cone
             {
                 gl.glBegin(GL2.GL_TRIANGLE_FAN);
-                gl.glVertex3d(0, 0, point.vector.length() + options.vectorProperties.tipLen);//top point of the cone
+                gl.glVertex3d(0, 0, point.vector.length()*options.vectorProperties.lenScale + options.vectorProperties.tipLen);//top point of the cone
 
 
                 sinPrev = options.vectorProperties.tipRadius * trig.sin(-1);
@@ -58,7 +58,7 @@ public class SurfacesPresenter {
                     gl.glNormal3d(-options.vectorProperties.tipLen * (cos - cosPrev),
                             -options.vectorProperties.tipLen * (sinPrev - sin),
                             -(sinPrev * cos - cosPrev * sin));
-                    gl.glVertex3d(sin, cos, point.vector.length());
+                    gl.glVertex3d(sin, cos, point.vector.length()*options.vectorProperties.lenScale);
 
                     sinPrev = sin;
                     cosPrev = cos;
@@ -73,7 +73,7 @@ public class SurfacesPresenter {
                 for (int division = 0; division <= options.vectorProperties.divisions; division++) {
                     gl.glVertex3d(options.vectorProperties.tipRadius * trig.sin(division),
                             options.vectorProperties.tipRadius * trig.cos(division),
-                            point.vector.length());
+                            point.vector.length()*options.vectorProperties.lenScale);
 
                 }
                 gl.glEnd();
@@ -90,7 +90,7 @@ public class SurfacesPresenter {
                     cosPrev = options.vectorProperties.radius * trig.cos(division);
 
                     if (division > 0) {
-                        gl.glVertex3d(sin, cos, point.vector.length());
+                        gl.glVertex3d(sin, cos, point.vector.length()*options.vectorProperties.lenScale);
                         gl.glVertex3d(sin, cos, 0);
                     }
                     gl.glNormal3d(sin + sinPrev, cos + cosPrev, 0); //aka mean of nex 2 vectors
@@ -308,6 +308,18 @@ public class SurfacesPresenter {
                 }
             }
         }
+    }
+
+    public double getMaxVectorLength(){
+        if(surfaces.isEmpty()) return 0;
+        if(surfaces.get(0).points.isEmpty())return 0;
+        double max = surfaces.get(0).points.get(0).vector.length();
+        for(SurfacePointsList surface : surfaces){
+            for(SurfacePoint point : surface.points){
+                max = Math.max(point.vector.length(), max);
+            }
+        }
+        return max;
     }
 
     private Color colorWeightedMix(Color original, Color toAppend, double weight) {
