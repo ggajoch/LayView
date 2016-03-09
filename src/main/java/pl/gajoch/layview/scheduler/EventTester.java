@@ -41,7 +41,7 @@ public class EventTester {
             }
         });
 
-        Scheduler.schedule(new RepeatedEvent(EventType.SNAPSHOT, 100000, 10) {
+        Event xxx = new RepeatedEvent(EventType.SNAPSHOT, 100000, 10) {
             int i = 0;
             @Override
             public void dispatch() {
@@ -53,10 +53,12 @@ public class EventTester {
             public void reset() {
                 i = 0;
             }
-        });
+        };
+        Scheduler.schedule(xxx);
 
         Scheduler.start();
         System.out.println("---------------");
+        Scheduler.remove(xxx);
         Scheduler.start();
         System.out.println("---------------");
         Scheduler.start();
