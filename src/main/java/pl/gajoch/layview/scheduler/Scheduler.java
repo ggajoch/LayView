@@ -27,6 +27,10 @@ public class Scheduler {
         }
     }
 
+    public static void remove(Event event) {
+        queue.remove(event);
+    }
+
     static Boolean isRunning() {
         return queueCopy.isEmpty();
     }
