@@ -5,8 +5,10 @@ import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import pl.gajoch.layview.utils.OMFData;
 
 import java.io.IOException;
+import java.util.List;
 
 public class FileInputSelector {
     private final Stage primaryStage;
@@ -33,6 +35,6 @@ public class FileInputSelector {
     public FileInput exec(FileInput files) {
         windowController.setup(primaryStage, files);
         primaryStage.showAndWait();
-        return windowController.getFiles();
+        return windowController.parseFiles();
     }
 }

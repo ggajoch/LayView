@@ -152,11 +152,7 @@ public class JPanel3D extends MovableJPanel {
     private void onFileSelect() {
 //        timer.stop();
         Platform.runLater(() -> {
-            List<OMFData> omfDatas = fileInputSelector.
-                    exec(files).
-                    stream().
-                    map(file -> new OMFParser().parseFile(file)).
-                    collect(Collectors.toList());
+            FileInput omfDatas = fileInputSelector.exec(files);
 
 
             /*omfDatas.stream().findFirst().get().points.forEach(surfacePoint -> {

@@ -1,19 +1,20 @@
 package pl.gajoch.layview.gui;
 
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.StringConverter;
-
+import pl.gajoch.layview.utils.OMFParser;
 import java.io.File;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static pl.gajoch.layview.utils.GUIUtils.showErrorMessage;
 
 
 public class FileInputSelectorController {
@@ -24,10 +25,15 @@ public class FileInputSelectorController {
         this.fileChoiceBox.setConverter(new FileConverter());
         setFiles(files);
         recalculateView();
+        closeButton.setVisible(true);
     }
 
     public final FileInput getFiles() {
         return this.files;
+    }
+
+    public FileInput parseFiles() {
+        return files;
     }
 
     // -------------------------- Private variables  -------------------------
@@ -53,7 +59,7 @@ public class FileInputSelectorController {
 
     private void setFiles(FileInput files) {
         try {
-            this.files = files.clone();
+            this.files = new FileInput(files);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -61,9 +67,23 @@ public class FileInputSelectorController {
 
     private void recalculateView() {
         ObservableList<File> DescriptionList = FXCollections.observableArrayList();
-        DescriptionList.addAll(files.stream().collect(Collectors.toList()));
+        DescriptionList.addAll(files.inputFiles.stream().collect(Collectors.toList()));
         fileChoiceBox.setItems(DescriptionList);
         fileChoiceBox.getSelectionModel().selectLast();
+    }
+
+    private void showProgressBar(String text) {
+        this.closeButton.setVisible(false);
+        this.progressIndicator.setText(text);
+    }
+
+    private void hideProgressBar() {
+        this.closeButton.setVisible(true);
+        this.progressIndicator.setText("");
+    }
+
+    private void setProgress(double val) {
+        this.progressBar.setProgress(val);
     }
 
     // ------------------------------- Objects  ------------------------------
@@ -81,7 +101,12 @@ public class FileInputSelectorController {
     @FXML
     private Button closeButton;
     @FXML
-    private TextField threshold;
+    private TextField thresholdField;
+    @FXML
+    private ProgressBar progressBar;
+    @FXML
+    private Label progressIndicator;
+
 
     // --------------------------- button handlers ---------------------------
 
@@ -91,13 +116,27 @@ public class FileInputSelectorController {
         fileChooser.setTitle("Select omf file(s)...");
         fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("OMF file", "*.omf"),
                 new FileChooser.ExtensionFilter("All files", "*.*"));
-        List<File> readed_files = fileChooser.showOpenMultipleDialog(stage);
-        readed_files.stream().filter(file -> file != null).forEach(file -> {
-            if( ! files.contains(file) ) {
-                files.add(file);
-                recalculateView();
+        List<File> fileList = fileChooser.showOpenMultipleDialog(stage);
+        new Thread() {
+            public void run() {
+                Platform.runLater(() -> showProgressBar("Adding ..."));
+                double len = fileList.size();
+                int iter = 0;
+
+                for(File file : fileList) {
+                    if( file == null )
+                        continue;
+                    if ( ! files.inputFiles.contains(file) ) {
+                        files.inputFiles.add(file);
+                        setProgress(iter++/len);
+                    }
+                }
+                Platform.runLater(() -> {
+                    recalculateView();
+                    hideProgressBar();
+                });
             }
-        });
+        }.start();
     }
 
     @FXML
@@ -105,16 +144,33 @@ public class FileInputSelectorController {
         DirectoryChooser directoryChooser = new DirectoryChooser();
         directoryChooser.setTitle("Select folder...");
         File folder = directoryChooser.showDialog(stage);
-        if (folder != null) {
-            for (File file : folder.listFiles()) {
-                if (!file.isDirectory() && isOMF(file)) {
-                    if( ! files.contains(file) ) {
-                        files.add(file);
+        new Thread() {
+            public void run() {
+                Platform.runLater(() -> showProgressBar("Adding ..."));
+                double len = 0;
+                if (folder != null) {
+                    for (File file : folder.listFiles()) {
+                        if (!file.isDirectory() && isOMF(file)) {
+                            len += 1;
+                        }
+                    }
+
+                    int iter = 0;
+                    for (File file : folder.listFiles()) {
+                        if (!file.isDirectory() && isOMF(file)) {
+                            if ( ! files.inputFiles.contains(file) ) {
+                                files.inputFiles.add(file);
+                                setProgress(iter++/len);
+                            }
+                        }
                     }
                 }
+                Platform.runLater(() -> {
+                    recalculateView();
+                    hideProgressBar();
+                });
             }
-        }
-        recalculateView();
+        }.start();
     }
 
     private boolean isOMF(File file) {
@@ -123,19 +179,40 @@ public class FileInputSelectorController {
 
     @FXML
     private void remove_handler() {
-        files.remove(fileChoiceBox.getValue());
+        files.inputFiles.remove(fileChoiceBox.getValue());
         recalculateView();
     }
 
     @FXML
     private void clear_handler() {
-        files.clear();
+        files.inputFiles.clear();
         recalculateView();
     }
 
     @FXML
     private void close_handler() {
-        this.stage.close();
+        try {
+            this.files.threshold = RichTextField.of(thresholdField).getDouble();;
+        } catch (NumberFormatException ex) {
+            showErrorMessage("Bad number format!", "Cannot parse \"" + thresholdField.getText() + "\"");
+            return;
+        }
+        new Thread() {
+            public void run() {
+                Platform.runLater(() -> showProgressBar("Parsing ..."));
+                files.omfDataList.clear();
+                int iteration = 0;
+                setProgress(0);
+                double len = getFiles().inputFiles.size();
+                for (File file : getFiles().inputFiles) {
+                    files.omfDataList.add(new OMFParser().parseFile(file));
+                    double x = iteration++;
+                    x /= len;
+                    setProgress(x);
+                }
+                Platform.runLater(() ->
+                        stage.close());
+            }
+        }.start();
     }
-
 }
