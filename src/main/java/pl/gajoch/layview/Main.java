@@ -7,27 +7,21 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import pl.gajoch.layview.gui.Controller;
+import pl.gajoch.layview.gui.GraphicsWindowManager;
+
+import javax.swing.*;
 
 public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        FXMLLoader load = new FXMLLoader();
-        load.setLocation(getClass().getResource("gui/Main.fxml"));
-        Parent loader = load.load();
-
-        primaryStage.setTitle("pl.gajoch.layview.Main");
-        Scene scene = new Scene(loader);
-        primaryStage.setScene(scene);
-
-        Controller windowController = load.getController();
-        windowController.setup(primaryStage);
-
-        primaryStage.show();
     }
 
     public static void main(String[] args) {
-        launch(args);
+        new Thread(() -> {
+            launch(args);
+        }).start();
+        GraphicsWindowManager graphicsWindowManager = new GraphicsWindowManager();
     }
 }
 

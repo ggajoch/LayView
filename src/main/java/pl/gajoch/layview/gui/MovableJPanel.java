@@ -10,7 +10,7 @@ import java.util.Collection;
 
 abstract public class MovableJPanel extends JPanel {
     private SimpleObjectProperty<Rectangle> position;
-    private final MoveWindowEditor moveWindowEditor;
+    private MoveWindowEditor moveWindowEditor;
     private JPopupMenu contextMenu;
 
     protected MovableJPanel(int width, int height) {

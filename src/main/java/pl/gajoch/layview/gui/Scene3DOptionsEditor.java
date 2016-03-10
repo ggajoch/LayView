@@ -1,5 +1,6 @@
 package pl.gajoch.layview.gui;
 
+import javafx.application.Platform;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Group;
@@ -10,23 +11,25 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 public class Scene3DOptionsEditor {
-    private final Scene3DOptionsController windowController;
-    private final Stage primaryStage;
+    private Scene3DOptionsController windowController;
+    private Stage primaryStage;
 
     public Scene3DOptionsEditor() {
-        FXMLLoader load = new FXMLLoader();
-        Parent loader = new Group();
-        try {
-            load.setLocation(getClass().getResource("Scene3DOptionsWindow.fxml"));
-            loader = load.load();
-        } catch (IOException exception) {
-            exception.printStackTrace();
-        }
-        primaryStage = new Stage();
-        primaryStage.setTitle("Edit options");
-        primaryStage.setScene(new Scene(loader));
+        Platform.runLater(() -> {
+            FXMLLoader load = new FXMLLoader();
+            Parent loader = new Group();
+            try {
+                load.setLocation(getClass().getResource("Scene3DOptionsWindow.fxml"));
+                loader = load.load();
+            } catch (IOException exception) {
+                exception.printStackTrace();
+            }
+            primaryStage = new Stage();
+            primaryStage.setTitle("Edit options");
+            primaryStage.setScene(new Scene(loader));
 
-        windowController = load.getController();
+            windowController = load.getController();
+        });
     }
 
     public void exec(SimpleObjectProperty<Scene3DOptions> scene3DOptions) {
