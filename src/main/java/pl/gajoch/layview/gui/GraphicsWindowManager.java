@@ -50,7 +50,7 @@ public class GraphicsWindowManager {
             menu.add(menuItem);
 
             frame.setJMenuBar(menuBar);
-            frame.setSize(100,100);
+            frame.pack();
             frame.setVisible(true);
         });
 
@@ -79,12 +79,12 @@ public class GraphicsWindowManager {
 
             java.awt.EventQueue.invokeLater(() -> {
                 Insets insets = frame.getInsets();
-                frame.setSize(insets.left + insets.right + maxWidth, insets.top + insets.bottom + maxHeight);
+                frame.setSize(insets.left + insets.right + maxWidth, insets.top + insets.bottom + maxHeight+24);
             });
             System.out.println("size: " + maxWidth + " x " + maxHeight);
         } catch (NoSuchElementException ignored) {
             java.awt.EventQueue.invokeLater(() -> {
-                frame.setSize(100,100);
+                frame.pack();
             });
         }
     }
