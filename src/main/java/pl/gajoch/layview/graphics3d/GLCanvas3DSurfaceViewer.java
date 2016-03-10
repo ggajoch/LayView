@@ -138,9 +138,9 @@ public class GLCanvas3DSurfaceViewer extends GLCanvas implements GLEventListener
                     new Vector3D(mouseDelta.x * MOVE_SCALE / this.getHeight(), -mouseDelta.y * MOVE_SCALE / this.getHeight(), 0)
             );
 
-            offset.x += planeTranslate.getX();
-            offset.y += planeTranslate.getY();
-            offset.z += planeTranslate.getZ();
+            offset.x += planeTranslate.getX() * Math.pow(10, -scale);
+            offset.y += planeTranslate.getY() * Math.pow(10, -scale);
+            offset.z += planeTranslate.getZ() * Math.pow(10, -scale);
 
             //TODO: deal with window resize to maintain 1:1 movement!!
         }
@@ -269,10 +269,9 @@ public class GLCanvas3DSurfaceViewer extends GLCanvas implements GLEventListener
         gl.glRotated(Math.toDegrees(angle.y), 1, 0, 0);
         gl.glRotated(Math.toDegrees(angle.z), 0, 1, 0);
 
-        gl.glTranslated(offset.x, offset.y, offset.z);
-
         gl.glScaled(Math.pow(10, scale), Math.pow(10, scale), Math.pow(10, scale));
 
+        gl.glTranslated(offset.x, offset.y, offset.z);
 
         presenter.draw(gl, frameCt++);
         if (frameCt >= presenter.surfaces.size()) frameCt = 0;
