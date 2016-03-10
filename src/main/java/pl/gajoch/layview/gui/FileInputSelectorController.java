@@ -9,7 +9,7 @@ import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.StringConverter;
-import pl.gajoch.layview.utils.OMFParser;
+import pl.gajoch.layview.utils.parsers.OMFParser.OMFParser;
 import java.io.File;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -205,7 +205,7 @@ public class FileInputSelectorController {
                 setProgress(0);
                 double len = getFiles().inputFiles.size();
                 for (File file : getFiles().inputFiles) {
-                    files.omfDataList.add(new OMFParser().parseFile(file));
+                    files.omfDataList.add(OMFParser.parseFile(file));
                     double x = iteration++;
                     x /= len;
                     setProgress(x);

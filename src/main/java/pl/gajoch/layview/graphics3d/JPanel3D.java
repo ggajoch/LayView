@@ -5,8 +5,6 @@ import com.sun.javafx.geom.Vec3d;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleObjectProperty;
 import pl.gajoch.layview.gui.*;
-import pl.gajoch.layview.utils.OMFData;
-import pl.gajoch.layview.utils.OMFParser;
 
 import javax.media.opengl.GLCapabilities;
 import javax.media.opengl.GLProfile;
@@ -15,7 +13,6 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class JPanel3D extends MovableJPanel {
     private FileInputSelector fileInputSelector;
