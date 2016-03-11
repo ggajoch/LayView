@@ -217,8 +217,8 @@ public class GLCanvas3DSurfaceViewer extends GLCanvas implements GLEventListener
         presenter.gradients.add(options.gradient1);
         presenter.gradients.add(options.gradient2);
 
-        presenter.GradientsHintReset();
-        presenter.GradientsHintCalculate();
+        presenter.gradientsHintReset();
+        presenter.gradientsHintCalculate();
 
         options.gradient1.setMaxVector(options.gradient1.getHintMax());
         options.gradient1.setMinVector(options.gradient1.getHintMin());

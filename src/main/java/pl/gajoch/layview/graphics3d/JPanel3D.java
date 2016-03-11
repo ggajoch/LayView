@@ -1,6 +1,5 @@
 package pl.gajoch.layview.graphics3d;
 
-import com.jogamp.opengl.util.FPSAnimator;
 import com.sun.javafx.geom.Vec3d;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleObjectProperty;
@@ -8,8 +7,6 @@ import pl.gajoch.layview.gui.*;
 import pl.gajoch.layview.scheduler.EventType;
 import pl.gajoch.layview.scheduler.RepeatedEvent;
 import pl.gajoch.layview.scheduler.Scheduler;
-import pl.gajoch.layview.utils.OMFData;
-import pl.gajoch.layview.utils.OMFParser;
 
 import javax.media.opengl.GLCapabilities;
 import javax.media.opengl.GLProfile;
@@ -18,7 +15,6 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class JPanel3D extends MovableJPanel {
     private FileInputSelector fileInputSelector;
@@ -132,31 +128,11 @@ public class JPanel3D extends MovableJPanel {
 
         glcanvas.setOptions(newValue);
 
-        /*scene3DOptions = newValue;
-
-        globalScale.set(newValue.globalScale);
-
-        renderedSurfaces.clear();
+        scene3DOptions = newValue;
 
 
-        boolean isFirst = true;
-        for (GradientSurfacePointsList surface : surfaces) {
-
-            surface.gradients.clear();
-            surface.gradients.add(newValue.gradient1);
-            surface.gradients.add(newValue.gradient2);
-            if (isFirst) {
-                surface.GradientsHintReset();
-                isFirst = false;
-            }
-            surface.GradientsHintCalculate();
-            surface.GradientsApply();
-            VectorSurface localSurface = new VectorSurface(surface, newValue.vectorProperties);
-            localSurface.setVisible(false);
-            renderedSurfaces.add(localSurface);
-
-            System.out.print(".");
-        }
+        glcanvas.presenter.gradientsHintReset();
+        glcanvas.presenter.gradientsHintCalculate();
 
         System.out.print("GRAD1: MAX: " + newValue.gradient1.getHintMax() + "  MIN: " + newValue.gradient1.getHintMin() + "\r\n");
         System.out.print("GRAD2: MAX: " + newValue.gradient2.getHintMax() + "  MIN: " + newValue.gradient2.getHintMin() + "\r\n");

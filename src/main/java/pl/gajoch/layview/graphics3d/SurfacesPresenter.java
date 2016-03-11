@@ -272,7 +272,7 @@ public class SurfacesPresenter {
         }
     }
 
-    public void GradientsHintReset() {
+    public void gradientsHintReset() {
         if (gradients.isEmpty() || surfaces.isEmpty()) return;
         if (surfaces.get(0).points.isEmpty()) return;
         for (HintGradient gradient : gradients) {
@@ -282,7 +282,7 @@ public class SurfacesPresenter {
         }
     }
 
-    public void GradientsHintCalculate() {
+    public void gradientsHintCalculate() {
         //if (gradients.isEmpty() || surfaces.isEmpty()) return;
         for (HintGradient gradient : gradients) {
             if (!gradient.isValid()) continue;
