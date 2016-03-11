@@ -201,7 +201,7 @@ public class JPanel3D extends MovableJPanel {
             size.sub(glcanvas.presenter.getMinPos());
 
             if (size.length() > 0) {
-                scene3DOptions.globalScale = -Math.log10(size.length()/Math.sqrt(18));
+                scene3DOptions.globalScale = -Math.log10(size.length() / Math.sqrt(18));
             } else {
                 scene3DOptions.globalScale = 0;
             }
