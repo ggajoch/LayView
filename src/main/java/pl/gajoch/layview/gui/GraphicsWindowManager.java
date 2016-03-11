@@ -4,6 +4,7 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ChangeListener;
 import pl.gajoch.layview.graphics2d.JPanel2D;
 import pl.gajoch.layview.graphics3d.*;
+import pl.gajoch.layview.scheduler.Scheduler;
 
 import javax.swing.*;
 import java.awt.*;
@@ -53,7 +54,9 @@ public class GraphicsWindowManager {
             frame.setSize(100,100);
             frame.setVisible(true);
         });
-
+        while(true){
+            Scheduler.start();
+        }
     }
 
     private static void recalculate() {

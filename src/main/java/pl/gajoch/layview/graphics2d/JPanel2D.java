@@ -79,7 +79,7 @@ public class JPanel2D extends MovableJPanel {
         SwingUtilities.invokeLater(() ->
                 this.add(glcanvas));
 
-        timing = new RepeatedEvent(EventType.UPDATE2D, (int)1e6/24, 61) {
+        timing = new RepeatedEvent(EventType.UPDATE2D, (int)1e6/24, 125) {
             @Override
             public void dispatch() {
                 glcanvas.display();
