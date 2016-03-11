@@ -87,7 +87,7 @@ public class GLCanvas3DSurfaceViewer extends GLCanvas implements GLEventListener
         if ((e.getModifiers() & e.BUTTON2_MASK) != 0) {
             angle.set(0, 0, 0);
             offset.set(0, 0, 0);
-            scale = 0 + options.globalScale;
+            scale = 0;
         }
     }
 
@@ -229,7 +229,7 @@ public class GLCanvas3DSurfaceViewer extends GLCanvas implements GLEventListener
         //System.out.println("G1: MAX: "+gradient1.getHintMax()+" MIN: "+gradient1.getHintMin());
         //System.out.println("G2: MAX: "+gradient2.getHintMax()+" MIN: "+gradient2.getHintMin());
 
-        presenter.GradientsApply();*/
+        presenter.gradientsApply();*/
 
 
     }
@@ -271,7 +271,7 @@ public class GLCanvas3DSurfaceViewer extends GLCanvas implements GLEventListener
 
         gl.glScaled(Math.pow(10, scale + options.globalScale), Math.pow(10, scale + options.globalScale), Math.pow(10, scale + options.globalScale));
 
-        gl.glTranslated(offset.x, offset.y, offset.z);
+        gl.glTranslated(offset.x + options.initialTranslate.x, offset.y + options.initialTranslate.y, offset.z + options.initialTranslate.z);
 
         presenter.draw(gl, frameCt++);
         if (frameCt >= presenter.surfaces.size()) frameCt = 0;
