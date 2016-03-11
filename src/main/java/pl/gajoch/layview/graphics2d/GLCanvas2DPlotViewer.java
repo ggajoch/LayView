@@ -1,39 +1,27 @@
 package pl.gajoch.layview.graphics2d;
 
 import com.jogamp.opengl.util.awt.TextRenderer;
-import com.sun.javafx.geom.Vec2d;
 import com.sun.javafx.geom.Vec3d;
-import javafx.beans.property.SimpleObjectProperty;
-import javafx.scene.paint.Color;
-import org.apache.commons.math3.geometry.euclidean.threed.CardanEulerSingularityException;
-import org.apache.commons.math3.geometry.euclidean.threed.Rotation;
-import org.apache.commons.math3.geometry.euclidean.threed.RotationOrder;
-import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
-import pl.gajoch.layview.graphics3d.SurfacePoint;
-import pl.gajoch.layview.graphics3d.SurfacePointsList;
-import pl.gajoch.layview.graphics3d.SurfacesPresenter;
-import pl.gajoch.layview.gui.GradientPoint;
-import pl.gajoch.layview.gui.HintGradient;
-import pl.gajoch.layview.gui.Scene3DOptions;
+import pl.gajoch.layview.gui.Scene2DOptions;
 
 import javax.media.opengl.*;
 import javax.media.opengl.awt.GLCanvas;
-import javax.media.opengl.glu.GLU;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.Point2D;
 
 public class GLCanvas2DPlotViewer extends GLCanvas implements GLEventListener, MouseListener, MouseMotionListener, MouseWheelListener {
-    private boolean isLine = true;
 
     private TextRenderer renderer;
 
-    private PlotPresenter presenter;
+    public PlotPresenter presenter;
 
     private Vec3d mousePos, mouseOld, mouseDelta;
 
     private Vec3d angle, offset;
     private double scale;
+
+    private Scene2DOptions options;
 
 
     private static final double SCROLL_SCALE = .01;
@@ -42,15 +30,20 @@ public class GLCanvas2DPlotViewer extends GLCanvas implements GLEventListener, M
 
     public GLCanvas2DPlotViewer(GLCapabilities capabilities) {
         super(capabilities);
+        options = new Scene2DOptions(30, new PlotOptions());
+        presenter = new PlotPresenter(options.plotOptions);
+    }
+
+    public void setOptions(Scene2DOptions options) {
+        this.options = options;
+        presenter.setOptions(options.plotOptions);
     }
 
     public void mouseClicked(MouseEvent e) {
         //System.out.println("Clicked");
         //System.out.println(e.getClickCount());
         if (e.getClickCount() == 2) {
-            PlotOptions now = presenter.options.get();
-            now.isLine = !now.isLine;
-            presenter.options.set(now);
+            presenter.options.isLine = !presenter.options.isLine;
         }
     }
 
@@ -130,10 +123,8 @@ public class GLCanvas2DPlotViewer extends GLCanvas implements GLEventListener, M
         this.addMouseMotionListener(this);
         this.addMouseWheelListener(this);
 
-        presenter = new PlotPresenter(new SimpleObjectProperty<>(new PlotOptions()));
-
         for (double angle = -Math.PI * 2; angle < Math.PI * 2; angle += 0.1) {
-            presenter.plotPointsList.add(new PlotPoint(new Point2D.Double(angle / Math.PI * 100, (Math.sin(angle) + Math.sin(angle * 2))*100)));
+            presenter.plotPointsList.add(new PlotPoint(new Point2D.Double(angle / Math.PI * 100, (Math.sin(angle) + Math.sin(angle * 2)) * 100)));
         }
     }
 
@@ -145,7 +136,7 @@ public class GLCanvas2DPlotViewer extends GLCanvas implements GLEventListener, M
         gl.glClear(GL2.GL_COLOR_BUFFER_BIT | GL2.GL_DEPTH_BUFFER_BIT);
         gl.glMatrixMode(GL2.GL_PROJECTION);
         gl.glLoadIdentity();
-        gl.glOrtho(-width/2.0, width/2.0, -height/2.0, height/2.0, -1, 1);
+        gl.glOrtho(-width / 2.0, width / 2.0, -height / 2.0, height / 2.0, -1, 1);
         gl.glMatrixMode(GL2.GL_MODELVIEW);
 
 

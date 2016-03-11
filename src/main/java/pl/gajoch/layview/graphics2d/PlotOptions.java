@@ -19,7 +19,7 @@ public class PlotOptions {
 
     public PlotOptions() {
         width = 3;
-        symbolRadius = 0.05;
+        symbolRadius = 5;
         isLine = true;
         color = Color.GREEN;
         divisions = 10;
