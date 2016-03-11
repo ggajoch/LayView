@@ -46,7 +46,7 @@ public class SurfacesPresenter {
             //drawing cone
             {
                 gl.glBegin(GL2.GL_TRIANGLE_FAN);
-                gl.glVertex3d(0, 0, point.vector.length()*options.vectorProperties.lenScale + options.vectorProperties.tipLen);//top point of the cone
+                gl.glVertex3d(0, 0, point.vector.length() * options.vectorProperties.lenScale + options.vectorProperties.tipLen);//top point of the cone
 
 
                 sinPrev = options.vectorProperties.tipRadius * trig.sin(-1);
@@ -56,10 +56,11 @@ public class SurfacesPresenter {
                     sin = options.vectorProperties.tipRadius * trig.sin(division);
                     cos = options.vectorProperties.tipRadius * trig.cos(division);
 
-                    gl.glNormal3d(-options.vectorProperties.tipLen * (cos - cosPrev),
-                            -options.vectorProperties.tipLen * (sinPrev - sin),
-                            -(sinPrev * cos - cosPrev * sin));
-                    gl.glVertex3d(sin, cos, point.vector.length()*options.vectorProperties.lenScale);
+                    gl.glNormal3d(-options.vectorProperties.tipLen * (cos - cosPrev) / options.vectorProperties.lenScale,
+                            -options.vectorProperties.tipLen * (sinPrev - sin) / options.vectorProperties.lenScale,
+                            -(sinPrev * cos - cosPrev * sin) / options.vectorProperties.lenScale);
+
+                    gl.glVertex3d(sin, cos, point.vector.length() * options.vectorProperties.lenScale);
 
                     sinPrev = sin;
                     cosPrev = cos;
@@ -74,7 +75,7 @@ public class SurfacesPresenter {
                 for (int division = 0; division <= options.vectorProperties.divisions; division++) {
                     gl.glVertex3d(options.vectorProperties.tipRadius * trig.sin(division),
                             options.vectorProperties.tipRadius * trig.cos(division),
-                            point.vector.length()*options.vectorProperties.lenScale);
+                            point.vector.length() * options.vectorProperties.lenScale);
 
                 }
                 gl.glEnd();
@@ -91,7 +92,7 @@ public class SurfacesPresenter {
                     cosPrev = options.vectorProperties.radius * trig.cos(division);
 
                     if (division > 0) {
-                        gl.glVertex3d(sin, cos, point.vector.length()*options.vectorProperties.lenScale);
+                        gl.glVertex3d(sin, cos, point.vector.length() * options.vectorProperties.lenScale);
                         gl.glVertex3d(sin, cos, 0);
                     }
                     gl.glNormal3d(sin + sinPrev, cos + cosPrev, 0); //aka mean of nex 2 vectors
@@ -311,23 +312,23 @@ public class SurfacesPresenter {
         }
     }
 
-    public double getMaxVectorLength(){
-        if(surfaces.isEmpty()) return 0;
-        if(surfaces.get(0).points.isEmpty())return 0;
+    public double getMaxVectorLength() {
+        if (surfaces.isEmpty()) return 0;
+        if (surfaces.get(0).points.isEmpty()) return 0;
         double max = surfaces.get(0).points.get(0).vector.length();
-        for(SurfacePointsList surface : surfaces){
-            for(SurfacePoint point : surface.points){
+        for (SurfacePointsList surface : surfaces) {
+            for (SurfacePoint point : surface.points) {
                 max = Math.max(point.vector.length(), max);
             }
         }
         return max;
     }
 
-    public Vec3d getMinPos(){
-        if(surfaces.isEmpty()) return new Vec3d();
-        if(surfaces.get(0).points.isEmpty())return new Vec3d();
+    public Vec3d getMinPos() {
+        if (surfaces.isEmpty()) return new Vec3d();
+        if (surfaces.get(0).points.isEmpty()) return new Vec3d();
         Vec3d min = new Vec3d(surfaces.get(0).points.get(0).position);
-        for(SurfacePointsList surface : surfaces){
+        for (SurfacePointsList surface : surfaces) {
             min.x = Math.min(min.x, surface.min.position.x);
             min.y = Math.min(min.y, surface.min.position.y);
             min.z = Math.min(min.z, surface.min.position.z);
@@ -335,11 +336,11 @@ public class SurfacesPresenter {
         return min;
     }
 
-    public Vec3d getMaxPos(){
-        if(surfaces.isEmpty()) return new Vec3d();
-        if(surfaces.get(0).points.isEmpty())return new Vec3d();
+    public Vec3d getMaxPos() {
+        if (surfaces.isEmpty()) return new Vec3d();
+        if (surfaces.get(0).points.isEmpty()) return new Vec3d();
         Vec3d max = new Vec3d(surfaces.get(0).points.get(0).position);
-        for(SurfacePointsList surface : surfaces){
+        for (SurfacePointsList surface : surfaces) {
             max.x = Math.max(max.x, surface.max.position.x);
             max.y = Math.max(max.y, surface.max.position.y);
             max.z = Math.max(max.z, surface.max.position.z);
