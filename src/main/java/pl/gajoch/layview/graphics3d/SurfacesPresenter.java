@@ -1,5 +1,6 @@
 package pl.gajoch.layview.graphics3d;
 
+import com.sun.javafx.geom.Vec3d;
 import javafx.scene.paint.Color;
 import pl.gajoch.layview.gui.Gradient;
 import pl.gajoch.layview.gui.GradientPoint;
@@ -295,7 +296,7 @@ public class SurfacesPresenter {
         }
     }
 
-    public void GradientsApply() {
+    public void gradientsApply() {
         //if (gradients.isEmpty() || surfaces.isEmpty()) return;
         for (SurfacePointsList surface : surfaces) {
             for (SurfacePoint point : surface.points) {
@@ -318,6 +319,30 @@ public class SurfacesPresenter {
             for(SurfacePoint point : surface.points){
                 max = Math.max(point.vector.length(), max);
             }
+        }
+        return max;
+    }
+
+    public Vec3d getMinPos(){
+        if(surfaces.isEmpty()) return new Vec3d();
+        if(surfaces.get(0).points.isEmpty())return new Vec3d();
+        Vec3d min = new Vec3d(surfaces.get(0).points.get(0).position);
+        for(SurfacePointsList surface : surfaces){
+            min.x = Math.min(min.x, surface.min.position.x);
+            min.y = Math.min(min.y, surface.min.position.y);
+            min.z = Math.min(min.z, surface.min.position.z);
+        }
+        return min;
+    }
+
+    public Vec3d getMaxPos(){
+        if(surfaces.isEmpty()) return new Vec3d();
+        if(surfaces.get(0).points.isEmpty())return new Vec3d();
+        Vec3d max = new Vec3d(surfaces.get(0).points.get(0).position);
+        for(SurfacePointsList surface : surfaces){
+            max.x = Math.max(max.x, surface.max.position.x);
+            max.y = Math.max(max.y, surface.max.position.y);
+            max.z = Math.max(max.z, surface.max.position.z);
         }
         return max;
     }

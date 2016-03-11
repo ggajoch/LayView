@@ -15,6 +15,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.List;
+
 import javafx.scene.paint.Color;
 
 public class JPanel3D extends MovableJPanel {
@@ -44,6 +45,7 @@ public class JPanel3D extends MovableJPanel {
                 scene3DOptions);
 
         optionsProperty.addListener((observable, oldValue, newValue) -> {
+            Scheduler.remove(timing);
             onOptionsChanged(newValue);
         });
 
@@ -131,19 +133,6 @@ public class JPanel3D extends MovableJPanel {
 
         scene3DOptions = newValue;
 
-        scene3DOptions.gradient1.clear();
-        scene3DOptions.gradient2.clear();
-
-
-        scene3DOptions.gradient1.setReference(new Vec3d(1, 0, 0));
-        scene3DOptions.gradient1.add(new GradientPoint(-1.0, Color.RED));
-        scene3DOptions.gradient1.add(new GradientPoint(0, Color.WHITE));
-        scene3DOptions.gradient1.add(new GradientPoint(1.0, Color.BLUE));
-
-        scene3DOptions.gradient2.setReference(new Vec3d(0, 1, 0));
-        scene3DOptions.gradient2.add(new GradientPoint(-1.0, Color.GREEN));
-        scene3DOptions.gradient2.add(new GradientPoint(1.0, Color.GOLD));
-
         glcanvas.presenter.gradients.clear();
         glcanvas.presenter.gradients.add(scene3DOptions.gradient1);
         //glcanvas.presenter.gradients.add(scene3DOptions.gradient2);
@@ -151,22 +140,25 @@ public class JPanel3D extends MovableJPanel {
         glcanvas.presenter.gradientsHintReset();
         glcanvas.presenter.gradientsHintCalculate();
 
-        scene3DOptions.gradient1.setMaxVector(scene3DOptions.gradient1.getHintMax());
-        scene3DOptions.gradient1.setMinVector(scene3DOptions.gradient1.getHintMin());
-
-        scene3DOptions.gradient2.setMaxVector(scene3DOptions.gradient2.getHintMax());
-        scene3DOptions.gradient2.setMinVector(scene3DOptions.gradient2.getHintMin());
-
-        //System.out.println("G1: MAX: "+gradient1.getHintMax()+" MIN: "+gradient1.getHintMin());
-        //System.out.println("G2: MAX: "+gradient2.getHintMax()+" MIN: "+gradient2.getHintMin());
-
-        glcanvas.presenter.GradientsApply();
-
+        glcanvas.presenter.gradientsApply();
 
         System.out.print("GRAD1: MAX: " + newValue.gradient1.getHintMax() + "  MIN: " + newValue.gradient1.getHintMin() + "\r\n");
         System.out.print("GRAD2: MAX: " + newValue.gradient2.getHintMax() + "  MIN: " + newValue.gradient2.getHintMin() + "\r\n");
 
         System.out.println("END RECALCULATE");
+
+        timing = new RepeatedEvent(EventType.UPDATE3D, (int) (1e6 / scene3DOptions.FPS), glcanvas.presenter.surfaces.size()) {
+            @Override
+            public void dispatch() {
+                glcanvas.display();
+            }
+
+            @Override
+            public void reset() {
+                glcanvas.reset();
+            }
+        };
+        Scheduler.schedule(timing);
         //tu masz hinty policzone także
     }
 
@@ -199,26 +191,57 @@ public class JPanel3D extends MovableJPanel {
             scene3DOptions.vectorProperties.tipRadius = 0.125 * scene3DOptions.boxProperties.dimensions.length();
             scene3DOptions.vectorProperties.radius = 0.05 * scene3DOptions.boxProperties.dimensions.length();
 
-            scene3DOptions.globalScale = 0;
+            scene3DOptions.initialTranslate.set(glcanvas.presenter.getMinPos());
+            scene3DOptions.initialTranslate.add(glcanvas.presenter.getMaxPos());
+            scene3DOptions.initialTranslate.mul(-0.5);
+
+            Vec3d size = new Vec3d(glcanvas.presenter.getMaxPos());
+            size.sub(glcanvas.presenter.getMinPos());
+
+            if (size.length() > 0) {
+                scene3DOptions.globalScale = -Math.log10(size.length()/Math.sqrt(18));
+            } else {
+                scene3DOptions.globalScale = 0;
+            }
             //TODO: obliczanie skali
 
             System.out.println("max_len: " + glcanvas.presenter.getMaxVectorLength());
             System.out.println("len_scale: " + scene3DOptions.vectorProperties.lenScale);
 
+            scene3DOptions.gradient1.clear();
+            scene3DOptions.gradient2.clear();
+
+
+            scene3DOptions.gradient1.setReference(new Vec3d(1, 0, 0));
+            scene3DOptions.gradient1.add(new GradientPoint(-1.0, Color.RED));
+            scene3DOptions.gradient1.add(new GradientPoint(0, Color.WHITE));
+            scene3DOptions.gradient1.add(new GradientPoint(1.0, Color.BLUE));
+
+            scene3DOptions.gradient2.setReference(new Vec3d(0, 1, 0));
+            scene3DOptions.gradient2.add(new GradientPoint(-1.0, Color.GREEN));
+            scene3DOptions.gradient2.add(new GradientPoint(1.0, Color.GOLD));
+
+            glcanvas.presenter.gradients.clear();
+            glcanvas.presenter.gradients.add(scene3DOptions.gradient1);
+            //glcanvas.presenter.gradients.add(scene3DOptions.gradient2);
+
+            glcanvas.presenter.gradientsHintReset();
+            glcanvas.presenter.gradientsHintCalculate();
+
+            scene3DOptions.gradient1.setMaxVector(scene3DOptions.gradient1.getHintMax());
+            scene3DOptions.gradient1.setMinVector(scene3DOptions.gradient1.getHintMin());
+
+            scene3DOptions.gradient2.setMaxVector(scene3DOptions.gradient2.getHintMax());
+            scene3DOptions.gradient2.setMinVector(scene3DOptions.gradient2.getHintMin());
+
+            //System.out.println("G1: MAX: "+gradient1.getHintMax()+" MIN: "+gradient1.getHintMin());
+            //System.out.println("G2: MAX: "+gradient2.getHintMax()+" MIN: "+gradient2.getHintMin());
+
+            glcanvas.presenter.gradientsApply();
+
             onOptionsChanged(scene3DOptions);
 
-            timing = new RepeatedEvent(EventType.UPDATE3D, (int)(1e6 / scene3DOptions.FPS), glcanvas.presenter.surfaces.size()) {
-                @Override
-                public void dispatch() {
-                    glcanvas.display();
-                }
 
-                @Override
-                public void reset() {
-                    glcanvas.reset();
-                }
-            };
-            Scheduler.schedule(timing);
             System.out.println("Added surfaces: " + glcanvas.presenter.surfaces.size());
         });
 
