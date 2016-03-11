@@ -186,10 +186,18 @@ public class JPanel3D extends MovableJPanel {
 
             });
 
-            scene3DOptions.vectorProperties.lenScale = 0.00000001 / glcanvas.presenter.getMaxVectorLength();
-            scene3DOptions.vectorProperties.tipLen = 0.00025 / glcanvas.presenter.getMaxVectorLength();
-            scene3DOptions.vectorProperties.tipRadius = 0.00025 / glcanvas.presenter.getMaxVectorLength();
-            scene3DOptions.vectorProperties.radius = 0.0001 / glcanvas.presenter.getMaxVectorLength();
+            if (!omfDatas.omfDataList.isEmpty()) {
+                scene3DOptions.boxProperties.dimensions.set(
+                        omfDatas.omfDataList.get(0).xStepSize,
+                        omfDatas.omfDataList.get(0).yStepSize,
+                        omfDatas.omfDataList.get(0).zStepSize
+                );
+            }
+
+            scene3DOptions.vectorProperties.lenScale = 0.3 * scene3DOptions.boxProperties.dimensions.length() / glcanvas.presenter.getMaxVectorLength();
+            scene3DOptions.vectorProperties.tipLen = 0.125 * scene3DOptions.boxProperties.dimensions.length();
+            scene3DOptions.vectorProperties.tipRadius = 0.125 * scene3DOptions.boxProperties.dimensions.length();
+            scene3DOptions.vectorProperties.radius = 0.05 * scene3DOptions.boxProperties.dimensions.length();
 
             System.out.println("max_len: " + glcanvas.presenter.getMaxVectorLength());
             System.out.println("len_scale: " + scene3DOptions.vectorProperties.lenScale);
