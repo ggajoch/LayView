@@ -10,30 +10,13 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class Scene3DOptionsEditor {
-    private Scene3DOptionsController windowController;
-    private Stage primaryStage;
-
+public class Scene3DOptionsEditor extends JFXPanelWindow<Scene3DOptionsController> {
     public Scene3DOptionsEditor() {
-        Platform.runLater(() -> {
-            FXMLLoader load = new FXMLLoader();
-            Parent loader = new Group();
-            try {
-                load.setLocation(getClass().getResource("Scene3DOptionsWindow.fxml"));
-                loader = load.load();
-            } catch (IOException exception) {
-                exception.printStackTrace();
-            }
-            primaryStage = new Stage();
-            primaryStage.setTitle("Edit options");
-            primaryStage.setScene(new Scene(loader));
-
-            windowController = load.getController();
-        });
+        super("Edit options", "Scene3DOptionsWindow.fxml");
     }
 
     public void exec(SimpleObjectProperty<Scene3DOptions> scene3DOptions) {
-        windowController.setup(primaryStage, scene3DOptions);
-        primaryStage.showAndWait();
+        windowController.setup(frame, scene3DOptions);
+        open();
     }
 }

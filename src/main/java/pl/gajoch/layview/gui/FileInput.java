@@ -1,6 +1,6 @@
 package pl.gajoch.layview.gui;
 
-import pl.gajoch.layview.utils.parsers.OMFParser.OMFData;
+import pl.gajoch.layview.utils.OMFData;
 
 import java.io.File;
 import java.util.ArrayList;

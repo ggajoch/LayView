@@ -1,15 +1,20 @@
 package pl.gajoch.layview.gui;
 
 import javafx.application.Platform;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.embed.swing.JFXPanel;
 import javafx.fxml.FXML;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
-import javafx.stage.Stage;
 import javafx.util.StringConverter;
-import pl.gajoch.layview.utils.parsers.OMFParser.OMFParser;
+import pl.gajoch.layview.utils.GUIUtils;
+import pl.gajoch.layview.utils.OMFParser;
+
+import javax.swing.*;
 import java.io.File;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -20,10 +25,11 @@ import static pl.gajoch.layview.utils.GUIUtils.showErrorMessage;
 public class FileInputSelectorController {
     // ----------------------------- Public API  -----------------------------
 
-    public void setup(Stage stage, FileInput files) {
-        this.stage = stage;
+    public void setup(JFrame frame, SimpleObjectProperty<FileInput> filesProperty) {
+        this.frame = frame;
+        this.filesProperty = filesProperty;
         this.fileChoiceBox.setConverter(new FileConverter());
-        setFiles(files);
+        setFiles(filesProperty.get());
         recalculateView();
         closeButton.setVisible(true);
     }
@@ -32,14 +38,11 @@ public class FileInputSelectorController {
         return this.files;
     }
 
-    public FileInput parseFiles() {
-        return files;
-    }
-
     // -------------------------- Private variables  -------------------------
 
-    private Stage stage;
+    private JFrame frame;
     private FileInput files;
+    private SimpleObjectProperty<FileInput> filesProperty;
 
     // --------------------------- Private methods  --------------------------
 
@@ -116,7 +119,7 @@ public class FileInputSelectorController {
         fileChooser.setTitle("Select omf file(s)...");
         fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("OMF file", "*.omf"),
                 new FileChooser.ExtensionFilter("All files", "*.*"));
-        List<File> fileList = fileChooser.showOpenMultipleDialog(stage);
+        List<File> fileList = fileChooser.showOpenMultipleDialog(null);
         new Thread() {
             public void run() {
                 Platform.runLater(() -> showProgressBar("Adding ..."));
@@ -143,7 +146,7 @@ public class FileInputSelectorController {
     private void addFolder_handler() {
         DirectoryChooser directoryChooser = new DirectoryChooser();
         directoryChooser.setTitle("Select folder...");
-        File folder = directoryChooser.showDialog(stage);
+        File folder = directoryChooser.showDialog(null);
         new Thread() {
             public void run() {
                 Platform.runLater(() -> showProgressBar("Adding ..."));
@@ -205,13 +208,14 @@ public class FileInputSelectorController {
                 setProgress(0);
                 double len = getFiles().inputFiles.size();
                 for (File file : getFiles().inputFiles) {
-                    files.omfDataList.add(OMFParser.parseFile(file));
+                    files.omfDataList.add(new OMFParser().parseFile(file));
                     double x = iteration++;
                     x /= len;
                     setProgress(x);
                 }
+                filesProperty.set(files);
                 Platform.runLater(() ->
-                        stage.close());
+                    GUIUtils.closeJFrame(frame));
             }
         }.start();
     }

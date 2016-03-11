@@ -10,31 +10,13 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class GradientEditor {
-    private GradientEditorController windowController;
-    private Stage primaryStage;
-
+public class GradientEditor extends JFXPanelWindow<GradientEditorController> {
     public GradientEditor() {
-        Platform.runLater(() -> {
-            FXMLLoader load = new FXMLLoader();
-            Parent loader = new Group();
-            load.setLocation(getClass().getResource("GradientEditor.fxml"));
-            try {
-                loader = load.load();
-            } catch (IOException ex) {
-                ex.printStackTrace();
-            }
-
-            primaryStage = new Stage();
-            primaryStage.setTitle("Edit point");
-            primaryStage.setScene(new Scene(loader));
-
-            windowController = load.getController();
-        });
+        super("Edit point", "GradientEditor.fxml");
     }
 
-    public void exec(SimpleObjectProperty<HintGradient> gradient, double minVectorHint, double maxVectorHint) {
-        windowController.setup(primaryStage, gradient, gradient.get().getHintMin(), gradient.get().getHintMax());
-        primaryStage.showAndWait();
+    public void exec(SimpleObjectProperty<HintGradient> gradient) {
+        windowController.setup(frame, gradient, gradient.get().getHintMin(), gradient.get().getHintMax());
+        open();
     }
 }

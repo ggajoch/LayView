@@ -8,7 +8,9 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import pl.gajoch.layview.utils.GUIUtils;
 
+import javax.swing.*;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -18,8 +20,8 @@ import static pl.gajoch.layview.utils.GUIUtils.*;
 public class GradientEditorController {
     // --------------------------- Public API  ---------------------------
 
-    public void setup(Stage stage, SimpleObjectProperty<HintGradient> gradient, double minVectorHint, double maxVectorHint) {
-        this.stage = stage;
+    public void setup(JFrame frame, SimpleObjectProperty<HintGradient> gradient, double minVectorHint, double maxVectorHint) {
+        this.frame = frame;
         referenceVector = new Vec3dTextField(xRefTextField, yRefTextField, zRefTextField);
         setGradient(gradient);
         recalculateView();
@@ -55,7 +57,7 @@ public class GradientEditorController {
     // --------------------------- Private variables  ---------------------------
 
     private GradientPointEditor editor;
-    private Stage stage;
+    private JFrame frame;
     private SortedSet<GradientPoint> gradientPoints;
     private HintGradient originalGradient;
     private SimpleObjectProperty<HintGradient> gradientToEdit;
@@ -292,7 +294,7 @@ public class GradientEditorController {
     private void ok_handler() {
         try {
             finalRecalculateGradientOutput();
-            this.stage.close();
+            GUIUtils.closeJFrame(frame);
         } catch (NumberFormatException e) {
             String[] x = e.getMessage().split("\"");
             String name = "";
@@ -306,6 +308,6 @@ public class GradientEditorController {
     @FXML
     private void cancel_handler() {
         gradientToEdit.setValue(originalGradient);
-        this.stage.close();
+        GUIUtils.closeJFrame(frame);
     }
 }

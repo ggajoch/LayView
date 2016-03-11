@@ -5,11 +5,14 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import pl.gajoch.layview.utils.GUIUtils;
+
+import javax.swing.*;
 
 public class Scene3DOptionsController {
     // ----------------------------- Public API  -----------------------------
-    public void setup(Stage stage, SimpleObjectProperty<Scene3DOptions> scene3DOptions) {
-        this.stage = stage;
+    public void setup(JFrame frame, SimpleObjectProperty<Scene3DOptions> scene3DOptions) {
+        this.frame = frame;
         this.scene3DOptions = scene3DOptions;
         this.start = new Scene3DOptions(scene3DOptions.get());
 
@@ -42,27 +45,24 @@ public class Scene3DOptionsController {
         Gradient1.setOnAction(event -> {
             gradientToEdit1 = new SimpleObjectProperty<>(scene3DOptions.get().gradient1);
             gradientToEdit1.addListener((observable, oldValue, newValue) -> {
-                if( ! newValue.getReference().equals(oldValue.getReference()) ) {
-                    recalculate();
-                }
+                System.out.println("AAA");
+                recalculate();
             });
-            gradientEditor.exec(gradientToEdit1, 0, 0);
+            gradientEditor.exec(gradientToEdit1);
         });
         Gradient2.setOnAction(event -> {
             gradientToEdit2 = new SimpleObjectProperty<>(scene3DOptions.get().gradient2);
             gradientToEdit2.addListener((observable, oldValue, newValue) -> {
-                if( ! newValue.getReference().equals(oldValue.getReference()) ) {
-                    recalculate();
-                }
+                recalculate();
             });
-            gradientEditor.exec(gradientToEdit2, 0, 0);
+            gradientEditor.exec(gradientToEdit2);
         });
     }
 
     // -------------------------- Private variables  -------------------------
 
 
-    private Stage stage;
+    private JFrame frame;
     private GradientEditor gradientEditor;
     private Scene3DOptions start;
     private SimpleObjectProperty<Scene3DOptions> scene3DOptions;
@@ -74,10 +74,11 @@ public class Scene3DOptionsController {
     // --------------------------- Private methods  --------------------------
 
     private void recalculate() {
-        scene3DOptions.set(new Scene3DOptions(tipLenRich.getDouble(), tipRadiusRich.getDouble(),
+        Scene3DOptions newScene = new Scene3DOptions(tipLenRich.getDouble(), tipRadiusRich.getDouble(),
                 radiusRich.getDouble(), lenScaleRich.getDouble(), scene3DOptions.get().boxProperties.dimensions,
                 globalScaleRich.getDouble(), FPSRich.getDouble(),
-                gradientToEdit1.get(), gradientToEdit2.get()));
+                gradientToEdit1.get(), gradientToEdit2.get());
+        scene3DOptions.set(newScene);
     }
 
     // ------------------------------- Objects  ------------------------------
@@ -94,12 +95,12 @@ public class Scene3DOptionsController {
     @FXML
     private void ok_click() {
         recalculate();
-        this.stage.close();
+        GUIUtils.closeJFrame(frame);
     }
 
     @FXML
     private void cancel_click() {
 //        scene3DOptions.set(start);
-        this.stage.close();
+        GUIUtils.closeJFrame(frame);
     }
 }
