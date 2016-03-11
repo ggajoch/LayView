@@ -82,7 +82,7 @@ public class GraphicsWindowManager {
 
             java.awt.EventQueue.invokeLater(() -> {
                 Insets insets = frame.getInsets();
-                frame.setSize(insets.left + insets.right + maxWidth, insets.top + insets.bottom + maxHeight);
+                frame.setSize(insets.left + insets.right + maxWidth, insets.top + insets.bottom + maxHeight + 24);
             });
             System.out.println("size: " + maxWidth + " x " + maxHeight);
         } catch (NoSuchElementException ignored) {
