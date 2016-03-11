@@ -15,6 +15,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.List;
+import javafx.scene.paint.Color;
 
 public class JPanel3D extends MovableJPanel {
     private FileInputSelector fileInputSelector;
@@ -130,20 +131,43 @@ public class JPanel3D extends MovableJPanel {
 
         scene3DOptions = newValue;
 
+        scene3DOptions.gradient1.clear();
+        scene3DOptions.gradient2.clear();
+
+
+        scene3DOptions.gradient1.setReference(new Vec3d(1, 0, 0));
+        scene3DOptions.gradient1.add(new GradientPoint(-1.0, Color.RED));
+        scene3DOptions.gradient1.add(new GradientPoint(0, Color.WHITE));
+        scene3DOptions.gradient1.add(new GradientPoint(1.0, Color.BLUE));
+
+        scene3DOptions.gradient2.setReference(new Vec3d(0, 1, 0));
+        scene3DOptions.gradient2.add(new GradientPoint(-1.0, Color.GREEN));
+        scene3DOptions.gradient2.add(new GradientPoint(1.0, Color.GOLD));
+
+        glcanvas.presenter.gradients.clear();
+        glcanvas.presenter.gradients.add(scene3DOptions.gradient1);
+        //glcanvas.presenter.gradients.add(scene3DOptions.gradient2);
 
         glcanvas.presenter.gradientsHintReset();
         glcanvas.presenter.gradientsHintCalculate();
 
+        scene3DOptions.gradient1.setMaxVector(scene3DOptions.gradient1.getHintMax());
+        scene3DOptions.gradient1.setMinVector(scene3DOptions.gradient1.getHintMin());
+
+        scene3DOptions.gradient2.setMaxVector(scene3DOptions.gradient2.getHintMax());
+        scene3DOptions.gradient2.setMinVector(scene3DOptions.gradient2.getHintMin());
+
+        //System.out.println("G1: MAX: "+gradient1.getHintMax()+" MIN: "+gradient1.getHintMin());
+        //System.out.println("G2: MAX: "+gradient2.getHintMax()+" MIN: "+gradient2.getHintMin());
+
+        glcanvas.presenter.GradientsApply();
+
+
         System.out.print("GRAD1: MAX: " + newValue.gradient1.getHintMax() + "  MIN: " + newValue.gradient1.getHintMin() + "\r\n");
         System.out.print("GRAD2: MAX: " + newValue.gradient2.getHintMax() + "  MIN: " + newValue.gradient2.getHintMin() + "\r\n");
 
-        //this.elements.getChildren().setAll(new VectorSurface(surfaces.get(0), newValue.vectorProperties));
-
-//        this.elements.getChildren().setAll(renderedSurfaces);
-        //this.elements.getChildren().remove(0,1);
         System.out.println("END RECALCULATE");
-        //after end recalculate displaying grad1 offset points... WHY and WHERE
-        //tu masz hinty policzone także*/
+        //tu masz hinty policzone także
     }
 
     private void onFileSelect() {
