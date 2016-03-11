@@ -46,7 +46,7 @@ public class GLCanvas3DSurfaceViewer extends GLCanvas implements GLEventListener
     public void setOptions(Scene3DOptions options) {
         this.options = options;
         presenter.options = options;
-        System.out.println(presenter.options.vectorProperties.lenScale);
+        //System.out.println(presenter.options.vectorProperties.lenScale);
     }
 
     public void mouseClicked(MouseEvent e) {
@@ -87,7 +87,7 @@ public class GLCanvas3DSurfaceViewer extends GLCanvas implements GLEventListener
         if ((e.getModifiers() & e.BUTTON2_MASK) != 0) {
             angle.set(0, 0, 0);
             offset.set(0, 0, 0);
-            scale = 0;
+            scale = 0 + options.globalScale;
         }
     }
 
@@ -138,9 +138,9 @@ public class GLCanvas3DSurfaceViewer extends GLCanvas implements GLEventListener
                     new Vector3D(mouseDelta.x * MOVE_SCALE / this.getHeight(), -mouseDelta.y * MOVE_SCALE / this.getHeight(), 0)
             );
 
-            offset.x += planeTranslate.getX() * Math.pow(10, -scale);
-            offset.y += planeTranslate.getY() * Math.pow(10, -scale);
-            offset.z += planeTranslate.getZ() * Math.pow(10, -scale);
+            offset.x += planeTranslate.getX() * Math.pow(10, -scale - options.globalScale);
+            offset.y += planeTranslate.getY() * Math.pow(10, -scale - options.globalScale);
+            offset.z += planeTranslate.getZ() * Math.pow(10, -scale - options.globalScale);
 
             //TODO: deal with window resize to maintain 1:1 movement!!
         }
@@ -179,7 +179,7 @@ public class GLCanvas3DSurfaceViewer extends GLCanvas implements GLEventListener
         angle = new Vec3d();
         offset = new Vec3d();
 
-        scale = 0;
+        scale = 0 + options.globalScale;
 
         this.addMouseListener(this);
         this.addMouseMotionListener(this);
@@ -269,7 +269,7 @@ public class GLCanvas3DSurfaceViewer extends GLCanvas implements GLEventListener
         gl.glRotated(Math.toDegrees(angle.y), 1, 0, 0);
         gl.glRotated(Math.toDegrees(angle.z), 0, 1, 0);
 
-        gl.glScaled(Math.pow(10, scale), Math.pow(10, scale), Math.pow(10, scale));
+        gl.glScaled(Math.pow(10, scale + options.globalScale), Math.pow(10, scale + options.globalScale), Math.pow(10, scale + options.globalScale));
 
         gl.glTranslated(offset.x, offset.y, offset.z);
 

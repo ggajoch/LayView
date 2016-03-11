@@ -8,7 +8,7 @@ import pl.gajoch.layview.graphics3d.VectorProperties;
 public class Scene3DOptions {
     public final VectorProperties vectorProperties;
     public final BoxProperties boxProperties;
-    public final double globalScale, FPS;
+    public double globalScale, FPS;
     public final HintGradient gradient1, gradient2;
     public boolean isVectors;
 

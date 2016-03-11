@@ -29,7 +29,7 @@ public class JPanel3D extends MovableJPanel {
     private FileInput files;
     SimpleObjectProperty<Scene3DOptions> optionsProperty;
 
-    private volatile Scene3DOptions scene3DOptions = new Scene3DOptions(0.025, 0.025, 0.01, 0.1, new Vec3d(.1, .1, .1), 1.0, 30, new HintGradient(), new HintGradient());
+    private volatile Scene3DOptions scene3DOptions = new Scene3DOptions(0.025, 0.025, 0.01, 0.1, new Vec3d(.1, .1, .1), 0.0, 30, new HintGradient(), new HintGradient());
 
     @Override
     public void fixCenter(Rectangle position) {
@@ -199,12 +199,15 @@ public class JPanel3D extends MovableJPanel {
             scene3DOptions.vectorProperties.tipRadius = 0.125 * scene3DOptions.boxProperties.dimensions.length();
             scene3DOptions.vectorProperties.radius = 0.05 * scene3DOptions.boxProperties.dimensions.length();
 
+            scene3DOptions.globalScale = 0;
+            //TODO: obliczanie skali
+
             System.out.println("max_len: " + glcanvas.presenter.getMaxVectorLength());
             System.out.println("len_scale: " + scene3DOptions.vectorProperties.lenScale);
 
             onOptionsChanged(scene3DOptions);
 
-            timing = new RepeatedEvent(EventType.UPDATE3D, (int) 1e6 / 24, glcanvas.presenter.surfaces.size()) {
+            timing = new RepeatedEvent(EventType.UPDATE3D, (int)(1e6 / scene3DOptions.FPS), glcanvas.presenter.surfaces.size()) {
                 @Override
                 public void dispatch() {
                     glcanvas.display();
