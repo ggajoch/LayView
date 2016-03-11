@@ -4,7 +4,6 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
-import javafx.stage.Stage;
 import pl.gajoch.layview.utils.GUIUtils;
 
 import javax.swing.*;
@@ -14,7 +13,6 @@ public class Scene3DOptionsController {
     public void setup(JFrame frame, SimpleObjectProperty<Scene3DOptions> scene3DOptions) {
         this.frame = frame;
         this.scene3DOptions = scene3DOptions;
-        this.start = new Scene3DOptions(scene3DOptions.get());
 
         gradientEditor = new GradientEditor();
 
@@ -64,7 +62,6 @@ public class Scene3DOptionsController {
 
     private JFrame frame;
     private GradientEditor gradientEditor;
-    private Scene3DOptions start;
     private SimpleObjectProperty<Scene3DOptions> scene3DOptions;
 
     private SimpleObjectProperty<HintGradient> gradientToEdit1, gradientToEdit2;
@@ -100,7 +97,6 @@ public class Scene3DOptionsController {
 
     @FXML
     private void cancel_click() {
-//        scene3DOptions.set(start);
         GUIUtils.closeJFrame(frame);
     }
 }

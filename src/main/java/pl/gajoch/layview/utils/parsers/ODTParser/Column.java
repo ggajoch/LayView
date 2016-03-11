@@ -11,10 +11,4 @@ public class Column {
         name = unit = "";
         values = new ArrayList<>();
     }
-
-    public Column(String name, String unit, List<Double> values) {
-        this.name = name;
-        this.unit = unit;
-        this.values = values;
-    }
 }

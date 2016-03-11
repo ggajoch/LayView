@@ -4,15 +4,13 @@ import javafx.application.Platform;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.embed.swing.JFXPanel;
 import javafx.fxml.FXML;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.util.StringConverter;
 import pl.gajoch.layview.utils.GUIUtils;
-import pl.gajoch.layview.utils.OMFParser;
+import pl.gajoch.layview.utils.parsers.OMFParser.OMFParser;
 
 import javax.swing.*;
 import java.io.File;
@@ -208,7 +206,7 @@ public class FileInputSelectorController {
                 setProgress(0);
                 double len = getFiles().inputFiles.size();
                 for (File file : getFiles().inputFiles) {
-                    files.omfDataList.add(new OMFParser().parseFile(file));
+                    files.omfDataList.add(OMFParser.parseFile(file));
                     double x = iteration++;
                     x /= len;
                     setProgress(x);

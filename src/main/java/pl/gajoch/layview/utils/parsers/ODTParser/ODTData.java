@@ -12,11 +12,6 @@ public class ODTData {
         dataColumns = new ArrayList<>();
     }
 
-    public ODTData(String title, List<Column> dataColumns) {
-        this.title = title;
-        this.dataColumns = dataColumns;
-    }
-
     public void registerUnits(List<String> units) {
         while( dataColumns.size() < units.size() ) {
             dataColumns.add(new Column());

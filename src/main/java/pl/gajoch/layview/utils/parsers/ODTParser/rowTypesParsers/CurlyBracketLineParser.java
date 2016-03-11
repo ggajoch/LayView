@@ -9,7 +9,7 @@ public class CurlyBracketLineParser {
 
         line = line.trim();
         while( ! line.equals("") ) {
-            String now = "";
+            String now;
             if( line.charAt(0) == '{' ) {
                 now = line.substring(1, line.indexOf('}'));
                 line = line.substring(line.indexOf('}')+1);

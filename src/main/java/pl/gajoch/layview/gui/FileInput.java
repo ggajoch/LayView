@@ -1,6 +1,6 @@
 package pl.gajoch.layview.gui;
 
-import pl.gajoch.layview.utils.OMFData;
+import pl.gajoch.layview.utils.parsers.OMFParser.OMFData;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -16,7 +16,6 @@ public class FileInput {
         omfDataList = new ArrayList<>();
         inputFiles = new ArrayList<>();
     }
-
 
     public FileInput(FileInput second) {
         this.omfDataList = new ArrayList<>(second.omfDataList);

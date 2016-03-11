@@ -2,7 +2,6 @@ package pl.gajoch.layview.utils.parsers.OMFParser;
 
 import com.sun.javafx.geom.Vec3d;
 import pl.gajoch.layview.graphics3d.SurfacePoint;
-import pl.gajoch.layview.utils.parsers.OMFParser.OMFData;
 
 import java.io.*;
 import java.util.ArrayList;

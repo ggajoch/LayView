@@ -9,15 +9,10 @@ import pl.gajoch.layview.utils.GUIUtils;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.WindowEvent;
 
 public class MoveWindowController {
 
     // ----------------------------- Public API  -----------------------------
-
-    public Rectangle getWindowPosition() {
-        return windowPosition.get();
-    }
 
     public void setup(JFrame frame, SimpleObjectProperty<Rectangle> windowPosition) {
         this.frame = frame;
@@ -39,7 +34,6 @@ public class MoveWindowController {
     // -------------------------- Private variables  -------------------------
 
     private JFrame frame;
-    private Stage stage;
     private Rectangle start;
     private SimpleObjectProperty<Rectangle> windowPosition;
     RichTextField xSizeRich, ySizeRich, xOffsetRich, yOffsetRich;
