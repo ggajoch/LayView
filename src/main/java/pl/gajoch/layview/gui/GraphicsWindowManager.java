@@ -16,7 +16,7 @@ public class GraphicsWindowManager {
     volatile static ArrayList<MovableJPanel> subScenes;
     static SimpleObjectProperty<MovableJPanel> actual_scene;
 
-    GraphicsWindowManager() {
+    public GraphicsWindowManager() {
         actual_scene = new SimpleObjectProperty<>();
         subScenes = new ArrayList<>();
 
@@ -32,7 +32,26 @@ public class GraphicsWindowManager {
             frame = new JFrame("Main");
             frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
             frame.setLayout(null);
-            frame.setVisible(false);
+
+            JMenu menu = new JMenu("Add...");
+            JMenuBar menuBar = new JMenuBar();
+            menuBar.add(menu);
+
+            JMenuItem menuItem = new JMenuItem("2D");
+            menuItem.addActionListener(e -> {
+                this.add();
+            });
+            menu.add(menuItem);
+
+            menuItem = new JMenuItem("3D");
+            menuItem.addActionListener(e -> {
+                this.add3D();
+            });
+            menu.add(menuItem);
+
+            frame.setJMenuBar(menuBar);
+            frame.setSize(100,100);
+            frame.setVisible(true);
         });
 
     }
@@ -61,16 +80,13 @@ public class GraphicsWindowManager {
             java.awt.EventQueue.invokeLater(() -> {
                 Insets insets = frame.getInsets();
                 frame.setSize(insets.left + insets.right + maxWidth, insets.top + insets.bottom + maxHeight);
-                if (!frame.isVisible())
-                    frame.setVisible(true);
             });
             System.out.println("size: " + maxWidth + " x " + maxHeight);
         } catch (NoSuchElementException ignored) {
             java.awt.EventQueue.invokeLater(() -> {
-                frame.setVisible(false);
+                frame.setSize(100,100);
             });
         }
-//        stage.sizeToScene();
     }
 
     private static void addSizeRecalculations(MovableJPanel scene) {

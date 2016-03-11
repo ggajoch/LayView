@@ -1,4 +1,4 @@
-package pl.gajoch.layview.utils;
+package pl.gajoch.layview.utils.parsers.OMFParser;
 
 import pl.gajoch.layview.graphics3d.SurfacePoint;
 

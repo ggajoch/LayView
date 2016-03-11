@@ -1,40 +1,14 @@
 package pl.gajoch.layview.gui;
 
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Group;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.stage.Stage;
-import pl.gajoch.layview.utils.OMFData;
+import javafx.beans.property.SimpleObjectProperty;
 
-import java.io.IOException;
-import java.util.List;
-
-public class FileInputSelector {
-    private final Stage primaryStage;
-    private final FileInputSelectorController windowController;
-
+public class FileInputSelector extends JFXPanelWindow<FileInputSelectorController> {
     public FileInputSelector() {
-
-        FXMLLoader load = new FXMLLoader();
-        load.setLocation(getClass().getResource("FileInputSelector.fxml"));
-        Parent loader = new Group();
-        try {
-            loader = load.load();
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
-        primaryStage = new Stage();
-        primaryStage.setTitle("Edit point");
-        primaryStage.setScene(new Scene(loader));
-
-        windowController = load.getController();
-
+        super("Select files...", "FileInputSelector.fxml");
     }
 
-    public FileInput exec(FileInput files) {
-        windowController.setup(primaryStage, files);
-        primaryStage.showAndWait();
-        return windowController.parseFiles();
+    public void exec(SimpleObjectProperty<FileInput> files) {
+        windowController.setup(frame, files);
+        open();
     }
 }

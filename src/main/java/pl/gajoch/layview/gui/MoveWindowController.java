@@ -5,19 +5,17 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import pl.gajoch.layview.utils.GUIUtils;
 
+import javax.swing.*;
 import java.awt.*;
 
 public class MoveWindowController {
 
     // ----------------------------- Public API  -----------------------------
 
-    public Rectangle getWindowPosition() {
-        return windowPosition.get();
-    }
-
-    public void setup(Stage stage, SimpleObjectProperty<Rectangle> windowPosition) {
-        this.stage = stage;
+    public void setup(JFrame frame, SimpleObjectProperty<Rectangle> windowPosition) {
+        this.frame = frame;
         xSizeRich = RichTextField.of(xSize);
         ySizeRich = RichTextField.of(ySize);
         xOffsetRich = RichTextField.of(xOffset);
@@ -35,7 +33,7 @@ public class MoveWindowController {
 
     // -------------------------- Private variables  -------------------------
 
-    private Stage stage;
+    private JFrame frame;
     private Rectangle start;
     private SimpleObjectProperty<Rectangle> windowPosition;
     RichTextField xSizeRich, ySizeRich, xOffsetRich, yOffsetRich;
@@ -70,12 +68,12 @@ public class MoveWindowController {
 
     @FXML
     private void ok_click() {
-        this.stage.close();
+        GUIUtils.closeJFrame(frame);
     }
 
     @FXML
     private void cancel_click() {
         windowPosition.set(start);
-        this.stage.close();
+        GUIUtils.closeJFrame(frame);
     }
 }

@@ -163,26 +163,28 @@ public class JPanel3D extends MovableJPanel {
     }
 
     private void onFileSelect() {
-        Platform.runLater(() -> {
-            Scheduler.remove(timing);
-            FileInput omfDatas = fileInputSelector.exec(files);
+        SimpleObjectProperty<FileInput> fileInput = new SimpleObjectProperty<>(files);
+        fileInput.addListener((observable, oldValue, newValue) -> {
+            this.files = newValue;
 
+
+            Scheduler.remove(timing);
 
             glcanvas.presenter.surfaces.clear();
 
-            omfDatas.omfDataList.forEach(surfaceData -> {
+            this.files.omfDataList.forEach(surfaceData -> {
 
-                SurfacePointsList currentSurface = new SurfacePointsList(omfDatas.threshold);
+                SurfacePointsList currentSurface = new SurfacePointsList(this.files.threshold);
                 currentSurface.addAll(surfaceData.points);
                 glcanvas.presenter.surfaces.add(currentSurface);
 
             });
 
-            if (!omfDatas.omfDataList.isEmpty()) {
+            if (!this.files.omfDataList.isEmpty()) {
                 scene3DOptions.boxProperties.dimensions.set(
-                        omfDatas.omfDataList.get(0).xStepSize,
-                        omfDatas.omfDataList.get(0).yStepSize,
-                        omfDatas.omfDataList.get(0).zStepSize
+                        this.files.omfDataList.get(0).xStepSize,
+                        this.files.omfDataList.get(0).yStepSize,
+                        this.files.omfDataList.get(0).zStepSize
                 );
             }
 
@@ -203,7 +205,6 @@ public class JPanel3D extends MovableJPanel {
             } else {
                 scene3DOptions.globalScale = 0;
             }
-            //TODO: obliczanie skali
 
             System.out.println("max_len: " + glcanvas.presenter.getMaxVectorLength());
             System.out.println("len_scale: " + scene3DOptions.vectorProperties.lenScale);
@@ -243,6 +244,10 @@ public class JPanel3D extends MovableJPanel {
 
 
             System.out.println("Added surfaces: " + glcanvas.presenter.surfaces.size());
+
+        });
+        Platform.runLater(() -> {
+            fileInputSelector.exec(fileInput);
         });
 
 

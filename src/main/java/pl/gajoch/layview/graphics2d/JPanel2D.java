@@ -1,13 +1,9 @@
 package pl.gajoch.layview.graphics2d;
 
-import com.jogamp.opengl.util.FPSAnimator;
-import javafx.application.Platform;
 import pl.gajoch.layview.gui.*;
 import pl.gajoch.layview.scheduler.EventType;
 import pl.gajoch.layview.scheduler.RepeatedEvent;
 import pl.gajoch.layview.scheduler.Scheduler;
-import pl.gajoch.layview.utils.OMFData;
-import pl.gajoch.layview.utils.OMFParser;
 
 import javax.media.opengl.GLCapabilities;
 import javax.media.opengl.GLProfile;
@@ -16,7 +12,6 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class JPanel2D extends MovableJPanel {
     private FileInputSelector fileInputSelector;

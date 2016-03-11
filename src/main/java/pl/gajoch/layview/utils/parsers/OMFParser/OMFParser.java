@@ -1,4 +1,4 @@
-package pl.gajoch.layview.utils;
+package pl.gajoch.layview.utils.parsers.OMFParser;
 
 import com.sun.javafx.geom.Vec3d;
 import pl.gajoch.layview.graphics3d.SurfacePoint;
@@ -57,7 +57,7 @@ public class OMFParser {
     private int x_nodes, y_nodes, z_nodes;
     private int actual_x_pts = 0, actual_y_pts = 0, actual_z_pts = 0;
 
-    public OMFParser() {
+    private OMFParser() {
         state = ParserState.NoState;
         segments = new ArrayList<>();
     }
@@ -150,7 +150,8 @@ public class OMFParser {
         }
     }
 
-    public OMFData parseFile(File file) {
+    public static OMFData parseFile(File file) {
+        OMFParser parser = new OMFParser();
         BufferedReader reader = null;
         try {
             reader = new BufferedReader(new FileReader(file));
@@ -161,7 +162,7 @@ public class OMFParser {
                     if( line == null ) {
                         break;
                     }
-                    parseLine(line);
+                    parser.parseLine(line);
                 } catch(IOException ex) {
                     ex.printStackTrace();
                     break;
@@ -178,10 +179,9 @@ public class OMFParser {
             }
         }
 
-
-        return new OMFData(this.segments.get(0).data.points,
-                this.segments.get(0).header.getDouble("xstepsize"),
-                this.segments.get(0).header.getDouble("ystepsize"),
-                this.segments.get(0).header.getDouble("zstepsize"));
+        return new OMFData(parser.segments.get(0).data.points,
+                parser.segments.get(0).header.getDouble("xstepsize"),
+                parser.segments.get(0).header.getDouble("ystepsize"),
+                parser.segments.get(0).header.getDouble("zstepsize"));
     }
 }
