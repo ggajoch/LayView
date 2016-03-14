@@ -15,7 +15,7 @@ public class Scene2DOptions {
     }
 
     public Scene2DOptions(Scene2DOptions second) {
-        this.plotOptions = second.plotOptions;
+        this.plotOptions = new PlotOptions(second.plotOptions);
         this.FPS = second.FPS;
         this.isLine = second.isLine;
     }

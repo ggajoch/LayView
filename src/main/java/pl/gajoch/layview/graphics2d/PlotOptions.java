@@ -12,10 +12,19 @@ public class PlotOptions {
 
     public Color color;
 
-    public String xLabel;
-    public String yLabel;
+    public AxisOptions xAxisOptions;
+    public AxisOptions yAxisOptions;
 
-    public boolean showGrid;
+    public PlotOptions(PlotOptions second){
+        this.width = second.width;
+        this.symbolRadius = second.symbolRadius;
+
+        this.isLine = second.isLine;
+        this.color = new Color(second.color.getRed(),second.color.getGreen(),second.color.getBlue(), 1);
+
+        this.xAxisOptions = new AxisOptions(second.xAxisOptions);
+        this.yAxisOptions = new AxisOptions(second.yAxisOptions);
+    }
 
     public PlotOptions() {
         width = 3;
@@ -23,8 +32,10 @@ public class PlotOptions {
         isLine = true;
         color = Color.GREEN;
         divisions = 10;
-        xLabel = new String("X");
-        yLabel = new String("Y");
-        showGrid = true;
+        xAxisOptions = new AxisOptions();
+        xAxisOptions.label = new String("X");
+
+        yAxisOptions = new AxisOptions();
+        yAxisOptions.label = new String("Y");
     }
 }
