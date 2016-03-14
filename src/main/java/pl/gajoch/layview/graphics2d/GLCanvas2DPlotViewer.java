@@ -122,10 +122,6 @@ public class GLCanvas2DPlotViewer extends GLCanvas implements GLEventListener, M
         this.addMouseListener(this);
         this.addMouseMotionListener(this);
         this.addMouseWheelListener(this);
-
-        for (double angle = -Math.PI * 2; angle < Math.PI * 2; angle += 0.1) {
-            presenter.plotPointsList.add(new PlotPoint(new Point2D.Double(angle / Math.PI * 100, (Math.sin(angle) + Math.sin(angle * 2)) * 100)));
-        }
     }
 
     @Override

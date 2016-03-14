@@ -10,20 +10,22 @@ import javax.media.opengl.GLProfile;
 import javax.swing.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.geom.Point2D;
 
 public class Test2DPlot {
-    static GLCanvas2DPlotViewer canvasCamera;
+    static GLCanvas2DPlotViewer glcanvas;
     static JFrame frame;
 
     public static void main(String[] args) {
+
         final GLProfile profile = GLProfile.get(GLProfile.GL2);
         GLCapabilities capabilities = new GLCapabilities(profile);
         // The canvas
-        canvasCamera = new GLCanvas2DPlotViewer(capabilities);
-        canvasCamera.addGLEventListener(canvasCamera);
-        canvasCamera.setSize(700, 700);
+        glcanvas = new GLCanvas2DPlotViewer(capabilities);
+        glcanvas.addGLEventListener(glcanvas);
+        glcanvas.setSize(700, 700);
         frame = new JFrame("LayVIEW development preview");
-        frame.getContentPane().add(canvasCamera);
+        frame.getContentPane().add(glcanvas);
         frame.setSize(frame.getContentPane().getPreferredSize());
         frame.setVisible(true);
 
@@ -35,15 +37,20 @@ public class Test2DPlot {
 
         /*final FPSAnimator animator = new FPSAnimator(canvasCamera, 300, true);
         animator.start();*/
-        Scheduler.schedule(new RepeatedEvent(EventType.UPDATE2D, (int) 1e6 / 24, 120) {
+
+        for (double angle = -Math.PI * 2; angle < Math.PI * 2; angle += 0.1) {
+            glcanvas.presenter.plotPointsList.add(new PlotPoint(new Point2D.Double(angle / Math.PI * 100, (Math.sin(angle) + Math.sin(angle * 2)) * 100)));
+        }
+
+        Scheduler.schedule(new RepeatedEvent(EventType.UPDATE2D, (int) 1e6 / 24, glcanvas.presenter.plotPointsList.size()) {
             @Override
             public void dispatch() {
-                canvasCamera.display();
+                glcanvas.display();
             }
 
             @Override
             public void reset() {
-                canvasCamera.reset();
+                glcanvas.reset();
             }
         });
 
