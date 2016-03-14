@@ -127,12 +127,11 @@ public class GLCanvas2DPlotViewer extends GLCanvas implements GLEventListener, M
     @Override
     public void reshape(GLAutoDrawable drawable, int x, int y, int width, int height) {
         final GL2 gl = drawable.getGL().getGL2();
-        if (height <= 0)
-            height = 1;
         gl.glClear(GL2.GL_COLOR_BUFFER_BIT | GL2.GL_DEPTH_BUFFER_BIT);
         gl.glMatrixMode(GL2.GL_PROJECTION);
         gl.glLoadIdentity();
-        gl.glOrtho(-width / 2.0, width / 2.0, -height / 2.0, height / 2.0, -1, 1);
+        gl.glOrtho(-100-options.plotOptions.margins.getX(), 100+options.plotOptions.margins.getY(),
+                -100-options.plotOptions.margins.getWidth(), 100+options.plotOptions.margins.getHeight(), -1, 1);
         gl.glMatrixMode(GL2.GL_MODELVIEW);
 
 

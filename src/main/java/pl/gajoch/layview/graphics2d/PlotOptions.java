@@ -2,6 +2,8 @@ package pl.gajoch.layview.graphics2d;
 
 import javafx.scene.paint.Color;
 
+import java.awt.*;
+
 public class PlotOptions {
     public float width;
 
@@ -15,6 +17,8 @@ public class PlotOptions {
     public AxisOptions xAxisOptions;
     public AxisOptions yAxisOptions;
 
+    public Rectangle margins;
+
     public PlotOptions(PlotOptions second){
         this.width = second.width;
         this.symbolRadius = second.symbolRadius;
@@ -24,6 +28,7 @@ public class PlotOptions {
 
         this.xAxisOptions = new AxisOptions(second.xAxisOptions);
         this.yAxisOptions = new AxisOptions(second.yAxisOptions);
+        this.margins = new Rectangle(second.margins);
     }
 
     public PlotOptions() {
@@ -37,5 +42,7 @@ public class PlotOptions {
 
         yAxisOptions = new AxisOptions();
         yAxisOptions.label = new String("Y");
+
+        margins = new Rectangle(20,20,20,20);
     }
 }

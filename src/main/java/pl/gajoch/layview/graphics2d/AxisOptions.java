@@ -18,11 +18,12 @@ public class AxisOptions {
 
     public boolean drawGrids;
 
-    public double frameWidth;
+    public float frameWidth;
     public Color frameColor;
 
-    public double tickWidth;
+    public float tickWidth;
     public Color tickColor;
+    public double tickLength;
 
 
     public AxisOptions(AxisOptions second){
@@ -52,6 +53,7 @@ public class AxisOptions {
                 second.tickColor.getGreen(),
                 second.tickColor.getBlue(),
                 1);
+        this.tickLength = second.tickLength;
     }
 
     public AxisOptions(){
@@ -71,7 +73,8 @@ public class AxisOptions {
         this.frameColor = Color.GRAY;
 
         this.tickWidth = 1;
-        this.tickColor = Color.LIGHTGRAY;
+        this.tickLength = 5;
+        this.tickColor = Color.BLUE;
 
     }
 

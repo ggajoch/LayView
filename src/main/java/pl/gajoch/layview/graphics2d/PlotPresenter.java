@@ -38,6 +38,42 @@ public class PlotPresenter {
 
     private void drawAxes(GL2 gl) {
 
+        gl.glColor3d(options.xAxisOptions.frameColor.getRed(), options.xAxisOptions.frameColor.getGreen(), options.xAxisOptions.frameColor.getBlue());
+        gl.glLineWidth(options.xAxisOptions.frameWidth);
+
+        gl.glBegin(GL2.GL_LINES);
+        gl.glVertex2d(-100,-100);
+        gl.glVertex2d(100,-100);
+        gl.glEnd();
+
+        gl.glColor3d(options.xAxisOptions.tickColor.getRed(), options.xAxisOptions.tickColor.getGreen(), options.xAxisOptions.tickColor.getBlue());
+        gl.glLineWidth(options.xAxisOptions.tickWidth);
+
+        gl.glBegin(GL2.GL_LINES);
+        for(double x = options.xAxisOptions.min ; x <= options.xAxisOptions.max ; x+= options.xAxisOptions.tickIncrement){
+            gl.glVertex2d(map(x,options.xAxisOptions.min,options.xAxisOptions.max,-100,100),-100-options.xAxisOptions.tickLength/2);
+            gl.glVertex2d(map(x,options.xAxisOptions.min,options.xAxisOptions.max,-100,100),-100+options.xAxisOptions.tickLength/2);
+        }
+        gl.glEnd();
+
+
+        gl.glColor3d(options.yAxisOptions.frameColor.getRed(), options.yAxisOptions.frameColor.getGreen(), options.yAxisOptions.frameColor.getBlue());
+        gl.glLineWidth(options.yAxisOptions.frameWidth);
+
+        gl.glBegin(GL2.GL_LINES);
+        gl.glVertex2d(-100,-100);
+        gl.glVertex2d(-100,100);
+        gl.glEnd();
+
+        gl.glColor3d(options.yAxisOptions.tickColor.getRed(), options.yAxisOptions.tickColor.getGreen(), options.yAxisOptions.tickColor.getBlue());
+        gl.glLineWidth(options.yAxisOptions.tickWidth);
+
+        gl.glBegin(GL2.GL_LINES);
+        for(double y = options.yAxisOptions.min ; y <= options.yAxisOptions.max ; y+= options.yAxisOptions.tickIncrement){
+            gl.glVertex2d(-100-options.yAxisOptions.tickLength/2, map(y,options.yAxisOptions.min,options.yAxisOptions.max,-100,100));
+            gl.glVertex2d(-100+options.yAxisOptions.tickLength/2, map(y,options.yAxisOptions.min,options.yAxisOptions.max,-100,100));
+        }
+        gl.glEnd();
     }
 
     private void drawPoints(GL2 gl, int frame) throws InvalidArgumentException {
@@ -71,4 +107,14 @@ public class PlotPresenter {
 
         gl.glEnd();
     }
+
+    private double map(double x, double inMin, double inMax, double outMin, double outMax) {
+        x = (x - inMin) * (outMax - outMin) / (inMax - inMin) + outMin;
+        double absMax = Math.max(outMax, outMin);
+        double absMin = Math.min(outMax, outMin);
+        if (x > absMax) x = absMax;
+        if (x < absMin) x = absMin;
+        return x;
+    }
+
 }

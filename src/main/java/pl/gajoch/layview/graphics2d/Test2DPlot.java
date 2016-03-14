@@ -39,7 +39,7 @@ public class Test2DPlot {
         animator.start();*/
 
         for (double angle = -Math.PI * 2; angle < Math.PI * 2; angle += 0.1) {
-            glcanvas.presenter.plotPointsList.add(new PlotPoint(new Point2D.Double(angle / Math.PI * 100, (Math.sin(angle) + Math.sin(angle * 2)) * 100)));
+            glcanvas.presenter.plotPointsList.add(new PlotPoint(new Point2D.Double(angle/2 / Math.PI*100, (Math.sin(angle) + Math.sin(angle * 2))*50)));
         }
 
         Scheduler.schedule(new RepeatedEvent(EventType.UPDATE2D, (int) 1e6 / 24, glcanvas.presenter.plotPointsList.size()) {
