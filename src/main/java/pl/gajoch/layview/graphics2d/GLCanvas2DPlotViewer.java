@@ -108,7 +108,7 @@ public class GLCanvas2DPlotViewer extends GLCanvas implements GLEventListener, M
         gl.glEnable(GL2.GL_LINE_SMOOTH);
         gl.glHint(GL2.GL_LINE_SMOOTH_HINT, GL2.GL_NICEST);
 
-        renderer = new TextRenderer(new Font("ComicSans", Font.BOLD, 36));
+        renderer = new TextRenderer(new Font("Arial Narrow", Font.BOLD, 36));
 
         mousePos = new Vec3d();
         mouseOld = new Vec3d();
@@ -159,10 +159,15 @@ public class GLCanvas2DPlotViewer extends GLCanvas implements GLEventListener, M
 
         frameCt++;
 
-        renderer.beginRendering(this.getWidth(), this.getHeight());
+
+        /*renderer.beginRendering(this.getWidth(), this.getHeight());
         renderer.setColor(1.0f, 0.2f, 0.2f, 0.8f);
+        gl.glMatrixMode(GL2.GL_MODELVIEW);
+        gl.glPushMatrix();
+        gl.glRotated(45,0,0,1);
         renderer.draw(fps, 0, 0);
         renderer.endRendering();
+        gl.glPopMatrix();*/
 
         gl.glFlush();
     }

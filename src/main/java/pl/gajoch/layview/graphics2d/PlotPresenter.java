@@ -1,8 +1,10 @@
 package pl.gajoch.layview.graphics2d;
 
+import com.jogamp.opengl.util.awt.TextRenderer;
 import com.sun.javaws.exceptions.InvalidArgumentException;
 import javafx.beans.property.SimpleObjectProperty;
 import pl.gajoch.layview.graphics3d.TrigonometricTab;
+import pl.gajoch.layview.utils.RichTextRenderer;
 
 import javax.media.opengl.GL2;
 import java.awt.*;
@@ -46,6 +48,17 @@ public class PlotPresenter {
     }
 
     private void drawAxes(GL2 gl) {
+
+        RichTextRenderer textRenderer = new RichTextRenderer(new Font("Arial Narrow", Font.BOLD, options.titleSize));
+        
+        textRenderer.beginRendering((int)boundaries.getWidth(), (int)boundaries.getHeight());
+        textRenderer.setColor(options.titleColor);
+
+        textRenderer.draw(options.title,
+                (int)(map(0,-100 - options.margins.getX(), 100 + options.margins.getY(),0,boundaries.getWidth())-textRenderer.getStringWidth(options.title)/2),
+                (int)(map(100 + options.margins.getHeight()/2,-100 - options.margins.getWidth(), 100 + options.margins.getHeight(),0,boundaries.getHeight())-options.titleSize/2));
+
+        textRenderer.endRendering();
 
         gl.glColor3d(options.xAxisOptions.frameColor.getRed(), options.xAxisOptions.frameColor.getGreen(), options.xAxisOptions.frameColor.getBlue());
         gl.glLineWidth(options.xAxisOptions.frameWidth);

@@ -1,6 +1,7 @@
 package pl.gajoch.layview.graphics2d;
 
-import javafx.scene.paint.Color;
+
+import java.awt.*;
 
 /**
  * Created by Piotr on 14/03/2016.
@@ -64,7 +65,7 @@ public class AxisOptions {
         this.min = -100;
         this.max = 100;
 
-        this.tickIncrement = 10;
+        this.tickIncrement = 20;
         this.numberSize = 5;
 
         this.drawGrids = true;

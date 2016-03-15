@@ -8,9 +8,12 @@ import pl.gajoch.layview.scheduler.Scheduler;
 import javax.media.opengl.GLCapabilities;
 import javax.media.opengl.GLProfile;
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.geom.Point2D;
+import java.awt.image.BufferedImage;
+import java.util.Locale;
 
 public class Test2DPlot {
     static GLCanvas2DPlotViewer glcanvas;
@@ -53,6 +56,8 @@ public class Test2DPlot {
                 glcanvas.reset();
             }
         });
+
+
 
         while (true) {
             Scheduler.start();
