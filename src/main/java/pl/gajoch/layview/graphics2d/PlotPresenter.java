@@ -24,7 +24,7 @@ public class PlotPresenter {
     }
 
     public void draw(GL2 gl, int frame) {
-        drawAxes(gl);
+        drawGrids(gl);
         try {
             if (options.isLine) {
                 drawLine(gl, frame);
@@ -34,6 +34,7 @@ public class PlotPresenter {
         } catch (InvalidArgumentException ex) {
             ex.printStackTrace();
         }
+        drawAxes(gl);
     }
 
     private void drawAxes(GL2 gl) {
@@ -74,6 +75,32 @@ public class PlotPresenter {
             gl.glVertex2d(-100+options.yAxisOptions.tickLength/2, map(y,options.yAxisOptions.min,options.yAxisOptions.max,-100,100));
         }
         gl.glEnd();
+    }
+
+    private void drawGrids(GL2 gl) {
+        if(options.xAxisOptions.drawGrids) {
+            gl.glColor3d(options.xAxisOptions.tickColor.getRed(), options.xAxisOptions.tickColor.getGreen(), options.xAxisOptions.tickColor.getBlue());
+            gl.glLineWidth(options.xAxisOptions.tickWidth);
+
+            gl.glBegin(GL2.GL_LINES);
+            for (double x = options.xAxisOptions.min; x <= options.xAxisOptions.max; x += options.xAxisOptions.tickIncrement) {
+                gl.glVertex2d(map(x, options.xAxisOptions.min, options.xAxisOptions.max, -100, 100), -100);
+                gl.glVertex2d(map(x, options.xAxisOptions.min, options.xAxisOptions.max, -100, 100), 100);
+            }
+            gl.glEnd();
+        }
+
+        if(options.yAxisOptions.drawGrids) {
+            gl.glColor3d(options.yAxisOptions.tickColor.getRed(), options.yAxisOptions.tickColor.getGreen(), options.yAxisOptions.tickColor.getBlue());
+            gl.glLineWidth(options.yAxisOptions.tickWidth);
+
+            gl.glBegin(GL2.GL_LINES);
+            for (double y = options.yAxisOptions.min; y <= options.yAxisOptions.max; y += options.yAxisOptions.tickIncrement) {
+                gl.glVertex2d(-100, map(y, options.yAxisOptions.min, options.yAxisOptions.max, -100, 100));
+                gl.glVertex2d(100, map(y, options.yAxisOptions.min, options.yAxisOptions.max, -100, 100));
+            }
+            gl.glEnd();
+        }
     }
 
     private void drawPoints(GL2 gl, int frame) throws InvalidArgumentException {
