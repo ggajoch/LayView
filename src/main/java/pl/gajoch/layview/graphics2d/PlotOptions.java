@@ -45,7 +45,7 @@ public class PlotOptions {
         width = 3;
         symbolRadius = 1;
         isLine = true;
-        color = Color.GREEN;
+        color = Color.BLACK;
         divisions = 10;
         xAxisOptions = new AxisOptions();
         xAxisOptions.label = new String("X");
