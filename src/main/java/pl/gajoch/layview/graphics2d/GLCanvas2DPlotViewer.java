@@ -130,10 +130,10 @@ public class GLCanvas2DPlotViewer extends GLCanvas implements GLEventListener, M
         gl.glClear(GL2.GL_COLOR_BUFFER_BIT | GL2.GL_DEPTH_BUFFER_BIT);
         gl.glMatrixMode(GL2.GL_PROJECTION);
         gl.glLoadIdentity();
-        gl.glOrtho(-100-options.plotOptions.margins.getX(), 100+options.plotOptions.margins.getY(),
-                -100-options.plotOptions.margins.getWidth(), 100+options.plotOptions.margins.getHeight(), -1, 1);
+        gl.glOrtho(-100 - options.plotOptions.margins.getX(), 100 + options.plotOptions.margins.getY(),
+                -100 - options.plotOptions.margins.getWidth(), 100 + options.plotOptions.margins.getHeight(), -1, 1);
         gl.glMatrixMode(GL2.GL_MODELVIEW);
-
+        presenter.setBounds(x, y, width, height);
 
     }
 

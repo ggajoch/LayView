@@ -5,9 +5,12 @@ import javafx.beans.property.SimpleObjectProperty;
 import pl.gajoch.layview.graphics3d.TrigonometricTab;
 
 import javax.media.opengl.GL2;
+import java.awt.*;
 
 public class PlotPresenter {
     public PlotOptions options;
+
+    private Rectangle boundaries;
 
     private TrigonometricTab trig;
     public PlotPointsList plotPointsList;
@@ -16,6 +19,11 @@ public class PlotPresenter {
         this.options = options;
         trig = new TrigonometricTab(options.divisions);
         plotPointsList = new PlotPointsList();
+        boundaries = new Rectangle();
+    }
+
+    public void setBounds(int x, int y, int w, int h) {
+        boundaries.setBounds(x, y, w, h);
     }
 
     public void setOptions(PlotOptions options) {
@@ -43,17 +51,17 @@ public class PlotPresenter {
         gl.glLineWidth(options.xAxisOptions.frameWidth);
 
         gl.glBegin(GL2.GL_LINES);
-        gl.glVertex2d(-100,-100);
-        gl.glVertex2d(100,-100);
+        gl.glVertex2d(-100, -100);
+        gl.glVertex2d(100, -100);
         gl.glEnd();
 
         gl.glColor3d(options.xAxisOptions.tickColor.getRed(), options.xAxisOptions.tickColor.getGreen(), options.xAxisOptions.tickColor.getBlue());
         gl.glLineWidth(options.xAxisOptions.tickWidth);
 
         gl.glBegin(GL2.GL_LINES);
-        for(double x = options.xAxisOptions.min ; x <= options.xAxisOptions.max ; x+= options.xAxisOptions.tickIncrement){
-            gl.glVertex2d(map(x,options.xAxisOptions.min,options.xAxisOptions.max,-100,100),-100-options.xAxisOptions.tickLength/2);
-            gl.glVertex2d(map(x,options.xAxisOptions.min,options.xAxisOptions.max,-100,100),-100+options.xAxisOptions.tickLength/2);
+        for (double x = options.xAxisOptions.min; x <= options.xAxisOptions.max; x += options.xAxisOptions.tickIncrement) {
+            gl.glVertex2d(map(x, options.xAxisOptions.min, options.xAxisOptions.max, -100, 100), -100 - options.xAxisOptions.tickLength / 2);
+            gl.glVertex2d(map(x, options.xAxisOptions.min, options.xAxisOptions.max, -100, 100), -100 + options.xAxisOptions.tickLength / 2);
         }
         gl.glEnd();
 
@@ -62,23 +70,23 @@ public class PlotPresenter {
         gl.glLineWidth(options.yAxisOptions.frameWidth);
 
         gl.glBegin(GL2.GL_LINES);
-        gl.glVertex2d(-100,-100);
-        gl.glVertex2d(-100,100);
+        gl.glVertex2d(-100, -100);
+        gl.glVertex2d(-100, 100);
         gl.glEnd();
 
         gl.glColor3d(options.yAxisOptions.tickColor.getRed(), options.yAxisOptions.tickColor.getGreen(), options.yAxisOptions.tickColor.getBlue());
         gl.glLineWidth(options.yAxisOptions.tickWidth);
 
         gl.glBegin(GL2.GL_LINES);
-        for(double y = options.yAxisOptions.min ; y <= options.yAxisOptions.max ; y+= options.yAxisOptions.tickIncrement){
-            gl.glVertex2d(-100-options.yAxisOptions.tickLength/2, map(y,options.yAxisOptions.min,options.yAxisOptions.max,-100,100));
-            gl.glVertex2d(-100+options.yAxisOptions.tickLength/2, map(y,options.yAxisOptions.min,options.yAxisOptions.max,-100,100));
+        for (double y = options.yAxisOptions.min; y <= options.yAxisOptions.max; y += options.yAxisOptions.tickIncrement) {
+            gl.glVertex2d(-100 - options.yAxisOptions.tickLength / 2, map(y, options.yAxisOptions.min, options.yAxisOptions.max, -100, 100));
+            gl.glVertex2d(-100 + options.yAxisOptions.tickLength / 2, map(y, options.yAxisOptions.min, options.yAxisOptions.max, -100, 100));
         }
         gl.glEnd();
     }
 
     private void drawGrids(GL2 gl) {
-        if(options.xAxisOptions.drawGrids) {
+        if (options.xAxisOptions.drawGrids) {
             gl.glColor3d(options.xAxisOptions.tickColor.getRed(), options.xAxisOptions.tickColor.getGreen(), options.xAxisOptions.tickColor.getBlue());
             gl.glLineWidth(options.xAxisOptions.tickWidth);
 
@@ -90,7 +98,7 @@ public class PlotPresenter {
             gl.glEnd();
         }
 
-        if(options.yAxisOptions.drawGrids) {
+        if (options.yAxisOptions.drawGrids) {
             gl.glColor3d(options.yAxisOptions.tickColor.getRed(), options.yAxisOptions.tickColor.getGreen(), options.yAxisOptions.tickColor.getBlue());
             gl.glLineWidth(options.yAxisOptions.tickWidth);
 
@@ -112,12 +120,12 @@ public class PlotPresenter {
 
     private void drawPoint(GL2 gl, PlotPoint point) {
         gl.glBegin(GL2.GL_TRIANGLE_FAN);
-        double x = map(point.getX(),options.xAxisOptions.min,options.xAxisOptions.max,-100,100);
-        double y = map(point.getY(),options.yAxisOptions.min,options.yAxisOptions.max,-100,100);
-        gl.glVertex2d(x,y);
+        double x = map(point.getX(), options.xAxisOptions.min, options.xAxisOptions.max, -100, 100);
+        double y = map(point.getY(), options.yAxisOptions.min, options.yAxisOptions.max, -100, 100);
+        gl.glVertex2d(x, y);
 
         for (int division = 0; division <= options.divisions; division++) {
-            gl.glVertex2d(x + trig.sin(division) * options.symbolRadius,
+            gl.glVertex2d(x + trig.sin(division) * options.symbolRadius * boundaries.getHeight()/boundaries.getWidth(),
                     y + trig.cos(division) * options.symbolRadius);
         }
 
@@ -133,8 +141,8 @@ public class PlotPresenter {
         gl.glBegin(GL2.GL_LINE_STRIP);
 
         plotPointsList.subList(0, frame).forEach(point -> gl.glVertex2d(
-                map(point.getX(),options.xAxisOptions.min,options.xAxisOptions.max,-100,100),
-                map(point.getY(),options.yAxisOptions.min,options.yAxisOptions.max,-100,100)));
+                map(point.getX(), options.xAxisOptions.min, options.xAxisOptions.max, -100, 100),
+                map(point.getY(), options.yAxisOptions.min, options.yAxisOptions.max, -100, 100)));
 
         gl.glEnd();
     }
