@@ -112,11 +112,13 @@ public class PlotPresenter {
 
     private void drawPoint(GL2 gl, PlotPoint point) {
         gl.glBegin(GL2.GL_TRIANGLE_FAN);
-        gl.glVertex2d(point.getX(), point.getY());
+        double x = map(point.getX(),options.xAxisOptions.min,options.xAxisOptions.max,-100,100);
+        double y = map(point.getY(),options.yAxisOptions.min,options.yAxisOptions.max,-100,100);
+        gl.glVertex2d(x,y);
 
         for (int division = 0; division <= options.divisions; division++) {
-            gl.glVertex2d(map(point.getX(),options.xAxisOptions.min,options.xAxisOptions.max,-100,100) + trig.sin(division) * options.symbolRadius,
-                    map(point.getY(),options.yAxisOptions.min,options.yAxisOptions.max,-100,100) + trig.cos(division) * options.symbolRadius);
+            gl.glVertex2d(x + trig.sin(division) * options.symbolRadius,
+                    y + trig.cos(division) * options.symbolRadius);
         }
 
         gl.glEnd();
