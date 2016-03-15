@@ -115,8 +115,8 @@ public class PlotPresenter {
         gl.glVertex2d(point.getX(), point.getY());
 
         for (int division = 0; division <= options.divisions; division++) {
-            gl.glVertex2d(point.getX() + trig.sin(division) * options.symbolRadius,
-                    point.getY() + trig.cos(division) * options.symbolRadius);
+            gl.glVertex2d(map(point.getX(),options.xAxisOptions.min,options.xAxisOptions.max,-100,100) + trig.sin(division) * options.symbolRadius,
+                    map(point.getY(),options.yAxisOptions.min,options.yAxisOptions.max,-100,100) + trig.cos(division) * options.symbolRadius);
         }
 
         gl.glEnd();
@@ -130,7 +130,9 @@ public class PlotPresenter {
         gl.glColor3d(options.color.getRed(), options.color.getGreen(), options.color.getBlue());
         gl.glBegin(GL2.GL_LINE_STRIP);
 
-        plotPointsList.subList(0, frame).forEach(plotPoint -> gl.glVertex2d(plotPoint.getX(), plotPoint.getY()));
+        plotPointsList.subList(0, frame).forEach(point -> gl.glVertex2d(
+                map(point.getX(),options.xAxisOptions.min,options.xAxisOptions.max,-100,100),
+                map(point.getY(),options.yAxisOptions.min,options.yAxisOptions.max,-100,100)));
 
         gl.glEnd();
     }

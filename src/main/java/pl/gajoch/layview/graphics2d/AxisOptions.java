@@ -61,10 +61,10 @@ public class AxisOptions {
         this.labelSize = 10;
 
         this.labelColor = Color.RED;
-        this.min = -1;
-        this.max = 1;
+        this.min = -100;
+        this.max = 100;
 
-        this.tickIncrement = 0.1;
+        this.tickIncrement = 10;
         this.numberSize = 5;
 
         this.drawGrids = true;

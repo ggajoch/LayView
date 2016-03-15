@@ -33,7 +33,7 @@ public class PlotOptions {
 
     public PlotOptions() {
         width = 3;
-        symbolRadius = 5;
+        symbolRadius = 1;
         isLine = true;
         color = Color.GREEN;
         divisions = 10;
