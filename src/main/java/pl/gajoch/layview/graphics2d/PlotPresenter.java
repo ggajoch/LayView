@@ -49,14 +49,29 @@ public class PlotPresenter {
 
     private void drawAxes(GL2 gl) {
 
+
+        //Plot TITLE
         RichTextRenderer textRenderer = new RichTextRenderer(new Font("Arial Narrow", Font.BOLD, options.titleSize));
-        
+
         textRenderer.beginRendering((int)boundaries.getWidth(), (int)boundaries.getHeight());
         textRenderer.setColor(options.titleColor);
 
         textRenderer.draw(options.title,
                 (int)(map(0,-100 - options.margins.getX(), 100 + options.margins.getY(),0,boundaries.getWidth())-textRenderer.getStringWidth(options.title)/2),
                 (int)(map(100 + options.margins.getHeight()/2,-100 - options.margins.getWidth(), 100 + options.margins.getHeight(),0,boundaries.getHeight())-options.titleSize/2));
+
+        textRenderer.endRendering();
+
+
+        //X-AXIS
+        textRenderer = new RichTextRenderer(new Font("Arial Narrow", Font.BOLD, options.xAxisOptions.labelSize));
+
+        textRenderer.beginRendering((int)boundaries.getWidth(), (int)boundaries.getHeight());
+        textRenderer.setColor(options.xAxisOptions.labelColor);
+
+        textRenderer.draw(options.xAxisOptions.label,
+                (int)(map(0,-100 - options.margins.getX(), 100 + options.margins.getY(),0,boundaries.getWidth())-textRenderer.getStringWidth(options.xAxisOptions.label)/2),
+                (int)(map(-100 - options.margins.getWidth()*0.7,-100 - options.margins.getWidth(), 100 + options.margins.getHeight(),0,boundaries.getHeight())-options.xAxisOptions.labelSize/2));
 
         textRenderer.endRendering();
 
@@ -68,17 +83,39 @@ public class PlotPresenter {
         gl.glVertex2d(100, -100);
         gl.glEnd();
 
+
+        //X-TICKS
+        textRenderer = new RichTextRenderer(new Font("Arial Narrow", Font.BOLD, options.xAxisOptions.numberSize));
+
+        textRenderer.beginRendering((int)boundaries.getWidth(), (int)boundaries.getHeight());
+        textRenderer.setColor(options.xAxisOptions.labelColor);
+
+        for (double x = options.xAxisOptions.min; x <= options.xAxisOptions.max; x += options.xAxisOptions.tickIncrement) {
+            double mapX = map(x, options.xAxisOptions.min, options.xAxisOptions.max, -100, 100);
+            String tick = String.format("%.0f",x);
+            textRenderer.draw(tick,
+                    (int)(map(mapX,-100 - options.margins.getX(), 100 + options.margins.getY(),0,boundaries.getWidth())-textRenderer.getStringWidth(tick)/2),
+                    (int)(map(-100 - options.margins.getWidth()*0.3,-100 - options.margins.getWidth(), 100 + options.margins.getHeight(),0,boundaries.getHeight())-options.xAxisOptions.numberSize/2));
+        }
+
+        textRenderer.endRendering();
+
         gl.glColor3d(options.xAxisOptions.tickColor.getRed(), options.xAxisOptions.tickColor.getGreen(), options.xAxisOptions.tickColor.getBlue());
         gl.glLineWidth(options.xAxisOptions.tickWidth);
 
+
+
+
         gl.glBegin(GL2.GL_LINES);
         for (double x = options.xAxisOptions.min; x <= options.xAxisOptions.max; x += options.xAxisOptions.tickIncrement) {
-            gl.glVertex2d(map(x, options.xAxisOptions.min, options.xAxisOptions.max, -100, 100), -100 - options.xAxisOptions.tickLength / 2);
-            gl.glVertex2d(map(x, options.xAxisOptions.min, options.xAxisOptions.max, -100, 100), -100 + options.xAxisOptions.tickLength / 2);
+            double mapX = map(x, options.xAxisOptions.min, options.xAxisOptions.max, -100, 100);
+            gl.glVertex2d(mapX, -100 - options.xAxisOptions.tickLength / 2);
+            gl.glVertex2d(mapX, -100 + options.xAxisOptions.tickLength / 2);
         }
         gl.glEnd();
 
 
+        //Y-AXIS
         gl.glColor3d(options.yAxisOptions.frameColor.getRed(), options.yAxisOptions.frameColor.getGreen(), options.yAxisOptions.frameColor.getBlue());
         gl.glLineWidth(options.yAxisOptions.frameWidth);
 
@@ -87,6 +124,8 @@ public class PlotPresenter {
         gl.glVertex2d(-100, 100);
         gl.glEnd();
 
+
+        //Y_TICKS
         gl.glColor3d(options.yAxisOptions.tickColor.getRed(), options.yAxisOptions.tickColor.getGreen(), options.yAxisOptions.tickColor.getBlue());
         gl.glLineWidth(options.yAxisOptions.tickWidth);
 

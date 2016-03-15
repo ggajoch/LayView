@@ -8,14 +8,14 @@ import java.awt.*;
  */
 public class AxisOptions {
     public String label;
-    public double labelSize;
+    public int labelSize;
     public Color labelColor;
 
     public double min;
     public double max;
     public double tickIncrement;
 
-    public double numberSize;
+    public int numberSize;
 
     public boolean drawGrids;
 
@@ -59,14 +59,14 @@ public class AxisOptions {
 
     public AxisOptions(){
         this.label = new String();
-        this.labelSize = 10;
+        this.labelSize = 30;
 
         this.labelColor = Color.RED;
         this.min = -100;
         this.max = 100;
 
         this.tickIncrement = 20;
-        this.numberSize = 5;
+        this.numberSize = 25;
 
         this.drawGrids = true;
 
