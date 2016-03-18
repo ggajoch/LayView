@@ -20,6 +20,7 @@ import java.util.List;
 public class JPanel2D extends MovableJPanel {
     private FileInputSelector fileInputSelector;
     private FileInput files;
+    private Scene2DOptionsEditor scene2DOptionsEditor = new Scene2DOptionsEditor();
 
     SimpleObjectProperty<Scene2DOptions> optionsProperty;
 
@@ -56,6 +57,7 @@ public class JPanel2D extends MovableJPanel {
         JMenuItem item2 = new JMenuItem("Options...");
         item2.addActionListener(e -> {
             Platform.runLater(() -> {
+                scene2DOptionsEditor.exec(optionsProperty);
             });
         });
         menu.add(item2);
