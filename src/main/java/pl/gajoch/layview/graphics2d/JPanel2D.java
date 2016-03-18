@@ -91,7 +91,7 @@ public class JPanel2D extends MovableJPanel {
         });
 
         for (double angle = -Math.PI * 2; angle < Math.PI * 2; angle += 0.1) {
-            glcanvas.presenter.plotPointsList.add(new PlotPoint(new Point2D.Double(angle / Math.PI * 100, (Math.sin(angle) + Math.sin(angle * 2)) * 100)));
+            glcanvas.presenter.plotPointsList.add(new PlotPoint(new Point2D.Double(angle / Math.PI * 50, (Math.sin(angle) + Math.sin(angle * 2)) * 100)));
         }
 
         SwingUtilities.invokeLater(() ->
