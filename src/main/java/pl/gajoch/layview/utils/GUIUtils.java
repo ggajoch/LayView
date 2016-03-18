@@ -15,6 +15,14 @@ public class GUIUtils {
         alert.setContentText(text);
         alert.showAndWait();
     }
+
+    public static void showNumberFormatException(NumberFormatException exception) {
+        String message = exception.getMessage();
+        int begin = message.indexOf("\""), end = message.indexOf("\"", begin+1);
+        CharSequence name = message.subSequence(begin+1, end);
+        System.out.println("a = " + begin + ", b = " + end + " name = " + name);
+        showErrorMessage("Bad number format!", "Cannot parse \"" +  name + "\"");
+    }
     
     public static Double toDouble(TextInputControl field) throws NumberFormatException {
         return Double.valueOf(field.getText());
