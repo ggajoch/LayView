@@ -39,7 +39,7 @@ public class GLCanvas3DSurfaceViewer extends GLCanvas implements GLEventListener
 
     public GLCanvas3DSurfaceViewer(GLCapabilities capabilities) {
         super(capabilities);
-        options = new Scene3DOptions(0.025, 0.025, 0.01, 0.1, new Vec3d(.1, .1, .1), 1.0, 30, new HintGradient(), new HintGradient());
+        options = new Scene3DOptions(0.025, 0.025, 0.01, 0.1, new Vec3d(.1, .1, .1), 1.0, 30, new HintGradient(), new HintGradient(), true, true);
         presenter = new SurfacesPresenter(options);
     }
 

@@ -121,21 +121,25 @@ public class FileInputSelectorController {
         new Thread() {
             public void run() {
                 Platform.runLater(() -> showProgressBar("Adding ..."));
-                double len = fileList.size();
-                int iter = 0;
+                try {
+                    double len = fileList.size();
+                    int iter = 0;
 
-                for(File file : fileList) {
-                    if( file == null )
-                        continue;
-                    if ( ! files.inputFiles.contains(file) ) {
-                        files.inputFiles.add(file);
-                        setProgress(iter++/len);
+                    for (File file : fileList) {
+                        if (file == null)
+                            continue;
+                        if (!files.inputFiles.contains(file)) {
+                            files.inputFiles.add(file);
+                            setProgress(iter++ / len);
+                        }
                     }
+                } catch (Exception ignored) {
+                } finally {
+                    Platform.runLater(() -> {
+                        recalculateView();
+                        hideProgressBar();
+                    });
                 }
-                Platform.runLater(() -> {
-                    recalculateView();
-                    hideProgressBar();
-                });
             }
         }.start();
     }
@@ -147,9 +151,9 @@ public class FileInputSelectorController {
         File folder = directoryChooser.showDialog(null);
         new Thread() {
             public void run() {
-                Platform.runLater(() -> showProgressBar("Adding ..."));
                 double len = 0;
                 if (folder != null) {
+                    Platform.runLater(() -> showProgressBar("Adding ..."));
                     for (File file : folder.listFiles()) {
                         if (!file.isDirectory() && isOMF(file)) {
                             len += 1;
@@ -159,9 +163,9 @@ public class FileInputSelectorController {
                     int iter = 0;
                     for (File file : folder.listFiles()) {
                         if (!file.isDirectory() && isOMF(file)) {
-                            if ( ! files.inputFiles.contains(file) ) {
+                            if (!files.inputFiles.contains(file)) {
                                 files.inputFiles.add(file);
-                                setProgress(iter++/len);
+                                setProgress(iter++ / len);
                             }
                         }
                     }
@@ -193,7 +197,8 @@ public class FileInputSelectorController {
     @FXML
     private void close_handler() {
         try {
-            this.files.threshold = RichTextField.of(thresholdField).getDouble();;
+            this.files.threshold = RichTextField.of(thresholdField).getDouble();
+            ;
         } catch (NumberFormatException ex) {
             showErrorMessage("Bad number format!", "Cannot parse \"" + thresholdField.getText() + "\"");
             return;
@@ -212,8 +217,10 @@ public class FileInputSelectorController {
                     setProgress(x);
                 }
                 filesProperty.set(files);
-                Platform.runLater(() ->
-                    GUIUtils.closeJFrame(frame));
+                Platform.runLater(() -> {
+                    hideProgressBar();
+                    GUIUtils.closeJFrame(frame);
+                });
             }
         }.start();
     }
