@@ -3,6 +3,7 @@ package pl.gajoch.layview.gui;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
 import pl.gajoch.layview.utils.GUIUtils;
 
@@ -43,7 +44,6 @@ public class Scene3DOptionsController {
         Gradient1.setOnAction(event -> {
             gradientToEdit1 = new SimpleObjectProperty<>(scene3DOptions.get().gradient1);
             gradientToEdit1.addListener((observable, oldValue, newValue) -> {
-                System.out.println("AAA");
                 recalculate();
             });
             gradientEditor.exec(gradientToEdit1);
@@ -55,6 +55,8 @@ public class Scene3DOptionsController {
             });
             gradientEditor.exec(gradientToEdit2);
         });
+
+        Grad2Enable.setSelected(scene3DOptions.get().gradient2enable);
     }
 
     // -------------------------- Private variables  -------------------------
@@ -74,7 +76,7 @@ public class Scene3DOptionsController {
         Scene3DOptions newScene = new Scene3DOptions(tipLenRich.getDouble(), tipRadiusRich.getDouble(),
                 radiusRich.getDouble(), lenScaleRich.getDouble(), scene3DOptions.get().boxProperties.dimensions,
                 globalScaleRich.getDouble(), FPSRich.getDouble(),
-                gradientToEdit1.get(), gradientToEdit2.get());
+                gradientToEdit1.get(), gradientToEdit2.get(), Grad2Enable.isSelected());
         scene3DOptions.set(newScene);
     }
 
@@ -86,6 +88,8 @@ public class Scene3DOptionsController {
     private Button Gradient1, Gradient2;
     @FXML
     private TextField tipLen, tipRadius, radius, lenScale, globalScale, FPS;
+    @FXML
+    private CheckBox Grad2Enable;
 
     // --------------------------- button handlers ---------------------------
 

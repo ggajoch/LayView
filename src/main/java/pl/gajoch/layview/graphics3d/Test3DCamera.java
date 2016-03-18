@@ -24,7 +24,7 @@ public class Test3DCamera {
         GLCapabilities capabilities = new GLCapabilities(profile);
         // The canvas
         canvasCamera = new GLCanvas3DSurfaceViewer(capabilities);
-        canvasCamera.setOptions(new Scene3DOptions(0.025, 0.025, 0.01, 1, new Vec3d(.1, .1, .1), 1.0, 30, new HintGradient(), new HintGradient()));
+        canvasCamera.setOptions(new Scene3DOptions(0.025, 0.025, 0.01, 1, new Vec3d(.1, .1, .1), 1.0, 30, new HintGradient(), new HintGradient(), true));
         canvasCamera.addGLEventListener(canvasCamera);
         canvasCamera.setSize(700, 700);
         frame = new JFrame("LayVIEW development preview");
