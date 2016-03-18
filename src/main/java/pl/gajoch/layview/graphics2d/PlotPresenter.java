@@ -116,6 +116,22 @@ public class PlotPresenter {
 
 
         //Y-AXIS
+        textRenderer = new RichTextRenderer(new Font("Arial Narrow", Font.BOLD, options.yAxisOptions.labelSize));
+
+        textRenderer.beginRendering((int)boundaries.getWidth(), (int)boundaries.getHeight());
+        textRenderer.setColor(options.yAxisOptions.labelColor);
+
+        gl.glMatrixMode(GL2.GL_MODELVIEW);
+        gl.glPushMatrix();
+        gl.glRotated(90,0,0,1);
+
+        textRenderer.draw(options.yAxisOptions.label,
+                (int)(map(0,-100 - options.margins.getWidth(), 100 + options.margins.getHeight(),0,boundaries.getHeight())-textRenderer.getStringWidth(options.yAxisOptions.label)/2),
+                -(int)(map(-100 - options.margins.getX()*0.8,-100 - options.margins.getX(), 100 + options.margins.getWidth(),0,boundaries.getWidth())+options.yAxisOptions.labelSize/2));
+
+        textRenderer.endRendering();
+        gl.glPopMatrix();
+
         gl.glColor3d(options.yAxisOptions.frameColor.getRed(), options.yAxisOptions.frameColor.getGreen(), options.yAxisOptions.frameColor.getBlue());
         gl.glLineWidth(options.yAxisOptions.frameWidth);
 
@@ -126,6 +142,29 @@ public class PlotPresenter {
 
 
         //Y_TICKS
+        textRenderer = new RichTextRenderer(new Font("Arial Narrow", Font.BOLD, options.yAxisOptions.numberSize));
+
+        textRenderer.beginRendering((int)boundaries.getWidth(), (int)boundaries.getHeight());
+        textRenderer.setColor(options.yAxisOptions.labelColor);
+
+        gl.glMatrixMode(GL2.GL_MODELVIEW);
+        gl.glPushMatrix();
+        gl.glRotated(90,0,0,1);
+
+        for (double x = options.xAxisOptions.min; x <= options.xAxisOptions.max; x += options.xAxisOptions.tickIncrement) {
+            double mapX = map(x, options.xAxisOptions.min, options.xAxisOptions.max, -100, 100);
+            String tick = String.format("%.0f", x);
+            textRenderer.draw(tick,
+                    (int) (map(mapX, -100 - options.margins.getWidth(), 100 + options.margins.getHeight(), 0, boundaries.getHeight()) - textRenderer.getStringWidth(tick) / 2),
+                    -(int) (map(-100 - options.margins.getX() * 0.3, -100 - options.margins.getX(), 100 + options.margins.getWidth(), 0, boundaries.getWidth()) + options.yAxisOptions.numberSize / 2));
+        }
+
+        textRenderer.endRendering();
+        gl.glPopMatrix();
+
+        gl.glColor3d(options.yAxisOptions.frameColor.getRed(), options.yAxisOptions.frameColor.getGreen(), options.yAxisOptions.frameColor.getBlue());
+        gl.glLineWidth(options.yAxisOptions.frameWidth);
+
         gl.glColor3d(options.yAxisOptions.tickColor.getRed(), options.yAxisOptions.tickColor.getGreen(), options.yAxisOptions.tickColor.getBlue());
         gl.glLineWidth(options.yAxisOptions.tickWidth);
 

@@ -48,10 +48,10 @@ public class PlotOptions {
         color = Color.BLACK;
         divisions = 10;
         xAxisOptions = new AxisOptions();
-        xAxisOptions.label = new String("X");
+        xAxisOptions.label = new String("X [fs]");
 
         yAxisOptions = new AxisOptions();
-        yAxisOptions.label = new String("Y");
+        yAxisOptions.label = new String("Y [kV]");
 
         margins = new Rectangle(40, 20, 40, 60);
 
