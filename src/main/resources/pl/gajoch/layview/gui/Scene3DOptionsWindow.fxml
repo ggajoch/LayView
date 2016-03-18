@@ -29,6 +29,7 @@
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
                   <Label text="Tip length:" />
@@ -71,8 +72,8 @@
                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                      </GridPane.margin>
                   </TextField>
-                  <Button fx:id="Gradient1" alignment="CENTER_RIGHT" contentDisplay="RIGHT" mnemonicParsing="false" text="Gradient 1" textAlignment="CENTER" GridPane.rowIndex="6" />
-                  <HBox GridPane.columnIndex="1" GridPane.rowIndex="6">
+                  <Button fx:id="Gradient1" alignment="CENTER_RIGHT" contentDisplay="RIGHT" mnemonicParsing="false" text="Gradient 1" textAlignment="CENTER" GridPane.rowIndex="7" />
+                  <HBox GridPane.columnIndex="1" GridPane.rowIndex="7">
                      <children>
                         <Button fx:id="Gradient2" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" text="Gradient 2" textAlignment="CENTER" />
                         <CheckBox fx:id="Grad2Enable" mnemonicParsing="false" textAlignment="CENTER">
@@ -82,6 +83,12 @@
                         </CheckBox>
                      </children>
                   </HBox>
+                  <Label text="Vectors?" GridPane.rowIndex="6" />
+                  <CheckBox fx:id="isVectorsCheckBox" alignment="CENTER" mnemonicParsing="false" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="6">
+                     <GridPane.margin>
+                        <Insets left="40.0" />
+                     </GridPane.margin>
+                  </CheckBox>
                </children>
             </GridPane>
             <GridPane>

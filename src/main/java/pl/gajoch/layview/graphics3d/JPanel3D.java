@@ -27,7 +27,7 @@ public class JPanel3D extends MovableJPanel {
     private FileInput files;
     SimpleObjectProperty<Scene3DOptions> optionsProperty;
 
-    private volatile Scene3DOptions scene3DOptions = new Scene3DOptions(0.025, 0.025, 0.01, 0.1, new Vec3d(.1, .1, .1), 0.0, 30, new HintGradient(), new HintGradient(), true);
+    private volatile Scene3DOptions scene3DOptions = new Scene3DOptions(0.025, 0.025, 0.01, 0.1, new Vec3d(.1, .1, .1), 0.0, 30, new HintGradient(), new HintGradient(), true, true);
 
     @Override
     public void fixCenter(Rectangle position) {

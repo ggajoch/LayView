@@ -57,6 +57,7 @@ public class Scene3DOptionsController {
         });
 
         Grad2Enable.setSelected(scene3DOptions.get().gradient2enable);
+        isVectorsCheckBox.setSelected(scene3DOptions.get().isVectors);
     }
 
     // -------------------------- Private variables  -------------------------
@@ -76,7 +77,8 @@ public class Scene3DOptionsController {
         Scene3DOptions newScene = new Scene3DOptions(tipLenRich.getDouble(), tipRadiusRich.getDouble(),
                 radiusRich.getDouble(), lenScaleRich.getDouble(), scene3DOptions.get().boxProperties.dimensions,
                 globalScaleRich.getDouble(), FPSRich.getDouble(),
-                gradientToEdit1.get(), gradientToEdit2.get(), Grad2Enable.isSelected());
+                gradientToEdit1.get(), gradientToEdit2.get(),
+                Grad2Enable.isSelected(), isVectorsCheckBox.isSelected());
         scene3DOptions.set(newScene);
     }
 
@@ -89,7 +91,7 @@ public class Scene3DOptionsController {
     @FXML
     private TextField tipLen, tipRadius, radius, lenScale, globalScale, FPS;
     @FXML
-    private CheckBox Grad2Enable;
+    private CheckBox Grad2Enable, isVectorsCheckBox;
 
     // --------------------------- button handlers ---------------------------
 
