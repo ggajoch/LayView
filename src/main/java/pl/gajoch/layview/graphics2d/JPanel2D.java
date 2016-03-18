@@ -1,6 +1,7 @@
 package pl.gajoch.layview.graphics2d;
 
 import com.sun.javafx.geom.Vec3d;
+import javafx.application.Platform;
 import javafx.beans.property.SimpleObjectProperty;
 import pl.gajoch.layview.gui.*;
 import pl.gajoch.layview.scheduler.EventType;
@@ -52,6 +53,13 @@ public class JPanel2D extends MovableJPanel {
         });
         menu.add(item1);
 
+        JMenuItem item2 = new JMenuItem("Options...");
+        item2.addActionListener(e -> {
+            Platform.runLater(() -> {
+            });
+        });
+        menu.add(item2);
+        System.out.println("Added!");
         this.generateContextMenu(menu);
 
         final GLProfile profile = GLProfile.get(GLProfile.GL2);

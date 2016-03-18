@@ -104,7 +104,6 @@ public class GraphicsWindowManager {
     public static void add() {
         MovableJPanel view = new JPanel2D(600, 600);
         addSizeRecalculations(view);
-        view.generateContextMenu(new ArrayList<>());
         subScenes.add(view);
 
         recalculate();
