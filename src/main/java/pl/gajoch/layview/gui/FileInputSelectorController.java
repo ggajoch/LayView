@@ -212,8 +212,10 @@ public class FileInputSelectorController {
                     setProgress(x);
                 }
                 filesProperty.set(files);
-                Platform.runLater(() ->
-                    GUIUtils.closeJFrame(frame));
+                Platform.runLater(() -> {
+                    hideProgressBar();
+                    GUIUtils.closeJFrame(frame);
+                });
             }
         }.start();
     }
