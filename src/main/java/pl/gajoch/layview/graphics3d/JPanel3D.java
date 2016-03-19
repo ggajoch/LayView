@@ -135,7 +135,9 @@ public class JPanel3D extends MovableJPanel {
 
         glcanvas.presenter.gradients.clear();
         glcanvas.presenter.gradients.add(scene3DOptions.gradient1);
-        //glcanvas.presenter.gradients.add(scene3DOptions.gradient2);
+        if(newValue.gradient2enable) {
+            glcanvas.presenter.gradients.add(scene3DOptions.gradient2);
+        }
 
         glcanvas.presenter.gradientsHintReset();
         glcanvas.presenter.gradientsHintCalculate();
@@ -224,7 +226,7 @@ public class JPanel3D extends MovableJPanel {
 
             glcanvas.presenter.gradients.clear();
             glcanvas.presenter.gradients.add(scene3DOptions.gradient1);
-            //glcanvas.presenter.gradients.add(scene3DOptions.gradient2);
+            glcanvas.presenter.gradients.add(scene3DOptions.gradient2);
 
             glcanvas.presenter.gradientsHintReset();
             glcanvas.presenter.gradientsHintCalculate();

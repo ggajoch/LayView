@@ -52,9 +52,6 @@ public class GLCanvas3DSurfaceViewer extends GLCanvas implements GLEventListener
     public void mouseClicked(MouseEvent e) {
         //System.out.println("Clicked");
         //System.out.println(e.getClickCount());
-        if (e.getClickCount() == 2) {
-            presenter.options.isVectors = !presenter.options.isVectors;
-        }
     }
 
     public void mouseEntered(MouseEvent e) {
