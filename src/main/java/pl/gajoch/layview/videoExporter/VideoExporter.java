@@ -5,11 +5,14 @@ import javafx.scene.SubScene;
 import javafx.scene.image.WritableImage;
 
 import javax.imageio.ImageIO;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
 public class VideoExporter {
-    private SubScene scene;
+    private JFrame frame;
     private String tmpPath;
     private String videoPath;
 
@@ -19,8 +22,8 @@ public class VideoExporter {
     private int width;
     private int height;
 
-    public VideoExporter(SubScene scene, String tmpPath, String videoPath, int FPS, int width, int height){
-        this.scene = scene;
+    public VideoExporter(JFrame frame, String tmpPath, String videoPath, int FPS, int width, int height){
+        this.frame = frame;
         this.tmpPath = tmpPath;
         this.videoPath = videoPath;
         this.FPS = FPS;
@@ -52,12 +55,26 @@ public class VideoExporter {
         cleanDir(new File(tmpPath));
     }
 
+    public static BufferedImage getScreenShot(
+            Component component) {
+
+        BufferedImage image = new BufferedImage(
+                component.getWidth(),
+                component.getHeight(),
+                BufferedImage.TYPE_INT_RGB
+        );
+        // call the Component's paint method, using
+        // the Graphics object of the image.
+        component.paint( image.getGraphics() ); // alternately use .printAll(..)
+        return image;
+    }
+
     public void saveSnapshot(){
-        WritableImage image = new WritableImage(width, height);
-        scene.snapshot(null,image);
+        BufferedImage img = getScreenShot(
+                frame.getContentPane() );
         File file = new File(tmpPath+String.format("\\anim_%09d.png",frameNumber++));
         try {
-            ImageIO.write(SwingFXUtils.fromFXImage(image, null), "png", file);
+            ImageIO.write(img, "png", file);
         }catch (IOException e) {
             //TODO: handle exception here
         }
