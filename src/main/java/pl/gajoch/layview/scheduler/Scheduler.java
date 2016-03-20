@@ -7,6 +7,8 @@ public class Scheduler {
     private static final PriorityBlockingQueue<Event> queue = new PriorityBlockingQueue<>();
     private static final PriorityBlockingQueue<Event> queueCopy = new PriorityBlockingQueue<>();
 
+    private static volatile Boolean changePending = false;
+
     private Scheduler() {
     }
 
@@ -28,11 +30,17 @@ public class Scheduler {
             }
             now.dispatchHandler();
             queueCopy.remove();
+            if( changePending ) {
+                queueCopy.clear();
+                changePending = false;
+                break;
+            }
         }
     }
 
     public static void remove(Event event) {
         queue.remove(event);
+        changePending = true;
     }
 
     static Boolean isRunning() {
@@ -41,6 +49,7 @@ public class Scheduler {
 
     public static void schedule(Event event) {
         queue.add(event);
+        changePending = true;
     }
 
     public static void __scheduleCurrentRun(Event event) {
