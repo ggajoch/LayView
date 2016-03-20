@@ -33,6 +33,7 @@ public class GraphicsWindowManager {
             frame = new JFrame("Main");
             frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
             frame.setLayout(null);
+            frame.setResizable(false);
 
             JMenu menu = new JMenu("Add...");
             JMenuBar menuBar = new JMenuBar();
