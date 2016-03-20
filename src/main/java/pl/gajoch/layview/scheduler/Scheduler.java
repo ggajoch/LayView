@@ -38,6 +38,11 @@ public class Scheduler {
         }
     }
 
+    public static void schedule(Event event) {
+        queue.add(event);
+        changePending = true;
+    }
+
     public static void remove(Event event) {
         queue.remove(event);
         changePending = true;
@@ -45,11 +50,6 @@ public class Scheduler {
 
     static Boolean isRunning() {
         return queueCopy.isEmpty();
-    }
-
-    public static void schedule(Event event) {
-        queue.add(event);
-        changePending = true;
     }
 
     public static void __scheduleCurrentRun(Event event) {
