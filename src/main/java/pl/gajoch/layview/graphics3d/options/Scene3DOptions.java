@@ -2,8 +2,6 @@
 package pl.gajoch.layview.graphics3d.options;
 
 import com.sun.javafx.geom.Vec3d;
-import pl.gajoch.layview.graphics3d.BoxProperties;
-import pl.gajoch.layview.graphics3d.VectorProperties;
 
 public class Scene3DOptions {
     public final VectorProperties vectorProperties;

@@ -1,6 +1,7 @@
 package pl.gajoch.layview.graphics2d;
 
 import com.sun.javaws.exceptions.InvalidArgumentException;
+import pl.gajoch.layview.graphics2d.options.PlotOptions;
 import pl.gajoch.layview.utils.performance.TrigonometricTab;
 import pl.gajoch.layview.utils.RichTextRenderer;
 

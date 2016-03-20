@@ -1,4 +1,4 @@
-package pl.gajoch.layview.graphics2d;
+package pl.gajoch.layview.graphics2d.options;
 
 
 import java.awt.*;

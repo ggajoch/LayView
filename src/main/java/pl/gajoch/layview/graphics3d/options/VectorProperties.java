@@ -1,4 +1,4 @@
-package pl.gajoch.layview.graphics3d;
+package pl.gajoch.layview.graphics3d.options;
 
 public class VectorProperties {
     public double tipLen, tipRadius, radius, lenScale;

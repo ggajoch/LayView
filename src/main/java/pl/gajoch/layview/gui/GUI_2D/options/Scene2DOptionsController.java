@@ -4,7 +4,7 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
-import pl.gajoch.layview.graphics2d.PlotOptions;
+import pl.gajoch.layview.graphics2d.options.PlotOptions;
 import pl.gajoch.layview.graphics2d.options.Scene2DOptions;
 import pl.gajoch.layview.utils.gui.RichTextField;
 import pl.gajoch.layview.utils.GUIUtils;

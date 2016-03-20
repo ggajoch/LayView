@@ -2,6 +2,7 @@ package pl.gajoch.layview.graphics2d;
 
 import javafx.application.Platform;
 import javafx.beans.property.SimpleObjectProperty;
+import pl.gajoch.layview.graphics2d.options.PlotOptions;
 import pl.gajoch.layview.graphics2d.options.Scene2DOptions;
 import pl.gajoch.layview.gui.GUI_2D.options.Scene2DOptionsEditor;
 import pl.gajoch.layview.options.FileInput;

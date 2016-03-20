@@ -1,8 +1,6 @@
 
 package pl.gajoch.layview.graphics2d.options;
 
-import pl.gajoch.layview.graphics2d.PlotOptions;
-
 public class Scene2DOptions {
     public final PlotOptions plotOptions;
     public double FPS;

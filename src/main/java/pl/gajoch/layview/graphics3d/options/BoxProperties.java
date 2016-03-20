@@ -1,4 +1,4 @@
-package pl.gajoch.layview.graphics3d;
+package pl.gajoch.layview.graphics3d.options;
 
 import com.sun.javafx.geom.Vec3d;
 

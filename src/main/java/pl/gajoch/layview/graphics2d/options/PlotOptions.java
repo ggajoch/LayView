@@ -1,4 +1,4 @@
-package pl.gajoch.layview.graphics2d;
+package pl.gajoch.layview.graphics2d.options;
 
 import java.awt.*;
 
@@ -17,9 +17,9 @@ public class PlotOptions {
 
     public Rectangle margins;
 
-    String title;
-    int titleSize;
-    Color titleColor;
+    public String title;
+    public int titleSize;
+    public Color titleColor;
 
     public PlotOptions(PlotOptions second) {
         this.width = second.width;
