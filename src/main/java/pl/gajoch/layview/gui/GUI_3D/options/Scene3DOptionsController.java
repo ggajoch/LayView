@@ -1,10 +1,14 @@
-package pl.gajoch.layview.gui;
+package pl.gajoch.layview.gui.GUI_3D.options;
 
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
+import pl.gajoch.layview.graphics3d.options.Scene3DOptions;
+import pl.gajoch.layview.gui.GUI_3D.gradient.GradientEditor;
+import pl.gajoch.layview.graphics3d.options.HintGradient;
+import pl.gajoch.layview.utils.gui.RichTextField;
 import pl.gajoch.layview.utils.GUIUtils;
 
 import javax.swing.*;

@@ -1,6 +1,7 @@
-package pl.gajoch.layview.gui;
+package pl.gajoch.layview.gui.common.movable;
 
 import javafx.beans.property.SimpleObjectProperty;
+
 import java.awt.*;
 
 public class MoveWindowEditor extends JFXPanelWindow<MoveWindowController> {

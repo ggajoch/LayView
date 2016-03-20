@@ -1,4 +1,4 @@
-package pl.gajoch.layview.gui;
+package pl.gajoch.layview.gui.GUI_3D.gradientPoint;
 
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
@@ -6,6 +6,7 @@ import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import pl.gajoch.layview.graphics3d.options.GradientPoint;
 
 import java.io.IOException;
 

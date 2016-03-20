@@ -1,5 +1,5 @@
 
-package pl.gajoch.layview.gui;
+package pl.gajoch.layview.graphics2d.options;
 
 import pl.gajoch.layview.graphics2d.PlotOptions;
 

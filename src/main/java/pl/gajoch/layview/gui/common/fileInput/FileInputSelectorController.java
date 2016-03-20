@@ -1,4 +1,4 @@
-package pl.gajoch.layview.gui;
+package pl.gajoch.layview.gui.common.fileInput;
 
 import javafx.application.Platform;
 import javafx.beans.property.SimpleObjectProperty;
@@ -9,6 +9,8 @@ import javafx.scene.control.*;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.util.StringConverter;
+import pl.gajoch.layview.options.FileInput;
+import pl.gajoch.layview.utils.gui.RichTextField;
 import pl.gajoch.layview.utils.GUIUtils;
 import pl.gajoch.layview.utils.parsers.OMFParser.OMFParser;
 

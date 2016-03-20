@@ -1,10 +1,8 @@
 package pl.gajoch.layview;
 
 import java.util.Timer;
-import java.util.TimerTask;
 
-import pl.gajoch.layview.gui.GraphicsWindowManager;
-import pl.gajoch.layview.scheduler.Scheduler;
+import pl.gajoch.layview.gui.common.GraphicsWindowManager;
 
 
 public class Main {

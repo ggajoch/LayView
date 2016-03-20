@@ -4,8 +4,8 @@ package pl.gajoch.layview.graphics3d;
 import java.awt.event.*;
 
 import com.sun.javafx.geom.Vec3d;
-import pl.gajoch.layview.gui.HintGradient;
-import pl.gajoch.layview.gui.Scene3DOptions;
+import pl.gajoch.layview.graphics3d.options.HintGradient;
+import pl.gajoch.layview.graphics3d.options.Scene3DOptions;
 import pl.gajoch.layview.scheduler.EventType;
 import pl.gajoch.layview.scheduler.RepeatedEvent;
 import pl.gajoch.layview.scheduler.Scheduler;

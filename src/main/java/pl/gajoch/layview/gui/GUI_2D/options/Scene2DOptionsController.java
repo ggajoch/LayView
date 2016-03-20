@@ -1,15 +1,16 @@
-package pl.gajoch.layview.gui;
+package pl.gajoch.layview.gui.GUI_2D.options;
 
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import pl.gajoch.layview.graphics2d.PlotOptions;
+import pl.gajoch.layview.graphics2d.options.Scene2DOptions;
+import pl.gajoch.layview.utils.gui.RichTextField;
 import pl.gajoch.layview.utils.GUIUtils;
 
 import javax.swing.*;
 
-import static pl.gajoch.layview.utils.GUIUtils.showErrorMessage;
 import static pl.gajoch.layview.utils.GUIUtils.showNumberFormatException;
 
 public class Scene2DOptionsController {

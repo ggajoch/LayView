@@ -1,9 +1,7 @@
 package pl.gajoch.layview.graphics2d;
 
-import com.jogamp.opengl.util.awt.TextRenderer;
 import com.sun.javaws.exceptions.InvalidArgumentException;
-import javafx.beans.property.SimpleObjectProperty;
-import pl.gajoch.layview.graphics3d.TrigonometricTab;
+import pl.gajoch.layview.utils.performance.TrigonometricTab;
 import pl.gajoch.layview.utils.RichTextRenderer;
 
 import javax.media.opengl.GL2;

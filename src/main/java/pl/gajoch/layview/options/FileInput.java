@@ -1,4 +1,4 @@
-package pl.gajoch.layview.gui;
+package pl.gajoch.layview.options;
 
 import pl.gajoch.layview.utils.parsers.OMFParser.OMFData;
 

@@ -1,7 +1,6 @@
 package pl.gajoch.layview.graphics3d;
 
-import pl.gajoch.layview.gui.GraphicsWindowManager;
-import pl.gajoch.layview.gui.MovableJPanel;
+import pl.gajoch.layview.gui.common.movable.MovableJPanel;
 
 import java.awt.*;
 import java.util.ArrayList;

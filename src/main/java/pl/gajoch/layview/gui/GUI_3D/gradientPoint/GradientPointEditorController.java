@@ -1,10 +1,12 @@
-package pl.gajoch.layview.gui;
+package pl.gajoch.layview.gui.GUI_3D.gradientPoint;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import pl.gajoch.layview.graphics3d.options.GradientPoint;
+import pl.gajoch.layview.utils.gui.RichTextField;
 
 import static pl.gajoch.layview.utils.GUIUtils.*;
 

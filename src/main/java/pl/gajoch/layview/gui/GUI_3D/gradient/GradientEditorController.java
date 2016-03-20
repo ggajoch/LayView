@@ -1,4 +1,4 @@
-package pl.gajoch.layview.gui;
+package pl.gajoch.layview.gui.GUI_3D.gradient;
 
 import com.sun.javafx.geom.Vec3d;
 import javafx.beans.property.SimpleObjectProperty;
@@ -7,6 +7,11 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.Pane;
+import pl.gajoch.layview.graphics3d.options.HintGradient;
+import pl.gajoch.layview.gui.GUI_3D.gradientPoint.GradientPointEditor;
+import pl.gajoch.layview.graphics3d.options.GradientPoint;
+import pl.gajoch.layview.utils.gui.RichPane;
+import pl.gajoch.layview.utils.gui.RichTextField;
 import pl.gajoch.layview.utils.GUIUtils;
 
 import javax.swing.*;

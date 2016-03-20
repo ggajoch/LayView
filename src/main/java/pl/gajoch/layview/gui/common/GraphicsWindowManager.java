@@ -1,9 +1,10 @@
-package pl.gajoch.layview.gui;
+package pl.gajoch.layview.gui.common;
 
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ChangeListener;
 import pl.gajoch.layview.graphics2d.JPanel2D;
 import pl.gajoch.layview.graphics3d.*;
+import pl.gajoch.layview.gui.common.movable.MovableJPanel;
 import pl.gajoch.layview.scheduler.Scheduler;
 
 import javax.swing.*;

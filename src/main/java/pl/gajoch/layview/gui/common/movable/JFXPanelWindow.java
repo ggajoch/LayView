@@ -1,4 +1,4 @@
-package pl.gajoch.layview.gui;
+package pl.gajoch.layview.gui.common.movable;
 
 import javafx.application.Platform;
 import javafx.embed.swing.JFXPanel;
@@ -41,7 +41,7 @@ public class JFXPanelWindow<T> {
         return null;
     }
 
-    void open() {
+    public void open() {
         frame.pack();
         frame.setVisible(true);
     }

@@ -1,10 +1,10 @@
-package pl.gajoch.layview.gui;
+package pl.gajoch.layview.utils.gui;
 
 import javafx.scene.control.TextField;
 
 public class RichTextField {
 
-    static RichTextField of(TextField field) {
+    public static RichTextField of(TextField field) {
         return new RichTextField(field);
     }
 

@@ -1,5 +1,5 @@
 
-package pl.gajoch.layview.gui;
+package pl.gajoch.layview.graphics3d.options;
 
 import com.sun.javafx.geom.Vec3d;
 import pl.gajoch.layview.graphics3d.BoxProperties;

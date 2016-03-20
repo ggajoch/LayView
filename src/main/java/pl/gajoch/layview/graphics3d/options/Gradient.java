@@ -1,7 +1,8 @@
-package pl.gajoch.layview.gui;
+package pl.gajoch.layview.graphics3d.options;
 
 import com.sun.javafx.geom.Vec3d;
 import javafx.scene.paint.*;
+
 import java.util.*;
 import java.util.stream.Collectors;
 

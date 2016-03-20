@@ -1,7 +1,8 @@
-package pl.gajoch.layview.gui;
+package pl.gajoch.layview.gui.common.movable;
 
 import javafx.application.Platform;
 import javafx.beans.property.SimpleObjectProperty;
+import pl.gajoch.layview.gui.common.GraphicsWindowManager;
 
 import javax.swing.*;
 import java.awt.*;

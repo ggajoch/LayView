@@ -1,4 +1,4 @@
-package pl.gajoch.layview.gui;
+package pl.gajoch.layview.graphics3d.options;
 
 public class HintGradient extends Gradient {
     private double hintMin;

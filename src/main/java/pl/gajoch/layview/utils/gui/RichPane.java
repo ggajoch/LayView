@@ -1,4 +1,4 @@
-package pl.gajoch.layview.gui;
+package pl.gajoch.layview.utils.gui;
 
 import javafx.geometry.Insets;
 import javafx.scene.layout.Background;
@@ -6,6 +6,7 @@ import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Paint;
+import pl.gajoch.layview.graphics3d.options.GradientPoint;
 
 public class RichPane {
     private final Pane pane;

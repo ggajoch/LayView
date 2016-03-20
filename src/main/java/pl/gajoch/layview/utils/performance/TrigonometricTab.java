@@ -1,4 +1,4 @@
-package pl.gajoch.layview.graphics3d;
+package pl.gajoch.layview.utils.performance;
 
 public class TrigonometricTab {
     private double[] sinTab;
