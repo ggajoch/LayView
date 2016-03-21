@@ -48,7 +48,7 @@ abstract public class MovableJPanel extends JPanel {
         contextMenu.add(item);
 
         JMenuItem item2 = new JMenuItem("Delete");
-        item2.addActionListener(e1 -> GraphicsWindowManager.del(this));
+        item2.addActionListener(e1 -> GraphicsWindowManager.delPanel(this));
         contextMenu.add(item2);
 
         this.setComponentPopupMenu(contextMenu);
