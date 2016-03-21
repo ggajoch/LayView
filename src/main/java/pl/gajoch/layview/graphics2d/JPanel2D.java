@@ -1,9 +1,13 @@
 package pl.gajoch.layview.graphics2d;
 
-import com.sun.javafx.geom.Vec3d;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleObjectProperty;
-import pl.gajoch.layview.gui.*;
+import pl.gajoch.layview.graphics2d.options.PlotOptions;
+import pl.gajoch.layview.graphics2d.options.Scene2DOptions;
+import pl.gajoch.layview.gui.GUI_2D.options.Scene2DOptionsEditor;
+import pl.gajoch.layview.options.FileInput;
+import pl.gajoch.layview.gui.common.fileInput.FileInputSelector;
+import pl.gajoch.layview.gui.common.movable.MovableJPanel;
 import pl.gajoch.layview.scheduler.EventType;
 import pl.gajoch.layview.scheduler.RepeatedEvent;
 import pl.gajoch.layview.scheduler.Scheduler;

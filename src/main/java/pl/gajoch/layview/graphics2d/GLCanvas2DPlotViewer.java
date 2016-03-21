@@ -2,13 +2,13 @@ package pl.gajoch.layview.graphics2d;
 
 import com.jogamp.opengl.util.awt.TextRenderer;
 import com.sun.javafx.geom.Vec3d;
-import pl.gajoch.layview.gui.Scene2DOptions;
+import pl.gajoch.layview.graphics2d.options.PlotOptions;
+import pl.gajoch.layview.graphics2d.options.Scene2DOptions;
 
 import javax.media.opengl.*;
 import javax.media.opengl.awt.GLCanvas;
 import java.awt.*;
 import java.awt.event.*;
-import java.awt.geom.Point2D;
 
 public class GLCanvas2DPlotViewer extends GLCanvas implements GLEventListener, MouseListener, MouseMotionListener, MouseWheelListener {
 

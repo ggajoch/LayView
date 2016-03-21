@@ -2,10 +2,11 @@ package pl.gajoch.layview.graphics3d;
 
 import com.sun.javafx.geom.Vec3d;
 import javafx.scene.paint.Color;
-import pl.gajoch.layview.gui.Gradient;
-import pl.gajoch.layview.gui.GradientPoint;
-import pl.gajoch.layview.gui.HintGradient;
-import pl.gajoch.layview.gui.Scene3DOptions;
+import pl.gajoch.layview.graphics3d.options.Gradient;
+import pl.gajoch.layview.graphics3d.options.GradientPoint;
+import pl.gajoch.layview.graphics3d.options.HintGradient;
+import pl.gajoch.layview.graphics3d.options.Scene3DOptions;
+import pl.gajoch.layview.utils.performance.TrigonometricTab;
 
 import javax.media.opengl.GL2;
 import java.util.ArrayList;

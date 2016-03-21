@@ -1,21 +1,17 @@
 package pl.gajoch.layview.graphics3d;
 
-import com.jogamp.opengl.util.FPSAnimator;
 import com.jogamp.opengl.util.awt.TextRenderer;
 import com.sun.javafx.geom.Vec3d;
-import javafx.scene.paint.Color;
 import org.apache.commons.math3.geometry.euclidean.threed.CardanEulerSingularityException;
 import org.apache.commons.math3.geometry.euclidean.threed.Rotation;
 import org.apache.commons.math3.geometry.euclidean.threed.RotationOrder;
 import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
-import pl.gajoch.layview.gui.GradientPoint;
-import pl.gajoch.layview.gui.HintGradient;
-import pl.gajoch.layview.gui.Scene3DOptions;
+import pl.gajoch.layview.graphics3d.options.HintGradient;
+import pl.gajoch.layview.graphics3d.options.Scene3DOptions;
 
 import javax.media.opengl.*;
 import javax.media.opengl.awt.GLCanvas;
 import javax.media.opengl.glu.GLU;
-import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
