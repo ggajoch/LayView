@@ -52,6 +52,7 @@ public class JPanel3D extends MovableJPanel {
 
         optionsProperty.addListener((observable, oldValue, newValue) -> {
             Scheduler.remove(timing);
+            newValue.initialTranslate = new Vec3d(oldValue.initialTranslate);
             onOptionsChanged(newValue);
         });
 
