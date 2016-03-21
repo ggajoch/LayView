@@ -11,10 +11,7 @@ import javax.media.opengl.GLCapabilities;
 import javax.media.opengl.GLProfile;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
+import java.awt.event.*;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.util.Locale;
@@ -22,6 +19,8 @@ import java.util.Locale;
 public class VideoExporterTest {
     static GLCanvas2DPlotViewer glcanvas;
     static JFrame frame;
+
+    private static VideoExporter videoExporter;
 
     public static void main(String[] args) {
 
@@ -34,7 +33,10 @@ public class VideoExporterTest {
         frame = new JFrame("LayVIEW development preview");
         frame.getContentPane().add(glcanvas);
         frame.setSize(frame.getContentPane().getPreferredSize());
+        frame.setSize(700,700);
         frame.setVisible(true);
+
+        videoExporter = new VideoExporter(frame,"C:\\Users\\Piotr\\Desktop\\tmp\\OBRAZKEN","C:\\Users\\Piotr\\Desktop\\tmp",30,0,0);
 
         frame.addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
@@ -42,31 +44,31 @@ public class VideoExporterTest {
             }
         });
 
-        frame.addMouseListener(new MouseListener() {
+        frame.addKeyListener(new KeyListener() {
             @Override
-            public void mouseClicked(MouseEvent e) {
-                if(e.getButton() == MouseEvent.BUTTON1){
-
+            public void keyTyped(KeyEvent e) {
+                System.out.println(e.getKeyCode());
+                if(e.getKeyChar()=='q'){
+                    System.out.println("Reset");
+                    videoExporter.reset();
+                }
+                if(e.getKeyChar()=='w'){
+                    System.out.println("Frame save");
+                    videoExporter.saveSnapshot();
+                }
+                if(e.getKeyChar()=='e'){
+                    System.out.println("Render");
+                    videoExporter.closeVideo();
                 }
             }
 
             @Override
-            public void mousePressed(MouseEvent e) {
+            public void keyPressed(KeyEvent e) {
 
             }
 
             @Override
-            public void mouseReleased(MouseEvent e) {
-
-            }
-
-            @Override
-            public void mouseEntered(MouseEvent e) {
-
-            }
-
-            @Override
-            public void mouseExited(MouseEvent e) {
+            public void keyReleased(KeyEvent e) {
 
             }
         });
@@ -82,11 +84,13 @@ public class VideoExporterTest {
             @Override
             public void dispatch() {
                 glcanvas.display();
+                videoExporter.saveSnapshot();
             }
 
             @Override
             public void reset() {
                 glcanvas.reset();
+                videoExporter.reset();
             }
         });
 

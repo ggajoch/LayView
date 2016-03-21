@@ -7,10 +7,11 @@ import pl.gajoch.layview.graphics2d.options.Scene2DOptions;
 
 import javax.media.opengl.*;
 import javax.media.opengl.awt.GLCanvas;
+import javax.media.opengl.awt.GLJPanel;
 import java.awt.*;
 import java.awt.event.*;
 
-public class GLCanvas2DPlotViewer extends GLCanvas implements GLEventListener, MouseListener, MouseMotionListener, MouseWheelListener {
+public class GLCanvas2DPlotViewer extends GLJPanel implements GLEventListener, MouseListener, MouseMotionListener, MouseWheelListener {
 
     private TextRenderer renderer;
 

@@ -55,7 +55,7 @@ public class VideoExporter {
         cleanDir(new File(tmpPath));
     }
 
-    public static BufferedImage getScreenShot(
+    private static BufferedImage getScreenShot(
             Component component) {
 
         BufferedImage image = new BufferedImage(
