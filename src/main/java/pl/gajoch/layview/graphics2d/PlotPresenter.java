@@ -16,7 +16,7 @@ public class PlotPresenter {
 
     public PlotPresenter(PlotOptions options) {
         this.options = options;
-        trig = new TrigonometricTab(options.divisions);
+        trig = new TrigonometricTab(options.lineOptions.divisions);
         plotPointsList = new PlotPointsList();
         boundaries = new Rectangle();
     }
@@ -27,13 +27,13 @@ public class PlotPresenter {
 
     public void setOptions(PlotOptions options) {
         this.options = options;
-        trig = new TrigonometricTab(options.divisions);
+        trig = new TrigonometricTab(options.lineOptions.divisions);
     }
 
     public void draw(GL2 gl, int frame) {
         drawGrids(gl);
         try {
-            if (options.isLine) {
+            if (options.lineOptions.isLine) {
                 drawLine(gl, frame);
             } else {
                 drawPoints(gl, frame);
@@ -48,14 +48,14 @@ public class PlotPresenter {
 
 
         //Plot TITLE
-        RichTextRenderer textRenderer = new RichTextRenderer(new Font("Arial Narrow", Font.BOLD, options.titleSize));
+        RichTextRenderer textRenderer = new RichTextRenderer(new Font("Arial Narrow", Font.BOLD, options.titleOptions.size));
 
         textRenderer.beginRendering((int) boundaries.getWidth(), (int) boundaries.getHeight());
-        textRenderer.setColor(options.titleColor);
+        textRenderer.setColor(options.titleOptions.color);
 
-        textRenderer.draw(options.title,
-                (int) (map(0, -100 - options.margins.getX(), 100 + options.margins.getY(), 0, boundaries.getWidth()) - textRenderer.getStringWidth(options.title) / 2),
-                (int) (map(100 + options.margins.getHeight() / 2, -100 - options.margins.getWidth(), 100 + options.margins.getHeight(), 0, boundaries.getHeight()) - options.titleSize / 2));
+        textRenderer.draw(options.titleOptions.title,
+                (int) (map(0, -100 - options.plotAreaOptions.margins.getX(), 100 + options.plotAreaOptions.margins.getY(), 0, boundaries.getWidth()) - textRenderer.getStringWidth(options.titleOptions.title) / 2),
+                (int) (map(100 + options.plotAreaOptions.margins.getHeight() / 2, -100 - options.plotAreaOptions.margins.getWidth(), 100 + options.plotAreaOptions.margins.getHeight(), 0, boundaries.getHeight()) - options.titleOptions.size / 2));
 
         textRenderer.endRendering();
 
@@ -67,8 +67,8 @@ public class PlotPresenter {
         textRenderer.setColor(options.xAxisOptions.labelColor);
 
         textRenderer.draw(options.xAxisOptions.label,
-                (int) (map(0, -100 - options.margins.getX(), 100 + options.margins.getY(), 0, boundaries.getWidth()) - textRenderer.getStringWidth(options.xAxisOptions.label) / 2),
-                (int) (map(-100 - options.margins.getWidth() * 0.7, -100 - options.margins.getWidth(), 100 + options.margins.getHeight(), 0, boundaries.getHeight()) - options.xAxisOptions.labelSize / 2));
+                (int) (map(0, -100 - options.plotAreaOptions.margins.getX(), 100 + options.plotAreaOptions.margins.getY(), 0, boundaries.getWidth()) - textRenderer.getStringWidth(options.xAxisOptions.label) / 2),
+                (int) (map(-100 - options.plotAreaOptions.margins.getWidth() * 0.7, -100 - options.plotAreaOptions.margins.getWidth(), 100 + options.plotAreaOptions.margins.getHeight(), 0, boundaries.getHeight()) - options.xAxisOptions.labelSize / 2));
 
         textRenderer.endRendering();
 
@@ -91,8 +91,8 @@ public class PlotPresenter {
             double mapX = map(x, options.xAxisOptions.min, options.xAxisOptions.max, -100, 100);
             String tick = String.format("%.0f", x);
             textRenderer.draw(tick,
-                    (int) (map(mapX, -100 - options.margins.getX(), 100 + options.margins.getY(), 0, boundaries.getWidth()) - textRenderer.getStringWidth(tick) / 2),
-                    (int) (map(-100 - options.margins.getWidth() * 0.3, -100 - options.margins.getWidth(), 100 + options.margins.getHeight(), 0, boundaries.getHeight()) - options.xAxisOptions.numberSize / 2));
+                    (int) (map(mapX, -100 - options.plotAreaOptions.margins.getX(), 100 + options.plotAreaOptions.margins.getY(), 0, boundaries.getWidth()) - textRenderer.getStringWidth(tick) / 2),
+                    (int) (map(-100 - options.plotAreaOptions.margins.getWidth() * 0.3, -100 - options.plotAreaOptions.margins.getWidth(), 100 + options.plotAreaOptions.margins.getHeight(), 0, boundaries.getHeight()) - options.xAxisOptions.numberSize / 2));
         }
 
         textRenderer.endRendering();
@@ -121,8 +121,8 @@ public class PlotPresenter {
         gl.glRotated(90, 0, 0, 1);
 
         textRenderer.draw(options.yAxisOptions.label,
-                (int) (map(0, -100 - options.margins.getWidth(), 100 + options.margins.getHeight(), 0, boundaries.getHeight()) - textRenderer.getStringWidth(options.yAxisOptions.label) / 2),
-                -(int) (map(-100 - options.margins.getX() * 0.8, -100 - options.margins.getX(), 100 + options.margins.getWidth(), 0, boundaries.getWidth()) + options.yAxisOptions.labelSize / 2));
+                (int) (map(0, -100 - options.plotAreaOptions.margins.getWidth(), 100 + options.plotAreaOptions.margins.getHeight(), 0, boundaries.getHeight()) - textRenderer.getStringWidth(options.yAxisOptions.label) / 2),
+                -(int) (map(-100 - options.plotAreaOptions.margins.getX() * 0.8, -100 - options.plotAreaOptions.margins.getX(), 100 + options.plotAreaOptions.margins.getWidth(), 0, boundaries.getWidth()) + options.yAxisOptions.labelSize / 2));
 
         textRenderer.endRendering();
         gl.glPopMatrix();
@@ -150,8 +150,8 @@ public class PlotPresenter {
             double mapX = map(x, options.xAxisOptions.min, options.xAxisOptions.max, -100, 100);
             String tick = String.format("%.0f", x);
             textRenderer.draw(tick,
-                    (int) (map(mapX, -100 - options.margins.getWidth(), 100 + options.margins.getHeight(), 0, boundaries.getHeight()) - textRenderer.getStringWidth(tick) / 2),
-                    -(int) (map(-100 - options.margins.getX() * 0.3, -100 - options.margins.getX(), 100 + options.margins.getWidth(), 0, boundaries.getWidth()) + options.yAxisOptions.numberSize / 2));
+                    (int) (map(mapX, -100 - options.plotAreaOptions.margins.getWidth(), 100 + options.plotAreaOptions.margins.getHeight(), 0, boundaries.getHeight()) - textRenderer.getStringWidth(tick) / 2),
+                    -(int) (map(-100 - options.plotAreaOptions.margins.getX() * 0.3, -100 - options.plotAreaOptions.margins.getX(), 100 + options.plotAreaOptions.margins.getWidth(), 0, boundaries.getWidth()) + options.yAxisOptions.numberSize / 2));
         }
 
         textRenderer.endRendering();
@@ -200,7 +200,7 @@ public class PlotPresenter {
     private void drawPoints(GL2 gl, int frame) throws InvalidArgumentException {
         if (frame < 0)
             throw new InvalidArgumentException(new String[]{"Frame number must be positive!"});
-        gl.glColor3d(options.color.getRed(), options.color.getGreen(), options.color.getBlue());
+        gl.glColor3d(options.lineOptions.color.getRed(), options.lineOptions.color.getGreen(), options.lineOptions.color.getBlue());
         plotPointsList.subList(0, frame).forEach(plotPoint -> drawPoint(gl, plotPoint));
     }
 
@@ -210,9 +210,9 @@ public class PlotPresenter {
         double y = map(point.getY(), options.yAxisOptions.min, options.yAxisOptions.max, -100, 100);
         gl.glVertex2d(x, y);
 
-        for (int division = 0; division <= options.divisions; division++) {
-            gl.glVertex2d(x + trig.sin(division) * options.symbolRadius * boundaries.getHeight() / boundaries.getWidth(),
-                    y + trig.cos(division) * options.symbolRadius);
+        for (int division = 0; division <= options.lineOptions.divisions; division++) {
+            gl.glVertex2d(x + trig.sin(division) * options.lineOptions.symbolRadius * boundaries.getHeight() / boundaries.getWidth(),
+                    y + trig.cos(division) * options.lineOptions.symbolRadius);
         }
 
         gl.glEnd();
@@ -222,8 +222,8 @@ public class PlotPresenter {
         if (frame < 0)
             throw new InvalidArgumentException(new String[]{"Frame number must be positive!"});
 
-        gl.glLineWidth(options.width);
-        gl.glColor3d(options.color.getRed(), options.color.getGreen(), options.color.getBlue());
+        gl.glLineWidth(options.lineOptions.width);
+        gl.glColor3d(options.lineOptions.color.getRed(), options.lineOptions.color.getGreen(), options.lineOptions.color.getBlue());
         gl.glBegin(GL2.GL_LINE_STRIP);
 
         plotPointsList.subList(0, frame).forEach(point -> gl.glVertex2d(
