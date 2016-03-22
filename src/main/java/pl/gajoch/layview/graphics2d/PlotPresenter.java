@@ -61,14 +61,14 @@ public class PlotPresenter {
 
 
         //X-AXIS
-        textRenderer = new RichTextRenderer(new Font("Arial Narrow", Font.BOLD, options.xAxisOptions.labelSize));
+        textRenderer = new RichTextRenderer(new Font("Arial Narrow", Font.BOLD, options.xAxisOptions.label.size));
 
         textRenderer.beginRendering((int) boundaries.getWidth(), (int) boundaries.getHeight());
-        textRenderer.setColor(options.xAxisOptions.labelColor);
+        textRenderer.setColor(options.xAxisOptions.label.color);
 
-        textRenderer.draw(options.xAxisOptions.label,
-                (int) (map(0, -100 - options.plotAreaOptions.margins.getX(), 100 + options.plotAreaOptions.margins.getY(), 0, boundaries.getWidth()) - textRenderer.getStringWidth(options.xAxisOptions.label) / 2),
-                (int) (map(-100 - options.plotAreaOptions.margins.getWidth() * 0.7, -100 - options.plotAreaOptions.margins.getWidth(), 100 + options.plotAreaOptions.margins.getHeight(), 0, boundaries.getHeight()) - options.xAxisOptions.labelSize / 2));
+        textRenderer.draw(options.xAxisOptions.label.text,
+                (int) (map(0, -100 - options.plotAreaOptions.margins.getX(), 100 + options.plotAreaOptions.margins.getY(), 0, boundaries.getWidth()) - textRenderer.getStringWidth(options.xAxisOptions.label.text) / 2),
+                (int) (map(-100 - options.plotAreaOptions.margins.getWidth() * 0.7, -100 - options.plotAreaOptions.margins.getWidth(), 100 + options.plotAreaOptions.margins.getHeight(), 0, boundaries.getHeight()) - options.xAxisOptions.label.size / 2));
 
         textRenderer.endRendering();
 
@@ -85,7 +85,7 @@ public class PlotPresenter {
         textRenderer = new RichTextRenderer(new Font("Arial Narrow", Font.BOLD, options.xAxisOptions.numberSize));
 
         textRenderer.beginRendering((int) boundaries.getWidth(), (int) boundaries.getHeight());
-        textRenderer.setColor(options.xAxisOptions.labelColor);
+        textRenderer.setColor(options.xAxisOptions.label.color);
 
         for (double x = options.xAxisOptions.min; x <= options.xAxisOptions.max; x += options.xAxisOptions.tickIncrement) {
             double mapX = map(x, options.xAxisOptions.min, options.xAxisOptions.max, -100, 100);
@@ -111,18 +111,18 @@ public class PlotPresenter {
 
 
         //Y-AXIS
-        textRenderer = new RichTextRenderer(new Font("Arial Narrow", Font.BOLD, options.yAxisOptions.labelSize));
+        textRenderer = new RichTextRenderer(new Font("Arial Narrow", Font.BOLD, options.yAxisOptions.label.size));
 
         textRenderer.beginRendering((int) boundaries.getWidth(), (int) boundaries.getHeight());
-        textRenderer.setColor(options.yAxisOptions.labelColor);
+        textRenderer.setColor(options.yAxisOptions.label.color);
 
         gl.glMatrixMode(GL2.GL_MODELVIEW);
         gl.glPushMatrix();
         gl.glRotated(90, 0, 0, 1);
 
-        textRenderer.draw(options.yAxisOptions.label,
-                (int) (map(0, -100 - options.plotAreaOptions.margins.getWidth(), 100 + options.plotAreaOptions.margins.getHeight(), 0, boundaries.getHeight()) - textRenderer.getStringWidth(options.yAxisOptions.label) / 2),
-                -(int) (map(-100 - options.plotAreaOptions.margins.getX() * 0.8, -100 - options.plotAreaOptions.margins.getX(), 100 + options.plotAreaOptions.margins.getWidth(), 0, boundaries.getWidth()) + options.yAxisOptions.labelSize / 2));
+        textRenderer.draw(options.yAxisOptions.label.text,
+                (int) (map(0, -100 - options.plotAreaOptions.margins.getWidth(), 100 + options.plotAreaOptions.margins.getHeight(), 0, boundaries.getHeight()) - textRenderer.getStringWidth(options.yAxisOptions.label.text) / 2),
+                -(int) (map(-100 - options.plotAreaOptions.margins.getX() * 0.8, -100 - options.plotAreaOptions.margins.getX(), 100 + options.plotAreaOptions.margins.getWidth(), 0, boundaries.getWidth()) + options.yAxisOptions.label.size / 2));
 
         textRenderer.endRendering();
         gl.glPopMatrix();
@@ -140,7 +140,7 @@ public class PlotPresenter {
         textRenderer = new RichTextRenderer(new Font("Arial Narrow", Font.BOLD, options.yAxisOptions.numberSize));
 
         textRenderer.beginRendering((int) boundaries.getWidth(), (int) boundaries.getHeight());
-        textRenderer.setColor(options.yAxisOptions.labelColor);
+        textRenderer.setColor(options.yAxisOptions.label.color);
 
         gl.glMatrixMode(GL2.GL_MODELVIEW);
         gl.glPushMatrix();
