@@ -48,14 +48,14 @@ public class PlotPresenter {
 
 
         //Plot TITLE
-        RichTextRenderer textRenderer = new RichTextRenderer(new Font("Arial Narrow", Font.BOLD, options.titleOptions.size));
+        RichTextRenderer textRenderer = new RichTextRenderer(new Font("Arial Narrow", Font.BOLD, options.titleOptions.title.size));
 
         textRenderer.beginRendering((int) boundaries.getWidth(), (int) boundaries.getHeight());
-        textRenderer.setColor(options.titleOptions.color);
+        textRenderer.setColor(options.titleOptions.title.color);
 
-        textRenderer.draw(options.titleOptions.title,
-                (int) (map(0, -100 - options.plotAreaOptions.margins.getX(), 100 + options.plotAreaOptions.margins.getY(), 0, boundaries.getWidth()) - textRenderer.getStringWidth(options.titleOptions.title) / 2),
-                (int) (map(100 + options.plotAreaOptions.margins.getHeight() / 2, -100 - options.plotAreaOptions.margins.getWidth(), 100 + options.plotAreaOptions.margins.getHeight(), 0, boundaries.getHeight()) - options.titleOptions.size / 2));
+        textRenderer.draw(options.titleOptions.title.text,
+                (int) (map(0, -100 - options.plotAreaOptions.margins.getX(), 100 + options.plotAreaOptions.margins.getY(), 0, boundaries.getWidth()) - textRenderer.getStringWidth(options.titleOptions.title.text) / 2),
+                (int) (map(100 + options.plotAreaOptions.margins.getHeight() / 2, -100 - options.plotAreaOptions.margins.getWidth(), 100 + options.plotAreaOptions.margins.getHeight(), 0, boundaries.getHeight()) - options.titleOptions.title.size / 2));
 
         textRenderer.endRendering();
 

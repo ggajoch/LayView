@@ -37,8 +37,6 @@ public class PlotOptions {
         plotAreaOptions = new PlotAreaOptions(new Rectangle(40, 20, 40, 60));
 
         this.titleOptions = new TitleOptions();
-        this.titleOptions.title = "Test";
-        this.titleOptions.size = 30;
-        this.titleOptions.color = Color.RED;
+        this.titleOptions.title = new RichString("Test", 30, Color.RED);
     }
 }

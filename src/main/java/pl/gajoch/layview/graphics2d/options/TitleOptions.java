@@ -3,16 +3,13 @@ package pl.gajoch.layview.graphics2d.options;
 import java.awt.*;
 
 public class TitleOptions {
-    public String title;
-    public int size;
-    public Color color;
+    public RichString title;
 
     public TitleOptions() {
+        title = new RichString();
     }
 
     public TitleOptions(TitleOptions second) {
-        this.title = second.title;
-        this.size = second.size;
-        this.color = new Color(second.color.getRed(), second.color.getGreen(), second.color.getBlue(), 1);
+        this.title = new RichString(second.title);
     }
 }

@@ -2,9 +2,11 @@ package pl.gajoch.layview.graphics2d;
 
 import javafx.application.Platform;
 import javafx.beans.property.SimpleObjectProperty;
+import pl.gajoch.layview.graphics2d.options.PlotAreaOptions;
 import pl.gajoch.layview.graphics2d.options.PlotOptions;
 import pl.gajoch.layview.graphics2d.options.Scene2DOptions;
 import pl.gajoch.layview.gui.GUI_2D.options.Scene2DOptionsEditor;
+import pl.gajoch.layview.gui.GUI_2D.plotOptions.PlotAreaOptionsEditor;
 import pl.gajoch.layview.gui.common.fileInput.FileInputSelector;
 import pl.gajoch.layview.gui.common.movable.MovableJPanel;
 import pl.gajoch.layview.options.FileInput;
@@ -23,11 +25,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class JPanel2D extends MovableJPanel {
-    SimpleObjectProperty<Scene2DOptions> optionsProperty;
     private FileInputSelector fileInputSelector;
     private FileInput files;
+
     private Scene2DOptionsEditor scene2DOptionsEditor = new Scene2DOptionsEditor();
-    private volatile Scene2DOptions scene2DOptions = new Scene2DOptions(30, new PlotOptions());
+    private volatile SimpleObjectProperty<Scene2DOptions> optionsProperty = new SimpleObjectProperty<>(new Scene2DOptions(30, new PlotOptions()));
+
+    private PlotAreaOptionsEditor plotAreaOptionsEditor = new PlotAreaOptionsEditor();
+    private volatile SimpleObjectProperty<PlotAreaOptions> plotAreaProperty = new SimpleObjectProperty<>(new PlotAreaOptions());
 
     private GLCanvas2DPlotViewer glcanvas;
     private RepeatedEvent timing;
@@ -37,8 +42,6 @@ public class JPanel2D extends MovableJPanel {
 
         fileInputSelector = new FileInputSelector();
         files = new FileInput();
-
-        optionsProperty = new SimpleObjectProperty<>(scene2DOptions);
 
         optionsProperty.addListener((observable, oldValue, newValue) -> {
             Scheduler.remove(timing);
@@ -53,13 +56,17 @@ public class JPanel2D extends MovableJPanel {
         menu.add(item1);
 
         JMenuItem item2 = new JMenuItem("Options...");
-        item2.addActionListener(e -> {
-            Platform.runLater(() -> {
-                scene2DOptionsEditor.exec(optionsProperty);
-            });
-        });
+        item2.addActionListener(e ->
+            Platform.runLater(() ->
+                scene2DOptionsEditor.exec(optionsProperty)));
         menu.add(item2);
-        System.out.println("Added!");
+
+        JMenuItem item3 = new JMenuItem("Plot area...");
+        item3.addActionListener(e ->
+            Platform.runLater(() ->
+                plotAreaOptionsEditor.exec(plotAreaProperty)));
+        menu.add(item3);
+
         this.generateContextMenu(menu);
 
         final GLProfile profile = GLProfile.get(GLProfile.GL2);
@@ -133,7 +140,7 @@ public class JPanel2D extends MovableJPanel {
 
         glcanvas.setOptions(newValue);
 
-        scene2DOptions = newValue;
+        optionsProperty.set(newValue);
 
         /*glcanvas.presenter.gradients.clear();
         glcanvas.presenter.gradients.add(scene3DOptions.gradient1);
@@ -149,7 +156,7 @@ public class JPanel2D extends MovableJPanel {
 
         System.out.println("END RECALCULATE");
 
-        timing = new RepeatedEvent(EventType.UPDATE2D, (int) (1e6 / scene2DOptions.FPS), glcanvas.presenter.plotPointsList.size()) {
+        timing = new RepeatedEvent(EventType.UPDATE2D, (int) (1e6 / newValue.FPS), glcanvas.presenter.plotPointsList.size()) {
             @Override
             public void dispatch() {
                 glcanvas.display();
