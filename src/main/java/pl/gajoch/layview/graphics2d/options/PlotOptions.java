@@ -29,10 +29,10 @@ public class PlotOptions {
         lineOptions.divisions = 10;
 
         xAxisOptions = new AxisOptions();
-        xAxisOptions.label = "X [fs]";
+        xAxisOptions.label.text = "X [fs]";
 
         yAxisOptions = new AxisOptions();
-        yAxisOptions.label = "Y [kV]";
+        yAxisOptions.label.text = "Y [kV]";
 
         plotAreaOptions = new PlotAreaOptions(new Rectangle(40, 20, 40, 60));
 

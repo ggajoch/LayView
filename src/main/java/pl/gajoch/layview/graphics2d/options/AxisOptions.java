@@ -4,9 +4,7 @@ package pl.gajoch.layview.graphics2d.options;
 import java.awt.*;
 
 public class AxisOptions {
-    public String label;
-    public int labelSize;
-    public Color labelColor;
+    RichString label;
 
     public double min;
     public double max;
@@ -25,13 +23,7 @@ public class AxisOptions {
 
 
     public AxisOptions(AxisOptions second) {
-        this.label = second.label;
-        this.labelSize = second.labelSize;
-
-        this.labelColor = new Color(second.labelColor.getRed(),
-                second.labelColor.getGreen(),
-                second.labelColor.getBlue(),
-                1);
+        this.label = new RichString(second.label);
         this.min = second.min;
         this.max = second.max;
 
@@ -55,10 +47,7 @@ public class AxisOptions {
     }
 
     public AxisOptions() {
-        this.label = "";
-        this.labelSize = 30;
-
-        this.labelColor = Color.RED;
+        this.label = new RichString("", 30, Color.RED);
         this.min = -100;
         this.max = 100;
 
