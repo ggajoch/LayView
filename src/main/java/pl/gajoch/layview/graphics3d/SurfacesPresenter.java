@@ -6,6 +6,7 @@ import pl.gajoch.layview.graphics3d.options.Gradient;
 import pl.gajoch.layview.graphics3d.options.GradientPoint;
 import pl.gajoch.layview.graphics3d.options.HintGradient;
 import pl.gajoch.layview.graphics3d.options.Scene3DOptions;
+import pl.gajoch.layview.utils.performance.Map;
 import pl.gajoch.layview.utils.performance.TrigonometricTab;
 
 import javax.media.opengl.GL2;
@@ -362,7 +363,7 @@ public class SurfacesPresenter {
 
         lower = upper = new GradientPoint(0, Color.BLACK);
 
-        double len = map(
+        double len = Map.map(
                 lenProjection(point, gradient),
                 gradient.getMinVector(),
                 gradient.getMaxVector(),
@@ -380,34 +381,25 @@ public class SurfacesPresenter {
         }
 
 
-        double red = map(
+        double red = Map.map(
                 len,
                 lower.getOffset(),
                 upper.getOffset(),
                 lower.getColor().getRed(),
                 upper.getColor().getRed());
-        double green = map(
+        double green = Map.map(
                 len,
                 lower.getOffset(),
                 upper.getOffset(),
                 lower.getColor().getGreen(),
                 upper.getColor().getGreen());
-        double blue = map(
+        double blue = Map.map(
                 len,
                 lower.getOffset(),
                 upper.getOffset(),
                 lower.getColor().getBlue(),
                 upper.getColor().getBlue());
         return new Color(red, green, blue, 1.0);
-    }
-
-    private double map(double x, double inMin, double inMax, double outMin, double outMax) {
-        x = (x - inMin) * (outMax - outMin) / (inMax - inMin) + outMin;
-        double absMax = Math.max(outMax, outMin);
-        double absMin = Math.min(outMax, outMin);
-        if (x > absMax) x = absMax;
-        if (x < absMin) x = absMin;
-        return x;
     }
 
     private double lenProjection(SurfacePoint point, Gradient gradient) {
