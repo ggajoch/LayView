@@ -15,26 +15,20 @@ import javax.swing.*;
 
 public class Scene3DOptionsController {
     private JFrame frame;
-
-    // -------------------------- Private variables  -------------------------
     private GradientEditor gradientEditor;
     private SimpleObjectProperty<Scene3DOptions> scene3DOptions;
     private SimpleObjectProperty<HintGradient> gradientToEdit1, gradientToEdit2;
     private RichTextField tipLenRich, tipRadiusRich, radiusRich, lenScaleRich, globalScaleRich, FPSRich;
+
     @FXML
     private Button okButton, cancelButton;
-
-    // --------------------------- Private methods  --------------------------
     @FXML
     private Button Gradient1, Gradient2;
-
-    // ------------------------------- Objects  ------------------------------
     @FXML
     private TextField tipLen, tipRadius, radius, lenScale, globalScale, FPS;
     @FXML
     private CheckBox Grad2Enable, isVectorsCheckBox;
 
-    // ----------------------------- Public API  -----------------------------
     public void setup(JFrame frame, SimpleObjectProperty<Scene3DOptions> scene3DOptions) {
         this.frame = frame;
         this.scene3DOptions = scene3DOptions;
@@ -54,13 +48,6 @@ public class Scene3DOptionsController {
         lenScaleRich.set(scene3DOptions.get().vectorProperties.lenScale);
         globalScaleRich.set(scene3DOptions.get().globalScale);
         FPSRich.set(scene3DOptions.get().FPS);
-
-//        tipLen.textProperty().addListener(observable -> recalculate());
-//        tipRadius.textProperty().addListener(observable -> recalculate());
-//        radius.textProperty().addListener(observable -> recalculate());
-//        lenScale.textProperty().addListener(observable -> recalculate());
-//        globalScale.textProperty().addListener(observable -> recalculate());
-//        FPS.textProperty().addListener(observable -> recalculate());
 
         gradientToEdit1 = new SimpleObjectProperty<>(scene3DOptions.get().gradient1);
         gradientToEdit2 = new SimpleObjectProperty<>(scene3DOptions.get().gradient2);
@@ -92,8 +79,6 @@ public class Scene3DOptionsController {
                 Grad2Enable.isSelected(), isVectorsCheckBox.isSelected());
         scene3DOptions.set(newScene);
     }
-
-    // --------------------------- button handlers ---------------------------
 
     @FXML
     private void ok_click() {

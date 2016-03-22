@@ -14,21 +14,15 @@ public class GradientPointEditorController {
     private Stage stage;
     private GradientPoint point;
 
-    // -------------------------- Private variables  -------------------------
     @FXML
     private Button okButton;
     @FXML
     private Button cancelButton;
-
-    // --------------------------- Private methods  --------------------------
     @FXML
     private TextField value;
-
-    // ------------------------------- Objects  ------------------------------
     @FXML
     private ColorPicker colorPicker;
 
-    // ----------------------------- Public API  -----------------------------
     public GradientPoint getPoint() {
         return point;
     }
@@ -44,8 +38,6 @@ public class GradientPointEditorController {
         this.stage = stage;
         setPoint(point);
     }
-
-    // --------------------------- button handlers ---------------------------
 
     @FXML
     private void ok_click() {

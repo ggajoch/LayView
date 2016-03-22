@@ -23,19 +23,14 @@ import static pl.gajoch.layview.utils.GUIUtils.showErrorMessage;
 
 
 public class FileInputSelectorController {
-    // ----------------------------- Public API  -----------------------------
-
     private JFrame frame;
     private FileInput files;
-
-    // -------------------------- Private variables  -------------------------
     private SimpleObjectProperty<FileInput> filesProperty;
+
     @FXML
     private ChoiceBox<File> fileChoiceBox;
     @FXML
     private Button addFileButton;
-
-    // --------------------------- Private methods  --------------------------
     @FXML
     private Button addFolderButton;
     @FXML
@@ -48,8 +43,6 @@ public class FileInputSelectorController {
     private TextField thresholdField;
     @FXML
     private ProgressBar progressBar;
-
-    // ------------------------------- Objects  ------------------------------
     @FXML
     private Label progressIndicator;
 
@@ -127,9 +120,6 @@ public class FileInputSelectorController {
             }
         }.start();
     }
-
-
-    // --------------------------- button handlers ---------------------------
 
     @FXML
     private void addFolder_handler() {

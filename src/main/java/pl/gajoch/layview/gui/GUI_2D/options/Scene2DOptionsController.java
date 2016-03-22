@@ -16,19 +16,14 @@ import static pl.gajoch.layview.utils.GUIUtils.showNumberFormatException;
 public class Scene2DOptionsController {
     private JFrame frame;
 
-    // -------------------------- Private variables  -------------------------
     private SimpleObjectProperty<Scene2DOptions> scene2DOptions;
     private RichTextField RichFPS;
+
     @FXML
     private Button okButton, cancelButton;
-
-    // --------------------------- Private methods  --------------------------
     @FXML
     private TextField FPS;
 
-    // ------------------------------- Objects  ------------------------------
-
-    // ----------------------------- Public API  -----------------------------
     public void setup(JFrame frame, SimpleObjectProperty<Scene2DOptions> scene2DOptions) {
         this.frame = frame;
         this.scene2DOptions = scene2DOptions;
@@ -40,8 +35,6 @@ public class Scene2DOptionsController {
         Scene2DOptions newScene = new Scene2DOptions(RichFPS.getDouble(), new PlotOptions());
         scene2DOptions.set(newScene);
     }
-
-    // --------------------------- button handlers ---------------------------
 
     @FXML
     private void ok_click() {

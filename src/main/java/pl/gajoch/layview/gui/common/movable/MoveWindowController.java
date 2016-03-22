@@ -11,25 +11,17 @@ import javax.swing.*;
 import java.awt.*;
 
 public class MoveWindowController {
-
-    // ----------------------------- Public API  -----------------------------
-
     RichTextField xSizeRich, ySizeRich, xOffsetRich, yOffsetRich;
-
-    // -------------------------- Private variables  -------------------------
     private JFrame frame;
     private Rectangle start;
     private SimpleObjectProperty<Rectangle> windowPosition;
+
     @FXML
     private Button okButton;
-
-    // --------------------------- Private methods  --------------------------
     @FXML
     private Button cancelButton;
     @FXML
     private TextField xSize, ySize, xOffset, yOffset;
-
-    // ------------------------------- Objects  ------------------------------
 
     public void setup(JFrame frame, SimpleObjectProperty<Rectangle> windowPosition) {
         this.frame = frame;
@@ -62,8 +54,6 @@ public class MoveWindowController {
                 xSizeRich.getInt(), ySizeRich.getInt());
         windowPosition.set(pos);
     }
-
-    // --------------------------- button handlers ---------------------------
 
     @FXML
     private void ok_click() {

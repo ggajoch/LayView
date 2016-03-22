@@ -24,21 +24,16 @@ import static pl.gajoch.layview.utils.GUIUtils.showErrorMessage;
 
 
 public class GradientEditorController {
-    // --------------------------- Public API  ---------------------------
-
     private GradientPointEditor editor;
-
-    // --------------------------- Private variables  ---------------------------
     private JFrame frame;
     private SortedSet<GradientPoint> gradientPoints;
     private HintGradient originalGradient;
     private SimpleObjectProperty<HintGradient> gradientToEdit;
     private Vec3dTextField referenceVector;
     private double minHint, maxHint;
+
     @FXML
     private ChoiceBox<GradientPoint> choiceBox;
-
-    // --------------------------- Private methods  ---------------------------
     @FXML
     private Button okButton;
     @FXML
@@ -61,8 +56,6 @@ public class GradientEditorController {
     private TextField yRefTextField;
     @FXML
     private TextField zRefTextField;
-
-    // --------------------------- Objects  ---------------------------
     @FXML
     private TextField minVectorTextField;
     @FXML
@@ -218,8 +211,6 @@ public class GradientEditorController {
             e.printStackTrace();
         }
     }
-
-    // --------------------------- button handlers ---------------------------
 
     @FXML
     private void edit_handler() {
