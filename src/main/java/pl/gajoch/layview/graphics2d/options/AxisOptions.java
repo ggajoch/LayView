@@ -25,7 +25,7 @@ public class AxisOptions {
 
 
     public AxisOptions(AxisOptions second) {
-        this.label = new String(second.label);
+        this.label = second.label;
         this.labelSize = second.labelSize;
 
         this.labelColor = new Color(second.labelColor.getRed(),
@@ -55,7 +55,7 @@ public class AxisOptions {
     }
 
     public AxisOptions() {
-        this.label = new String();
+        this.label = "";
         this.labelSize = 30;
 
         this.labelColor = Color.RED;

@@ -29,15 +29,15 @@ public class PlotOptions {
         lineOptions.divisions = 10;
 
         xAxisOptions = new AxisOptions();
-        xAxisOptions.label = new String("X [fs]");
+        xAxisOptions.label = "X [fs]";
 
         yAxisOptions = new AxisOptions();
-        yAxisOptions.label = new String("Y [kV]");
+        yAxisOptions.label = "Y [kV]";
 
         plotAreaOptions = new PlotAreaOptions(new Rectangle(40, 20, 40, 60));
 
         this.titleOptions = new TitleOptions();
-        this.titleOptions.title = new String("Test");
+        this.titleOptions.title = "Test";
         this.titleOptions.size = 30;
         this.titleOptions.color = Color.RED;
     }

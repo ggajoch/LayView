@@ -11,7 +11,7 @@ public class TitleOptions {
     }
 
     public TitleOptions(TitleOptions second) {
-        this.title = new String(second.title);
+        this.title = second.title;
         this.size = second.size;
         this.color = new Color(second.color.getRed(), second.color.getGreen(), second.color.getBlue(), 1);
     }
