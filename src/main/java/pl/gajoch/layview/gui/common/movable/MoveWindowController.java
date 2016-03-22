@@ -4,8 +4,8 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
-import pl.gajoch.layview.utils.gui.RichTextField;
 import pl.gajoch.layview.utils.GUIUtils;
+import pl.gajoch.layview.utils.gui.RichTextField;
 
 import javax.swing.*;
 import java.awt.*;
@@ -13,6 +13,23 @@ import java.awt.*;
 public class MoveWindowController {
 
     // ----------------------------- Public API  -----------------------------
+
+    RichTextField xSizeRich, ySizeRich, xOffsetRich, yOffsetRich;
+
+    // -------------------------- Private variables  -------------------------
+    private JFrame frame;
+    private Rectangle start;
+    private SimpleObjectProperty<Rectangle> windowPosition;
+    @FXML
+    private Button okButton;
+
+    // --------------------------- Private methods  --------------------------
+    @FXML
+    private Button cancelButton;
+    @FXML
+    private TextField xSize, ySize, xOffset, yOffset;
+
+    // ------------------------------- Objects  ------------------------------
 
     public void setup(JFrame frame, SimpleObjectProperty<Rectangle> windowPosition) {
         this.frame = frame;
@@ -31,15 +48,6 @@ public class MoveWindowController {
         yOffset.textProperty().addListener(observable -> recalculate());
     }
 
-    // -------------------------- Private variables  -------------------------
-
-    private JFrame frame;
-    private Rectangle start;
-    private SimpleObjectProperty<Rectangle> windowPosition;
-    RichTextField xSizeRich, ySizeRich, xOffsetRich, yOffsetRich;
-
-    // --------------------------- Private methods  --------------------------
-
     private void setWindowPosition(Rectangle windowPosition) {
         if (windowPosition != null) {
             xSizeRich.setInteger(windowPosition.getWidth());
@@ -54,15 +62,6 @@ public class MoveWindowController {
                 xSizeRich.getInt(), ySizeRich.getInt());
         windowPosition.set(pos);
     }
-
-    // ------------------------------- Objects  ------------------------------
-
-    @FXML
-    private Button okButton;
-    @FXML
-    private Button cancelButton;
-    @FXML
-    private TextField xSize, ySize, xOffset, yOffset;
 
     // --------------------------- button handlers ---------------------------
 

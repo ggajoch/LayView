@@ -3,13 +3,14 @@ package pl.gajoch.layview.graphics3d;
 import com.sun.javafx.geom.Vec3d;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleObjectProperty;
-import pl.gajoch.layview.graphics3d.options.Scene3DOptions;
+import javafx.scene.paint.Color;
 import pl.gajoch.layview.graphics3d.options.GradientPoint;
 import pl.gajoch.layview.graphics3d.options.HintGradient;
+import pl.gajoch.layview.graphics3d.options.Scene3DOptions;
 import pl.gajoch.layview.gui.GUI_3D.options.Scene3DOptionsEditor;
-import pl.gajoch.layview.options.FileInput;
 import pl.gajoch.layview.gui.common.fileInput.FileInputSelector;
 import pl.gajoch.layview.gui.common.movable.MovableJPanel;
+import pl.gajoch.layview.options.FileInput;
 import pl.gajoch.layview.scheduler.EventType;
 import pl.gajoch.layview.scheduler.RepeatedEvent;
 import pl.gajoch.layview.scheduler.Scheduler;
@@ -18,27 +19,19 @@ import javax.media.opengl.GLCapabilities;
 import javax.media.opengl.GLProfile;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.List;
 
-import javafx.scene.paint.Color;
-
 public class JPanel3D extends MovableJPanel {
+    SimpleObjectProperty<Scene3DOptions> optionsProperty;
     private FileInputSelector fileInputSelector;
     private Scene3DOptionsEditor scene3DOptionsEditor;
     private GLCanvas3DSurfaceViewer glcanvas;
     private RepeatedEvent timing;
-
     private FileInput files;
-    SimpleObjectProperty<Scene3DOptions> optionsProperty;
-
     private volatile Scene3DOptions scene3DOptions = new Scene3DOptions(0.025, 0.025, 0.01, 0.1, new Vec3d(.1, .1, .1), 0.0, 30, new HintGradient(), new HintGradient(), true, true);
-
-    @Override
-    public void fixCenter(Rectangle position) {
-        glcanvas.reshape(0, 0, (int) position.getWidth(), (int) position.getHeight());
-    }
 
     public JPanel3D(int width, int height) {
         super(width, height);
@@ -133,6 +126,11 @@ public class JPanel3D extends MovableJPanel {
 
     }
 
+    @Override
+    public void fixCenter(Rectangle position) {
+        glcanvas.reshape(0, 0, (int) position.getWidth(), (int) position.getHeight());
+    }
+
     private void onOptionsChanged(Scene3DOptions newValue) {
         System.out.println("Recalculate!");
 
@@ -142,7 +140,7 @@ public class JPanel3D extends MovableJPanel {
 
         glcanvas.presenter.gradients.clear();
         glcanvas.presenter.gradients.add(scene3DOptions.gradient1);
-        if(newValue.gradient2enable) {
+        if (newValue.gradient2enable) {
             glcanvas.presenter.gradients.add(scene3DOptions.gradient2);
         }
 

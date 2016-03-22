@@ -13,36 +13,36 @@ public class ODTData {
     }
 
     public void registerUnits(List<String> units) {
-        while( dataColumns.size() < units.size() ) {
+        while (dataColumns.size() < units.size()) {
             dataColumns.add(new Column());
         }
         Iterator from = units.iterator(), to = dataColumns.iterator();
-        while( from.hasNext() ) {
-            String unit = (String)from.next();
+        while (from.hasNext()) {
+            String unit = (String) from.next();
             Column dest = (Column) to.next();
             dest.unit = unit;
         }
     }
 
     public void registerDescriptions(List<String> descriptions) {
-        while( dataColumns.size() < descriptions.size() ) {
+        while (dataColumns.size() < descriptions.size()) {
             dataColumns.add(new Column());
         }
         Iterator from = descriptions.iterator(), to = dataColumns.iterator();
-        while( from.hasNext() ) {
-            String description = (String)from.next();
+        while (from.hasNext()) {
+            String description = (String) from.next();
             Column dest = (Column) to.next();
             dest.name = description;
         }
     }
 
     public void registerDataLine(List<Double> values) {
-        if( dataColumns.size() != values.size() ) {
+        if (dataColumns.size() != values.size()) {
             System.out.println("Columns number in data not equal units number!");
             return;
         }
         Iterator from = values.iterator(), to = dataColumns.iterator();
-        while( from.hasNext() ) {
+        while (from.hasNext()) {
             Double value = (Double) from.next();
             Column dest = (Column) to.next();
             dest.values.add(value);

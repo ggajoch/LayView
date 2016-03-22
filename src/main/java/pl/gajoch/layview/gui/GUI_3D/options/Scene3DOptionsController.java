@@ -5,15 +5,35 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
+import pl.gajoch.layview.graphics3d.options.HintGradient;
 import pl.gajoch.layview.graphics3d.options.Scene3DOptions;
 import pl.gajoch.layview.gui.GUI_3D.gradient.GradientEditor;
-import pl.gajoch.layview.graphics3d.options.HintGradient;
-import pl.gajoch.layview.utils.gui.RichTextField;
 import pl.gajoch.layview.utils.GUIUtils;
+import pl.gajoch.layview.utils.gui.RichTextField;
 
 import javax.swing.*;
 
 public class Scene3DOptionsController {
+    private JFrame frame;
+
+    // -------------------------- Private variables  -------------------------
+    private GradientEditor gradientEditor;
+    private SimpleObjectProperty<Scene3DOptions> scene3DOptions;
+    private SimpleObjectProperty<HintGradient> gradientToEdit1, gradientToEdit2;
+    private RichTextField tipLenRich, tipRadiusRich, radiusRich, lenScaleRich, globalScaleRich, FPSRich;
+    @FXML
+    private Button okButton, cancelButton;
+
+    // --------------------------- Private methods  --------------------------
+    @FXML
+    private Button Gradient1, Gradient2;
+
+    // ------------------------------- Objects  ------------------------------
+    @FXML
+    private TextField tipLen, tipRadius, radius, lenScale, globalScale, FPS;
+    @FXML
+    private CheckBox Grad2Enable, isVectorsCheckBox;
+
     // ----------------------------- Public API  -----------------------------
     public void setup(JFrame frame, SimpleObjectProperty<Scene3DOptions> scene3DOptions) {
         this.frame = frame;
@@ -64,19 +84,6 @@ public class Scene3DOptionsController {
         isVectorsCheckBox.setSelected(scene3DOptions.get().isVectors);
     }
 
-    // -------------------------- Private variables  -------------------------
-
-
-    private JFrame frame;
-    private GradientEditor gradientEditor;
-    private SimpleObjectProperty<Scene3DOptions> scene3DOptions;
-
-    private SimpleObjectProperty<HintGradient> gradientToEdit1, gradientToEdit2;
-
-    private RichTextField tipLenRich, tipRadiusRich, radiusRich, lenScaleRich, globalScaleRich, FPSRich;
-
-    // --------------------------- Private methods  --------------------------
-
     private void recalculate() {
         Scene3DOptions newScene = new Scene3DOptions(tipLenRich.getDouble(), tipRadiusRich.getDouble(),
                 radiusRich.getDouble(), lenScaleRich.getDouble(), scene3DOptions.get().boxProperties.dimensions,
@@ -85,17 +92,6 @@ public class Scene3DOptionsController {
                 Grad2Enable.isSelected(), isVectorsCheckBox.isSelected());
         scene3DOptions.set(newScene);
     }
-
-    // ------------------------------- Objects  ------------------------------
-
-    @FXML
-    private Button okButton, cancelButton;
-    @FXML
-    private Button Gradient1, Gradient2;
-    @FXML
-    private TextField tipLen, tipRadius, radius, lenScale, globalScale, FPS;
-    @FXML
-    private CheckBox Grad2Enable, isVectorsCheckBox;
 
     // --------------------------- button handlers ---------------------------
 

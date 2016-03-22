@@ -4,6 +4,12 @@ import javafx.scene.control.TextField;
 
 public class RichTextField {
 
+    private final TextField textField;
+
+    private RichTextField(TextField textField) {
+        this.textField = textField;
+    }
+
     public static RichTextField of(TextField field) {
         return new RichTextField(field);
     }
@@ -27,14 +33,9 @@ public class RichTextField {
     public void setInteger(Number number) {
         this.set(number.intValue());
     }
+
     public final TextField get() {
         return textField;
-    }
-
-    private final TextField textField;
-
-    private RichTextField(TextField textField) {
-        this.textField = textField;
     }
 
     public void disable() {

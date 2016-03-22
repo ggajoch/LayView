@@ -14,31 +14,6 @@ public class ODTParser {
         data = new ODTData();
     }
 
-    private void parseLine(String line) {
-        line = line.trim();
-        if( line.charAt(0) == '#') {
-            parseHashLine(line);
-        } else {
-            parseDataLine(line);
-        }
-    }
-
-    private void parseHashLine(String line) {
-        String cutLine = line.substring(line.indexOf(' ', 2));
-
-        if( ConfigRowTypes.TITLE.checkType(line) ) {
-            data.title = TitleParser.parse(cutLine);
-        } else if( ConfigRowTypes.UNIT.checkType(line) ) {
-            data.registerUnits(UnitParser.parse(cutLine));
-        } else if( ConfigRowTypes.COLUMNS.checkType(line) ) {
-            data.registerDescriptions(DescriptionParser.parse(cutLine));
-        }
-    }
-
-    private void parseDataLine(String line) {
-        data.registerDataLine(DataParser.parse(line));
-    }
-
     public static ODTData parseFile(File file) {
         ODTParser parser = new ODTParser();
 
@@ -82,9 +57,9 @@ public class ODTParser {
 
         System.out.println("title: " + parser.data.title);
 
-        for(Column x : parser.data.dataColumns) {
+        for (Column x : parser.data.dataColumns) {
             System.out.println("name: " + x.name + ", unit: " + x.unit);
-            for(double now : x.values) {
+            for (double now : x.values) {
                 System.out.println(now);
             }
         }
@@ -92,11 +67,36 @@ public class ODTParser {
         File f = new File("G:\\repos\\LayView\\src\\main\\java\\pl\\gajoch\\layview\\utils\\parsers\\ODTParser\\a.odt");
         ODTData data = ODTParser.parseFile(f);
 
-        for(Column x : data.dataColumns) {
+        for (Column x : data.dataColumns) {
             System.out.println("name: " + x.name + ", unit: " + x.unit);
-            for(double now : x.values) {
+            for (double now : x.values) {
                 System.out.println(now);
             }
         }
+    }
+
+    private void parseLine(String line) {
+        line = line.trim();
+        if (line.charAt(0) == '#') {
+            parseHashLine(line);
+        } else {
+            parseDataLine(line);
+        }
+    }
+
+    private void parseHashLine(String line) {
+        String cutLine = line.substring(line.indexOf(' ', 2));
+
+        if (ConfigRowTypes.TITLE.checkType(line)) {
+            data.title = TitleParser.parse(cutLine);
+        } else if (ConfigRowTypes.UNIT.checkType(line)) {
+            data.registerUnits(UnitParser.parse(cutLine));
+        } else if (ConfigRowTypes.COLUMNS.checkType(line)) {
+            data.registerDescriptions(DescriptionParser.parse(cutLine));
+        }
+    }
+
+    private void parseDataLine(String line) {
+        data.registerDataLine(DataParser.parse(line));
     }
 }

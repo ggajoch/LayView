@@ -1,4 +1,3 @@
-
 package pl.gajoch.layview.graphics3d.options;
 
 import com.sun.javafx.geom.Vec3d;
@@ -6,8 +5,8 @@ import com.sun.javafx.geom.Vec3d;
 public class Scene3DOptions {
     public final VectorProperties vectorProperties;
     public final BoxProperties boxProperties;
-    public double globalScale, FPS;
     public final HintGradient gradient1, gradient2;
+    public double globalScale, FPS;
     public boolean isVectors;
     public boolean gradient2enable;
     public Vec3d initialTranslate;

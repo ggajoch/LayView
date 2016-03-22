@@ -17,21 +17,17 @@ import java.awt.event.*;
 
 public class GLCanvas3DSurfaceViewer extends GLCanvas implements GLEventListener, MouseListener, MouseMotionListener, MouseWheelListener {
 
-    private TextRenderer renderer;
-
-    private Scene3DOptions options;
-
-    public SurfacesPresenter presenter;
-
-    private Vec3d mousePos, mouseOld, mouseDelta;
-
-    private Vec3d angle, offset;
-    private double scale;
-
-
     private static final double SCROLL_SCALE = .01;
     private static final double ROTATE_SCALE = .01;
     private final double MOVE_SCALE = 3.275;
+    public SurfacesPresenter presenter;
+    private TextRenderer renderer;
+    private Scene3DOptions options;
+    private Vec3d mousePos, mouseOld, mouseDelta;
+    private Vec3d angle, offset;
+    private double scale;
+    private long last = 0, now;
+    private int frameCt = 0;
 
     public GLCanvas3DSurfaceViewer(GLCapabilities capabilities) {
         super(capabilities);
@@ -243,9 +239,6 @@ public class GLCanvas3DSurfaceViewer extends GLCanvas implements GLEventListener
         gl.glMatrixMode(GL2.GL_MODELVIEW);
         gl.glLoadIdentity();
     }
-
-    private long last = 0, now;
-    private int frameCt = 0;
 
     private void render(GLAutoDrawable drawable) {
 

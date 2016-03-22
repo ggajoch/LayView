@@ -5,51 +5,12 @@ import pl.gajoch.layview.graphics3d.SurfacePoint;
 
 import java.io.*;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 
 public class OMFParser {
-
-    private enum ParserState {
-        Segment, Header, Data, NoState
-    }
-
-    private class Header {
-        HashMap<String, String> map;
-        Header() {
-            map = new HashMap<>();
-        }
-        void modify(String name, String value) {
-            map.put(name, value);
-        }
-        String getStr(String name) {
-            return map.get(name);
-        }
-        int getInt(String name) {
-            return Integer.valueOf(getStr(name));
-        }
-        double getDouble(String name) {
-            return Double.parseDouble(getStr(name));
-        }
-    }
-
-    private class DataText {
-        ArrayList<SurfacePoint> points;
-        DataText() {
-            points = new ArrayList<>();
-        }
-    }
-
-    private class Segment {
-        Header header;
-        DataText data;
-        Segment() {
-            header = new Header();
-            data = new DataText();
-        }
-    }
 
     private ParserState state;
     private ArrayList<Segment> segments;
@@ -60,6 +21,41 @@ public class OMFParser {
     private OMFParser() {
         state = ParserState.NoState;
         segments = new ArrayList<>();
+    }
+
+    public static OMFData parseFile(File file) {
+        OMFParser parser = new OMFParser();
+        BufferedReader reader = null;
+        try {
+            reader = new BufferedReader(new FileReader(file));
+            String line;
+            while (true) {
+                try {
+                    line = reader.readLine();
+                    if (line == null) {
+                        break;
+                    }
+                    parser.parseLine(line);
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                    break;
+                }
+            }
+        } catch (FileNotFoundException ex) {
+            ex.printStackTrace();
+            return null;
+        } finally {
+            try {
+                if (reader != null) reader.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return new OMFData(parser.segments.get(0).data.points,
+                parser.segments.get(0).header.getDouble("xstepsize"),
+                parser.segments.get(0).header.getDouble("ystepsize"),
+                parser.segments.get(0).header.getDouble("zstepsize"));
     }
 
     private void startSegment() {
@@ -82,11 +78,11 @@ public class OMFParser {
         try {
             s = s.replace("#", " ");
             s = s.trim();
-            String [] lineSplitted = s.split(":");
+            String[] lineSplitted = s.split(":");
             String name = lineSplitted[0].trim();
             String value = lineSplitted[1].trim();
             actual.header.modify(name, value);
-        } catch(Exception e) {
+        } catch (Exception e) {
             //not a problem, just blank lines
             //println("Problem with" + line);
             //e.printStackTrace();
@@ -108,11 +104,11 @@ public class OMFParser {
         actual.data.points.add(new SurfacePoint(actual_position, new Vec3d(x, y, z)));
 
         actual_x_pts++;
-        if( actual_x_pts == x_nodes ) {
+        if (actual_x_pts == x_nodes) {
             actual_x_pts = 0;
             actual_y_pts++;
 
-            if( actual_y_pts == y_nodes ) {
+            if (actual_y_pts == y_nodes) {
                 actual_y_pts = 0;
                 actual_z_pts++;
             }
@@ -120,29 +116,29 @@ public class OMFParser {
     }
 
     private void parseLine(String line) {
-        if( state == ParserState.NoState) {
-            if( line.contains("# Begin: Segment")) {
+        if (state == ParserState.NoState) {
+            if (line.contains("# Begin: Segment")) {
                 state = ParserState.Segment;
                 startSegment();
             }
-        } else if( state == ParserState.Segment) {
-            if( line.contains("# Begin: Header")) {
+        } else if (state == ParserState.Segment) {
+            if (line.contains("# Begin: Header")) {
                 state = ParserState.Header;
-            } else if( line.contains("# Begin: Data Text")) {
+            } else if (line.contains("# Begin: Data Text")) {
                 state = ParserState.Data;
                 startData();
-            } else if( line.contains("# End: Segment")) {
+            } else if (line.contains("# End: Segment")) {
                 state = ParserState.NoState;
                 endSegment();
             }
-        } else if( state == ParserState.Header) {
-            if( line.contains("# End: Header")) {
+        } else if (state == ParserState.Header) {
+            if (line.contains("# End: Header")) {
                 state = ParserState.Segment;
             } else {
                 parseHeader(line);
             }
-        } else if( state == ParserState.Data) {
-            if( line.contains("# End: Data Text")) {
+        } else if (state == ParserState.Data) {
+            if (line.contains("# End: Data Text")) {
                 state = ParserState.Segment;
             } else {
                 parseData(line);
@@ -150,38 +146,49 @@ public class OMFParser {
         }
     }
 
-    public static OMFData parseFile(File file) {
-        OMFParser parser = new OMFParser();
-        BufferedReader reader = null;
-        try {
-            reader = new BufferedReader(new FileReader(file));
-            String line;
-            while(true) {
-                try {
-                    line = reader.readLine();
-                    if( line == null ) {
-                        break;
-                    }
-                    parser.parseLine(line);
-                } catch(IOException ex) {
-                    ex.printStackTrace();
-                    break;
-                }
-            }
-        } catch (FileNotFoundException ex) {
-            ex.printStackTrace();
-            return null;
-        } finally {
-            try {
-                if(reader != null) reader.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+    private enum ParserState {
+        Segment, Header, Data, NoState
+    }
+
+    private class Header {
+        HashMap<String, String> map;
+
+        Header() {
+            map = new HashMap<>();
         }
 
-        return new OMFData(parser.segments.get(0).data.points,
-                parser.segments.get(0).header.getDouble("xstepsize"),
-                parser.segments.get(0).header.getDouble("ystepsize"),
-                parser.segments.get(0).header.getDouble("zstepsize"));
+        void modify(String name, String value) {
+            map.put(name, value);
+        }
+
+        String getStr(String name) {
+            return map.get(name);
+        }
+
+        int getInt(String name) {
+            return Integer.valueOf(getStr(name));
+        }
+
+        double getDouble(String name) {
+            return Double.parseDouble(getStr(name));
+        }
+    }
+
+    private class DataText {
+        ArrayList<SurfacePoint> points;
+
+        DataText() {
+            points = new ArrayList<>();
+        }
+    }
+
+    private class Segment {
+        Header header;
+        DataText data;
+
+        Segment() {
+            header = new Header();
+            data = new DataText();
+        }
     }
 }

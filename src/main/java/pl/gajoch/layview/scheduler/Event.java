@@ -13,7 +13,7 @@ abstract public class Event implements Comparable<Event> {
 
     @Override
     public int compareTo(Event o) {
-        if( this.offset_actual == o.offset_actual ) {
+        if (this.offset_actual == o.offset_actual) {
             return Integer.compare(this.type.priority, o.type.priority);
         }
         return Integer.compare(this.offset_actual, o.offset_actual);
@@ -22,11 +22,13 @@ abstract public class Event implements Comparable<Event> {
     void dispatchHandler() {
         this.dispatch();
     }
+
     void resetHandler() {
         reset();
     }
 
     public abstract void dispatch();
+
     public void reset() {
 
     }

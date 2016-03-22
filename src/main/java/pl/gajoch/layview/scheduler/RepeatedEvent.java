@@ -15,7 +15,7 @@ abstract public class RepeatedEvent extends Event {
         dispatch();
         offset_actual += offset_us;
         counter++;
-        if( counter < times ) {
+        if (counter < times) {
             Scheduler.__scheduleCurrentRun(this);
         }
     }

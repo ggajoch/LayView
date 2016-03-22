@@ -1,4 +1,3 @@
-
 package pl.gajoch.layview.graphics2d.options;
 
 public class Scene2DOptions {

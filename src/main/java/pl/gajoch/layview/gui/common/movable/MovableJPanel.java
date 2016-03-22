@@ -43,7 +43,7 @@ abstract public class MovableJPanel extends JPanel {
                 });
             });
             Platform.runLater(() ->
-                moveWindowEditor.exec(actual_position));
+                    moveWindowEditor.exec(actual_position));
         });
         contextMenu.add(item);
 
@@ -52,12 +52,6 @@ abstract public class MovableJPanel extends JPanel {
         contextMenu.add(item2);
 
         this.setComponentPopupMenu(contextMenu);
-    }
-
-    public void setPosition(Rectangle position) {
-        this.setBounds(position);
-        this.repaint();
-        fixCenter(position);
     }
 
     public void fixCenter(Rectangle position) {
@@ -69,6 +63,12 @@ abstract public class MovableJPanel extends JPanel {
                 this.getY(),
                 this.getWidth(),
                 this.getHeight());
+    }
+
+    public void setPosition(Rectangle position) {
+        this.setBounds(position);
+        this.repaint();
+        fixCenter(position);
     }
 
     public final SimpleObjectProperty<Rectangle> getPositionProperty() {

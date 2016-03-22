@@ -5,29 +5,27 @@ import com.sun.javafx.geom.Vec3d;
 import pl.gajoch.layview.graphics2d.options.PlotOptions;
 import pl.gajoch.layview.graphics2d.options.Scene2DOptions;
 
-import javax.media.opengl.*;
-import javax.media.opengl.awt.GLCanvas;
+import javax.media.opengl.GL2;
+import javax.media.opengl.GLAutoDrawable;
+import javax.media.opengl.GLCapabilities;
+import javax.media.opengl.GLEventListener;
 import javax.media.opengl.awt.GLJPanel;
 import java.awt.*;
 import java.awt.event.*;
 
 public class GLCanvas2DPlotViewer extends GLJPanel implements GLEventListener, MouseListener, MouseMotionListener, MouseWheelListener {
 
-    private TextRenderer renderer;
-
-    public PlotPresenter presenter;
-
-    private Vec3d mousePos, mouseOld, mouseDelta;
-
-    private Vec3d angle, offset;
-    private double scale;
-
-    private Scene2DOptions options;
-
-
     private static final double SCROLL_SCALE = .01;
     private static final double ROTATE_SCALE = .01;
     private static final double MOVE_SCALE = .01;
+    public PlotPresenter presenter;
+    private TextRenderer renderer;
+    private Vec3d mousePos, mouseOld, mouseDelta;
+    private Vec3d angle, offset;
+    private double scale;
+    private Scene2DOptions options;
+    private long last = 0, now;
+    private int frameCt = 0;
 
     public GLCanvas2DPlotViewer(GLCapabilities capabilities) {
         super(capabilities);
@@ -137,9 +135,6 @@ public class GLCanvas2DPlotViewer extends GLJPanel implements GLEventListener, M
         presenter.setBounds(x, y, width, height);
 
     }
-
-    private long last = 0, now;
-    private int frameCt = 0;
 
     private void render(GLAutoDrawable drawable) {
         final GL2 gl = drawable.getGL().getGL2();

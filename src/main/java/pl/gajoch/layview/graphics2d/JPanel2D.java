@@ -5,9 +5,9 @@ import javafx.beans.property.SimpleObjectProperty;
 import pl.gajoch.layview.graphics2d.options.PlotOptions;
 import pl.gajoch.layview.graphics2d.options.Scene2DOptions;
 import pl.gajoch.layview.gui.GUI_2D.options.Scene2DOptionsEditor;
-import pl.gajoch.layview.options.FileInput;
 import pl.gajoch.layview.gui.common.fileInput.FileInputSelector;
 import pl.gajoch.layview.gui.common.movable.MovableJPanel;
+import pl.gajoch.layview.options.FileInput;
 import pl.gajoch.layview.scheduler.EventType;
 import pl.gajoch.layview.scheduler.RepeatedEvent;
 import pl.gajoch.layview.scheduler.Scheduler;
@@ -16,27 +16,21 @@ import javax.media.opengl.GLCapabilities;
 import javax.media.opengl.GLProfile;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.List;
 
 public class JPanel2D extends MovableJPanel {
+    SimpleObjectProperty<Scene2DOptions> optionsProperty;
     private FileInputSelector fileInputSelector;
     private FileInput files;
     private Scene2DOptionsEditor scene2DOptionsEditor = new Scene2DOptionsEditor();
-
-    SimpleObjectProperty<Scene2DOptions> optionsProperty;
-
     private volatile Scene2DOptions scene2DOptions = new Scene2DOptions(30, new PlotOptions());
 
     private GLCanvas2DPlotViewer glcanvas;
     private RepeatedEvent timing;
-
-    @Override
-    public void fixCenter(Rectangle position) {
-        glcanvas.reshape(0, 0, (int) position.getWidth(), (int) position.getHeight());
-    }
 
     public JPanel2D(int width, int height) {
         super(width, height);
@@ -127,6 +121,11 @@ public class JPanel2D extends MovableJPanel {
 
         /*final FPSAnimator animator = new FPSAnimator(glcanvas, 10, true);
         animator.start();*/
+    }
+
+    @Override
+    public void fixCenter(Rectangle position) {
+        glcanvas.reshape(0, 0, (int) position.getWidth(), (int) position.getHeight());
     }
 
     private void onOptionsChanged(Scene2DOptions newValue) {

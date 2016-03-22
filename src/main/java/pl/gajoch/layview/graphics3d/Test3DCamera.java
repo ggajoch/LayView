@@ -1,8 +1,6 @@
 package pl.gajoch.layview.graphics3d;
 
 
-import java.awt.event.*;
-
 import com.sun.javafx.geom.Vec3d;
 import pl.gajoch.layview.graphics3d.options.HintGradient;
 import pl.gajoch.layview.graphics3d.options.Scene3DOptions;
@@ -12,7 +10,9 @@ import pl.gajoch.layview.scheduler.Scheduler;
 
 import javax.media.opengl.GLCapabilities;
 import javax.media.opengl.GLProfile;
-import javax.swing.JFrame;
+import javax.swing.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 public class Test3DCamera {
 

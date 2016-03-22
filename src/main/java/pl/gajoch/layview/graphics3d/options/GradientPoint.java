@@ -5,6 +5,9 @@ import javafx.scene.paint.Stop;
 
 public class GradientPoint implements Comparable<GradientPoint>, Cloneable {
 
+    // -------------------------- Private variables  -------------------------
+    private Stop point;
+
     // ----------------------------- Public API  -----------------------------
     public GradientPoint() {
         this.point = new Stop(0.0, Color.BLACK);
@@ -43,7 +46,4 @@ public class GradientPoint implements Comparable<GradientPoint>, Cloneable {
     public String toString() {
         return Double.toString(this.point.getOffset());
     }
-
-    // -------------------------- Private variables  -------------------------
-    private Stop point;
 }

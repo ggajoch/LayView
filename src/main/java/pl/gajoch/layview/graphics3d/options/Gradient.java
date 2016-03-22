@@ -3,7 +3,9 @@ package pl.gajoch.layview.graphics3d.options;
 import com.sun.javafx.geom.Vec3d;
 import javafx.scene.paint.*;
 
-import java.util.*;
+import java.util.List;
+import java.util.SortedSet;
+import java.util.TreeSet;
 import java.util.stream.Collectors;
 
 public class Gradient {
@@ -25,12 +27,19 @@ public class Gradient {
         this.max = second.max;
     }
 
-    public void setReference(Vec3d vector) {
-        reference.set(vector.x, vector.y, vector.z);
+    Gradient(TreeSet<GradientPoint> points, Vec3d reference, double min, double max) {
+        this.points = points;
+        this.reference = reference;
+        this.min = min;
+        this.max = max;
     }
 
     public Vec3d getReference() {
         return reference;
+    }
+
+    public void setReference(Vec3d vector) {
+        reference.set(vector.x, vector.y, vector.z);
     }
 
     public double getMinVector() {
@@ -46,14 +55,6 @@ public class Gradient {
     }
 
     public void setMaxVector(double max) {
-        this.max = max;
-    }
-
-
-    Gradient(TreeSet<GradientPoint> points, Vec3d reference, double min, double max) {
-        this.points = points;
-        this.reference = reference;
-        this.min = min;
         this.max = max;
     }
 

@@ -8,25 +8,30 @@ import javafx.stage.Stage;
 import pl.gajoch.layview.graphics3d.options.GradientPoint;
 import pl.gajoch.layview.utils.gui.RichTextField;
 
-import static pl.gajoch.layview.utils.GUIUtils.*;
+import static pl.gajoch.layview.utils.GUIUtils.showErrorMessage;
 
 public class GradientPointEditorController {
+    private Stage stage;
+    private GradientPoint point;
+
+    // -------------------------- Private variables  -------------------------
+    @FXML
+    private Button okButton;
+    @FXML
+    private Button cancelButton;
+
+    // --------------------------- Private methods  --------------------------
+    @FXML
+    private TextField value;
+
+    // ------------------------------- Objects  ------------------------------
+    @FXML
+    private ColorPicker colorPicker;
+
     // ----------------------------- Public API  -----------------------------
     public GradientPoint getPoint() {
         return point;
     }
-
-    public void setup(Stage stage, GradientPoint point) {
-        this.stage = stage;
-        setPoint(point);
-    }
-
-    // -------------------------- Private variables  -------------------------
-
-    private Stage stage;
-    private GradientPoint point;
-
-    // --------------------------- Private methods  --------------------------
 
     private void setPoint(GradientPoint point) {
         if (point != null) {
@@ -35,16 +40,10 @@ public class GradientPointEditorController {
         }
     }
 
-    // ------------------------------- Objects  ------------------------------
-
-    @FXML
-    private Button okButton;
-    @FXML
-    private Button cancelButton;
-    @FXML
-    private TextField value;
-    @FXML
-    private ColorPicker colorPicker;
+    public void setup(Stage stage, GradientPoint point) {
+        this.stage = stage;
+        setPoint(point);
+    }
 
     // --------------------------- button handlers ---------------------------
 

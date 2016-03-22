@@ -1,6 +1,5 @@
 package pl.gajoch.layview.scheduler;
 
-import java.util.*;
 import java.util.concurrent.PriorityBlockingQueue;
 
 public class Scheduler {
@@ -30,7 +29,7 @@ public class Scheduler {
             }
             now.dispatchHandler();
             queueCopy.remove();
-            if( changePending ) {
+            if (changePending) {
                 queueCopy.clear();
                 changePending = false;
                 break;

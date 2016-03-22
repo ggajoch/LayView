@@ -9,14 +9,13 @@ import java.util.Collection;
 public class PlotPointsList extends ArrayList<PlotPoint> {
     private Rectangle2D rectangle;
 
-    public final Rectangle2D getBounds() {
-        return rectangle;
-    }
-
     public PlotPointsList() {
         rectangle = new Rectangle(0, 0, 0, 0);
     }
 
+    public final Rectangle2D getBounds() {
+        return rectangle;
+    }
 
     @Override
     public boolean add(PlotPoint point) {

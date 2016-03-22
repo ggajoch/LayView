@@ -3,9 +3,6 @@ package pl.gajoch.layview.graphics2d.options;
 
 import java.awt.*;
 
-/**
- * Created by Piotr on 14/03/2016.
- */
 public class AxisOptions {
     public String label;
     public int labelSize;
@@ -27,7 +24,7 @@ public class AxisOptions {
     public double tickLength;
 
 
-    public AxisOptions(AxisOptions second){
+    public AxisOptions(AxisOptions second) {
         this.label = new String(second.label);
         this.labelSize = second.labelSize;
 
@@ -57,7 +54,7 @@ public class AxisOptions {
         this.tickLength = second.tickLength;
     }
 
-    public AxisOptions(){
+    public AxisOptions() {
         this.label = new String();
         this.labelSize = 30;
 

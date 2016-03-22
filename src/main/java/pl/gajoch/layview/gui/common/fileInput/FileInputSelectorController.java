@@ -10,8 +10,8 @@ import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.util.StringConverter;
 import pl.gajoch.layview.options.FileInput;
-import pl.gajoch.layview.utils.gui.RichTextField;
 import pl.gajoch.layview.utils.GUIUtils;
+import pl.gajoch.layview.utils.gui.RichTextField;
 import pl.gajoch.layview.utils.parsers.OMFParser.OMFParser;
 
 import javax.swing.*;
@@ -25,6 +25,34 @@ import static pl.gajoch.layview.utils.GUIUtils.showErrorMessage;
 public class FileInputSelectorController {
     // ----------------------------- Public API  -----------------------------
 
+    private JFrame frame;
+    private FileInput files;
+
+    // -------------------------- Private variables  -------------------------
+    private SimpleObjectProperty<FileInput> filesProperty;
+    @FXML
+    private ChoiceBox<File> fileChoiceBox;
+    @FXML
+    private Button addFileButton;
+
+    // --------------------------- Private methods  --------------------------
+    @FXML
+    private Button addFolderButton;
+    @FXML
+    private Button removeButton;
+    @FXML
+    private Button clearButton;
+    @FXML
+    private Button closeButton;
+    @FXML
+    private TextField thresholdField;
+    @FXML
+    private ProgressBar progressBar;
+
+    // ------------------------------- Objects  ------------------------------
+    @FXML
+    private Label progressIndicator;
+
     public void setup(JFrame frame, SimpleObjectProperty<FileInput> filesProperty) {
         this.frame = frame;
         this.filesProperty = filesProperty;
@@ -36,28 +64,6 @@ public class FileInputSelectorController {
 
     public final FileInput getFiles() {
         return this.files;
-    }
-
-    // -------------------------- Private variables  -------------------------
-
-    private JFrame frame;
-    private FileInput files;
-    private SimpleObjectProperty<FileInput> filesProperty;
-
-    // --------------------------- Private methods  --------------------------
-
-    private class FileConverter extends StringConverter<File> {
-        public String toString(File file) {
-            try {
-                return file.getName();
-            } catch (Exception e) {
-                return "";
-            }
-        }
-
-        public File fromString(String s) {
-            return new File(s);
-        }
     }
 
     private void setFiles(FileInput files) {
@@ -88,30 +94,6 @@ public class FileInputSelectorController {
     private void setProgress(double val) {
         this.progressBar.setProgress(val);
     }
-
-    // ------------------------------- Objects  ------------------------------
-
-    @FXML
-    private ChoiceBox<File> fileChoiceBox;
-    @FXML
-    private Button addFileButton;
-    @FXML
-    private Button addFolderButton;
-    @FXML
-    private Button removeButton;
-    @FXML
-    private Button clearButton;
-    @FXML
-    private Button closeButton;
-    @FXML
-    private TextField thresholdField;
-    @FXML
-    private ProgressBar progressBar;
-    @FXML
-    private Label progressIndicator;
-
-
-    // --------------------------- button handlers ---------------------------
 
     @FXML
     private void addFile_handler() {
@@ -145,6 +127,9 @@ public class FileInputSelectorController {
             }
         }.start();
     }
+
+
+    // --------------------------- button handlers ---------------------------
 
     @FXML
     private void addFolder_handler() {
@@ -225,5 +210,19 @@ public class FileInputSelectorController {
                 });
             }
         }.start();
+    }
+
+    private class FileConverter extends StringConverter<File> {
+        public String toString(File file) {
+            try {
+                return file.getName();
+            } catch (Exception e) {
+                return "";
+            }
+        }
+
+        public File fromString(String s) {
+            return new File(s);
+        }
     }
 }

@@ -7,22 +7,66 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.Pane;
+import pl.gajoch.layview.graphics3d.options.GradientPoint;
 import pl.gajoch.layview.graphics3d.options.HintGradient;
 import pl.gajoch.layview.gui.GUI_3D.gradientPoint.GradientPointEditor;
-import pl.gajoch.layview.graphics3d.options.GradientPoint;
+import pl.gajoch.layview.utils.GUIUtils;
 import pl.gajoch.layview.utils.gui.RichPane;
 import pl.gajoch.layview.utils.gui.RichTextField;
-import pl.gajoch.layview.utils.GUIUtils;
 
 import javax.swing.*;
-import java.util.*;
+import java.util.Arrays;
+import java.util.SortedSet;
+import java.util.TreeSet;
 import java.util.stream.Collectors;
 
-import static pl.gajoch.layview.utils.GUIUtils.*;
+import static pl.gajoch.layview.utils.GUIUtils.showErrorMessage;
 
 
 public class GradientEditorController {
     // --------------------------- Public API  ---------------------------
+
+    private GradientPointEditor editor;
+
+    // --------------------------- Private variables  ---------------------------
+    private JFrame frame;
+    private SortedSet<GradientPoint> gradientPoints;
+    private HintGradient originalGradient;
+    private SimpleObjectProperty<HintGradient> gradientToEdit;
+    private Vec3dTextField referenceVector;
+    private double minHint, maxHint;
+    @FXML
+    private ChoiceBox<GradientPoint> choiceBox;
+
+    // --------------------------- Private methods  ---------------------------
+    @FXML
+    private Button okButton;
+    @FXML
+    private Button cancelButton;
+    @FXML
+    private Button addButton;
+    @FXML
+    private Button editButton;
+    @FXML
+    private Button removeButton;
+    @FXML
+    private Button clearButton;
+    @FXML
+    private Pane colorPane;
+    @FXML
+    private Pane gradientViewPane;
+    @FXML
+    private TextField xRefTextField;
+    @FXML
+    private TextField yRefTextField;
+    @FXML
+    private TextField zRefTextField;
+
+    // --------------------------- Objects  ---------------------------
+    @FXML
+    private TextField minVectorTextField;
+    @FXML
+    private TextField maxVectorTextField;
 
     public void setup(JFrame frame, SimpleObjectProperty<HintGradient> gradient, double minVectorHint, double maxVectorHint) {
         this.frame = frame;
@@ -58,46 +102,6 @@ public class GradientEditorController {
                 .forEach(e -> e.textProperty().addListener(ignore -> recalculateOutput()));
     }
 
-    // --------------------------- Private variables  ---------------------------
-
-    private GradientPointEditor editor;
-    private JFrame frame;
-    private SortedSet<GradientPoint> gradientPoints;
-    private HintGradient originalGradient;
-    private SimpleObjectProperty<HintGradient> gradientToEdit;
-    private Vec3dTextField referenceVector;
-    private double minHint, maxHint;
-
-    // --------------------------- Private methods  ---------------------------
-
-
-    private static class Vec3dTextField {
-        private final RichTextField x, y, z;
-
-        public Vec3dTextField(RichTextField x, RichTextField y, RichTextField z) {
-            this.x = x;
-            this.y = y;
-            this.z = z;
-        }
-
-        public Vec3dTextField(TextField x, TextField y, TextField z) {
-            this.x = RichTextField.of(x);
-            this.y = RichTextField.of(y);
-            this.z = RichTextField.of(z);
-        }
-
-        public void set(Vec3d vector) {
-            x.set(vector.x);
-            y.set(vector.y);
-            z.set(vector.z);
-        }
-
-        public Vec3d get() throws NumberFormatException {
-            return new Vec3d(x.getDouble(), y.getDouble(), z.getDouble());
-        }
-    }
-
-
     private void setGradient(SimpleObjectProperty<HintGradient> gradient) {
         gradientToEdit = gradient;
         originalGradient = new HintGradient(gradientToEdit.getValue());
@@ -109,7 +113,6 @@ public class GradientEditorController {
         RichTextField.of(minVectorTextField).set(originalGradient.getMinVector());
         RichTextField.of(maxVectorTextField).set(originalGradient.getMaxVector());
     }
-
 
     private void recalculateView() {
         ObservableList<GradientPoint> DescriptionList = FXCollections.observableArrayList();
@@ -182,7 +185,7 @@ public class GradientEditorController {
     private void recalculateOutput() {
         try {
             finalRecalculateGradientOutput();
-        } catch(Exception ignored) {
+        } catch (Exception ignored) {
         }
     }
 
@@ -198,39 +201,6 @@ public class GradientEditorController {
         gradientPoints.forEach(temp::add);
         gradientToEdit.setValue(temp);
     }
-
-    // --------------------------- Objects  ---------------------------
-
-    @FXML
-    private ChoiceBox<GradientPoint> choiceBox;
-    @FXML
-    private Button okButton;
-    @FXML
-    private Button cancelButton;
-    @FXML
-    private Button addButton;
-    @FXML
-    private Button editButton;
-    @FXML
-    private Button removeButton;
-    @FXML
-    private Button clearButton;
-    @FXML
-    private Pane colorPane;
-    @FXML
-    private Pane gradientViewPane;
-    @FXML
-    private TextField xRefTextField;
-    @FXML
-    private TextField yRefTextField;
-    @FXML
-    private TextField zRefTextField;
-    @FXML
-    private TextField minVectorTextField;
-    @FXML
-    private TextField maxVectorTextField;
-
-    // --------------------------- button handlers ---------------------------
 
     @FXML
     private void add_handler() {
@@ -248,6 +218,8 @@ public class GradientEditorController {
             e.printStackTrace();
         }
     }
+
+    // --------------------------- button handlers ---------------------------
 
     @FXML
     private void edit_handler() {
@@ -308,10 +280,35 @@ public class GradientEditorController {
         }
     }
 
-
     @FXML
     private void cancel_handler() {
         gradientToEdit.setValue(originalGradient);
         GUIUtils.closeJFrame(frame);
+    }
+
+    private static class Vec3dTextField {
+        private final RichTextField x, y, z;
+
+        public Vec3dTextField(RichTextField x, RichTextField y, RichTextField z) {
+            this.x = x;
+            this.y = y;
+            this.z = z;
+        }
+
+        public Vec3dTextField(TextField x, TextField y, TextField z) {
+            this.x = RichTextField.of(x);
+            this.y = RichTextField.of(y);
+            this.z = RichTextField.of(z);
+        }
+
+        public void set(Vec3d vector) {
+            x.set(vector.x);
+            y.set(vector.y);
+            z.set(vector.z);
+        }
+
+        public Vec3d get() throws NumberFormatException {
+            return new Vec3d(x.getDouble(), y.getDouble(), z.getDouble());
+        }
     }
 }

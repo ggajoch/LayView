@@ -16,7 +16,7 @@ public enum ConfigRowTypes {
 
     Boolean checkType(String line) {
         String l = line.substring(2);
-        if( l.subSequence(0, this.name.length()).equals(this.name) ) {
+        if (l.subSequence(0, this.name.length()).equals(this.name)) {
             return true;
         }
         return false;

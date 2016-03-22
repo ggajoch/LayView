@@ -2,7 +2,7 @@ package pl.gajoch.layview.gui.common;
 
 import javafx.beans.value.ChangeListener;
 import pl.gajoch.layview.graphics2d.JPanel2D;
-import pl.gajoch.layview.graphics3d.*;
+import pl.gajoch.layview.graphics3d.JPanel3D;
 import pl.gajoch.layview.gui.common.movable.MovableJPanel;
 import pl.gajoch.layview.scheduler.Scheduler;
 
@@ -30,25 +30,9 @@ public class GraphicsWindowManager {
             frame.setVisible(true);
         });
 
-        while(true) {
+        while (true) {
             Scheduler.start();
         }
-    }
-
-    private void createContextMenu() {
-        JMenu menu = new JMenu("Add...");
-        JMenuBar menuBar = new JMenuBar();
-        menuBar.add(menu);
-
-        JMenuItem menuItem = new JMenuItem("2D");
-        menuItem.addActionListener(e -> add2D());
-        menu.add(menuItem);
-
-        menuItem = new JMenuItem("3D");
-        menuItem.addActionListener(e -> add3D());
-        menu.add(menuItem);
-
-        frame.setJMenuBar(menuBar);
     }
 
     private static void recalculate() {
@@ -87,7 +71,6 @@ public class GraphicsWindowManager {
         addPanel(view);
     }
 
-
     public static void add3D() {
         MovableJPanel scene = new JPanel3D(600, 600);
         addPanel(scene);
@@ -115,5 +98,21 @@ public class GraphicsWindowManager {
         }
         recalculate();
         recalculateWindowSize();
+    }
+
+    private void createContextMenu() {
+        JMenu menu = new JMenu("Add...");
+        JMenuBar menuBar = new JMenuBar();
+        menuBar.add(menu);
+
+        JMenuItem menuItem = new JMenuItem("2D");
+        menuItem.addActionListener(e -> add2D());
+        menu.add(menuItem);
+
+        menuItem = new JMenuItem("3D");
+        menuItem.addActionListener(e -> add3D());
+        menu.add(menuItem);
+
+        frame.setJMenuBar(menuBar);
     }
 }

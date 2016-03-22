@@ -8,14 +8,14 @@ public class CurlyBracketLineParser {
         List<String> list = new ArrayList<>();
 
         line = line.trim();
-        while( ! line.equals("") ) {
+        while (!line.equals("")) {
             String now;
-            if( line.charAt(0) == '{' ) {
+            if (line.charAt(0) == '{') {
                 now = line.substring(1, line.indexOf('}'));
-                line = line.substring(line.indexOf('}')+1);
+                line = line.substring(line.indexOf('}') + 1);
             } else {
                 int nextBlank = line.indexOf(' ');
-                if( nextBlank == -1 ) { // empty string
+                if (nextBlank == -1) { // empty string
                     now = line;
                     line = "";
                 } else {

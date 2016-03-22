@@ -5,9 +5,6 @@ import com.sun.istack.internal.NotNull;
 
 import java.awt.*;
 
-/**
- * Created by Piotr on 15/03/2016.
- */
 public class RichTextRenderer extends TextRenderer {
     public RichTextRenderer(@NotNull Font font) {
         super(font);

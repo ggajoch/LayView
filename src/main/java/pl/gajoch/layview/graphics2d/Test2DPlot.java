@@ -1,6 +1,7 @@
 package pl.gajoch.layview.graphics2d;
 
 //import pl.gajoch.layview.graphics3d.GLCanvas3DSurfaceViewer;
+
 import pl.gajoch.layview.scheduler.EventType;
 import pl.gajoch.layview.scheduler.RepeatedEvent;
 import pl.gajoch.layview.scheduler.Scheduler;
@@ -8,12 +9,9 @@ import pl.gajoch.layview.scheduler.Scheduler;
 import javax.media.opengl.GLCapabilities;
 import javax.media.opengl.GLProfile;
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.geom.Point2D;
-import java.awt.image.BufferedImage;
-import java.util.Locale;
 
 public class Test2DPlot {
     static GLCanvas2DPlotViewer glcanvas;
@@ -42,7 +40,7 @@ public class Test2DPlot {
         animator.start();*/
 
         for (double angle = -Math.PI * 2; angle < Math.PI * 2; angle += 0.1) {
-            glcanvas.presenter.plotPointsList.add(new PlotPoint(new Point2D.Double(angle/2 / Math.PI*100, (Math.sin(angle) + Math.sin(angle * 2))*70)));
+            glcanvas.presenter.plotPointsList.add(new PlotPoint(new Point2D.Double(angle / 2 / Math.PI * 100, (Math.sin(angle) + Math.sin(angle * 2)) * 70)));
         }
 
         Scheduler.schedule(new RepeatedEvent(EventType.UPDATE2D, (int) 1e6 / 24, glcanvas.presenter.plotPointsList.size()) {
@@ -56,7 +54,6 @@ public class Test2DPlot {
                 glcanvas.reset();
             }
         });
-
 
 
         while (true) {

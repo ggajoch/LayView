@@ -11,9 +11,9 @@ import java.awt.*;
 import java.io.IOException;
 
 public class JFXPanelWindow<T> {
+    protected final JFXPanel jfxPanel;
     protected T windowController;
     protected JFrame frame;
-    protected final JFXPanel jfxPanel;
 
     public JFXPanelWindow(String label, String fxmlPath) {
         frame = new JFrame(label);
