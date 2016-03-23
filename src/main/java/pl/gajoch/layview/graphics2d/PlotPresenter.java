@@ -3,6 +3,7 @@ package pl.gajoch.layview.graphics2d;
 import com.sun.javaws.exceptions.InvalidArgumentException;
 import pl.gajoch.layview.graphics2d.options.PlotOptions;
 import pl.gajoch.layview.utils.RichTextRenderer;
+import pl.gajoch.layview.utils.performance.Map;
 import pl.gajoch.layview.utils.performance.TrigonometricTab;
 
 import javax.media.opengl.GL2;
@@ -54,21 +55,21 @@ public class PlotPresenter {
         textRenderer.setColor(options.titleOptions.title.color);
 
         textRenderer.draw(options.titleOptions.title.text,
-                (int) (map(0, -100 - options.plotAreaOptions.margins.getX(), 100 + options.plotAreaOptions.margins.getY(), 0, boundaries.getWidth()) - textRenderer.getStringWidth(options.titleOptions.title.text) / 2),
-                (int) (map(100 + options.plotAreaOptions.margins.getHeight() / 2, -100 - options.plotAreaOptions.margins.getWidth(), 100 + options.plotAreaOptions.margins.getHeight(), 0, boundaries.getHeight()) - options.titleOptions.title.size / 2));
+                (int) (Map.map(0, -100 - options.plotAreaOptions.margins.getX(), 100 + options.plotAreaOptions.margins.getY(), 0, boundaries.getWidth()) - textRenderer.getStringWidth(options.titleOptions.title.text) / 2),
+                (int) (Map.map(100 + options.plotAreaOptions.margins.getHeight() / 2, -100 - options.plotAreaOptions.margins.getWidth(), 100 + options.plotAreaOptions.margins.getHeight(), 0, boundaries.getHeight()) - options.titleOptions.title.size / 2));
 
         textRenderer.endRendering();
 
 
         //X-AXIS
-        textRenderer = new RichTextRenderer(new Font("Arial Narrow", Font.BOLD, options.xAxisOptions.labelSize));
+        textRenderer = new RichTextRenderer(new Font("Arial Narrow", Font.BOLD, options.xAxisOptions.label.size));
 
         textRenderer.beginRendering((int) boundaries.getWidth(), (int) boundaries.getHeight());
-        textRenderer.setColor(options.xAxisOptions.labelColor);
+        textRenderer.setColor(options.xAxisOptions.label.color);
 
-        textRenderer.draw(options.xAxisOptions.label,
-                (int) (map(0, -100 - options.plotAreaOptions.margins.getX(), 100 + options.plotAreaOptions.margins.getY(), 0, boundaries.getWidth()) - textRenderer.getStringWidth(options.xAxisOptions.label) / 2),
-                (int) (map(-100 - options.plotAreaOptions.margins.getWidth() * 0.7, -100 - options.plotAreaOptions.margins.getWidth(), 100 + options.plotAreaOptions.margins.getHeight(), 0, boundaries.getHeight()) - options.xAxisOptions.labelSize / 2));
+        textRenderer.draw(options.xAxisOptions.label.text,
+                (int) (Map.map(0, -100 - options.plotAreaOptions.margins.getX(), 100 + options.plotAreaOptions.margins.getY(), 0, boundaries.getWidth()) - textRenderer.getStringWidth(options.xAxisOptions.label.text) / 2),
+                (int) (Map.map(-100 - options.plotAreaOptions.margins.getWidth() * 0.7, -100 - options.plotAreaOptions.margins.getWidth(), 100 + options.plotAreaOptions.margins.getHeight(), 0, boundaries.getHeight()) - options.xAxisOptions.label.size / 2));
 
         textRenderer.endRendering();
 
@@ -85,14 +86,14 @@ public class PlotPresenter {
         textRenderer = new RichTextRenderer(new Font("Arial Narrow", Font.BOLD, options.xAxisOptions.numberSize));
 
         textRenderer.beginRendering((int) boundaries.getWidth(), (int) boundaries.getHeight());
-        textRenderer.setColor(options.xAxisOptions.labelColor);
+        textRenderer.setColor(options.xAxisOptions.label.color);
 
         for (double x = options.xAxisOptions.min; x <= options.xAxisOptions.max; x += options.xAxisOptions.tickIncrement) {
-            double mapX = map(x, options.xAxisOptions.min, options.xAxisOptions.max, -100, 100);
+            double mapX = Map.map(x, options.xAxisOptions.min, options.xAxisOptions.max, -100, 100);
             String tick = String.format("%.0f", x);
             textRenderer.draw(tick,
-                    (int) (map(mapX, -100 - options.plotAreaOptions.margins.getX(), 100 + options.plotAreaOptions.margins.getY(), 0, boundaries.getWidth()) - textRenderer.getStringWidth(tick) / 2),
-                    (int) (map(-100 - options.plotAreaOptions.margins.getWidth() * 0.3, -100 - options.plotAreaOptions.margins.getWidth(), 100 + options.plotAreaOptions.margins.getHeight(), 0, boundaries.getHeight()) - options.xAxisOptions.numberSize / 2));
+                    (int) (Map.map(mapX, -100 - options.plotAreaOptions.margins.getX(), 100 + options.plotAreaOptions.margins.getY(), 0, boundaries.getWidth()) - textRenderer.getStringWidth(tick) / 2),
+                    (int) (Map.map(-100 - options.plotAreaOptions.margins.getWidth() * 0.3, -100 - options.plotAreaOptions.margins.getWidth(), 100 + options.plotAreaOptions.margins.getHeight(), 0, boundaries.getHeight()) - options.xAxisOptions.numberSize / 2));
         }
 
         textRenderer.endRendering();
@@ -103,7 +104,7 @@ public class PlotPresenter {
 
         gl.glBegin(GL2.GL_LINES);
         for (double x = options.xAxisOptions.min; x <= options.xAxisOptions.max; x += options.xAxisOptions.tickIncrement) {
-            double mapX = map(x, options.xAxisOptions.min, options.xAxisOptions.max, -100, 100);
+            double mapX = Map.map(x, options.xAxisOptions.min, options.xAxisOptions.max, -100, 100);
             gl.glVertex2d(mapX, -100 - options.xAxisOptions.tickLength / 2);
             gl.glVertex2d(mapX, -100 + options.xAxisOptions.tickLength / 2);
         }
@@ -111,18 +112,18 @@ public class PlotPresenter {
 
 
         //Y-AXIS
-        textRenderer = new RichTextRenderer(new Font("Arial Narrow", Font.BOLD, options.yAxisOptions.labelSize));
+        textRenderer = new RichTextRenderer(new Font("Arial Narrow", Font.BOLD, options.yAxisOptions.label.size));
 
         textRenderer.beginRendering((int) boundaries.getWidth(), (int) boundaries.getHeight());
-        textRenderer.setColor(options.yAxisOptions.labelColor);
+        textRenderer.setColor(options.yAxisOptions.label.color);
 
         gl.glMatrixMode(GL2.GL_MODELVIEW);
         gl.glPushMatrix();
         gl.glRotated(90, 0, 0, 1);
 
-        textRenderer.draw(options.yAxisOptions.label,
-                (int) (map(0, -100 - options.plotAreaOptions.margins.getWidth(), 100 + options.plotAreaOptions.margins.getHeight(), 0, boundaries.getHeight()) - textRenderer.getStringWidth(options.yAxisOptions.label) / 2),
-                -(int) (map(-100 - options.plotAreaOptions.margins.getX() * 0.8, -100 - options.plotAreaOptions.margins.getX(), 100 + options.plotAreaOptions.margins.getWidth(), 0, boundaries.getWidth()) + options.yAxisOptions.labelSize / 2));
+        textRenderer.draw(options.yAxisOptions.label.text,
+                (int) (Map.map(0, -100 - options.plotAreaOptions.margins.getWidth(), 100 + options.plotAreaOptions.margins.getHeight(), 0, boundaries.getHeight()) - textRenderer.getStringWidth(options.yAxisOptions.label.text) / 2),
+                -(int) (Map.map(-100 - options.plotAreaOptions.margins.getX() * 0.8, -100 - options.plotAreaOptions.margins.getX(), 100 + options.plotAreaOptions.margins.getWidth(), 0, boundaries.getWidth()) + options.yAxisOptions.label.size / 2));
 
         textRenderer.endRendering();
         gl.glPopMatrix();
@@ -140,18 +141,18 @@ public class PlotPresenter {
         textRenderer = new RichTextRenderer(new Font("Arial Narrow", Font.BOLD, options.yAxisOptions.numberSize));
 
         textRenderer.beginRendering((int) boundaries.getWidth(), (int) boundaries.getHeight());
-        textRenderer.setColor(options.yAxisOptions.labelColor);
+        textRenderer.setColor(options.yAxisOptions.label.color);
 
         gl.glMatrixMode(GL2.GL_MODELVIEW);
         gl.glPushMatrix();
         gl.glRotated(90, 0, 0, 1);
 
         for (double x = options.xAxisOptions.min; x <= options.xAxisOptions.max; x += options.xAxisOptions.tickIncrement) {
-            double mapX = map(x, options.xAxisOptions.min, options.xAxisOptions.max, -100, 100);
+            double mapX = Map.map(x, options.xAxisOptions.min, options.xAxisOptions.max, -100, 100);
             String tick = String.format("%.0f", x);
             textRenderer.draw(tick,
-                    (int) (map(mapX, -100 - options.plotAreaOptions.margins.getWidth(), 100 + options.plotAreaOptions.margins.getHeight(), 0, boundaries.getHeight()) - textRenderer.getStringWidth(tick) / 2),
-                    -(int) (map(-100 - options.plotAreaOptions.margins.getX() * 0.3, -100 - options.plotAreaOptions.margins.getX(), 100 + options.plotAreaOptions.margins.getWidth(), 0, boundaries.getWidth()) + options.yAxisOptions.numberSize / 2));
+                    (int) (Map.map(mapX, -100 - options.plotAreaOptions.margins.getWidth(), 100 + options.plotAreaOptions.margins.getHeight(), 0, boundaries.getHeight()) - textRenderer.getStringWidth(tick) / 2),
+                    -(int) (Map.map(-100 - options.plotAreaOptions.margins.getX() * 0.3, -100 - options.plotAreaOptions.margins.getX(), 100 + options.plotAreaOptions.margins.getWidth(), 0, boundaries.getWidth()) + options.yAxisOptions.numberSize / 2));
         }
 
         textRenderer.endRendering();
@@ -165,8 +166,8 @@ public class PlotPresenter {
 
         gl.glBegin(GL2.GL_LINES);
         for (double y = options.yAxisOptions.min; y <= options.yAxisOptions.max; y += options.yAxisOptions.tickIncrement) {
-            gl.glVertex2d(-100 - options.yAxisOptions.tickLength / 2, map(y, options.yAxisOptions.min, options.yAxisOptions.max, -100, 100));
-            gl.glVertex2d(-100 + options.yAxisOptions.tickLength / 2, map(y, options.yAxisOptions.min, options.yAxisOptions.max, -100, 100));
+            gl.glVertex2d(-100 - options.yAxisOptions.tickLength / 2, Map.map(y, options.yAxisOptions.min, options.yAxisOptions.max, -100, 100));
+            gl.glVertex2d(-100 + options.yAxisOptions.tickLength / 2, Map.map(y, options.yAxisOptions.min, options.yAxisOptions.max, -100, 100));
         }
         gl.glEnd();
     }
@@ -178,8 +179,8 @@ public class PlotPresenter {
 
             gl.glBegin(GL2.GL_LINES);
             for (double x = options.xAxisOptions.min; x <= options.xAxisOptions.max; x += options.xAxisOptions.tickIncrement) {
-                gl.glVertex2d(map(x, options.xAxisOptions.min, options.xAxisOptions.max, -100, 100), -100);
-                gl.glVertex2d(map(x, options.xAxisOptions.min, options.xAxisOptions.max, -100, 100), 100);
+                gl.glVertex2d(Map.map(x, options.xAxisOptions.min, options.xAxisOptions.max, -100, 100), -100);
+                gl.glVertex2d(Map.map(x, options.xAxisOptions.min, options.xAxisOptions.max, -100, 100), 100);
             }
             gl.glEnd();
         }
@@ -190,8 +191,8 @@ public class PlotPresenter {
 
             gl.glBegin(GL2.GL_LINES);
             for (double y = options.yAxisOptions.min; y <= options.yAxisOptions.max; y += options.yAxisOptions.tickIncrement) {
-                gl.glVertex2d(-100, map(y, options.yAxisOptions.min, options.yAxisOptions.max, -100, 100));
-                gl.glVertex2d(100, map(y, options.yAxisOptions.min, options.yAxisOptions.max, -100, 100));
+                gl.glVertex2d(-100, Map.map(y, options.yAxisOptions.min, options.yAxisOptions.max, -100, 100));
+                gl.glVertex2d(100, Map.map(y, options.yAxisOptions.min, options.yAxisOptions.max, -100, 100));
             }
             gl.glEnd();
         }
@@ -206,8 +207,8 @@ public class PlotPresenter {
 
     private void drawPoint(GL2 gl, PlotPoint point) {
         gl.glBegin(GL2.GL_TRIANGLE_FAN);
-        double x = map(point.getX(), options.xAxisOptions.min, options.xAxisOptions.max, -100, 100);
-        double y = map(point.getY(), options.yAxisOptions.min, options.yAxisOptions.max, -100, 100);
+        double x = Map.map(point.getX(), options.xAxisOptions.min, options.xAxisOptions.max, -100, 100);
+        double y = Map.map(point.getY(), options.yAxisOptions.min, options.yAxisOptions.max, -100, 100);
         gl.glVertex2d(x, y);
 
         for (int division = 0; division <= options.lineOptions.divisions; division++) {
@@ -227,19 +228,10 @@ public class PlotPresenter {
         gl.glBegin(GL2.GL_LINE_STRIP);
 
         plotPointsList.subList(0, frame).forEach(point -> gl.glVertex2d(
-                map(point.getX(), options.xAxisOptions.min, options.xAxisOptions.max, -100, 100),
-                map(point.getY(), options.yAxisOptions.min, options.yAxisOptions.max, -100, 100)));
+                Map.map(point.getX(), options.xAxisOptions.min, options.xAxisOptions.max, -100, 100),
+                Map.map(point.getY(), options.yAxisOptions.min, options.yAxisOptions.max, -100, 100)));
 
         gl.glEnd();
-    }
-
-    private double map(double x, double inMin, double inMax, double outMin, double outMax) {
-        x = (x - inMin) * (outMax - outMin) / (inMax - inMin) + outMin;
-        double absMax = Math.max(outMax, outMin);
-        double absMin = Math.min(outMax, outMin);
-        if (x > absMax) x = absMax;
-        if (x < absMin) x = absMin;
-        return x;
     }
 
 }

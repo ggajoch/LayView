@@ -33,11 +33,10 @@ public class VideoExporterTest {
         glcanvas.setSize(700, 700);
         frame = new JFrame("LayVIEW development preview");
         frame.getContentPane().add(glcanvas);
-        frame.setSize(frame.getContentPane().getPreferredSize());
         frame.setSize(700, 700);
         frame.setVisible(true);
 
-        videoExporter = new VideoExporter(frame, "C:\\Users\\Piotr\\Desktop\\tmp\\OBRAZKEN", "C:\\Users\\Piotr\\Desktop\\tmp", 30, 0, 0);
+        videoExporter = new VideoExporter(frame, "C:\\Users\\Piotr\\Desktop\\tmp\\OBRAZKEN", "C:\\Users\\Piotr\\Desktop\\tmp\\testowy.avi", 30, 0, 0);
 
         frame.addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
@@ -91,15 +90,22 @@ public class VideoExporterTest {
             @Override
             public void reset() {
                 glcanvas.reset();
-                videoExporter.reset();
+
             }
         });
 
 
-        while (true) {
+
+        Scheduler.start();
+        videoExporter.reset();
+        Scheduler.start();
+        videoExporter.closeVideo();
+        System.out.println("VIDEO DAN!");
+
+        /*while (true) {
             Scheduler.start();
             System.out.println("DONE");
-        }
+        }*/
 
     }
 }

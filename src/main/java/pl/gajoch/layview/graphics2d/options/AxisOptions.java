@@ -4,7 +4,7 @@ package pl.gajoch.layview.graphics2d.options;
 import java.awt.*;
 
 public class AxisOptions {
-    RichString label;
+    public RichString label;
 
     public double min;
     public double max;

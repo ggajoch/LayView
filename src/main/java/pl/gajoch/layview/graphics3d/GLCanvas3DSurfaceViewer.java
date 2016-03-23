@@ -11,11 +11,12 @@ import pl.gajoch.layview.graphics3d.options.Scene3DOptions;
 
 import javax.media.opengl.*;
 import javax.media.opengl.awt.GLCanvas;
+import javax.media.opengl.awt.GLJPanel;
 import javax.media.opengl.glu.GLU;
 import java.awt.*;
 import java.awt.event.*;
 
-public class GLCanvas3DSurfaceViewer extends GLCanvas implements GLEventListener, MouseListener, MouseMotionListener, MouseWheelListener {
+public class GLCanvas3DSurfaceViewer extends GLJPanel implements GLEventListener, MouseListener, MouseMotionListener, MouseWheelListener {
 
     private static final double SCROLL_SCALE = .01;
     private static final double ROTATE_SCALE = .01;
