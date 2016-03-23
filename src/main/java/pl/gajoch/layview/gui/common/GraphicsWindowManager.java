@@ -1,9 +1,12 @@
 package pl.gajoch.layview.gui.common;
 
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ChangeListener;
 import pl.gajoch.layview.graphics2d.JPanel2D;
 import pl.gajoch.layview.graphics3d.JPanel3D;
+import pl.gajoch.layview.gui.common.export.ExportMenu;
 import pl.gajoch.layview.gui.common.movable.MovableJPanel;
+import pl.gajoch.layview.options.ExportOptions;
 import pl.gajoch.layview.scheduler.Scheduler;
 
 import javax.swing.*;
@@ -14,6 +17,9 @@ import java.util.NoSuchElementException;
 public class GraphicsWindowManager {
     volatile static JFrame frame;
     volatile static ArrayList<MovableJPanel> subScenes;
+    private static final ExportMenu exportMenu = new ExportMenu();
+
+    SimpleObjectProperty<ExportOptions> exportOptions = new SimpleObjectProperty<>(new ExportOptions());
 
     public GraphicsWindowManager() {
         subScenes = new ArrayList<>();
@@ -100,9 +106,14 @@ public class GraphicsWindowManager {
         recalculateWindowSize();
     }
 
+    private void openExportDialog() {
+        exportMenu.exec(exportOptions);
+    }
+
     private void createContextMenu() {
-        JMenu menu = new JMenu("Add...");
         JMenuBar menuBar = new JMenuBar();
+
+        JMenu menu = new JMenu("Add...");
         menuBar.add(menu);
 
         JMenuItem menuItem = new JMenuItem("2D");
@@ -112,6 +123,10 @@ public class GraphicsWindowManager {
         menuItem = new JMenuItem("3D");
         menuItem.addActionListener(e -> add3D());
         menu.add(menuItem);
+
+        JMenuItem export = new JMenuItem("Export...");
+        export.addActionListener(e -> openExportDialog());
+        menuBar.add(export);
 
         frame.setJMenuBar(menuBar);
     }
