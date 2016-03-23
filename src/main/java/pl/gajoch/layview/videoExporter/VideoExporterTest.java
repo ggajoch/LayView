@@ -1,7 +1,5 @@
 package pl.gajoch.layview.videoExporter;
 
-//import pl.gajoch.layview.graphics3d.GLCanvas3DSurfaceViewer;
-
 import pl.gajoch.layview.graphics2d.GLCanvas2DPlotViewer;
 import pl.gajoch.layview.graphics2d.PlotPoint;
 import pl.gajoch.layview.scheduler.EventType;
@@ -11,8 +9,6 @@ import pl.gajoch.layview.scheduler.Scheduler;
 import javax.media.opengl.GLCapabilities;
 import javax.media.opengl.GLProfile;
 import javax.swing.*;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.geom.Point2D;
@@ -43,38 +39,6 @@ public class VideoExporterTest {
                 System.exit(0);
             }
         });
-
-        frame.addKeyListener(new KeyListener() {
-            @Override
-            public void keyTyped(KeyEvent e) {
-                System.out.println(e.getKeyCode());
-                if (e.getKeyChar() == 'q') {
-                    System.out.println("Reset");
-                    videoExporter.reset();
-                }
-                if (e.getKeyChar() == 'w') {
-                    System.out.println("Frame save");
-                    videoExporter.saveSnapshot();
-                }
-                if (e.getKeyChar() == 'e') {
-                    System.out.println("Render");
-                    videoExporter.closeVideo();
-                }
-            }
-
-            @Override
-            public void keyPressed(KeyEvent e) {
-
-            }
-
-            @Override
-            public void keyReleased(KeyEvent e) {
-
-            }
-        });
-
-        /*final FPSAnimator animator = new FPSAnimator(canvasCamera, 300, true);
-        animator.start();*/
 
         for (double angle = -Math.PI * 2; angle < Math.PI * 2; angle += 0.1) {
             glcanvas.presenter.plotPointsList.add(new PlotPoint(new Point2D.Double(angle / 2 / Math.PI * 100, (Math.sin(angle) + Math.sin(angle * 2)) * 70)));
