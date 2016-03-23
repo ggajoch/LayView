@@ -3,7 +3,7 @@ package pl.gajoch.layview.gui.common.export;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
+import javafx.scene.control.TextField;
 import javafx.stage.FileChooser;
 import pl.gajoch.layview.options.ExportOptions;
 import pl.gajoch.layview.utils.GUIUtils;
@@ -11,6 +11,7 @@ import pl.gajoch.layview.utils.gui.RichTextField;
 
 import javax.swing.*;
 import java.io.File;
+
 import static pl.gajoch.layview.utils.GUIUtils.showNumberFormatException;
 
 
@@ -39,7 +40,6 @@ public class ExportMenuController {
 
     @FXML
     private void fileSelect_handler() {
-        System.out.println("AAA");
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Select file to export to...");
 
@@ -57,8 +57,7 @@ public class ExportMenuController {
             showNumberFormatException(ex);
             return;
         }
-        Platform.runLater(() -> {
-            GUIUtils.closeJFrame(frame);
-        });
+        Platform.runLater(() ->
+                GUIUtils.closeJFrame(frame));
     }
 }
