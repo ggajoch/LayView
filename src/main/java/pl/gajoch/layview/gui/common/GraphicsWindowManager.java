@@ -8,6 +8,7 @@ import pl.gajoch.layview.gui.common.export.ExportMenu;
 import pl.gajoch.layview.gui.common.movable.MovableJPanel;
 import pl.gajoch.layview.options.ExportOptions;
 import pl.gajoch.layview.scheduler.Scheduler;
+import pl.gajoch.layview.videoExporter.VideoExporter;
 
 import javax.swing.*;
 import java.awt.*;
@@ -18,6 +19,8 @@ public class GraphicsWindowManager {
     volatile static JFrame frame;
     volatile static ArrayList<MovableJPanel> subScenes;
     private static final ExportMenu exportMenu = new ExportMenu();
+
+    private VideoExporter videoExporter;
 
     SimpleObjectProperty<ExportOptions> exportOptions = new SimpleObjectProperty<>(new ExportOptions());
 
@@ -34,6 +37,11 @@ public class GraphicsWindowManager {
 
             frame.pack();
             frame.setVisible(true);
+        });
+
+        exportOptions.addListener((observable, oldValue, newValue) -> {
+            System.out.println("EXPORT");
+            //videoExporter = new VideoExporter(frame, )
         });
 
         while (true) {
