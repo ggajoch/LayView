@@ -166,8 +166,12 @@ public class JPanel3D extends MovableJPanel {
             }
         };
         Scheduler.schedule(timing);
-        //tu masz hinty policzone także
-        scene3DOptionsEditor.setHints(-1, -2, -3, -4);
+
+        scene3DOptionsEditor.setHints(
+                newValue.gradient1.getHintMin(),
+                newValue.gradient1.getHintMax(),
+                newValue.gradient2.getHintMin(),
+                newValue.gradient2.getHintMax());
 
     }
 
