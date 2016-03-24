@@ -29,11 +29,18 @@ public class Scene3DOptionsController {
     @FXML
     private CheckBox Grad2Enable, isVectorsCheckBox;
 
+    private enum GradientsAvailable {
+        NONE, GRADIENT1, GRADIENT2
+    }
+
+    private GradientsAvailable currentGradientEdititng;
+
     public void setup(JFrame frame, SimpleObjectProperty<Scene3DOptions> scene3DOptions) {
         this.frame = frame;
         this.scene3DOptions = scene3DOptions;
 
         gradientEditor = new GradientEditor();
+        currentGradientEdititng = GradientsAvailable.NONE;
 
         tipLenRich = RichTextField.of(tipLen);
         tipRadiusRich = RichTextField.of(tipRadius);
@@ -53,6 +60,7 @@ public class Scene3DOptionsController {
         gradientToEdit2 = new SimpleObjectProperty<>(scene3DOptions.get().gradient2);
 
         Gradient1.setOnAction(event -> {
+            currentGradientEdititng = GradientsAvailable.GRADIENT1;
             gradientToEdit1 = new SimpleObjectProperty<>(scene3DOptions.get().gradient1);
             gradientToEdit1.addListener((observable, oldValue, newValue) -> {
                 recalculate();
@@ -60,6 +68,7 @@ public class Scene3DOptionsController {
             gradientEditor.exec(gradientToEdit1);
         });
         Gradient2.setOnAction(event -> {
+            currentGradientEdititng = GradientsAvailable.GRADIENT2;
             gradientToEdit2 = new SimpleObjectProperty<>(scene3DOptions.get().gradient2);
             gradientToEdit2.addListener((observable, oldValue, newValue) -> {
                 recalculate();
@@ -69,6 +78,15 @@ public class Scene3DOptionsController {
 
         Grad2Enable.setSelected(scene3DOptions.get().gradient2enable);
         isVectorsCheckBox.setSelected(scene3DOptions.get().isVectors);
+    }
+
+    public void setHints(double minHint1, double maxHint1,
+                         double minHint2, double maxHint2) {
+        if( currentGradientEdititng == GradientsAvailable.GRADIENT1 ) {
+            gradientEditor.setHints(minHint1, maxHint1);
+        } else {
+            gradientEditor.setHints(minHint2, maxHint2);
+        }
     }
 
     private void recalculate() {

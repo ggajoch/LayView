@@ -167,6 +167,8 @@ public class JPanel3D extends MovableJPanel {
         };
         Scheduler.schedule(timing);
         //tu masz hinty policzone także
+        scene3DOptionsEditor.setHints(-1, -2, -3, -4);
+
     }
 
     private void onFileSelect() {
