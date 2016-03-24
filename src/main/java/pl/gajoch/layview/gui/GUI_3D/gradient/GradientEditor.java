@@ -10,7 +10,11 @@ public class GradientEditor extends JFXPanelWindow<GradientEditorController> {
     }
 
     public void exec(SimpleObjectProperty<HintGradient> gradient) {
-        windowController.setup(frame, gradient, gradient.get().getHintMin(), gradient.get().getHintMax());
+        windowController.setup(frame, gradient);
         open();
+    }
+
+    public void setHints(double minHint, double maxHint) {
+        windowController.setHints(minHint, maxHint);
     }
 }

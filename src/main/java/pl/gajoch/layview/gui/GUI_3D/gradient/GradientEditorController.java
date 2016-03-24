@@ -30,7 +30,7 @@ public class GradientEditorController {
     private HintGradient originalGradient;
     private SimpleObjectProperty<HintGradient> gradientToEdit;
     private Vec3dTextField referenceVector;
-    private double minHint, maxHint;
+    private volatile double minHint, maxHint;
 
     @FXML
     private ChoiceBox<GradientPoint> choiceBox;
@@ -61,7 +61,7 @@ public class GradientEditorController {
     @FXML
     private TextField maxVectorTextField;
 
-    public void setup(JFrame frame, SimpleObjectProperty<HintGradient> gradient, double minVectorHint, double maxVectorHint) {
+    public void setup(JFrame frame, SimpleObjectProperty<HintGradient> gradient) {
         this.frame = frame;
         referenceVector = new Vec3dTextField(xRefTextField, yRefTextField, zRefTextField);
         setGradient(gradient);
@@ -70,8 +70,8 @@ public class GradientEditorController {
         recalculateColor();
         recalculateGradient();
         editor = new GradientPointEditor();
-        minHint = minVectorHint;
-        maxHint = maxVectorHint;
+        minHint = gradient.get().getHintMin();
+        maxHint = gradient.get().getHintMax();
 
         ContextMenu contextMenu = new ContextMenu();
         MenuItem item1 = new MenuItem("Get prediction");
@@ -93,6 +93,11 @@ public class GradientEditorController {
         Arrays.asList(xRefTextField, yRefTextField, zRefTextField,
                 maxVectorTextField, minVectorTextField)
                 .forEach(e -> e.textProperty().addListener(ignore -> recalculateOutput()));
+    }
+
+    public void setHints(double minHint, double maxHint) {
+        this.minHint = minHint;
+        this.maxHint = maxHint;
     }
 
     private void setGradient(SimpleObjectProperty<HintGradient> gradient) {

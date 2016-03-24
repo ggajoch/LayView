@@ -13,4 +13,9 @@ public class Scene3DOptionsEditor extends JFXPanelWindow<Scene3DOptionsControlle
         windowController.setup(frame, scene3DOptions);
         open();
     }
+
+    public void setHints(double minHint1, double maxHint1,
+                         double minHint2, double maxHint2) {
+        windowController.setHints(minHint1, maxHint1, minHint2, maxHint2);
+    }
 }
