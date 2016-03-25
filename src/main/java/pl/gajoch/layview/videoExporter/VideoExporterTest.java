@@ -12,6 +12,7 @@ import javax.swing.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.geom.Point2D;
+import java.io.File;
 
 public class VideoExporterTest {
     static GLCanvas2DPlotViewer glcanvas;
@@ -32,7 +33,7 @@ public class VideoExporterTest {
         frame.setSize(700, 700);
         frame.setVisible(true);
 
-        videoExporter = new VideoExporter(frame, "C:\\Users\\Piotr\\Desktop\\tmp\\OBRAZKEN", "C:\\Users\\Piotr\\Desktop\\tmp\\testowy.avi", 30, 0, 0);
+        videoExporter = new VideoExporter(frame, "C:\\Users\\Piotr\\Desktop\\tmp\\OBRAZKEN\\alfa", "C:\\Users\\Piotr\\Desktop\\tmp\\testowy.avi", 30, 0, 0);
 
         frame.addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {

@@ -41,7 +41,7 @@ public class GraphicsWindowManager {
 
         exportOptions.addListener((observable, oldValue, newValue) -> {
             System.out.println("EXPORT");
-            //videoExporter = new VideoExporter(frame, )
+            videoExporter = new VideoExporter(frame, newValue.file.getPath()+"\\tmp", newValue.file.getPath(), (int)newValue.FPS, frame.getWidth(), frame.getHeight());
         });
 
         while (true) {

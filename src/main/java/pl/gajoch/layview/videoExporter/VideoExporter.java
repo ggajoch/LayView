@@ -62,7 +62,11 @@ public class VideoExporter {
 
     public void reset() {
         frameNumber = 0;
-        cleanDir(new File(tmpPath));
+        File file = new File(tmpPath);
+        file.mkdirs();
+        cleanDir(file);
+        File video = new File(videoPath);
+        video.mkdirs();
     }
 
     public void saveSnapshot() {
