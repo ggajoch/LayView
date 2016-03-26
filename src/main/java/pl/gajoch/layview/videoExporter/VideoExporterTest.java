@@ -33,7 +33,7 @@ public class VideoExporterTest {
         frame.setSize(700, 700);
         frame.setVisible(true);
 
-        videoExporter = new VideoExporter(frame, "C:\\Users\\Piotr\\Desktop\\tmp\\OBRAZKEN\\alfa", "C:\\Users\\Piotr\\Desktop\\tmp\\testowy.avi", 30, 0, 0);
+        videoExporter = new VideoExporter(frame, "C:\\Users\\Piotr\\Desktop\\tmp\\testowy.avi_tmp", "C:\\Users\\Piotr\\Desktop\\tmp\\testowy.avi", 30, 0, 0);
 
         frame.addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {

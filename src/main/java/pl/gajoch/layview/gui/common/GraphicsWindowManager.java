@@ -44,7 +44,7 @@ public class GraphicsWindowManager {
 
         exportOptions.addListener((observable, oldValue, newValue) -> {
             System.out.println("EXPORT");
-            videoExporter = new VideoExporter(frame, newValue.file.getPath()+"\\tmp", newValue.file.getPath(), (int)newValue.FPS, frame.getWidth(), frame.getHeight());
+            /*videoExporter = new VideoExporter(frame, newValue.file.getPath()+"_tmp", newValue.file.getPath(), (int)newValue.FPS, frame.getWidth(), frame.getHeight());
 
             initialise = new RepeatedEvent(EventType.SNAPSHOT, 0,1) {
                 @Override
@@ -60,7 +60,7 @@ public class GraphicsWindowManager {
                 }
             };
 
-            close = new RepeatedEvent(EventType.SNAPSHOT, (int)(1e6/newValue.FPS)*30 ,1) {
+            close = new RepeatedEvent(EventType.SNAPSHOT, (int)(1e6/newValue.FPS)*60 ,1) {
                 @Override
                 public void dispatch() {
                     videoExporter.closeVideo();
@@ -72,8 +72,28 @@ public class GraphicsWindowManager {
 
             Scheduler.schedule(initialise);
             Scheduler.schedule(grabFrame);
-            Scheduler.schedule(close);
+            Scheduler.schedule(close);*/
         });
+
+        videoExporter = new VideoExporter(frame, "C:\\Users\\Piotr\\Desktop\\tmp\\testowy.avi_tmp", "C:\\Users\\Piotr\\Desktop\\tmp\\testowy.avi", 30, 0, 0);
+        add2D();
+        grabFrame = new RepeatedEvent(EventType.SNAPSHOT, (int)(1e6/30),30) {//TODO: number of repetitions
+            @Override
+            public void dispatch() {
+                videoExporter.saveSnapshot();
+            }
+        };
+
+        Scheduler.schedule(grabFrame);
+
+        Scheduler.start();
+        videoExporter.reset();
+        Scheduler.start();
+        videoExporter.closeVideo();
+        System.out.println("VIDEO DAN!");
+
+        Scheduler.remove(grabFrame);
+
 
         while (true) {
             Scheduler.start();
