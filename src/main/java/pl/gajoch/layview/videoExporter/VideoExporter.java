@@ -18,6 +18,8 @@ public class VideoExporter {
     private int width;
     private int height;
 
+    private boolean is_active;
+
     public VideoExporter(JFrame frame, String tmpPath, String videoPath, int FPS, int width, int height) {
         this.frame = frame;
         this.tmpPath = tmpPath;
@@ -62,11 +64,12 @@ public class VideoExporter {
 
     public void reset() {
         frameNumber = 0;
+        is_active = true;
         File file = new File(tmpPath);
         file.mkdirs();
         cleanDir(file);
-        File video = new File(videoPath);
-        video.mkdirs();
+        /*File video = new File(videoPath);
+        video.mkdirs();*/
     }
 
     public void saveSnapshot() {
@@ -81,14 +84,21 @@ public class VideoExporter {
     }
 
     public void closeVideo() {
-        ProcessBuilder processBuilder = new ProcessBuilder("ffmpeg", "-i",
-                tmpPath + "\\anim_%09d.png", "-c:v", "libx264",
-                "-r", String.format("%d", FPS), "-y", "-an", "-pix_fmt", "yuv420p", videoPath);
-        try {
-            processBuilder.start();
-        } catch (Exception e) {
-            e.printStackTrace();
+        if(is_active) {
+            is_active = false;
+            ProcessBuilder processBuilder = new ProcessBuilder("ffmpeg", "-i",
+                    tmpPath + "\\anim_%09d.png", "-c:v", "libx264",
+                    "-r", String.format("%d", FPS), "-y", "-an", "-pix_fmt", "yuv420p", videoPath);
+
+            System.out.println(tmpPath);
+            System.out.println(videoPath);
+            try {
+                Process p = processBuilder.start();
+                p.waitFor();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            System.out.print("SAVED\r\n");
         }
-        System.out.print("SAVED\r\n");
     }
 }
