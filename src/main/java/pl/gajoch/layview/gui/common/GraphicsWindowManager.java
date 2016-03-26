@@ -7,7 +7,8 @@ import pl.gajoch.layview.graphics3d.JPanel3D;
 import pl.gajoch.layview.gui.common.export.ExportMenu;
 import pl.gajoch.layview.gui.common.movable.MovableJPanel;
 import pl.gajoch.layview.options.ExportOptions;
-import pl.gajoch.layview.scheduler.Scheduler;
+import pl.gajoch.layview.scheduler.*;
+import pl.gajoch.layview.scheduler.Event;
 import pl.gajoch.layview.videoExporter.VideoExporter;
 
 import javax.swing.*;
@@ -19,6 +20,8 @@ public class GraphicsWindowManager {
     volatile static JFrame frame;
     volatile static ArrayList<MovableJPanel> subScenes;
     private static final ExportMenu exportMenu = new ExportMenu();
+
+    private RepeatedEvent initialise, grabFrame, close;
 
     private VideoExporter videoExporter;
 
@@ -42,6 +45,34 @@ public class GraphicsWindowManager {
         exportOptions.addListener((observable, oldValue, newValue) -> {
             System.out.println("EXPORT");
             videoExporter = new VideoExporter(frame, newValue.file.getPath()+"\\tmp", newValue.file.getPath(), (int)newValue.FPS, frame.getWidth(), frame.getHeight());
+
+            initialise = new RepeatedEvent(EventType.SNAPSHOT, 0,1) {
+                @Override
+                public void dispatch() {
+                    //videoExporter.reset();
+                }
+            };
+
+            grabFrame = new RepeatedEvent(EventType.SNAPSHOT, (int)(1e6/newValue.FPS),30) {//TODO: number of repetitions
+                @Override
+                public void dispatch() {
+                    videoExporter.saveSnapshot();
+                }
+            };
+
+            close = new RepeatedEvent(EventType.SNAPSHOT, (int)(1e6/newValue.FPS)*30 ,1) {
+                @Override
+                public void dispatch() {
+                    videoExporter.closeVideo();
+                    Scheduler.remove(initialise);
+                    Scheduler.remove(grabFrame);
+                    Scheduler.remove(close);
+                }
+            };
+
+            Scheduler.schedule(initialise);
+            Scheduler.schedule(grabFrame);
+            Scheduler.schedule(close);
         });
 
         while (true) {
