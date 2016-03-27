@@ -27,7 +27,7 @@ public class GLCanvas3DSurfaceViewer extends GLJPanel implements GLEventListener
     private Vec3d mousePos, mouseOld, mouseDelta;
     private Vec3d angle, offset;
     private double scale;
-    private long last = 0, now;
+    //private long last = 0, now;
     private int frameCt = 0;
 
     public GLCanvas3DSurfaceViewer(GLCapabilities capabilities) {
@@ -245,10 +245,10 @@ public class GLCanvas3DSurfaceViewer extends GLJPanel implements GLEventListener
 
 
         final GL2 gl = drawable.getGL().getGL2();
-        now = System.nanoTime();
+        /*now = System.nanoTime();
         //System.out.println(1e9f / ((float) (now - last)));
         String fps = new String("FPS = " + String.format("%.2f", 1e9f / ((float) (now - last))));
-        last = now;
+        last = now;*/
         gl.glClear(GL2.GL_COLOR_BUFFER_BIT | GL2.GL_DEPTH_BUFFER_BIT);
         gl.glClearColor(0.8f, 0.8f, 0.8f, 1.0f);
         gl.glLoadIdentity();
@@ -265,12 +265,12 @@ public class GLCanvas3DSurfaceViewer extends GLJPanel implements GLEventListener
         presenter.draw(gl, frameCt++);
         if (frameCt >= presenter.surfaces.size()) frameCt = 0;
 
-        renderer.beginRendering(this.getWidth(), this.getHeight());
+        /*renderer.beginRendering(this.getWidth(), this.getHeight());
         // optionally set the color
         renderer.setColor(1.0f, 0.2f, 0.2f, 0.8f);
         renderer.draw3D(fps, 0, 0, 0, 1);
         // ... more draw commands, color changes, etc.
-        renderer.endRendering();
+        renderer.endRendering();*/
 
 
         gl.glFlush();
