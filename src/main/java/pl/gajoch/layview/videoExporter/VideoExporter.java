@@ -84,14 +84,12 @@ public class VideoExporter {
     }
 
     public void closeVideo() {
-        if(is_active) {
+        if (is_active) {
             is_active = false;
             ProcessBuilder processBuilder = new ProcessBuilder("ffmpeg", "-i",
                     tmpPath + "\\anim_%09d.png", "-c:v", "libx264",
-                    "-r", String.format("%d", FPS), "-y", "-an", "-pix_fmt", "yuv420p", videoPath);
+                    "-r", String.format("%d", FPS), "-y", "-an", "-pix_fmt", "yuv420p", "-vf", "\"scale=trunc(iw/2)*2:trunc(ih/2)*2\"", videoPath);
 
-            System.out.println(tmpPath);
-            System.out.println(videoPath);
             try {
                 Process p = processBuilder.start();
                 p.waitFor();
