@@ -13,20 +13,15 @@ public class VideoExporter {
     private String videoPath;
 
     private long frameNumber;
-    private int FPS;
-
-    private int width;
-    private int height;
+    private double FPS;
 
     private boolean is_active;
 
-    public VideoExporter(JFrame frame, String tmpPath, String videoPath, int FPS, int width, int height) {
+    public VideoExporter(JFrame frame, String tmpPath, String videoPath, double FPS) {
         this.frame = frame;
         this.tmpPath = tmpPath;
         this.videoPath = videoPath;
         this.FPS = FPS;
-        this.width = width;
-        this.height = height;
 
         reset();
     }
@@ -88,7 +83,7 @@ public class VideoExporter {
             is_active = false;
             ProcessBuilder processBuilder = new ProcessBuilder("ffmpeg", "-i",
                     tmpPath + "\\anim_%09d.png", "-c:v", "libx264",
-                    "-r", String.format("%d", FPS), "-y", "-an", "-pix_fmt", "yuv420p", "-vf", "\"scale=trunc(iw/2)*2:trunc(ih/2)*2\"", videoPath);
+                    "-r", String.format("%f", FPS), "-y", "-an", "-pix_fmt", "yuv420p", "-vf", "\"scale=trunc(iw/2)*2:trunc(ih/2)*2\"", videoPath);
 
             try {
                 Process p = processBuilder.start();

@@ -44,7 +44,7 @@ public class GraphicsWindowManager {
 
         exportOptions.addListener((observable, oldValue, newValue) -> {
             System.out.println("EXPORT");
-            videoExporter = new VideoExporter(frame, newValue.file.getPath()+"_tmp", newValue.file.getPath(), (int)newValue.FPS, frame.getWidth(), frame.getHeight());
+            videoExporter = new VideoExporter(frame, newValue.file.getPath()+"_tmp", newValue.file.getPath(), newValue.FPS);
 
             initialise = new RepeatedEvent(EventType.SNAPSHOT, 0,1) {
                 @Override
