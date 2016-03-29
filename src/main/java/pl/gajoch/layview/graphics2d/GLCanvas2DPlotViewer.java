@@ -2,6 +2,7 @@ package pl.gajoch.layview.graphics2d;
 
 import com.jogamp.opengl.util.awt.TextRenderer;
 import com.sun.javafx.geom.Vec3d;
+import pl.gajoch.layview.graphics.TextOverlayGLJPanel;
 import pl.gajoch.layview.graphics2d.options.PlotOptions;
 import pl.gajoch.layview.graphics2d.options.Scene2DOptions;
 
@@ -13,7 +14,7 @@ import javax.media.opengl.awt.GLJPanel;
 import java.awt.*;
 import java.awt.event.*;
 
-public class GLCanvas2DPlotViewer extends GLJPanel implements GLEventListener, MouseListener, MouseMotionListener, MouseWheelListener {
+public class GLCanvas2DPlotViewer extends TextOverlayGLJPanel implements GLEventListener, MouseListener, MouseMotionListener, MouseWheelListener {
 
     private static final double SCROLL_SCALE = .01;
     private static final double ROTATE_SCALE = .01;

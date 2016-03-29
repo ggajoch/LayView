@@ -6,6 +6,7 @@ import org.apache.commons.math3.geometry.euclidean.threed.CardanEulerSingularity
 import org.apache.commons.math3.geometry.euclidean.threed.Rotation;
 import org.apache.commons.math3.geometry.euclidean.threed.RotationOrder;
 import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
+import pl.gajoch.layview.graphics.TextOverlayGLJPanel;
 import pl.gajoch.layview.graphics3d.options.HintGradient;
 import pl.gajoch.layview.graphics3d.options.Scene3DOptions;
 
@@ -16,7 +17,7 @@ import javax.media.opengl.glu.GLU;
 import java.awt.*;
 import java.awt.event.*;
 
-public class GLCanvas3DSurfaceViewer extends GLJPanel implements GLEventListener, MouseListener, MouseMotionListener, MouseWheelListener {
+public class GLCanvas3DSurfaceViewer extends TextOverlayGLJPanel implements GLEventListener, MouseListener, MouseMotionListener, MouseWheelListener {
 
     private static final double SCROLL_SCALE = .01;
     private static final double ROTATE_SCALE = .01;
