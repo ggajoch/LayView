@@ -23,7 +23,7 @@ public class GLCanvas3DSurfaceViewer extends TextOverlayGLJPanel implements GLEv
     private static final double ROTATE_SCALE = .01;
     private final double MOVE_SCALE = 3.275;
     public SurfacesPresenter presenter;
-    private TextRenderer renderer;
+    //private TextRenderer renderer;
     private Scene3DOptions options;
     private Vec3d mousePos, mouseOld, mouseDelta;
     private Vec3d angle, offset;
@@ -161,7 +161,7 @@ public class GLCanvas3DSurfaceViewer extends TextOverlayGLJPanel implements GLEv
         gl.glEnable(GL2.GL_LIGHT0);
         gl.glEnable(GL2.GL_NORMALIZE);
 
-        renderer = new TextRenderer(new Font("SansSerif", Font.BOLD, 36));
+        //renderer = new TextRenderer(new Font("SansSerif", Font.BOLD, 36));
 
         mousePos = new Vec3d();
         mouseOld = new Vec3d();
@@ -273,6 +273,7 @@ public class GLCanvas3DSurfaceViewer extends TextOverlayGLJPanel implements GLEv
         // ... more draw commands, color changes, etc.
         renderer.endRendering();*/
 
+        super.overlayProcess();
 
         gl.glFlush();
     }

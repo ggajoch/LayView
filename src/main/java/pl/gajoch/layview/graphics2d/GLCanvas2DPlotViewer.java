@@ -165,6 +165,7 @@ public class GLCanvas2DPlotViewer extends TextOverlayGLJPanel implements GLEvent
         renderer.draw(fps, 0, 0);
         renderer.endRendering();
         gl.glPopMatrix();*/
+        super.overlayProcess();
 
         gl.glFlush();
     }
