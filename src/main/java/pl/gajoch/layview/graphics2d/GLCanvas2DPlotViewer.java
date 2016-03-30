@@ -1,6 +1,5 @@
 package pl.gajoch.layview.graphics2d;
 
-import com.jogamp.opengl.util.awt.TextRenderer;
 import com.sun.javafx.geom.Vec3d;
 import pl.gajoch.layview.graphics.TextOverlayGLJPanel;
 import pl.gajoch.layview.graphics2d.options.PlotOptions;
@@ -10,8 +9,6 @@ import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLCapabilities;
 import javax.media.opengl.GLEventListener;
-import javax.media.opengl.awt.GLJPanel;
-import java.awt.*;
 import java.awt.event.*;
 
 public class GLCanvas2DPlotViewer extends TextOverlayGLJPanel implements GLEventListener, MouseListener, MouseMotionListener, MouseWheelListener {
@@ -20,12 +17,10 @@ public class GLCanvas2DPlotViewer extends TextOverlayGLJPanel implements GLEvent
     private static final double ROTATE_SCALE = .01;
     private static final double MOVE_SCALE = .01;
     public PlotPresenter presenter;
-    private TextRenderer renderer;
     private Vec3d mousePos, mouseOld, mouseDelta;
     private Vec3d angle, offset;
     private double scale;
     private Scene2DOptions options;
-    private long last = 0, now;
     private int frameCt = 0;
 
     public GLCanvas2DPlotViewer(GLCapabilities capabilities) {
@@ -40,8 +35,6 @@ public class GLCanvas2DPlotViewer extends TextOverlayGLJPanel implements GLEvent
     }
 
     public void mouseClicked(MouseEvent e) {
-        //System.out.println("Clicked");
-        //System.out.println(e.getClickCount());
         if (e.getClickCount() == 2) {
             presenter.options.lineOptions.isLine = !presenter.options.lineOptions.isLine;
         }
@@ -108,8 +101,6 @@ public class GLCanvas2DPlotViewer extends TextOverlayGLJPanel implements GLEvent
         gl.glEnable(GL2.GL_LINE_SMOOTH);
         gl.glHint(GL2.GL_LINE_SMOOTH_HINT, GL2.GL_NICEST);
 
-        renderer = new TextRenderer(new Font("Arial Narrow", Font.BOLD, 36));
-
         mousePos = new Vec3d();
         mouseOld = new Vec3d();
         mouseDelta = new Vec3d();
@@ -139,10 +130,6 @@ public class GLCanvas2DPlotViewer extends TextOverlayGLJPanel implements GLEvent
 
     private void render(GLAutoDrawable drawable) {
         final GL2 gl = drawable.getGL().getGL2();
-        now = System.nanoTime();
-        //System.out.println(1e9f / ((float) (now - last)));
-        String fps = new String("FPS = " + String.format("%.2f", 1e9f / ((float) (now - last))));
-        last = now;
         gl.glClear(GL2.GL_COLOR_BUFFER_BIT | GL2.GL_DEPTH_BUFFER_BIT);
         gl.glClearColor(0.8f, 0.8f, 0.8f, 1.0f);
         gl.glLoadIdentity();
@@ -156,15 +143,6 @@ public class GLCanvas2DPlotViewer extends TextOverlayGLJPanel implements GLEvent
 
         frameCt++;
 
-
-        /*renderer.beginRendering(this.getWidth(), this.getHeight());
-        renderer.setColor(1.0f, 0.2f, 0.2f, 0.8f);
-        gl.glMatrixMode(GL2.GL_MODELVIEW);
-        gl.glPushMatrix();
-        gl.glRotated(45,0,0,1);
-        renderer.draw(fps, 0, 0);
-        renderer.endRendering();
-        gl.glPopMatrix();*/
         super.overlayProcess();
 
         gl.glFlush();

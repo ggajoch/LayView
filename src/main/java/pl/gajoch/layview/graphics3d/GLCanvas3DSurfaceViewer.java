@@ -1,6 +1,5 @@
 package pl.gajoch.layview.graphics3d;
 
-import com.jogamp.opengl.util.awt.TextRenderer;
 import com.sun.javafx.geom.Vec3d;
 import org.apache.commons.math3.geometry.euclidean.threed.CardanEulerSingularityException;
 import org.apache.commons.math3.geometry.euclidean.threed.Rotation;
@@ -11,10 +10,7 @@ import pl.gajoch.layview.graphics3d.options.HintGradient;
 import pl.gajoch.layview.graphics3d.options.Scene3DOptions;
 
 import javax.media.opengl.*;
-import javax.media.opengl.awt.GLCanvas;
-import javax.media.opengl.awt.GLJPanel;
 import javax.media.opengl.glu.GLU;
-import java.awt.*;
 import java.awt.event.*;
 
 public class GLCanvas3DSurfaceViewer extends TextOverlayGLJPanel implements GLEventListener, MouseListener, MouseMotionListener, MouseWheelListener {
@@ -23,12 +19,10 @@ public class GLCanvas3DSurfaceViewer extends TextOverlayGLJPanel implements GLEv
     private static final double ROTATE_SCALE = .01;
     private final double MOVE_SCALE = 3.275;
     public SurfacesPresenter presenter;
-    //private TextRenderer renderer;
     private Scene3DOptions options;
     private Vec3d mousePos, mouseOld, mouseDelta;
     private Vec3d angle, offset;
     private double scale;
-    //private long last = 0, now;
     private int frameCt = 0;
 
     public GLCanvas3DSurfaceViewer(GLCapabilities capabilities) {
@@ -161,8 +155,6 @@ public class GLCanvas3DSurfaceViewer extends TextOverlayGLJPanel implements GLEv
         gl.glEnable(GL2.GL_LIGHT0);
         gl.glEnable(GL2.GL_NORMALIZE);
 
-        //renderer = new TextRenderer(new Font("SansSerif", Font.BOLD, 36));
-
         mousePos = new Vec3d();
         mouseOld = new Vec3d();
         mouseDelta = new Vec3d();
@@ -175,54 +167,6 @@ public class GLCanvas3DSurfaceViewer extends TextOverlayGLJPanel implements GLEv
         this.addMouseListener(this);
         this.addMouseMotionListener(this);
         this.addMouseWheelListener(this);
-
-        //presenter = new SurfacesPresenter(options);
-
-
-        /*
-        for (double angle = 0; angle <= Math.PI * 4; angle += Math.PI / 15) {
-            SurfacePointsList surfacePoints = new SurfacePointsList();
-
-            for (double x = -1; x <= 1; x += .1) {
-                for (double y = -1; y <= 1; y += .1) {
-                    for (double z = -1; z <= 1; z += .1) {
-                        SurfacePoint point = new SurfacePoint(new Vec3d(x, y, z),
-                                new Vec3d(x / 10 * Math.sin(angle), y / 10 * Math.cos(angle), z / 10),
-                                new Color((x + 1) / 2 * Math.abs(Math.sin(angle)), (y + 1) / 2 * Math.abs(Math.cos(angle)), (z + 1) / 2, 1));
-                        surfacePoints.add(point);
-                    }
-                }
-            }
-
-            presenter.surfaces.add(surfacePoints);
-        }
-        System.out.println("Surfaces: " + presenter.surfaces.size());
-
-        options.gradient1.setReference(new Vec3d(1, 0, 0));
-        options.gradient1.add(new GradientPoint(-1.0, Color.RED));
-        options.gradient1.add(new GradientPoint(0, Color.WHITE));
-        options.gradient1.add(new GradientPoint(1.0, Color.BLUE));
-
-        options.gradient2.setReference(new Vec3d(0, 1, 0));
-        options.gradient2.add(new GradientPoint(-1.0, Color.GREEN));
-        options.gradient2.add(new GradientPoint(1.0, Color.GOLD));
-
-        presenter.gradients.add(options.gradient1);
-        presenter.gradients.add(options.gradient2);
-
-        presenter.gradientsHintReset();
-        presenter.gradientsHintCalculate();
-
-        options.gradient1.setMaxVector(options.gradient1.getHintMax());
-        options.gradient1.setMinVector(options.gradient1.getHintMin());
-
-        options.gradient2.setMaxVector(options.gradient2.getHintMax());
-        options.gradient2.setMinVector(options.gradient2.getHintMin());
-
-        //System.out.println("G1: MAX: "+gradient1.getHintMax()+" MIN: "+gradient1.getHintMin());
-        //System.out.println("G2: MAX: "+gradient2.getHintMax()+" MIN: "+gradient2.getHintMin());
-
-        presenter.gradientsApply();//*/
 
 
     }
@@ -246,10 +190,6 @@ public class GLCanvas3DSurfaceViewer extends TextOverlayGLJPanel implements GLEv
 
 
         final GL2 gl = drawable.getGL().getGL2();
-        /*now = System.nanoTime();
-        //System.out.println(1e9f / ((float) (now - last)));
-        String fps = new String("FPS = " + String.format("%.2f", 1e9f / ((float) (now - last))));
-        last = now;*/
         gl.glClear(GL2.GL_COLOR_BUFFER_BIT | GL2.GL_DEPTH_BUFFER_BIT);
         gl.glClearColor(0.8f, 0.8f, 0.8f, 1.0f);
         gl.glLoadIdentity();
@@ -265,13 +205,6 @@ public class GLCanvas3DSurfaceViewer extends TextOverlayGLJPanel implements GLEv
 
         presenter.draw(gl, frameCt++);
         if (frameCt >= presenter.surfaces.size()) frameCt = 0;
-
-        /*renderer.beginRendering(this.getWidth(), this.getHeight());
-        // optionally set the color
-        renderer.setColor(1.0f, 0.2f, 0.2f, 0.8f);
-        renderer.draw3D(fps, 0, 0, 0, 1);
-        // ... more draw commands, color changes, etc.
-        renderer.endRendering();*/
 
         super.overlayProcess();
 
