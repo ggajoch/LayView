@@ -11,7 +11,7 @@ public class TextOverlayGLJPanel extends GLJPanel {
         super(capabilities);
     }
 
-    protected void overlayProcess() {
+    protected void overlayProcess(int frame) {
         TextRenderer renderer;
         renderer = new TextRenderer(new Font("SansSerif", Font.BOLD, 36));
         renderer.beginRendering(this.getWidth(), this.getHeight());
