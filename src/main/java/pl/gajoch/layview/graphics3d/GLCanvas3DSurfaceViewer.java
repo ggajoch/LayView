@@ -203,7 +203,7 @@ public class GLCanvas3DSurfaceViewer extends TextOverlayGLJPanel implements GLEv
 
         gl.glTranslated(offset.x + options.initialTranslate.x, offset.y + options.initialTranslate.y, offset.z + options.initialTranslate.z);
 
-        super.overlayProcess(frameCt);
+        overlayProcess(frameCt);
         presenter.draw(gl, frameCt++);
         if (frameCt >= presenter.surfaces.size()) frameCt = 0;
 

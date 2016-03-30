@@ -136,7 +136,7 @@ public class GLCanvas2DPlotViewer extends TextOverlayGLJPanel implements GLEvent
 
         gl.glColor3d(0, 1, 0);
 
-        super.overlayProcess(frameCt);
+        overlayProcess(frameCt);
         presenter.draw(gl, frameCt++);
         if (frameCt >= presenter.plotPointsList.size()) frameCt = 0;
 
