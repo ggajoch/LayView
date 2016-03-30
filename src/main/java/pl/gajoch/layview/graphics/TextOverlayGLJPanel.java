@@ -16,6 +16,8 @@ public class TextOverlayGLJPanel extends GLJPanel {
         textEntities = new ArrayList<>();
 
         textEntities.add(new TextEntity("Startujemy", new Font("SansSerif", Font.BOLD, 20), Color.BLACK, new Vec2d(0, 0), 0, 20));
+
+        textEntities.add(new TextEntity("Test", new Font("SansSerif", Font.BOLD, 20), Color.BLACK, new Vec2d(150, 0), 0, 20));
     }
 
     protected void overlayProcess(int frame) {
