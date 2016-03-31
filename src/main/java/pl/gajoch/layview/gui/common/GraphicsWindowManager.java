@@ -53,14 +53,14 @@ public class GraphicsWindowManager {
                 }
             };
 
-            grabFrame = new RepeatedEvent(EventType.SNAPSHOT, (int)(1e6/newValue.FPS),30) {//TODO: number of repetitions
+            grabFrame = new RepeatedEvent(EventType.SNAPSHOT, (int)(1e6/newValue.FPS), (int)(Scheduler.getMaxTimeInUs()/1e6*newValue.FPS)) {
                 @Override
                 public void dispatch() {
                     videoExporter.saveSnapshot();
                 }
             };
 
-            close = new RepeatedEvent(EventType.SNAPSHOT, (int)(1e6/newValue.FPS)*60 ,1) {
+            close = new RepeatedEvent(EventType.SNAPSHOT, Scheduler.getMaxTimeInUs() ,1) {
                 @Override
                 public void dispatch() {
                     videoExporter.closeVideo();
