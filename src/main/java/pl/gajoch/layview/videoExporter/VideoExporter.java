@@ -68,13 +68,15 @@ public class VideoExporter {
     }
 
     public void saveSnapshot() {
-        BufferedImage img = getScreenShot(
-                frame.getContentPane());
-        File file = new File(tmpPath + String.format("\\anim_%09d.png", frameNumber++));
-        try {
-            ImageIO.write(img, "png", file);
-        } catch (IOException e) {
-            //TODO: handle exception here
+        if(is_active) {
+            BufferedImage img = getScreenShot(
+                    frame.getContentPane());
+            File file = new File(tmpPath + String.format("\\anim_%09d.png", frameNumber++));
+            try {
+                ImageIO.write(img, "png", file);
+            } catch (IOException e) {
+                //TODO: handle exception here
+            }
         }
     }
 
