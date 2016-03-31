@@ -8,6 +8,7 @@ public class EventTester {
                 System.out.println("Event 1");
             }
         });
+        System.out.println("Now: " + Scheduler.getMaxTimeInUs());
 
         Scheduler.schedule(new Event(EventType.SNAPSHOT, 0) {
             @Override
@@ -15,6 +16,7 @@ public class EventTester {
                 System.out.println("Event 2");
             }
         });
+        System.out.println("Now: " + Scheduler.getMaxTimeInUs());
 
         Scheduler.schedule(new Event(EventType.UPDATE3D, 1) {
             @Override
@@ -22,6 +24,7 @@ public class EventTester {
                 System.out.println("Event 3");
             }
         });
+        System.out.println("Now: " + Scheduler.getMaxTimeInUs());
 
         for (int i = 0; i < 10; ++i) {
             Scheduler.schedule(new Event(EventType.UPDATE3D, i * 1000000) {
@@ -31,6 +34,7 @@ public class EventTester {
                 }
             });
         }
+        System.out.println("Now: " + Scheduler.getMaxTimeInUs());
 
         Scheduler.schedule(new RepeatedEvent(EventType.SNAPSHOT, 1000000, 20) {
             int i = 0;
@@ -41,6 +45,7 @@ public class EventTester {
                 System.out.println("Event 5, " + i + " time.");
             }
         });
+        System.out.println("Now: " + Scheduler.getMaxTimeInUs());
 
         Event xxx = new RepeatedEvent(EventType.SNAPSHOT, 100000, 10) {
             int i = 0;
@@ -57,6 +62,7 @@ public class EventTester {
             }
         };
         Scheduler.schedule(xxx);
+        System.out.println("Now: " + Scheduler.getMaxTimeInUs());
 
         Scheduler.start();
         System.out.println("---------------");

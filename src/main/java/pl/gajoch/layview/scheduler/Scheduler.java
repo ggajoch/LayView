@@ -55,6 +55,14 @@ public class Scheduler {
         queueCopy.add(event);
     }
 
+    public static int getMaxTimeInUs() {
+        int max = 0;
+        for(Event event : queue) {
+            max = Math.max(max, event.getMaxTimeInUs());
+        }
+        return max;
+    }
+
     private static long micros() {
         return (System.nanoTime() / 1000);
     }

@@ -26,4 +26,9 @@ abstract public class RepeatedEvent extends Event {
         offset_actual = offset_us;
         reset();
     }
+
+    @Override
+    public int getMaxTimeInUs() {
+        return times * offset_us;
+    }
 }

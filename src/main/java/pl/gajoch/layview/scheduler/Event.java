@@ -33,4 +33,7 @@ abstract public class Event implements Comparable<Event> {
 
     }
 
+    public int getMaxTimeInUs() {
+        return offset_us;
+    }
 }
