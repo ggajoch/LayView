@@ -23,6 +23,8 @@ public class GLCanvas2DPlotViewer extends TextOverlayGLJPanel implements GLEvent
     private Scene2DOptions options;
     private int frameCt = 0;
 
+    private long last = 0, now;
+
     public GLCanvas2DPlotViewer(GLCapabilities capabilities) {
         super(capabilities);
         options = new Scene2DOptions(30, new PlotOptions());
@@ -129,6 +131,9 @@ public class GLCanvas2DPlotViewer extends TextOverlayGLJPanel implements GLEvent
     }
 
     private void render(GLAutoDrawable drawable) {
+        now = System.nanoTime();
+        System.out.println(1e9f / ((float) (now - last)));
+        last = now;
         final GL2 gl = drawable.getGL().getGL2();
         gl.glClear(GL2.GL_COLOR_BUFFER_BIT | GL2.GL_DEPTH_BUFFER_BIT);
         gl.glClearColor(0.8f, 0.8f, 0.8f, 1.0f);
