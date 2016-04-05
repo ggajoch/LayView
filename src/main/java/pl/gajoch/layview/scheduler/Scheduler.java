@@ -13,6 +13,7 @@ public class Scheduler {
 
     public static void start() {
         queueCopy.clear();
+        changePending = false;
         queueCopy.addAll(queue);
 
         for (Event event : queue) {
