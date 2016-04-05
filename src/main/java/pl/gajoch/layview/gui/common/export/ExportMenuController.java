@@ -43,8 +43,12 @@ public class ExportMenuController {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Select file to export to...");
 
+        fileChooser.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter("AVI file", "*.avi"),
+                new FileChooser.ExtensionFilter("MP4 file", "*.mp4"));
+
         fileChooser.setInitialDirectory(new File(this.fileName.getText()).getParentFile());
-        File file = fileChooser.showOpenDialog(null);
+        File file = fileChooser.showSaveDialog(null);
 
         fileName.setText(file.getAbsolutePath());
     }
