@@ -47,7 +47,7 @@ public class EventTester {
         });
         System.out.println("Now: " + Scheduler.getMaxTimeInUs());
 
-        Event xxx = new RepeatedEvent(EventType.SNAPSHOT, 100000, 10) {
+        Event xxx = new RepeatedEvent(EventType.SNAPSHOT, 300000, 100) {
             int i = 0;
 
             @Override
@@ -65,8 +65,10 @@ public class EventTester {
         System.out.println("Now: " + Scheduler.getMaxTimeInUs());
 
         Scheduler.start();
+
         System.out.println("---------------");
         Scheduler.remove(xxx);
+        System.out.println("Now: " + Scheduler.getMaxTimeInUs());
         Scheduler.start();
         System.out.println("---------------");
         Scheduler.start();
